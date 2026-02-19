@@ -26,7 +26,6 @@
         .glass-card { background: white; border-radius: 20px; box-shadow: 0 4px 15px rgba(74, 55, 40, 0.05); border: 1px solid #efe3d8; overflow: hidden; }
         .btn-feed.active { background-color: #e7dfd8 !important; color: #4a3728 !important; border-color: #d4c5ba !important; }
         
-        /* Accordion Style */
         .accordion-content { display: none; }
         .accordion-item.active .accordion-content { display: block; animation: slideDown 0.2s ease-out; }
         .accordion-item.active .plus-icon { transform: rotate(45deg); }
@@ -42,11 +41,14 @@
 
         .brown-gradient { background: linear-gradient(135deg, #4a3728 0%, #634a38 100%); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        
+
         /* Viewer Modal */
         #viewer-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 200; flex-direction: column; align-items: center; justify-content: center; }
         #viewer-modal.active { display: flex; }
         .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        
+        .filter-btn { padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: bold; border: 1px solid #efe3d8; background: white; color: #a89284; cursor: pointer; }
+        .filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
     </style>
 </head>
 <body class="pb-24">
@@ -142,7 +144,6 @@
         </section>
 
         <section id="recipes" class="tab-content space-y-4">
-            
             <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left outline-none">
                     <h3 class="serif text-xl font-bold italic text-stone-800">Logistyka Słoików</h3>
@@ -242,12 +243,36 @@
         </section>
 
         <section id="gallery" class="tab-content space-y-5">
+            <div class="px-2">
+                <h3 class="serif text-2xl font-bold italic text-stone-800 mb-4">Galeria Wypieków</h3>
+                <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2" id="gallery-filters">
+                    <button onclick="filterGallery('Wszystkie', this)" class="filter-btn active">Wszystkie</button>
+                    <button onclick="filterGallery('Clint Yeastwood', this)" class="filter-btn">Clint</button>
+                    <button onclick="filterGallery('Sylvester Graham', this)" class="filter-btn">Sylvester</button>
+                    <button onclick="filterGallery('Hildegarda z Bingen', this)" class="filter-btn">Hildegarda</button>
+                </div>
+            </div>
             <div id="gal-cont" class="grid grid-cols-2 gap-3"></div>
         </section>
     </main>
 
+    <div id="viewer-modal" onclick="closeViewer()">
+        <button class="absolute top-6 right-6 text-white text-3xl z-[250]">&times;</button>
+        <div id="arrow-prev" class="nav-arrow left-4" onclick="changePhoto(-1, event)">&#10094;</div>
+        <div id="arrow-next" class="nav-arrow right-4" onclick="changePhoto(1, event)">&#10095;</div>
+        <img id="viewer-img" class="w-full h-auto max-h-[70vh] object-contain">
+        <div class="p-4 text-white text-center w-full" onclick="event.stopPropagation()">
+            <p id="viewer-starter" class="text-[10px] uppercase font-black text-stone-400 tracking-[0.2em] mb-1"></p>
+            <h4 id="viewer-date" class="serif text-xl font-bold"></h4>
+        </div>
+    </div>
+
     <script>
-        // Funkcje przypisane globalnie, by przywrócić działanie klikania
+        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhwbnRbCBfN9LtC-cGPK_ZNLQBPwytrADlL2_WDAcmLrHFXa0TeDWfFkZsNy5Z4421hD1LJRR_kiQO/pub?output=csv';
+        let allGalleryData = [];
+        let currentPhotos = [];
+        let currentPhotoIdx = 0;
+
         window.st = function(id, btn) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -301,6 +326,62 @@
             document.getElementById('t-pieczenie').innerText = add(19,15);
         };
 
+        // --- GALERIA LOGIKA ---
+        async function fetchGallery() {
+            try {
+                const res = await fetch(CSV_URL);
+                const txt = await res.text();
+                const rows = txt.split('\n').slice(1);
+                allGalleryData = rows.map(r => {
+                    const c = r.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
+                    return c.length < 5 ? null : { id: c[0], date: c[1], starter: c[2], thumb: c[3], full: c[4] };
+                }).filter(r => r);
+                renderGallery('Wszystkie');
+            } catch(e) { console.error("Błąd galerii:", e); }
+        }
+
+        window.renderGallery = function(filter) {
+            const cont = document.getElementById('gal-cont');
+            if(!cont) return;
+            cont.innerHTML = '';
+            const filtered = filter === 'Wszystkie' ? allGalleryData : allGalleryData.filter(i => i.starter === filter);
+            filtered.forEach(i => {
+                const div = document.createElement('div');
+                div.className = "relative aspect-square rounded-2xl overflow-hidden cursor-pointer";
+                div.onclick = () => openViewer(i.full, i.starter, i.date);
+                div.innerHTML = `<img src="${i.thumb}" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 bg-stone-900/60 backdrop-blur-md p-2 border-t border-white/10">
+                        <span class="text-[7px] text-stone-300 font-bold uppercase block">${i.starter}</span>
+                        <h4 class="text-white serif italic text-sm font-bold">${i.date}</h4>
+                    </div>`;
+                cont.appendChild(div);
+            });
+        };
+
+        window.filterGallery = function(type, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderGallery(type);
+        };
+
+        window.openViewer = function(links, starter, date) {
+            currentPhotos = links.split(';').map(l => l.trim());
+            currentPhotoIdx = 0;
+            document.getElementById('viewer-starter').innerText = starter;
+            document.getElementById('viewer-date').innerText = date;
+            document.getElementById('viewer-img').src = currentPhotos[0];
+            document.getElementById('viewer-modal').classList.add('active');
+        };
+
+        window.changePhoto = function(dir, e) {
+            if(e) e.stopPropagation();
+            currentPhotoIdx = (currentPhotoIdx + dir + currentPhotos.length) % currentPhotos.length;
+            document.getElementById('viewer-img').src = currentPhotos[currentPhotoIdx];
+        };
+
+        window.closeViewer = function() { document.getElementById('viewer-modal').classList.remove('active'); };
+        // --- KONIEC GALERII ---
+
         window.svZ = function() { localStorage.setItem('z_w', document.getElementById('zw').value); load(); };
         window.rsZ = function() { if(confirm("Reset?")) { document.getElementById('zw').value = 0; svZ(); } };
 
@@ -312,9 +393,10 @@
                 if(b && d === new Date().toLocaleDateString('pl-PL')) { b.innerText = "OK"; b.classList.add('active'); }
             });
             const w = localStorage.getItem('z_w') || 0;
-            document.getElementById('zw').value = w;
-            document.getElementById('zb').style.width = Math.min((w/400)*100, 100) + '%';
-            document.getElementById('za').classList.toggle('hidden', w < 400);
+            if(document.getElementById('zw')) document.getElementById('zw').value = w;
+            if(document.getElementById('zb')) document.getElementById('zb').style.width = Math.min((w/400)*100, 100) + '%';
+            if(document.getElementById('za')) document.getElementById('za').classList.toggle('hidden', w < 400);
+            fetchGallery();
             calcTime();
         }
 
