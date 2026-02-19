@@ -38,6 +38,9 @@
         
         .brown-gradient { background: linear-gradient(135deg, #4a3728 0%, #634a38 100%); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
+
+        .filter-btn { padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: bold; border: 1px solid #efe3d8; background: white; color: #a89284; }
+        .filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
     </style>
 </head>
 <body class="pb-24">
@@ -182,8 +185,14 @@
         </section>
 
         <section id="gallery" class="tab-content space-y-5">
-            <div class="flex justify-between items-center px-2">
-                <h3 class="serif text-2xl font-bold italic text-stone-800">Galeria Wypieków</h3>
+            <div class="px-2">
+                <h3 class="serif text-2xl font-bold italic text-stone-800 mb-4">Galeria Wypieków</h3>
+                <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2" id="gallery-filters">
+                    <button onclick="filterGallery('Wszystkie', this)" class="filter-btn active">Wszystkie</button>
+                    <button onclick="filterGallery('Clint Yeastwood', this)" class="filter-btn">Clint</button>
+                    <button onclick="filterGallery('Sylvester Graham', this)" class="filter-btn">Sylvester</button>
+                    <button onclick="filterGallery('Hildegarda z Bingen', this)" class="filter-btn">Hildegarda</button>
+                </div>
             </div>
             <div id="gal-cont" class="grid grid-cols-2 gap-3">
                 </div>
@@ -207,6 +216,7 @@
         let curSKey = 'clint';
         let curSName = 'Clint Yeastwood';
         let curSDays = 7;
+        let allGalleryData = []; // Tutaj będziemy trzymać wszystkie wiersze z CSV
         let currentPhotos = [];
         let currentPhotoIdx = 0;
 
@@ -239,6 +249,7 @@
 
         function calcTime() {
             const startStr = document.getElementById('start-time').value;
+            if(!startStr) return;
             const [h, m] = startStr.split(':').map(Number);
             const addTime = (hours, mins) => {
                 let totalMin = h * 60 + m + hours * 60 + mins;
@@ -276,35 +287,79 @@
             a.click();
         }
 
-        async function loadRemoteGallery() {
-            const container = document.getElementById('gal-cont');
+        // --- GALERIA Z SORTOWANIEM I FILTROWANIEM ---
+
+        async function fetchGallery() {
             try {
                 const response = await fetch(CSV_URL);
                 const csvText = await response.text();
-                const rows = csvText.split('\n').map(row => row.split(',')).slice(1);
+                // Parsowanie z uwzględnieniem kolumny A (ID)
+                // A:ID, B:Data, C:Zakwas, D:Link_Miniaturka, E:Linki_Galeria
+                const rows = csvText.split('\n').slice(1);
                 
-                container.innerHTML = '';
-                rows.forEach((cols) => {
-                    if (cols.length < 4) return;
-                    const [date, starter, thumb, fullLinks] = cols.map(c => c.trim().replace(/^"|"$/g, ''));
+                allGalleryData = rows.map(row => {
+                    const cols = row.split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+                    if(cols.length < 5) return null;
+                    return {
+                        id: cols[0],
+                        date: cols[1],
+                        starter: cols[2],
+                        thumb: cols[3],
+                        fullLinks: cols[4]
+                    };
+                }).filter(r => r !== null);
 
-                    const card = document.createElement('div');
-                    card.className = "relative aspect-square rounded-2xl overflow-hidden shadow-sm active:scale-95 transition-all cursor-pointer group";
-                    card.onclick = () => openSmartViewer(fullLinks, starter, date);
-                    
-                    card.innerHTML = `
-                        <img src="${thumb}" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent p-3 flex flex-col justify-end">
-                            <span class="text-[8px] text-stone-300 font-black uppercase tracking-widest">${date}</span>
-                            <h4 class="text-white serif italic text-sm font-bold leading-tight">${starter}</h4>
-                        </div>
-                    `;
-                    container.appendChild(card);
+                // SORTOWANIE: Domyślnie od najnowszej daty
+                allGalleryData.sort((a, b) => {
+                    // Zakładamy format daty RRRR-MM-DD lub DD.MM.RRRR
+                    // Dla pewności spróbujemy stworzyć obiekt Date
+                    const dateA = new Date(a.date.split('.').reverse().join('-'));
+                    const dateB = new Date(b.date.split('.').reverse().join('-'));
+                    return dateB - dateA;
                 });
+
+                renderGallery('Wszystkie');
             } catch (e) {
-                container.innerHTML = `<p class="text-center text-xs text-stone-400">Błąd ładowania...</p>`;
+                document.getElementById('gal-cont').innerHTML = `<p class="text-center text-xs text-stone-400">Błąd ładowania...</p>`;
             }
         }
+
+        function renderGallery(filter) {
+            const container = document.getElementById('gal-cont');
+            container.innerHTML = '';
+
+            const filtered = filter === 'Wszystkie' 
+                ? allGalleryData 
+                : allGalleryData.filter(item => item.starter === filter);
+
+            if(filtered.length === 0) {
+                container.innerHTML = `<p class="col-span-2 text-center py-10 text-stone-300 text-xs italic">Brak wypieków w tej kategorii</p>`;
+                return;
+            }
+
+            filtered.forEach((item) => {
+                const card = document.createElement('div');
+                card.className = "relative aspect-square rounded-2xl overflow-hidden shadow-sm active:scale-95 transition-all cursor-pointer group";
+                card.onclick = () => openSmartViewer(item.fullLinks, item.starter, item.date);
+                
+                card.innerHTML = `
+                    <img src="${item.thumb}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent p-3 flex flex-col justify-end">
+                        <span class="text-[8px] text-stone-300 font-black uppercase tracking-widest">${item.date}</span>
+                        <h4 class="text-white serif italic text-sm font-bold leading-tight">${item.starter}</h4>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterGallery(type, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderGallery(type);
+        }
+
+        // --- VIEWER ---
 
         function openSmartViewer(linksStr, starter, date) {
             currentPhotos = linksStr.split(';').map(l => l.trim());
@@ -334,6 +389,9 @@
         };
 
         function closeViewer() { document.getElementById('viewer-modal').classList.remove('active'); }
+        
+        // --- RESZTA LOGIKI ---
+
         function svZ() { localStorage.setItem('z_w', document.getElementById('zw').value); load(); }
         function rsZ() { if(confirm("Reset?")) { document.getElementById('zw').value = 0; svZ(); } }
 
@@ -348,10 +406,13 @@
                 }
             });
             const w = localStorage.getItem('z_w') || 0;
-            document.getElementById('zw').value = w;
-            document.getElementById('zb').style.width = Math.min((w / 400) * 100, 100) + '%'; 
-            document.getElementById('za').className = w >= 400 ? 'p-4 rounded-2xl bg-orange-50 border border-orange-200 text-orange-800 text-[11px] text-center font-bold italic uppercase tracking-widest' : 'hidden';
-            loadRemoteGallery();
+            const zwEl = document.getElementById('zw');
+            if(zwEl) {
+                zwEl.value = w;
+                document.getElementById('zb').style.width = Math.min((w / 400) * 100, 100) + '%'; 
+                document.getElementById('za').className = w >= 400 ? 'p-4 rounded-2xl bg-orange-50 border border-orange-200 text-orange-800 text-[11px] text-center font-bold italic uppercase tracking-widest' : 'hidden';
+            }
+            fetchGallery();
             calcTime();
         }
 
