@@ -265,15 +265,18 @@
         let currentImgIndex = 0;
 
         // AUTH & TABS
-        function checkPass() {
+      function checkPass() {
     const input = document.getElementById('pass-field').value;
-    if(input === BREAD_PASS) {
-        localStorage.setItem('bakery_access', 'granted'); // To zapamiętuje sesję
-        document.getElementById('lock-screen').style.display = 'none';
+    if (input === BREAD_PASS) {
+        localStorage.setItem('bakery_access', 'granted');
+        // Zamiast tylko ukrywać div, odświeżamy stronę, 
+        // by window.onload odpaliło całą resztę skryptów
+        location.reload(); 
     } else {
         alert("Hasło nieprawidłowe");
+        document.getElementById('pass-field').value = ''; // czyścimy pole
     }
-}
+}}
         }
         function st(id, btn) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
