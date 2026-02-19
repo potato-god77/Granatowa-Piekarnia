@@ -465,6 +465,20 @@ window.onload = () => {
     // 3. Zainicjuj kalkulator składników
     if (typeof updateIngredients === "function") updateIngredients();
 };
+        // To powinno być na samym dole, tuż przed 
+document.addEventListener('DOMContentLoaded', () => {
+    const access = localStorage.getItem('bakery_access');
+    
+    if (access === 'granted') {
+        // Ukrywamy ekran blokady
+        const lock = document.getElementById('lock-screen');
+        if (lock) lock.style.display = 'none';
+        
+        // Odpalamy resztę logiki piekarni
+        if (typeof loadFromCloud === "function") loadFromCloud();
+        if (typeof updateIngredients === "function") updateIngredients();
+    }
+});
     </script>
 </body>
 </html>
