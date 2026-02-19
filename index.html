@@ -6,7 +6,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#4a3728">
-    <title data-id="th-modified">Granatowa Piekarnia</title>
+    <title>Granatowa Piekarnia</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
@@ -37,24 +37,28 @@
             line-height: 1.5; 
         }
         
+        /* Accordion styles */
+        .accordion-content { display: none; }
+        .accordion-item.active .accordion-content { display: block; animation: slideDown 0.2s ease-out; }
+        .accordion-item.active .plus-icon { transform: rotate(45deg); }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
         .starter-card.selected { border: 2px solid var(--accent); background: #fffcf9; }
 
         .date-container { position: relative; display: inline-block; cursor: pointer; }
         .date-input-hidden { position: absolute; opacity: 0; width: 100%; height: 100%; left: 0; top: 0; cursor: pointer; z-index: 10; }
         .date-text { border-bottom: 1px dashed var(--accent); }
 
-        /* Modal Galeria */
         #photo-modal { display: none; position: fixed; inset: 0; background: rgba(42, 32, 23, 0.9); z-index: 100; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px); }
         #photo-modal.active { display: flex; }
 
-        /* Pełny ekran dla zdjęcia */
         #viewer-modal { display: none; position: fixed; inset: 0; background: black; z-index: 200; flex-direction: column; align-items: center; justify-content: center; }
         #viewer-modal.active { display: flex; }
         
         .brown-gradient { background: linear-gradient(135deg, #4a3728 0%, #634a38 100%); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
-<meta property="og:title" content="Granatowa Piekarnia" data-id="th-modified" ><meta name="description" content="Piekarnia" data-id="th-modified" ><meta property="og:description" content="Piekarnia" data-id="th-modified" ><meta property="og:image" content="https://tiiny.host/assets/logo-purple-bg.png" data-id="th-modified" ><meta property="og:url" content="https://granatowa-piekarnia.tiiny.site/" data-id="th-modified" ><meta property="og:type" content="website" data-id="th-modified" ><script defer data-domain="granatowa-piekarnia.tiiny.site" src="https://analytics.tiiny.site/js/plausible.js"></script><script type="text/javascript" src="https://tiiny.host/ad-script.js"></script></head>
+</head>
 <body class="pb-24">
 
     <header class="p-6 pt-10 text-center bg-white border-b">
@@ -113,7 +117,7 @@
                 <div class="flex justify-between items-center">
                     <div>
                         <h4 class="font-bold text-xl text-stone-800">Hildegarda z Bingen</h4>
-                        <p class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Orkiszowy • typ 2000</p>
+                        <p class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Orkiszowy • typ 750</p>
                     </div>
                     <span class="text-3xl">⛪</span>
                 </div>
@@ -129,7 +133,7 @@
             <button onclick="addToCal()" class="w-full py-5 brown-gradient text-white rounded-2xl font-bold text-[11px] uppercase tracking-[0.25em] shadow-lg active:scale-[0.98] transition-all mt-4">📅 Dodaj do kalendarza</button>
         </section>
 
-        <!-- SEKCJA 2: PIECZENIE (SUBTELNIEJSZA CZCIONKA) -->
+        <!-- SEKCJA 2: PIECZENIE -->
         <section id="kalk" class="tab-content space-y-6">
             <div class="glass-card p-5 text-center bg-stone-50">
                 <p class="text-[9px] uppercase font-bold text-stone-400 mb-1 tracking-[0.2em]">Aktualnie:</p>
@@ -181,77 +185,96 @@
             </div>
         </section>
 
-        <!-- SEKCJA 3: WIEDZA (PEŁNA TREŚĆ) -->
-        <section id="recipes" class="tab-content space-y-6">
-            <div class="glass-card p-6">
-                <h3 class="serif text-xl font-bold mb-4 italic text-stone-800">Logistyka Słoików</h3>
-                <div class="text-sm space-y-4">
-                    <div class="recipe-step">
-                        <p class="font-bold text-stone-800 italic">Etap 1: Aktywacja (ok. 16:00)</p>
-                        <p>Pobierz 30g bazy ze słoika nr 2. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj w słoiku nr 1 i zostaw na blacie w temperaturze pokojowej na 4-6 godzin.</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold text-stone-800 italic">Etap 2: Pobranie (ok. 22:00)</p>
-                        <p>1. Pobierz 115g aktywnego zakwasu ze słoika nr 1 do miski.</p>
-                        <p>2. Całą pozostałość (R1) ze słoika nr 1 przełóż do słoika nr 2.</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold text-stone-800 italic">Etap 3: Święta Porcja (Słoik 2)</p>
-                        <p>1. Wymieszaj starą bazę (R2) ze zrzutem (R1).</p>
-                        <p>2. Wymierz z tego 20g ("Święta Porcja") i pozostaw w słoiku nr 2</p>
-                        <p>3. Resztę ze słoika nr 2 przełoż do słoika nr 3 (Zlewki).</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold text-stone-800 italic">Etap 4: Regeneracja Matki</p>
-                        <p>1. Do 20g porcji w słoiku nr 2 dodaj 40g mąki i 40g wody (38°C).</p>
-                        <p>2. Zostaw na 1 godzinę na blacie w temperaturze pokojowej, a potem schowaj do lodówki.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="glass-card p-6">
-                <h3 class="serif text-xl font-bold mb-4 italic text-stone-800">Przepis: Chleb</h3>
-                <div class="space-y-4 text-stone-600">
-                    <div class="recipe-step">
-                        <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p>
-                        <p>Zrób zawiesinę: woda 340g (30°C) + aktywny zakwas 115g. Do tego dodaj 500g mąki i 14g soli. Wymieszaj, przykryj miskę i zostaw na noc na blacie w temperaturze pokojowej.</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold text-stone-800 italic">Rano (05:30 - 06:00)</p>
-                        <p>Włóż ciasto do lodówki (pod przykryciem).</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold text-stone-800 italic">Pieczenie (od 16:00)</p>
-                        <p>Nagrzej piec z garnkiem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę" by stało się spięte, po czym natnij ostrym nożem lub żyletką. Gdy piekarnik się już nagrzeje, piecz 30 min pod przykryciem, a następnie zdejmij pokrywkę i piecz kolejne 15 min bez niej.</p>
+        <!-- SEKCJA 3: WIEDZA (HARMONIJKI) -->
+        <section id="recipes" class="tab-content space-y-4">
+            
+            <!-- Logistyka -->
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left outline-none">
+                    <h3 class="serif text-xl font-bold italic text-stone-800">Logistyka Słoików</h3>
+                    <span class="plus-icon text-2xl transition-transform duration-200 text-stone-400">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t border-stone-50">
+                    <div class="text-sm space-y-4 mt-4">
+                        <div class="recipe-step">
+                            <p class="font-bold text-stone-800 italic">Etap 1: Aktywacja (ok. 16:00)</p>
+                            <p>Pobierz 30g bazy ze słoika nr 2. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj w słoiku nr 1 i zostaw na blacie w temperaturze pokojowej na 4-6 godzin.</p>
+                        </div>
+                        <div class="recipe-step">
+                            <p class="font-bold text-stone-800 italic">Etap 2: Pobranie (ok. 22:00)</p>
+                            <p>1. Pobierz 115g aktywnego zakwasu ze słoika nr 1 do miski.</p>
+                            <p>2. Całą pozostałość (R1) ze słoika nr 1 przełóż do słoika nr 2.</p>
+                        </div>
+                        <div class="recipe-step">
+                            <p class="font-bold text-stone-800 italic">Etap 3: Święta Porcja (Słoik 2)</p>
+                            <p>1. Wymieszaj starą bazę (R2) ze zrzutem (R1).</p>
+                            <p>2. Wymierz z tego 20g ("Święta Porcja") i pozostaw w słoiku nr 2</p>
+                            <p>3. Resztę ze słoika nr 2 przełoż do słoika nr 3 (Zlewki).</p>
+                        </div>
+                        <div class="recipe-step">
+                            <p class="font-bold text-stone-800 italic">Etap 4: Regeneracja Matki</p>
+                            <p>1. Do 20g porcji w słoiku nr 2 dodaj 40g mąki i 40g wody (38°C).</p>
+                            <p>2. Zostaw na 1 godzinę na blacie w temperaturze pokojowej, a potem schowaj do lodówki.</p>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="glass-card p-6">
-                <h3 class="serif text-xl font-bold mb-4 italic text-stone-800">Przepis: Żurek na zlewkach</h3>
-                <div class="space-y-4 text-stone-600">
-                    <div class="recipe-step">
-                        <p class="font-bold text-stone-800 italic text-stone-900">Składniki na wywar (2-2.5L):</p>
-                        <ul class="list-disc ml-4 space-y-1 mt-1 text-stone-700">
-                            <li>250-300g wędzonych żeberek</li>
-                            <li>150g wędzonego boczku</li>
-                            <li>2 marchewki, 1 pietruszka, kawałek selera</li>
-                            <li>1 cebula (opalona nad ogniem)</li>
-                            <li>3 liście laurowe, 5 ziaren ziela angielskiego</li>
-                            <li>2 litry zimnej wody</li>
-                        </ul>
+            <!-- Chleb -->
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left outline-none">
+                    <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Chleb</h3>
+                    <span class="plus-icon text-2xl transition-transform duration-200 text-stone-400">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t border-stone-50">
+                    <div class="space-y-4 text-stone-600 mt-4">
+                        <div class="recipe-step">
+                            <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p>
+                            <p>Zrób zawiesinę: woda 340g (30°C) + aktywny zakwas 115g. Do tego dodaj 500g mąki i 14g soli. Wymieszaj, przykryj miskę i zostaw na noc na blacie w temperaturze pokojowej.</p>
+                        </div>
+                        <div class="recipe-step">
+                            <p class="font-bold text-stone-800 italic">Rano (05:30 - 06:00)</p>
+                            <p>Włóż ciasto do lodówki (pod przykryciem).</p>
+                        </div>
+                        <div class="recipe-step">
+                            <p class="font-bold text-stone-800 italic">Pieczenie (od 16:00)</p>
+                            <p>Nagrzej piec z garnkiem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę" by stało się spięte, po czym natnij ostrym nożem lub żyletką. Gdy piekarnik się już nagrzeje, piecz 30 min pod przykryciem, a następnie zdejmij pokrywkę i piecz kolejne 15 min bez niej.</p>
+                        </div>
                     </div>
-                    <div class="recipe-step">
-                        <p class="font-bold text-stone-800 italic">Krok 1: Wywar Mięsny</p>
-                        <p>Do garnka włóż żeberka, boczek, warzywa i przyprawy. Zalej zimną wodą. Gotuj pod przykryciem na minimalnym ogniu przez ok. 2 godziny, aż mięso będzie bardzo miękkie.</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold text-stone-800 italic">Krok 2: Zakwaszanie (Zlewki)</p>
-                        <p>Odlej szklankę gorącego wywaru i wymieszaj ją dokładnie z 400g zlewek ze słoika nr 3 (to zapewni brak grudek). Wlej zawiesinę do garnka, cały czas mieszając. Zagotuj.</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold text-stone-800 italic">Krok 3: Wykończenie</p>
-                        <p>Dodaj 2-3 ząbki przeciśniętego czosnku i 2 łyżki majeranku. Dopraw solą i pieprzem. Na koniec zabiel 100ml śmietanki 30%. Podawaj z białą kiełbasą i jajkiem.</p>
+                </div>
+            </div>
+
+            <!-- Żurek -->
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left outline-none">
+                    <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Żurek na zlewkach</h3>
+                    <span class="plus-icon text-2xl transition-transform duration-200 text-stone-400">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t border-stone-50">
+                    <div class="space-y-4 text-stone-600 mt-4">
+                        <div class="recipe-step">
+                            <p class="font-bold text-stone-800 italic text-stone-900">Składniki na wywar (2-2.5L):</p>
+                            <ul class="list-disc ml-4 space-y-1 mt-1 text-stone-700 text-sm">
+                                <li>250-300g wędzonych żeberek</li>
+                                <li>150g wędzonego boczku</li>
+                                <li>2 marchewki, 1 pietruszka, kawałek selera</li>
+                                <li>1 cebula (opalona nad ogniem)</li>
+                                <li>3 liście laurowe, 5 ziaren ziela angielskiego</li>
+                                <li>2 litry zimnej wody</li>
+                            </ul>
+                        </div>
+                        <div class="recipe-step">
+                            <p class="font-bold text-stone-800 italic">Krok 1: Wywar Mięsny</p>
+                            <p>Do garnka włóż żeberka, boczek, warzywa i przyprawy. Zalej zimną wodą. Gotuj pod przykryciem na minimalnym ogniu przez ok. 2 godziny, aż mięso będzie bardzo miękkie.</p>
+                        </div>
+                        <div class="recipe-step">
+                            <p class="font-bold text-stone-800 italic">Krok 2: Zakwaszanie (Zlewki)</p>
+                            <p>Odlej szklankę gorącego wywaru i wymieszaj ją dokładnie z 400g zlewek ze słoika nr 3. Wlej zawiesinę do garnka, cały czas mieszając. Zagotuj.</p>
+                        </div>
+                        <div class="recipe-step">
+                            <p class="font-bold text-stone-800 italic">Krok 3: Wykończenie</p>
+                            <p>Dodaj 2-3 ząbki czosnku i 2 łyżki majeranku. Dopraw solą i pieprzem. Zabiel 100ml śmietanki 30%.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -275,7 +298,7 @@
             </div>
         </section>
 
-        <!-- SEKCJA 5: GALERIA (MINIATURKI) -->
+        <!-- SEKCJA 5: GALERIA -->
         <section id="gallery" class="tab-content space-y-5">
             <div class="flex justify-between items-center px-2">
                 <h3 class="serif text-2xl font-bold italic text-stone-800">Galeria</h3>
@@ -289,7 +312,7 @@
 
     </main>
 
-    <!-- MODAL FOTO (FORMULARZ) -->
+    <!-- MODAL FOTO -->
     <div id="photo-modal">
         <div class="bg-white p-8 rounded-[2.5rem] w-full max-w-xs space-y-6 shadow-2xl">
             <h4 class="serif font-bold text-xl text-center text-stone-800">Opisz wypiek</h4>
@@ -312,7 +335,7 @@
         </div>
     </div>
 
-    <!-- MODAL PRZEGLĄDARKI (FULL SCREEN) -->
+    <!-- MODAL PRZEGLĄDARKI -->
     <div id="viewer-modal" onclick="closeViewer()">
         <img id="viewer-img" class="w-full h-auto max-h-[80vh] object-contain">
         <div class="p-6 text-white text-center w-full" onclick="event.stopPropagation()">
@@ -336,6 +359,20 @@
             document.getElementById(id).classList.add('active');
             b.classList.add('active');
             window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function toggleAccordion(btn) {
+            const item = btn.parentElement;
+            const isActive = item.classList.contains('active');
+            
+            // Opcjonalnie: Zamknij inne jeśli chcesz, by tylko jedna była otwarta na raz:
+            // document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('active'));
+            
+            if (isActive) {
+                item.classList.remove('active');
+            } else {
+                item.classList.add('active');
+            }
         }
 
         function sel(name, d) {
