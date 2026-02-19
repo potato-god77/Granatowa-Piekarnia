@@ -37,7 +37,7 @@
             line-height: 1.5; 
         }
         
-        /* Accordion styles */
+        /* Accordion (Harmonijka) */
         .accordion-content { display: none; }
         .accordion-item.active .accordion-content { display: block; animation: slideDown 0.2s ease-out; }
         .accordion-item.active .plus-icon { transform: rotate(45deg); }
@@ -79,6 +79,7 @@
         <section id="starters" class="tab-content active space-y-4">
             <h3 class="serif text-xl px-2 font-bold text-stone-800">Twoje Matki</h3>
             
+            <!-- Clint -->
             <div id="card-clint" onclick="sel('Clint Yeastwood', 7)" class="starter-card glass-card p-5 flex flex-col gap-3 selected">
                 <div class="flex justify-between items-center">
                     <div>
@@ -96,6 +97,7 @@
                 </div>
             </div>
 
+            <!-- Sylvester -->
             <div id="card-sylvester" onclick="sel('Sylvester Graham', 7)" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
                     <div>
@@ -113,6 +115,7 @@
                 </div>
             </div>
 
+            <!-- Hildegarda -->
             <div id="card-hildegarda" onclick="sel('Hildegarda z Bingen', 5)" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
                     <div>
@@ -230,7 +233,7 @@
                     <div class="space-y-4 text-stone-600 mt-4">
                         <div class="recipe-step">
                             <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p>
-                            <p>Zrób zawiesinę: woda 340g (30°C) + aktywny zakwas 115g. Do tego dodaj 500g mąki i 14g soli. Wymieszaj, przykryj miskę i zostaw na noc na blacie w temperaturze pokojowej.</p>
+                            <p>Woda 340g (30°C) + aktywny zakwas 115g. Dodaj 500g mąki i 14g soli. Wymieszaj, przykryj i zostaw na noc.</p>
                         </div>
                         <div class="recipe-step">
                             <p class="font-bold text-stone-800 italic">Rano (05:30 - 06:00)</p>
@@ -238,7 +241,7 @@
                         </div>
                         <div class="recipe-step">
                             <p class="font-bold text-stone-800 italic">Pieczenie (od 16:00)</p>
-                            <p>Nagrzej piec z garnkiem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę" by stało się spięte, po czym natnij ostrym nożem lub żyletką. Gdy piekarnik się już nagrzeje, piecz 30 min pod przykryciem, a następnie zdejmij pokrywkę i piecz kolejne 15 min bez niej.</p>
+                            <p>Nagrzej piec (235°C). Uformuj "na kopertę", natnij. Piecz 30 min pod przykryciem, 15 min bez.</p>
                         </div>
                     </div>
                 </div>
@@ -253,27 +256,24 @@
                 <div class="accordion-content p-6 pt-0 border-t border-stone-50">
                     <div class="space-y-4 text-stone-600 mt-4">
                         <div class="recipe-step">
-                            <p class="font-bold text-stone-800 italic text-stone-900">Składniki na wywar (2-2.5L):</p>
-                            <ul class="list-disc ml-4 space-y-1 mt-1 text-stone-700 text-sm">
-                                <li>250-300g wędzonych żeberek</li>
-                                <li>150g wędzonego boczku</li>
-                                <li>2 marchewki, 1 pietruszka, kawałek selera</li>
-                                <li>1 cebula (opalona nad ogniem)</li>
-                                <li>3 liście laurowe, 5 ziaren ziela angielskiego</li>
-                                <li>2 litry zimnej wody</li>
+                            <p class="font-bold text-stone-800 italic text-stone-900">Składniki (2.5L):</p>
+                            <ul class="list-disc ml-4 space-y-1 mt-1 text-stone-700 text-xs">
+                                <li>250g żeberek, 150g boczku</li>
+                                <li>Marchew, pietruszka, seler, cebula</li>
+                                <li>Liść laurowy, ziele angielskie</li>
                             </ul>
                         </div>
                         <div class="recipe-step">
-                            <p class="font-bold text-stone-800 italic">Krok 1: Wywar Mięsny</p>
-                            <p>Do garnka włóż żeberka, boczek, warzywa i przyprawy. Zalej zimną wodą. Gotuj pod przykryciem na minimalnym ogniu przez ok. 2 godziny, aż mięso będzie bardzo miękkie.</p>
+                            <p class="font-bold text-stone-800 italic">Krok 1: Wywar</p>
+                            <p>Gotuj mięso i warzywa przez ok. 2 godziny na małym ogniu.</p>
                         </div>
                         <div class="recipe-step">
-                            <p class="font-bold text-stone-800 italic">Krok 2: Zakwaszanie (Zlewki)</p>
-                            <p>Odlej szklankę gorącego wywaru i wymieszaj ją dokładnie z 400g zlewek ze słoika nr 3. Wlej zawiesinę do garnka, cały czas mieszając. Zagotuj.</p>
+                            <p class="font-bold text-stone-800 italic">Krok 2: Zakwaszanie</p>
+                            <p>Wymieszaj 400g zlewek (słoik 3) z szklanką wywaru. Wlej do garnka, zagotuj.</p>
                         </div>
                         <div class="recipe-step">
-                            <p class="font-bold text-stone-800 italic">Krok 3: Wykończenie</p>
-                            <p>Dodaj 2-3 ząbki czosnku i 2 łyżki majeranku. Dopraw solą i pieprzem. Zabiel 100ml śmietanki 30%.</p>
+                            <p class="font-bold text-stone-800 italic">Krok 3: Finisz</p>
+                            <p>Daj czosnek, majeranek i 100ml śmietanki 30%.</p>
                         </div>
                     </div>
                 </div>
@@ -312,7 +312,7 @@
 
     </main>
 
-    <!-- MODAL FOTO -->
+    <!-- MODALE (FOTO I VIEWER) -->
     <div id="photo-modal">
         <div class="bg-white p-8 rounded-[2.5rem] w-full max-w-xs space-y-6 shadow-2xl">
             <h4 class="serif font-bold text-xl text-center text-stone-800">Opisz wypiek</h4>
@@ -335,7 +335,6 @@
         </div>
     </div>
 
-    <!-- MODAL PRZEGLĄDARKI -->
     <div id="viewer-modal" onclick="closeViewer()">
         <img id="viewer-img" class="w-full h-auto max-h-[80vh] object-contain">
         <div class="p-6 text-white text-center w-full" onclick="event.stopPropagation()">
@@ -364,15 +363,8 @@
         function toggleAccordion(btn) {
             const item = btn.parentElement;
             const isActive = item.classList.contains('active');
-            
-            // Opcjonalnie: Zamknij inne jeśli chcesz, by tylko jedna była otwarta na raz:
-            // document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('active'));
-            
-            if (isActive) {
-                item.classList.remove('active');
-            } else {
-                item.classList.add('active');
-            }
+            if (isActive) item.classList.remove('active');
+            else item.classList.add('active');
         }
 
         function sel(name, d) {
@@ -501,7 +493,7 @@
         }
 
         function delPhoto(idx) {
-            if(!confirm("Usunąć to zdjęcie z galerii?")) return;
+            if(!confirm("Usunąć to zdjęcie?")) return;
             let p = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
             p.splice(idx, 1);
             localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
