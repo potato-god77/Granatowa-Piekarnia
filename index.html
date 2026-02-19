@@ -20,38 +20,35 @@
         .tab-content.active { display: block; animation: fadeIn 0.3s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         
-        .nav-btn { border-bottom: 3px solid transparent; transition: all 0.2s; flex-shrink: 0; color: #a89284; }
+        .nav-btn { border-bottom: 3px solid transparent; transition: all 0.2s; flex-shrink: 0; color: #a89284; cursor: pointer; }
         .nav-btn.active { color: var(--primary); font-weight: 900; border-bottom: 3px solid var(--accent); }
         
         .glass-card { background: white; border-radius: 20px; box-shadow: 0 4px 15px rgba(74, 55, 40, 0.05); border: 1px solid #efe3d8; overflow: hidden; }
         .btn-feed.active { background-color: #e7dfd8 !important; color: #4a3728 !important; border-color: #d4c5ba !important; }
         
-        /* Accordion (Harmonijka) */
+        /* Accordion Style */
         .accordion-content { display: none; }
         .accordion-item.active .accordion-content { display: block; animation: slideDown 0.2s ease-out; }
         .accordion-item.active .plus-icon { transform: rotate(45deg); }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
         .recipe-step { position: relative; padding-left: 1.2rem; margin-bottom: 0.8rem; border-left: 2px solid var(--sand); margin-left: 0.4rem; font-size: 0.9rem; line-height: 1.5; }
+        .starter-card { cursor: pointer; transition: all 0.2s; }
         .starter-card.selected { border: 2px solid var(--accent); background: #fffcf9; }
 
-        .date-container { position: relative; display: inline-block; cursor: pointer; }
+        .date-container { position: relative; display: inline-block; }
         .date-input-hidden { position: absolute; opacity: 0; width: 100%; height: 100%; left: 0; top: 0; cursor: pointer; z-index: 10; }
         .date-text { border-bottom: 1px dashed var(--accent); }
 
-        /* VIEWER STYLES */
+        .brown-gradient { background: linear-gradient(135deg, #4a3728 0%, #634a38 100%); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        /* Viewer */
         #viewer-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 200; flex-direction: column; align-items: center; justify-content: center; }
         #viewer-modal.active { display: flex; }
         .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 210; }
-        .nav-arrow:active { background: rgba(255,255,255,0.3); }
         
-        #viewer-strip { scroll-behavior: smooth; }
-        .strip-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; opacity: 0.4; transition: 0.3s; flex-shrink: 0; border: 2px solid transparent; }
-        .strip-thumb.active { opacity: 1; border-color: white; transform: scale(1.1); }
-
-        .brown-gradient { background: linear-gradient(135deg, #4a3728 0%, #634a38 100%); }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .filter-btn { padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: bold; border: 1px solid #efe3d8; background: white; color: #a89284; }
+        .filter-btn { padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: bold; border: 1px solid #efe3d8; background: white; color: #a89284; cursor: pointer; }
         .filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
     </style>
 </head>
@@ -153,7 +150,7 @@
                     <b id="slv" class="text-2xl text-stone-800 font-semibold">14g</b>
                 </div>
             </div>
-            <div class="glass-card p-5 bg-[#f9f5f1] border-none">
+            <div class="glass-card p-5 bg-[#f9f5f1]">
                 <div class="flex justify-between items-center mb-5">
                     <p class="text-[9px] uppercase font-bold text-stone-500 tracking-widest">Mieszanie:</p>
                     <input type="time" id="start-time" value="22:00" onchange="calcTime()" class="bg-white border border-stone-200 rounded-lg px-3 py-1.5 text-sm font-semibold text-stone-800 outline-none">
@@ -162,4 +159,258 @@
                     <div><p class="text-[9px] uppercase font-medium text-stone-400">Do lodówki</p><p id="t-lodowka" class="text-xl font-bold text-stone-800">05:30</p></div>
                     <div><p class="text-[9px] uppercase font-medium text-stone-400">Formowanie</p><p id="t-formowanie" class="text-xl font-bold text-stone-800">16:00</p></div>
                     <div class="bg-white p-4 rounded-xl border border-stone-100 shadow-sm text-center -ml-1">
-                        <p class="text-[9px] uppercase font-bold text-stone-500 mb-1">P
+                        <p class="text-[9px] uppercase font-bold text-stone-500 mb-1">Pieczenie (235°C)</p>
+                        <p id="t-pieczenie" class="text-3xl font-black text-[#4a3728]">17:15</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="recipes" class="tab-content space-y-4">
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left outline-none">
+                    <h3 class="serif text-xl font-bold italic text-stone-800">Logistyka Słoików</h3>
+                    <span class="plus-icon text-2xl transition-transform duration-200 text-stone-400">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t border-stone-50">
+                    <div class="text-sm space-y-4 mt-4">
+                        <div class="recipe-step">
+                            <p class="font-bold text-stone-800 italic">Etap 1: Aktywacja (ok. 16:00)</p>
+                            <p>Pobierz 30g bazy ze słoika nr 2. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj w słoiku nr 1 i zostaw na blacie na 4-6h.</p>
+                        </div>
+                        <div class="recipe-step">
+                            <p class="font-bold text-stone-800 italic">Etap 2: Pobranie (ok. 22:00)</p>
+                            <p>1. Pobierz 115g aktywnego zakwasu ze słoika nr 1 do miski.</p>
+                            <p>2. Całą pozostałość (R1) ze słoika nr 1 przełóż do słoika nr 2.</p>
+                        </div>
+                        <div class="recipe-step">
+                            <p class="font-bold text-stone-800 italic">Etap 3: Święta Porcja (Słoik 2)</p>
+                            <p>Wymierz 20g ze słoika 2 i pozostaw tam. Resztę daj do słoika 3 (Zlewki).</p>
+                        </div>
+                        <div class="recipe-step">
+                            <p class="font-bold text-stone-800 italic">Etap 4: Regeneracja Matki</p>
+                            <p>Do 20g porcji w słoiku 2 dodaj 40g mąki i 40g wody. Zostaw na 1h na blacie, potem lodówka.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left outline-none">
+                    <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Chleb</h3>
+                    <span class="plus-icon text-2xl transition-transform duration-200 text-stone-400">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t border-stone-50">
+                    <div class="space-y-4 text-stone-600 mt-4">
+                        <div class="recipe-step">
+                            <p class="font-bold text-stone-800 italic">Mieszanie (22:00)</p>
+                            <p>340g wody + 115g zakwasu + 500g mąki + 14g soli. Zostaw na noc.</p>
+                        </div>
+                        <div class="recipe-step">
+                            <p class="font-bold text-stone-800 italic">Rano i Pieczenie</p>
+                            <p>Lodówka do 16:00. Piecz 30 min pod przykryciem (235°C), 15 min bez.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left outline-none">
+                    <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Żurek</h3>
+                    <span class="plus-icon text-2xl transition-transform duration-200 text-stone-400">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t border-stone-50">
+                    <div class="space-y-4 text-stone-600 mt-4">
+                        <p class="text-xs">Użyj 400g zlewek ze słoika 3 na 2.5L wywaru.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="info" class="tab-content space-y-5">
+            <div class="glass-card p-6">
+                <h4 class="serif text-xl font-bold mb-4 text-stone-800">Słoik 3: Zlewki 🥣</h4>
+                <div class="space-y-5">
+                    <div class="relative">
+                        <input type="number" id="zw" value="0" onchange="svZ()" class="w-full bg-stone-50 border-2 border-stone-100 rounded-3xl p-6 font-black text-center text-4xl text-stone-800 outline-none">
+                    </div>
+                    <div id="za" class="hidden p-4 rounded-2xl bg-orange-50 border border-orange-200 text-orange-800 text-[11px] text-center font-bold">Wystarczy na Żurek!</div>
+                    <div class="h-5 bg-stone-100 rounded-full overflow-hidden border border-stone-50">
+                        <div id="zb" class="h-full brown-gradient transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                    <button onclick="rsZ()" class="w-full py-2 text-[10px] uppercase font-bold text-stone-300">Wyczyść słoik</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="tab-content space-y-5">
+            <div class="px-2">
+                <h3 class="serif text-2xl font-bold italic text-stone-800 mb-4">Galeria</h3>
+                <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2" id="gallery-filters">
+                    <button onclick="filterGallery('Wszystkie', this)" class="filter-btn active">Wszystkie</button>
+                    <button onclick="filterGallery('Clint Yeastwood', this)" class="filter-btn">Clint</button>
+                    <button onclick="filterGallery('Sylvester Graham', this)" class="filter-btn">Sylvester</button>
+                    <button onclick="filterGallery('Hildegarda z Bingen', this)" class="filter-btn">Hildegarda</button>
+                </div>
+            </div>
+            <div id="gal-cont" class="grid grid-cols-2 gap-3"></div>
+        </section>
+    </main>
+
+    <div id="viewer-modal" onclick="closeViewer()">
+        <button class="absolute top-6 right-6 text-white text-3xl">&times;</button>
+        <div id="arrow-prev" class="nav-arrow left-4" onclick="changePhoto(-1, event)">&#10094;</div>
+        <div id="arrow-next" class="nav-arrow right-4" onclick="changePhoto(1, event)">&#10095;</div>
+        <img id="viewer-img" class="w-full max-h-[70vh] object-contain">
+        <div class="p-4 text-white text-center w-full" onclick="event.stopPropagation()">
+            <p id="viewer-starter" class="text-[10px] uppercase font-black text-stone-400 mb-1"></p>
+            <h4 id="viewer-date" class="serif text-xl font-bold"></h4>
+        </div>
+    </div>
+
+    <script>
+        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhwbnRbCBfN9LtC-cGPK_ZNLQBPwytrADlL2_WDAcmLrHFXa0TeDWfFkZsNy5Z4421hD1LJRR_kiQO/pub?output=csv';
+        let allGalleryData = [];
+        let currentPhotos = [];
+        let currentPhotoIdx = 0;
+
+        // TAB NAVIGATION
+        window.st = function(id, btn) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            btn.classList.add('active');
+            window.scrollTo(0,0);
+        };
+
+        // ACCORDION
+        window.toggleAccordion = function(btn) {
+            btn.parentElement.classList.toggle('active');
+        };
+
+        // STARTER SELECTION
+        window.sel = function(name, d) {
+            let key = name.toLowerCase().includes('hilde') ? 'hildegarda' : (name.toLowerCase().includes('syl') ? 'sylvester' : 'clint');
+            document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('card-' + key).classList.add('selected');
+            document.getElementById('curr-name').innerText = name;
+        };
+
+        // FEEDING LOGIC
+        window.markFed = function(key, e) {
+            if(e) e.stopPropagation();
+            localStorage.setItem('feed_' + key, new Date().toLocaleDateString('pl-PL'));
+            load();
+        };
+
+        window.manualDate = function(key, val) {
+            if(!val) return;
+            localStorage.setItem('feed_' + key, new Date(val).toLocaleDateString('pl-PL'));
+            load();
+        };
+
+        // CALC
+        window.upd = function(n) {
+            document.querySelectorAll('.qb').forEach(b => b.className = 'qb flex-1 py-3 rounded-xl bg-white text-stone-400 border border-stone-200 font-semibold text-sm');
+            document.getElementById('q'+n).className = 'qb flex-1 py-3 rounded-xl brown-gradient text-white font-semibold text-sm shadow-md';
+            document.getElementById('sv').innerText = (115 * n) + 'g';
+            document.getElementById('fv').innerText = (500 * n) + 'g';
+            document.getElementById('wv').innerText = (340 * n) + 'g';
+            document.getElementById('slv').innerText = (14 * n) + 'g';
+            calcTime();
+        };
+
+        window.calcTime = function() {
+            const startStr = document.getElementById('start-time').value;
+            const [h, m] = startStr.split(':').map(Number);
+            const add = (hrs, mns) => {
+                let t = h * 60 + m + hrs * 60 + mns;
+                return `${String(Math.floor(t/60)%24).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;
+            };
+            document.getElementById('t-lodowka').innerText = add(7,30);
+            document.getElementById('t-formowanie').innerText = add(18,0);
+            document.getElementById('t-pieczenie').innerText = add(19,15);
+        };
+
+        // GALLERY
+        async function fetchGallery() {
+            try {
+                const res = await fetch(CSV_URL);
+                const txt = await res.text();
+                const rows = txt.split('\n').slice(1);
+                allGalleryData = rows.map(r => {
+                    const c = r.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
+                    return c.length < 5 ? null : { id: c[0], date: c[1], starter: c[2], thumb: c[3], full: c[4] };
+                }).filter(r => r);
+                renderGallery('Wszystkie');
+            } catch(e) {}
+        }
+
+        window.renderGallery = function(filter) {
+            const cont = document.getElementById('gal-cont');
+            cont.innerHTML = '';
+            const filtered = filter === 'Wszystkie' ? allGalleryData : allGalleryData.filter(i => i.starter === filter);
+            filtered.forEach(i => {
+                const div = document.createElement('div');
+                div.className = "relative aspect-square rounded-2xl overflow-hidden cursor-pointer";
+                div.onclick = () => openViewer(i.full, i.starter, i.date);
+                div.innerHTML = `
+                    <img src="${i.thumb}" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 left-0 right-0 bg-stone-900/60 backdrop-blur-md p-2 border-t border-white/10">
+                        <span class="text-[7px] text-stone-300 font-bold uppercase block">${i.starter}</span>
+                        <h4 class="text-white serif italic text-sm font-bold">${i.date}</h4>
+                    </div>`;
+                cont.appendChild(div);
+            });
+        };
+
+        window.filterGallery = function(type, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderGallery(type);
+        };
+
+        window.openViewer = function(links, starter, date) {
+            currentPhotos = links.split(';').map(l => l.trim());
+            currentPhotoIdx = 0;
+            document.getElementById('viewer-starter').innerText = starter;
+            document.getElementById('viewer-date').innerText = date;
+            updateImg();
+            document.getElementById('viewer-modal').classList.add('active');
+        };
+
+        function updateImg() {
+            document.getElementById('viewer-img').src = currentPhotos[currentPhotoIdx];
+        }
+
+        window.changePhoto = function(dir, e) {
+            if(e) e.stopPropagation();
+            currentPhotoIdx = (currentPhotoIdx + dir + currentPhotos.length) % currentPhotos.length;
+            updateImg();
+        };
+
+        window.closeViewer = function() { document.getElementById('viewer-modal').classList.remove('active'); };
+
+        // STORAGE
+        window.svZ = function() { localStorage.setItem('z_w', document.getElementById('zw').value); load(); };
+        window.rsZ = function() { if(confirm("Reset?")) { document.getElementById('zw').value = 0; svZ(); } };
+
+        function load() {
+            ['clint', 'sylvester', 'hildegarda'].forEach(k => {
+                const d = localStorage.getItem('feed_' + k);
+                if(document.getElementById('feed-' + k)) document.getElementById('feed-' + k).innerText = d || "---";
+                const b = document.getElementById('btn-' + k);
+                if(b && d === new Date().toLocaleDateString('pl-PL')) { b.innerText = "OK"; b.classList.add('active'); }
+            });
+            const w = localStorage.getItem('z_w') || 0;
+            document.getElementById('zw').value = w;
+            document.getElementById('zb').style.width = Math.min((w/400)*100, 100) + '%';
+            document.getElementById('za').classList.toggle('hidden', w < 400);
+            fetchGallery();
+            calcTime();
+        }
+
+        window.onload = load;
+    </script>
+</body>
+</html>
