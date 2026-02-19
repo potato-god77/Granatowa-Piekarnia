@@ -70,6 +70,15 @@
         <button onclick="st('gallery', this)" class="nav-btn px-4 py-4 text-[10px] uppercase font-black tracking-widest">Galeria</button>
     </nav>
 
+    <div class="bg-white border-b px-6 py-3 flex justify-center items-center gap-3">
+    <label for="quick-select" class="text-[10px] uppercase font-black text-stone-400 tracking-widest">Zakwas:</label>
+    <select id="quick-select" onchange="sel(this.value)" class="bg-stone-100 border-none rounded-lg px-3 py-1.5 text-sm font-bold text-stone-800 focus:ring-2 focus:ring-amber-500 outline-none">
+        <option value="clint">Clint Yeastwood</option>
+        <option value="sylvester">Sylvester Graham</option>
+        <option value="hildegarda">Hildegarda z Bingen</option>
+    </select>
+</div>
+
     <main class="max-w-md mx-auto p-4 space-y-6">
         <section id="starters" class="tab-content active space-y-4">
             <div id="card-clint" onclick="sel('Clint')" class="starter-card glass-card p-5 flex flex-col gap-3 selected">
@@ -332,12 +341,24 @@
     }
 
     function sel(n) {
-        currentStarterKey = n.toLowerCase();
-        document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
-        document.getElementById('card-'+currentStarterKey).classList.add('selected');
-        document.getElementById('curr-name').innerText = RECIPES[currentStarterKey].name;
-        updateIngredients();
-    }
+    currentStarterKey = n.toLowerCase();
+    
+    // 1. Aktualizacja kart w sekcji "Zakwasy"
+    document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
+    const selectedC = document.getElementById('card-' + currentStarterKey);
+    if(selectedC) selectedC.classList.add('selected');
+    
+    // 2. Aktualizacja dropdowna (Szybkie Menu)
+    const quickSelect = document.getElementById('quick-select');
+    if(quickSelect) quickSelect.value = currentStarterKey;
+    
+    // 3. Aktualizacja nazwy w kalkulatorze
+    const currName = document.getElementById('curr-name');
+    if(currName) currName.innerText = RECIPES[currentStarterKey].name;
+    
+    // 4. Przeliczenie składników i logistyki
+    updateIngredients();
+}
 
     function upd(n) {
         currentQty = n;
