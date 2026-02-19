@@ -232,18 +232,21 @@
         </section>
     </main>
 
-    <div id="viewer-modal">
-        <div class="p-4 flex justify-between items-center text-white">
-            <span id="carousel-info" class="text-xs font-bold opacity-70"></span>
-            <button onclick="closeViewer()" class="text-3xl">&times;</button>
-        </div>
-        <div class="relative flex-1 overflow-hidden">
-            <div id="carousel-track" class="carousel-track"></div>
-            <button onclick="moveCarousel(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 p-3 rounded-full text-white">&lsaquo;</button>
-            <button onclick="moveCarousel(1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 p-3 rounded-full text-white">&rsaquo;</button>
-        </div>
-        <div id="thumb-strip" class="thumb-strip no-scrollbar"></div>
+    <div id="viewer-modal" class="hidden fixed inset-0 bg-black/98 z-[9999] flex-col" onclick="if(event.target === this) closeViewer()">
+    <div class="p-4 flex justify-between items-center text-white">
+        <span id="carousel-info" class="text-xs font-bold opacity-70"></span>
+        <button onclick="closeViewer()" class="text-4xl px-4">&times;</button>
     </div>
+    
+    <div class="relative flex-1 overflow-hidden">
+        <div id="carousel-track" class="carousel-track h-full flex transition-transform duration-300"></div>
+        
+        <button onclick="moveCarousel(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/10 p-4 rounded-full text-white text-3xl hover:bg-white/20">&lsaquo;</button>
+        <button onclick="moveCarousel(1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/10 p-4 rounded-full text-white text-3xl hover:bg-white/20">&rsaquo;</button>
+    </div>
+
+    <div id="thumb-strip" class="thumb-strip no-scrollbar flex gap-2 overflow-x-auto p-4 bg-black/50"></div>
+</div>
 
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxDTlTcVOKuNua9ZL29lL-HBS1BJpptJtZ5ee9m5JkDPMU1M6bMWVs7fHwi9ccyxhE/exec';
@@ -263,10 +266,14 @@
 
         // AUTH & TABS
         function checkPass() {
-            if(document.getElementById('pass-field').value === BREAD_PASS) {
-                localStorage.setItem('bakery_access', 'granted');
-                document.getElementById('lock-screen').style.display = 'none';
-            }
+    const input = document.getElementById('pass-field').value;
+    if(input === BREAD_PASS) {
+        localStorage.setItem('bakery_access', 'granted'); // To zapamiętuje sesję
+        document.getElementById('lock-screen').style.display = 'none';
+    } else {
+        alert("Hasło nieprawidłowe");
+    }
+}
         }
         function st(id, btn) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -401,11 +408,60 @@ window.moveCarousel = (dir) => {
 };
 
 function updateCarouselPosition() {
-    document.getElementById('carousel-track').style.transform = `translateX(-${currentImgIndex * 100}%)`;
-    document.querySelectorAll('.thumb-item').forEach((t, i) => {
-        t.classList.toggle('active', i === currentImgIndex);
+    const track = document.getElementById('carousel-track');
+    track.style.transform = `translateX(-${currentImgIndex * 100}%)`;
+    
+    // Aktualizacja podświetlenia miniaturek wewnątrz karuzeli
+    const thumbs = document.querySelectorAll('#thumb-strip .thumb-item');
+    thumbs.forEach((t, i) => {
+        if (i === currentImgIndex) {
+            t.classList.add('active', 'opacity-100', 'border-white');
+            t.classList.remove('opacity-40', 'border-transparent');
+            t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        } else {
+            t.classList.remove('active', 'opacity-100', 'border-white');
+            t.classList.add('opacity-40', 'border-transparent');
+        }
     });
 }
+        // --- OBSŁUGA SWIPE (PRZESUWANIE PALCEM) ---
+let touchStartX = 0;
+let touchEndX = 0;
+
+const modal = document.getElementById('viewer-modal');
+
+modal.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
+
+modal.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+}, { passive: true });
+
+function handleSwipe() {
+    const swipeThreshold = 50; // czułość przesunięcia w pikselach
+    if (touchEndX < touchStartX - swipeThreshold) {
+        moveCarousel(1); // przesuń w prawo (następne)
+    }
+    if (touchEndX > touchStartX + swipeThreshold) {
+        moveCarousel(-1); // przesuń w lewo (poprzednie)
+    }
+}
+
+// --- INITIALIZATION (WŁAŚCIWE MIEJSCE DLA ONLOAD) ---
+window.onload = () => {
+    // 1. Sprawdź zapamiętane hasło
+    if (localStorage.getItem('bakery_access') === 'granted') {
+        document.getElementById('lock-screen').style.display = 'none';
+    }
+
+    // 2. Wczytaj dane z arkusza (zlewki, daty karmienia)
+    if (typeof loadFromCloud === "function") loadFromCloud();
+    
+    // 3. Zainicjuj kalkulator składników
+    if (typeof updateIngredients === "function") updateIngredients();
+};
     </script>
 </body>
 </html>
