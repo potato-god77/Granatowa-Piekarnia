@@ -15,43 +15,36 @@
         :root { --primary: #4a3728; --bg: #fdfaf7; --accent: #8b5e3c; --sand: #f5ece2; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--primary); margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         .serif { font-family: 'Playfair Display', serif; }
-        
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeIn 0.3s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        
         .nav-btn { border-bottom: 3px solid transparent; transition: all 0.2s; flex-shrink: 0; color: #a89284; cursor: pointer; }
         .nav-btn.active { color: var(--primary); font-weight: 900; border-bottom: 3px solid var(--accent); }
-        
         .glass-card { background: white; border-radius: 20px; box-shadow: 0 4px 15px rgba(74, 55, 40, 0.05); border: 1px solid #efe3d8; overflow: hidden; }
         .btn-feed.active { background-color: #e7dfd8 !important; color: #4a3728 !important; border-color: #d4c5ba !important; }
-        
         .accordion-content { display: none; }
         .accordion-item.active .accordion-content { display: block; animation: slideDown 0.2s ease-out; }
         .accordion-item.active .plus-icon { transform: rotate(45deg); }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-
         .recipe-step { position: relative; padding-left: 1.2rem; margin-bottom: 0.8rem; border-left: 2px solid var(--sand); margin-left: 0.4rem; font-size: 0.9rem; line-height: 1.5; }
         .starter-card { cursor: pointer; }
         .starter-card.selected { border: 2px solid var(--accent); background: #fffcf9; }
-
         .date-container { position: relative; display: inline-block; }
         .date-input-hidden { position: absolute; opacity: 0; width: 100%; height: 100%; left: 0; top: 0; cursor: pointer; z-index: 10; }
         .date-text { border-bottom: 1px dashed var(--accent); }
-
         .brown-gradient { background: linear-gradient(135deg, #4a3728 0%, #634a38 100%); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-
-        /* Viewer Modal */
         #viewer-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 200; flex-direction: column; align-items: center; justify-content: center; }
         #viewer-modal.active { display: flex; }
         .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        
         .filter-btn { padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: bold; border: 1px solid #efe3d8; background: white; color: #a89284; cursor: pointer; }
         .filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: var(--accent); z-index: 100; transform: scaleX(0); transform-origin: left; transition: transform 0.5s; }
+        .loading-overlay.active { transform: scaleX(1); }
     </style>
 </head>
 <body class="pb-24">
+    <div id="loader" class="loading-overlay"></div>
 
     <header class="p-6 pt-10 text-center bg-white border-b">
         <h1 class="serif text-3xl italic font-bold text-stone-800">Granatowa Piekarnia</h1>
@@ -234,7 +227,7 @@
             <div class="glass-card p-6">
                 <h4 class="serif text-xl font-bold mb-4 text-stone-800">Słoik 3: Zlewki 🥣</h4>
                 <div class="space-y-5">
-                    <input type="number" id="zw" value="0" onchange="svZ()" class="w-full bg-stone-50 border-2 border-stone-100 rounded-3xl p-6 font-black text-center text-4xl text-stone-800 outline-none">
+                    <input type="number" id="zw" value="0" onblur="saveToCloud('zlewki', this.value)" class="w-full bg-stone-50 border-2 border-stone-100 rounded-3xl p-6 font-black text-center text-4xl text-stone-800 outline-none">
                     <div id="za" class="hidden p-4 rounded-2xl bg-orange-50 border border-orange-200 text-orange-800 text-[11px] text-center font-bold">Wystarczy na Żurek!</div>
                     <div class="h-5 bg-stone-100 rounded-full overflow-hidden"><div id="zb" class="h-full brown-gradient transition-all duration-500" style="width: 0%"></div></div>
                     <button onclick="rsZ()" class="w-full py-2 text-[10px] uppercase font-bold text-stone-300">Wyczyść słoik</button>
@@ -268,40 +261,75 @@
     </div>
 
     <script>
-        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhwbnRbCBfN9LtC-cGPK_ZNLQBPwytrADlL2_WDAcmLrHFXa0TeDWfFkZsNy5Z4421hD1LJRR_kiQO/pub?output=csv';
+        // PODMIEŃ TEN ADRES NA SWÓJ Z KROKU 2!
+        const SCRIPT_URL = 'TWOJ_ADRES_Z_APPS_SCRIPT';
+        const GALLERY_URL = 'https://script.google.com/macros/s/AKfycbyxDTlTcVOKuNua9ZL29lL-HBS1BJpptJtZ5ee9m5JkDPMU1M6bMWVs7fHwi9ccyxhE/exec';
+
         let allGalleryData = [];
         let currentPhotos = [];
         let currentPhotoIdx = 0;
 
+        // --- SYNCHRONIZACJA Z CHMURĄ ---
+        async function saveToCloud(key, value) {
+            document.getElementById('loader').classList.add('active');
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify({ key: key, value: value })
+                });
+                setTimeout(loadFromCloud, 1000); // Odśwież widok
+            } catch (e) { console.error("Cloud Error", e); }
+            setTimeout(() => document.getElementById('loader').classList.remove('active'), 1500);
+        }
+
+        async function loadFromCloud() {
+            try {
+                const res = await fetch(SCRIPT_URL);
+                const data = await res.json();
+                
+                // Aktualizuj daty w UI
+                if(data.clint) document.getElementById('feed-clint').innerText = data.clint;
+                if(data.sylvester) document.getElementById('feed-sylvester').innerText = data.sylvester;
+                if(data.hildegarda) document.getElementById('feed-hildegarda').innerText = data.hildegarda;
+                
+                // Aktualizuj zlewki
+                const w = data.zlewki || 0;
+                document.getElementById('zw').value = w;
+                document.getElementById('zb').style.width = Math.min((w/400)*100, 100) + '%';
+                document.getElementById('za').classList.toggle('hidden', w < 400);
+
+                // Oznacz przyciski jako OK jeśli dzisiejsze
+                const today = new Date().toLocaleDateString('pl-PL');
+                ['clint', 'sylvester', 'hildegarda'].forEach(k => {
+                    const btn = document.getElementById('btn-' + k);
+                    if(data[k] === today) { btn.innerText = "OK"; btn.classList.add('active'); }
+                    else { btn.innerText = "Regeneruj"; btn.classList.remove('active'); }
+                });
+            } catch (e) { console.error("Load Error", e); }
+        }
+
+        // --- LOGIKA UI (Nienaruszona) ---
         window.st = function(id, btn) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             btn.classList.add('active');
-            window.scrollTo(0,0);
+            if(id === 'gallery' && allGalleryData.length === 0) fetchGallery();
         };
 
-        window.toggleAccordion = function(btn) {
-            btn.parentElement.classList.toggle('active');
-        };
-
-        window.sel = function(name, d) {
-            let key = name.toLowerCase().includes('hilde') ? 'hildegarda' : (name.toLowerCase().includes('syl') ? 'sylvester' : 'clint');
-            document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
-            document.getElementById('card-' + key).classList.add('selected');
-            document.getElementById('curr-name').innerText = name;
-        };
+        window.toggleAccordion = function(btn) { btn.parentElement.classList.toggle('active'); };
 
         window.markFed = function(key, e) {
             if(e) e.stopPropagation();
-            localStorage.setItem('feed_' + key, new Date().toLocaleDateString('pl-PL'));
-            load();
+            const today = new Date().toLocaleDateString('pl-PL');
+            saveToCloud(key, today);
         };
 
         window.manualDate = function(key, val) {
             if(!val) return;
-            localStorage.setItem('feed_' + key, new Date(val).toLocaleDateString('pl-PL'));
-            load();
+            const formatted = new Date(val).toLocaleDateString('pl-PL');
+            saveToCloud(key, formatted);
         };
 
         window.upd = function(n) {
@@ -326,10 +354,9 @@
             document.getElementById('t-pieczenie').innerText = add(19,15);
         };
 
-        // --- GALERIA LOGIKA ---
         async function fetchGallery() {
             try {
-                const res = await fetch(CSV_URL);
+                const res = await fetch(GALLERY_URL);
                 const txt = await res.text();
                 const rows = txt.split('\n').slice(1);
                 allGalleryData = rows.map(r => {
@@ -337,23 +364,19 @@
                     return c.length < 5 ? null : { id: c[0], date: c[1], starter: c[2], thumb: c[3], full: c[4] };
                 }).filter(r => r);
                 renderGallery('Wszystkie');
-            } catch(e) { console.error("Błąd galerii:", e); }
+            } catch(e) { console.error("Gallery Error", e); }
         }
 
-        window.renderGallery = function(filter) {
+        window.renderGallery = function(f) {
             const cont = document.getElementById('gal-cont');
             if(!cont) return;
             cont.innerHTML = '';
-            const filtered = filter === 'Wszystkie' ? allGalleryData : allGalleryData.filter(i => i.starter === filter);
+            const filtered = f === 'Wszystkie' ? allGalleryData : allGalleryData.filter(i => i.starter === f);
             filtered.forEach(i => {
                 const div = document.createElement('div');
-                div.className = "relative aspect-square rounded-2xl overflow-hidden cursor-pointer";
+                div.className = "relative aspect-square rounded-2xl overflow-hidden cursor-pointer shadow-sm";
                 div.onclick = () => openViewer(i.full, i.starter, i.date);
-                div.innerHTML = `<img src="${i.thumb}" class="w-full h-full object-cover">
-                    <div class="absolute bottom-0 left-0 right-0 bg-stone-900/60 backdrop-blur-md p-2 border-t border-white/10">
-                        <span class="text-[7px] text-stone-300 font-bold uppercase block">${i.starter}</span>
-                        <h4 class="text-white serif italic text-sm font-bold">${i.date}</h4>
-                    </div>`;
+                div.innerHTML = `<img src="${i.thumb}" class="w-full h-full object-cover"><div class="absolute bottom-0 left-0 right-0 bg-stone-900/60 p-2"><span class="text-[7px] text-white/70 uppercase font-bold">${i.starter}</span><h4 class="text-white serif italic text-sm font-bold">${i.date}</h4></div>`;
                 cont.appendChild(div);
             });
         };
@@ -380,27 +403,18 @@
         };
 
         window.closeViewer = function() { document.getElementById('viewer-modal').classList.remove('active'); };
-        // --- KONIEC GALERII ---
+        window.rsZ = function() { if(confirm("Reset?")) saveToCloud('zlewki', 0); };
+        window.sel = function(n, d) {
+            let k = n.toLowerCase().includes('hilde') ? 'hildegarda' : (n.toLowerCase().includes('syl') ? 'sylvester' : 'clint');
+            document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('card-' + k).classList.add('selected');
+            document.getElementById('curr-name').innerText = n;
+        };
 
-        window.svZ = function() { localStorage.setItem('z_w', document.getElementById('zw').value); load(); };
-        window.rsZ = function() { if(confirm("Reset?")) { document.getElementById('zw').value = 0; svZ(); } };
-
-        function load() {
-            ['clint', 'sylvester', 'hildegarda'].forEach(k => {
-                const d = localStorage.getItem('feed_' + k);
-                if(document.getElementById('feed-' + k)) document.getElementById('feed-' + k).innerText = d || "---";
-                const b = document.getElementById('btn-' + k);
-                if(b && d === new Date().toLocaleDateString('pl-PL')) { b.innerText = "OK"; b.classList.add('active'); }
-            });
-            const w = localStorage.getItem('z_w') || 0;
-            if(document.getElementById('zw')) document.getElementById('zw').value = w;
-            if(document.getElementById('zb')) document.getElementById('zb').style.width = Math.min((w/400)*100, 100) + '%';
-            if(document.getElementById('za')) document.getElementById('za').classList.toggle('hidden', w < 400);
-            fetchGallery();
+        window.onload = () => {
+            loadFromCloud();
             calcTime();
-        }
-
-        window.onload = load;
+        };
     </script>
 </body>
 </html>
