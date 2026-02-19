@@ -397,7 +397,7 @@
     const breadMap = {
         'p-wv': (r.wv * q) + 'g', 'p-sv': (r.sv * q) + 'g',
         'p-fv': (r.fv * q) + 'g', 'p-slv': (r.slv * q) + 'g',
-        'p-secret': "Wskazówka: " + r.secret
+        if (pSecret) pSecret.innerHTML = "Wskazówka: " + r.secret;
     };
     for (let id in breadMap) {
         const el = document.getElementById(id);
