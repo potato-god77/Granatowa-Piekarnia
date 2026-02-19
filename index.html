@@ -249,217 +249,211 @@
 </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxDTlTcVOKuNua9ZL29lL-HBS1BJpptJtZ5ee9m5JkDPMU1M6bMWVs7fHwi9ccyxhE/exec';
-        const GALLERY_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhwbnRbCBfN9LtC-cGPK_ZNLQBPwytrADlL2_WDAcmLrHFXa0TeDWfFkZsNy5Z4421hD1LJRR_kiQO/pub?gid=0&single=true&output=csv';
-        const BREAD_PASS = 'feelgood7'; // <-- WPISZ HASŁO
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxDTlTcVOKuNua9ZL29lL-HBS1BJpptJtZ5ee9m5JkDPMU1M6bMWVs7fHwi9ccyxhE/exec';
+    const GALLERY_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhwbnRbCBfN9LtC-cGPK_ZNLQBPwytrADlL2_WDAcmLrHFXa0TeDWfFkZsNy5Z4421hD1LJRR_kiQO/pub?gid=0&single=true&output=csv';
+    const BREAD_PASS = 'feelgood7'; // <-- WPISZ SWOJE HASŁO
 
-        const RECIPES = {
-            clint: { name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, secret: 'Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy.' },
-            sylvester: { name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, secret: 'Przy 1850 otręby tną gluten. Wymaga przynajmniej 2-3 składań.' },
-            hildegarda: { name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, secret: 'Orkisz 2000 pije wodę szybko. Niższa hydratacja to Twój bezpiecznik.' }
-        };
+    const RECIPES = {
+        clint: { name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, secret: 'Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy.' },
+        sylvester: { name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, secret: 'Przy 1850 otręby tną gluten. Wymaga przynajmniej 2-3 składań.' },
+        hildegarda: { name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, secret: 'Orkisz 2000 pije wodę szybko. Niższa hydratacja to Twój bezpiecznik.' }
+    };
 
-        let currentStarterKey = 'clint';
-        let currentQty = 1;
-        let allGalleryData = [];
-        let currentImgIndex = 0;
+    let currentStarterKey = 'clint';
+    let currentQty = 1;
+    let allGalleryData = [];
+    let currentAlbumPhotos = [];
+    let currentImgIndex = 0;
 
-        // AUTH & TABS
-      function checkPass() {
-    const poleHasla = document.getElementById('pass-field');
-    const wpisaneHaslo = poleHasla.value;
-    
-    // Log do konsoli, żebyś mógł sprawdzić pod F12 czy w ogóle klika
-    console.log("Próba logowania..."); 
-
-    if (wpisaneHaslo === BREAD_PASS) {
-        localStorage.setItem('bakery_access', 'granted');
-        console.log("Hasło poprawne, przeładowuję...");
-        location.reload(); 
-    } else {
-        alert("Hasło nieprawidłowe");
-        poleHasla.value = '';
-    }
- document.getElementById('pass-field').value = ''; // czyścimy pole
-    
-        }
-        function st(id, btn) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active'); btn.classList.add('active');
-            if(id === 'gallery' && allGalleryData.length === 0) fetchGallery();
-        }
-        function toggleAccordion(btn) { btn.parentElement.classList.toggle('active'); }
-
-        // CLOUD & LOGIC
-        async function saveToCloud(key, value) {
-            document.getElementById('loader').classList.add('active');
-            try { await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({key, value})}); setTimeout(loadFromCloud, 1000); } catch(e){}
-            setTimeout(()=>document.getElementById('loader').classList.remove('active'), 1500);
-        }
-        async function loadFromCloud() {
-            try {
-                const res = await fetch(SCRIPT_URL); const data = await res.json();
-                ['clint','sylvester','hildegarda'].forEach(k => {
-                    if(data[k]) document.getElementById('feed-'+k).innerText = data[k];
-                    const b = document.getElementById('btn-'+k);
-                    if(data[k] === new Date().toLocaleDateString('pl-PL')) { b.innerText="OK"; b.classList.add('active'); }
-                });
-                const w = data.zlewki || 0; document.getElementById('zw').value = w;
-                document.getElementById('zb').style.width = Math.min((w/400)*100, 100)+'%';
-            } catch(e){}
-        }
-
-        // CALCULATOR
-        window.sel = (n) => {
-            currentStarterKey = n.toLowerCase();
-            document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
-            document.getElementById('card-'+currentStarterKey).classList.add('selected');
-            document.getElementById('curr-name').innerText = RECIPES[currentStarterKey].name;
-            updateIngredients();
-        };
-        window.upd = (n) => {
-            currentQty = n;
-            document.querySelectorAll('.qb').forEach(b => b.className = 'qb flex-1 py-3 rounded-xl bg-white text-stone-400 border border-stone-200 font-semibold text-sm');
-            document.getElementById('q'+n).className = 'qb flex-1 py-3 rounded-xl brown-gradient text-white font-semibold text-sm';
-            updateIngredients();
-        };
-        function updateIngredients() {
-            const r = RECIPES[currentStarterKey];
-            document.getElementById('sv').innerText = (r.sv * currentQty)+'g';
-            document.getElementById('wv').innerText = (r.wv * currentQty)+'g';
-            document.getElementById('fv').innerText = (r.fv * currentQty)+'g';
-            document.getElementById('slv').innerText = (r.slv * currentQty)+'g';
-            document.getElementById('recipe-tips').innerText = r.secret;
-            calcTime();
-        }
-        window.calcTime = () => {
-            const [h,m] = document.getElementById('start-time').value.split(':').map(Number);
-            const add = (hrs, mns) => {
-                let t = h*60+m + hrs*60+mns;
-                return `${String(Math.floor(t/60)%24).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;
-            };
-            document.getElementById('t-lodowka').innerText = add(7,30);
-            document.getElementById('t-formowanie').innerText = add(18,0);
-            document.getElementById('t-pieczenie').innerText = add(19,15);
-        };
-        window.markFed = (k, e) => { e.stopPropagation(); saveToCloud(k, new Date().toLocaleDateString('pl-PL')); };
-
-        // GALLERY
-      // 1. Fetching - Czytamy albumy tak, jak są w arkuszu
-async function fetchGallery() {
-    try {
-        const res = await fetch(GALLERY_URL); 
-        const txt = await res.text();
-        // Zakładamy: c[1]=Data, c[2]=Zakwas, c[3]=Miniaturka(Okładka), c[4]=Lista wszystkich zdjęć (full)
-        allGalleryData = txt.split('\n').slice(1).map(r => {
-            const c = r.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
-            return { 
-                date: c[1], 
-                starter: c[2], 
-                cover: c[3], 
-                // Rozbijamy kolumnę 'full' na tablicę osobnych zdjęć
-                photos: c[4] ? c[4].split(';') : [c[3]] 
-            };
-        }).filter(i => i.date);
-        
-        renderAlbums();
-    } catch(e) { console.error("Błąd ładowania albumów:", e); }
-}
-
-// 2. Siatka 2 kolumny z szarym paskiem
-function renderAlbums() {
-    const cont = document.getElementById('gal-cont');
-    cont.innerHTML = allGalleryData.map((album, idx) => `
-        <div onclick="openAlbum(${idx})" class="relative aspect-square rounded-2xl overflow-hidden shadow-sm group active:scale-95 transition-transform">
-            <img src="${album.cover}" class="w-full h-full object-cover">
-            <div class="absolute bottom-0 inset-x-0 bg-stone-900/60 backdrop-blur-md p-3 text-white">
-                <p class="text-[9px] uppercase font-medium opacity-80 leading-none mb-1">${album.starter}</p>
-                <p class="text-lg font-black tracking-tighter leading-none">${album.date}</p>
-            </div>
-        </div>
-    `).join('');
-}
-
-// 3. Karuzela wewnątrz albumu
-let currentAlbumPhotos = [];
-
-window.openAlbum = (idx) => {
-    currentImgIndex = 0;
-    const album = allGalleryData[idx];
-    currentAlbumPhotos = album.photos; // To są te zdjęcia "wnętrza"
-    
-    const track = document.getElementById('carousel-track');
-    const thumbs = document.getElementById('thumb-strip');
-    
-    // Ładujemy zdjęcia do tracka
-    track.innerHTML = currentAlbumPhotos.map(url => `
-        <div class="carousel-slide">
-            <img src="${url}" class="max-w-full max-h-[75vh] object-contain rounded-lg">
-        </div>
-    `).join('');
-    
-    // Miniaturki na dole (korzystamy z tych samych URLi lub tych samych co w albumie)
-    thumbs.innerHTML = currentAlbumPhotos.map((url, i) => `
-        <img src="${url}" onclick="goToSlide(${i})" class="thumb-item ${i === 0 ? 'active' : ''}">
-    `).join('');
-    
-    document.getElementById('carousel-info').innerText = `${album.starter} • ${album.date}`;
-    document.getElementById('viewer-modal').classList.add('active');
-    updateCarouselPosition();
-}
-
-// 4. Nawigacja (blokuje się na granicach albumu)
-window.moveCarousel = (dir) => {
-    currentImgIndex = (currentImgIndex + dir + currentAlbumPhotos.length) % currentAlbumPhotos.length;
-    updateCarouselPosition();
-};
-
-function updateCarouselPosition() {
-    const track = document.getElementById('carousel-track');
-    track.style.transform = `translateX(-${currentImgIndex * 100}%)`;
-    
-    // Aktualizacja podświetlenia miniaturek wewnątrz karuzeli
-    const thumbs = document.querySelectorAll('#thumb-strip .thumb-item');
-    thumbs.forEach((t, i) => {
-        if (i === currentImgIndex) {
-            t.classList.add('active', 'opacity-100', 'border-white');
-            t.classList.remove('opacity-40', 'border-transparent');
-            t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    // --- LOGOWANIE ---
+    function checkPass() {
+        const input = document.getElementById('pass-field').value;
+        if (input === BREAD_PASS) {
+            localStorage.setItem('bakery_access', 'granted');
+            location.reload();
         } else {
-            t.classList.remove('active', 'opacity-100', 'border-white');
-            t.classList.add('opacity-40', 'border-transparent');
+            alert("Błędne hasło");
         }
+    }
+
+    // --- LOGIKA CHMURY I KALKULATORA ---
+    async function saveToCloud(key, value) {
+        try { 
+            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({key, value})}); 
+            setTimeout(loadFromCloud, 1000); 
+        } catch(e){ console.error(e); }
+    }
+
+    async function loadFromCloud() {
+        try {
+            const res = await fetch(SCRIPT_URL); 
+            const data = await res.json();
+            ['clint','sylvester','hildegarda'].forEach(k => {
+                if(data[k]) document.getElementById('feed-'+k).innerText = data[k];
+                const b = document.getElementById('btn-'+k);
+                if(data[k] === new Date().toLocaleDateString('pl-PL')) { 
+                    b.innerText="OK"; 
+                    b.classList.add('active'); 
+                }
+            });
+            const w = data.zlewki || 0; 
+            document.getElementById('zw').value = w;
+            document.getElementById('zb').style.width = Math.min((w/400)*100, 100)+'%';
+        } catch(e){ console.error(e); }
+    }
+
+    function sel(n) {
+        currentStarterKey = n.toLowerCase();
+        document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
+        document.getElementById('card-'+currentStarterKey).classList.add('selected');
+        document.getElementById('curr-name').innerText = RECIPES[currentStarterKey].name;
+        updateIngredients();
+    }
+
+    function upd(n) {
+        currentQty = n;
+        document.querySelectorAll('.qb').forEach(b => b.className = 'qb flex-1 py-3 rounded-xl bg-white text-stone-400 border border-stone-200 font-semibold text-sm');
+        document.getElementById('q'+n).className = 'qb flex-1 py-3 rounded-xl brown-gradient text-white font-semibold text-sm';
+        updateIngredients();
+    }
+
+    function updateIngredients() {
+        const r = RECIPES[currentStarterKey];
+        document.getElementById('sv').innerText = (r.sv * currentQty)+'g';
+        document.getElementById('wv').innerText = (r.wv * currentQty)+'g';
+        document.getElementById('fv').innerText = (r.fv * currentQty)+'g';
+        document.getElementById('slv').innerText = (r.slv * currentQty)+'g';
+        document.getElementById('recipe-tips').innerText = r.secret;
+        calcTime();
+    }
+
+    function calcTime() {
+        const timeIn = document.getElementById('start-time').value;
+        if(!timeIn) return;
+        const [h,m] = timeIn.split(':').map(Number);
+        const add = (hrs, mns) => {
+            let t = h*60+m + hrs*60+mns;
+            return `${String(Math.floor(t/60)%24).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;
+        };
+        document.getElementById('t-lodowka').innerText = add(7,30);
+        document.getElementById('t-formowanie').innerText = add(18,0);
+        document.getElementById('t-pieczenie').innerText = add(19,15);
+    }
+
+    function markFed(k, e) { 
+        e.stopPropagation(); 
+        saveToCloud(k, new Date().toLocaleDateString('pl-PL')); 
+    }
+
+    // --- GALERIA ---
+    async function fetchGallery() {
+        try {
+            const res = await fetch(GALLERY_URL);
+            const txt = await res.text();
+            allGalleryData = txt.split('\n').slice(1).map(r => {
+                const c = r.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
+                return { 
+                    date: c[1], 
+                    starter: c[2], 
+                    cover: c[3], 
+                    photos: c[4] ? c[4].split(';') : [c[3]] 
+                };
+            }).filter(i => i.date);
+            renderAlbums();
+        } catch(e) { console.error(e); }
+    }
+
+    function renderAlbums() {
+        const cont = document.getElementById('gal-cont');
+        cont.innerHTML = allGalleryData.map((album, idx) => `
+            <div onclick="openAlbum(${idx})" class="relative aspect-square rounded-2xl overflow-hidden shadow-sm active:scale-95 transition-transform cursor-pointer">
+                <img src="${album.cover}" class="w-full h-full object-cover">
+                <div class="absolute bottom-0 inset-x-0 bg-stone-900/65 backdrop-blur-md p-3 text-white">
+                    <p class="text-[9px] uppercase font-bold opacity-70 mb-1">${album.starter}</p>
+                    <p class="text-lg font-black tracking-tighter">${album.date}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function openAlbum(idx) {
+        currentImgIndex = 0;
+        const album = allGalleryData[idx];
+        currentAlbumPhotos = album.photos;
+        
+        document.getElementById('carousel-track').innerHTML = currentAlbumPhotos.map(url => `
+            <div class="carousel-slide min-w-full h-full flex items-center justify-center p-4">
+                <img src="${url}" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl">
+            </div>
+        `).join('');
+        
+        document.getElementById('thumb-strip').innerHTML = currentAlbumPhotos.map((url, i) => `
+            <img src="${url}" onclick="goToSlide(${i})" class="thumb-item ${i === 0 ? 'active' : ''} cursor-pointer">
+        `).join('');
+        
+        document.getElementById('carousel-info').innerText = `${album.starter} • ${album.date}`;
+        document.getElementById('viewer-modal').style.display = 'flex';
+        updateCarouselPosition();
+    }
+
+    function closeViewer() {
+        document.getElementById('viewer-modal').style.display = 'none';
+    }
+
+    function moveCarousel(dir) {
+        if (currentAlbumPhotos.length === 0) return;
+        currentImgIndex = (currentImgIndex + dir + currentAlbumPhotos.length) % currentAlbumPhotos.length;
+        updateCarouselPosition();
+    }
+
+    function goToSlide(idx) {
+        currentImgIndex = idx;
+        updateCarouselPosition();
+    }
+
+    function updateCarouselPosition() {
+        document.getElementById('carousel-track').style.transform = `translateX(-${currentImgIndex * 100}%)`;
+        const thumbs = document.querySelectorAll('#thumb-strip .thumb-item');
+        thumbs.forEach((t, i) => {
+            t.classList.toggle('active', i === currentImgIndex);
+            if(i === currentImgIndex) t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        });
+    }
+
+    // --- INTERFEJS ---
+    function st(id, btn) {
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(id).classList.add('active'); 
+        btn.classList.add('active');
+        if(id === 'gallery' && allGalleryData.length === 0) fetchGallery();
+    }
+
+    function toggleAccordion(btn) { 
+        btn.parentElement.classList.toggle('active'); 
+    }
+
+    // --- INICJALIZACJA I SWIPE ---
+    document.addEventListener('DOMContentLoaded', () => {
+        if (localStorage.getItem('bakery_access') === 'granted') {
+            document.getElementById('lock-screen').style.display = 'none';
+            loadFromCloud();
+            updateIngredients();
+        }
+
+        let touchStartX = 0;
+        const modal = document.getElementById('viewer-modal');
+        modal.addEventListener('touchstart', e => { 
+            touchStartX = e.changedTouches[0].screenX; 
+        }, { passive: true });
+        
+        modal.addEventListener('touchend', e => {
+            const touchEndX = e.changedTouches[0].screenX;
+            const swipeThreshold = 50;
+            if (touchEndX < touchStartX - swipeThreshold) moveCarousel(1);
+            if (touchEndX > touchStartX + swipeThreshold) moveCarousel(-1);
+        }, { passive: true });
     });
-}
-        // --- JEDEN BLOK STARTOWY ---
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Sprawdź hasło
-    const czyZalogowano = localStorage.getItem('bakery_access');
-    
-    if (czyZalogowano === 'granted') {
-        document.getElementById('lock-screen').style.display = 'none';
-        // Odpal funkcje danych tylko jeśli zalogowany
-        if (typeof loadFromCloud === 'function') loadFromCloud();
-        if (typeof updateIngredients === 'function') updateIngredients();
-    }
-
-    // 2. Obsługa Swipe (przesuwanie zdjęć)
-    const obszarModala = document.getElementById('viewer-modal');
-    let xStart = 0;
-
-    obszarModala.addEventListener('touchstart', e => {
-        xStart = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    obszarModala.addEventListener('touchend', e => {
-        let xEnd = e.changedTouches[0].screenX;
-        if (xStart - xEnd > 50) moveCarousel(1);  // Swipe w lewo
-        if (xEnd - xStart > 50) moveCarousel(-1); // Swipe w prawo
-    }, { passive: true });
-
-    }
-}
-    </script>
+</script>
 </body>
 </html>
