@@ -26,14 +26,14 @@
         .glass-card { background: white; border-radius: 20px; box-shadow: 0 4px 15px rgba(74, 55, 40, 0.05); border: 1px solid #efe3d8; overflow: hidden; }
         .btn-feed.active { background-color: #e7dfd8 !important; color: #4a3728 !important; border-color: #d4c5ba !important; }
         
-        /* Accordion Style */
+        /* Accordion (Harmonijka) */
         .accordion-content { display: none; }
         .accordion-item.active .accordion-content { display: block; animation: slideDown 0.2s ease-out; }
         .accordion-item.active .plus-icon { transform: rotate(45deg); }
         @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
         .recipe-step { position: relative; padding-left: 1.2rem; margin-bottom: 0.8rem; border-left: 2px solid var(--sand); margin-left: 0.4rem; font-size: 0.9rem; line-height: 1.5; }
-        .starter-card { cursor: pointer; transition: all 0.2s; }
+        .starter-card { cursor: pointer; }
         .starter-card.selected { border: 2px solid var(--accent); background: #fffcf9; }
 
         .date-container { position: relative; display: inline-block; }
@@ -42,11 +42,11 @@
 
         .brown-gradient { background: linear-gradient(135deg, #4a3728 0%, #634a38 100%); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        
-        /* Viewer */
+
+        /* Viewer Modal */
         #viewer-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 200; flex-direction: column; align-items: center; justify-content: center; }
         #viewer-modal.active { display: flex; }
-        .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 210; }
+        .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
         
         .filter-btn { padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: bold; border: 1px solid #efe3d8; background: white; color: #a89284; cursor: pointer; }
         .filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
@@ -234,18 +234,18 @@
                     <div class="relative">
                         <input type="number" id="zw" value="0" onchange="svZ()" class="w-full bg-stone-50 border-2 border-stone-100 rounded-3xl p-6 font-black text-center text-4xl text-stone-800 outline-none">
                     </div>
-                    <div id="za" class="hidden p-4 rounded-2xl bg-orange-50 border border-orange-200 text-orange-800 text-[11px] text-center font-bold">Wystarczy na Żurek!</div>
+                    <div id="za" class="hidden p-4 rounded-2xl bg-orange-50 border border-orange-200 text-orange-800 text-[11px] text-center font-bold italic uppercase tracking-widest">Wystarczy na Żurek! (400g+)</div>
                     <div class="h-5 bg-stone-100 rounded-full overflow-hidden border border-stone-50">
-                        <div id="zb" class="h-full brown-gradient transition-all duration-500" style="width: 0%"></div>
+                        <div id="zb" class="h-full brown-gradient transition-all duration-1000" style="width: 0%"></div>
                     </div>
-                    <button onclick="rsZ()" class="w-full py-2 text-[10px] uppercase font-bold text-stone-300">Wyczyść słoik</button>
+                    <button onclick="rsZ()" class="w-full py-2 text-[10px] uppercase font-bold text-stone-300 tracking-widest">Wyczyść słoik</button>
                 </div>
             </div>
         </section>
 
         <section id="gallery" class="tab-content space-y-5">
             <div class="px-2">
-                <h3 class="serif text-2xl font-bold italic text-stone-800 mb-4">Galeria</h3>
+                <h3 class="serif text-2xl font-bold italic text-stone-800 mb-4">Galeria Wypieków</h3>
                 <div class="flex gap-2 overflow-x-auto no-scrollbar pb-2" id="gallery-filters">
                     <button onclick="filterGallery('Wszystkie', this)" class="filter-btn active">Wszystkie</button>
                     <button onclick="filterGallery('Clint Yeastwood', this)" class="filter-btn">Clint</button>
@@ -258,12 +258,12 @@
     </main>
 
     <div id="viewer-modal" onclick="closeViewer()">
-        <button class="absolute top-6 right-6 text-white text-3xl">&times;</button>
+        <button class="absolute top-6 right-6 text-white text-3xl z-[250]">&times;</button>
         <div id="arrow-prev" class="nav-arrow left-4" onclick="changePhoto(-1, event)">&#10094;</div>
         <div id="arrow-next" class="nav-arrow right-4" onclick="changePhoto(1, event)">&#10095;</div>
-        <img id="viewer-img" class="w-full max-h-[70vh] object-contain">
+        <img id="viewer-img" class="w-full h-auto max-h-[70vh] object-contain">
         <div class="p-4 text-white text-center w-full" onclick="event.stopPropagation()">
-            <p id="viewer-starter" class="text-[10px] uppercase font-black text-stone-400 mb-1"></p>
+            <p id="viewer-starter" class="text-[10px] uppercase font-black text-stone-400 tracking-[0.2em] mb-1"></p>
             <h4 id="viewer-date" class="serif text-xl font-bold"></h4>
         </div>
     </div>
@@ -274,29 +274,26 @@
         let currentPhotos = [];
         let currentPhotoIdx = 0;
 
-        // TAB NAVIGATION
+        // Wszystkie funkcje przypisane do window, by były widoczne dla atrybutów onclick w HTML
         window.st = function(id, btn) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             btn.classList.add('active');
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
         };
 
-        // ACCORDION
         window.toggleAccordion = function(btn) {
             btn.parentElement.classList.toggle('active');
         };
 
-        // STARTER SELECTION
-        window.sel = function(name, d) {
+        window.sel = function(name, days) {
             let key = name.toLowerCase().includes('hilde') ? 'hildegarda' : (name.toLowerCase().includes('syl') ? 'sylvester' : 'clint');
             document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
             document.getElementById('card-' + key).classList.add('selected');
             document.getElementById('curr-name').innerText = name;
         };
 
-        // FEEDING LOGIC
         window.markFed = function(key, e) {
             if(e) e.stopPropagation();
             localStorage.setItem('feed_' + key, new Date().toLocaleDateString('pl-PL'));
@@ -309,7 +306,6 @@
             load();
         };
 
-        // CALC
         window.upd = function(n) {
             document.querySelectorAll('.qb').forEach(b => b.className = 'qb flex-1 py-3 rounded-xl bg-white text-stone-400 border border-stone-200 font-semibold text-sm');
             document.getElementById('q'+n).className = 'qb flex-1 py-3 rounded-xl brown-gradient text-white font-semibold text-sm shadow-md';
@@ -322,6 +318,7 @@
 
         window.calcTime = function() {
             const startStr = document.getElementById('start-time').value;
+            if(!startStr) return;
             const [h, m] = startStr.split(':').map(Number);
             const add = (hrs, mns) => {
                 let t = h * 60 + m + hrs * 60 + mns;
@@ -332,7 +329,10 @@
             document.getElementById('t-pieczenie').innerText = add(19,15);
         };
 
-        // GALLERY
+        window.addToCal = function() {
+            alert("Funkcja kalendarza gotowa.");
+        };
+
         async function fetchGallery() {
             try {
                 const res = await fetch(CSV_URL);
@@ -354,8 +354,7 @@
                 const div = document.createElement('div');
                 div.className = "relative aspect-square rounded-2xl overflow-hidden cursor-pointer";
                 div.onclick = () => openViewer(i.full, i.starter, i.date);
-                div.innerHTML = `
-                    <img src="${i.thumb}" class="w-full h-full object-cover">
+                div.innerHTML = `<img src="${i.thumb}" class="w-full h-full object-cover">
                     <div class="absolute bottom-0 left-0 right-0 bg-stone-900/60 backdrop-blur-md p-2 border-t border-white/10">
                         <span class="text-[7px] text-stone-300 font-bold uppercase block">${i.starter}</span>
                         <h4 class="text-white serif italic text-sm font-bold">${i.date}</h4>
@@ -375,23 +374,18 @@
             currentPhotoIdx = 0;
             document.getElementById('viewer-starter').innerText = starter;
             document.getElementById('viewer-date').innerText = date;
-            updateImg();
+            document.getElementById('viewer-img').src = currentPhotos[0];
             document.getElementById('viewer-modal').classList.add('active');
         };
-
-        function updateImg() {
-            document.getElementById('viewer-img').src = currentPhotos[currentPhotoIdx];
-        }
 
         window.changePhoto = function(dir, e) {
             if(e) e.stopPropagation();
             currentPhotoIdx = (currentPhotoIdx + dir + currentPhotos.length) % currentPhotos.length;
-            updateImg();
+            document.getElementById('viewer-img').src = currentPhotos[currentPhotoIdx];
         };
 
         window.closeViewer = function() { document.getElementById('viewer-modal').classList.remove('active'); };
 
-        // STORAGE
         window.svZ = function() { localStorage.setItem('z_w', document.getElementById('zw').value); load(); };
         window.rsZ = function() { if(confirm("Reset?")) { document.getElementById('zw').value = 0; svZ(); } };
 
@@ -403,9 +397,9 @@
                 if(b && d === new Date().toLocaleDateString('pl-PL')) { b.innerText = "OK"; b.classList.add('active'); }
             });
             const w = localStorage.getItem('z_w') || 0;
-            document.getElementById('zw').value = w;
-            document.getElementById('zb').style.width = Math.min((w/400)*100, 100) + '%';
-            document.getElementById('za').classList.toggle('hidden', w < 400);
+            if(document.getElementById('zw')) document.getElementById('zw').value = w;
+            if(document.getElementById('zb')) document.getElementById('zb').style.width = Math.min((w/400)*100, 100) + '%';
+            if(document.getElementById('za')) document.getElementById('za').classList.toggle('hidden', w < 400);
             fetchGallery();
             calcTime();
         }
