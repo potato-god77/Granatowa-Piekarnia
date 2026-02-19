@@ -367,29 +367,34 @@
         updateIngredients();
     }
 
-    function updateIngredients() {
-    const r = RECIPES[currentStarterKey];
-    const q = currentQty;
+   function updateIngredients() {
+    const r = RECIPES[currentStarterKey]; // pobiera dane wybranego zakwasu (Clint, Sylvester lub Hildegarda)
+    const q = currentQty; // pobiera aktualną liczbę chlebów (1, 2 lub 3)
 
-    // Aktualizacja Kalkulatora (to co już miałeś)
+    // A. AKTUALIZACJA KALKULATORA (Sekcja Pieczenie)
     document.getElementById('sv').innerText = (r.sv * q) + 'g';
     document.getElementById('wv').innerText = (r.wv * q) + 'g';
     document.getElementById('fv').innerText = (r.fv * q) + 'g';
     document.getElementById('slv').innerText = (r.slv * q) + 'g';
     document.getElementById('recipe-tips').innerText = r.secret;
 
-    // NOWE: Aktualizacja sekcji WIEDZA
-    document.getElementById('w-name').innerText = r.name;
-    document.getElementById('w-target').innerText = r.target;
-    document.getElementById('w-ratio').innerText = r.ratio;
-    document.getElementById('w-desc').innerText = r.desc;
-    
-    // Gramatury w krokach (uwzględniają liczbę chlebów tam gdzie trzeba)
-    document.getElementById('w-sv').innerText = (r.sv * q) + 'g';
-    document.getElementById('w-regMF').innerText = r.regMF + 'g'; // Regeneracja matki jest stała niezależnie od ilości chleba
-    document.getElementById('w-regWF').innerText = r.regWF + 'g';
+    // B. AKTUALIZACJA LOGISTYKI (Sekcja Wiedza)
+    // Te ID (np. 'w-name') musisz mieć w kodzie HTML w sekcji Wiedza
+    if (document.getElementById('w-name')) {
+        document.getElementById('w-name').innerText = r.name;
+        document.getElementById('w-target').innerText = r.target;
+        document.getElementById('w-ratio').innerText = r.ratio;
+        document.getElementById('w-desc').innerText = r.desc;
+        
+        // Gramatura pobrania (zależna od liczby chlebów)
+        document.getElementById('w-sv').innerText = (r.sv * q) + 'g';
+        
+        // Gramatury regeneracji (stałe dla matki)
+        document.getElementById('w-regMF').innerText = r.regMF + 'g';
+        document.getElementById('w-regWF').innerText = r.regWF + 'g';
+    }
 
-    calcTime();
+    calcTime(); // przelicza godziny na harmonogramie
 }
 
     function calcTime() {
