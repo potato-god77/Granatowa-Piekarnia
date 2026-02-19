@@ -25,40 +25,30 @@
         .accordion-content { display: none; }
         .accordion-item.active .accordion-content { display: block; animation: slideDown 0.2s ease-out; }
         .accordion-item.active .plus-icon { transform: rotate(45deg); }
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         .recipe-step { position: relative; padding-left: 1.2rem; margin-bottom: 0.8rem; border-left: 2px solid var(--sand); margin-left: 0.4rem; font-size: 0.9rem; line-height: 1.5; }
-        .starter-card { cursor: pointer; }
-        .starter-card.selected { border: 2px solid var(--accent); background: #fffcf9; }
-        .date-container { position: relative; display: inline-block; }
-        .date-input-hidden { position: absolute; opacity: 0; width: 100%; height: 100%; left: 0; top: 0; cursor: pointer; z-index: 10; }
-        .date-text { border-bottom: 1px dashed var(--accent); }
+        
+        /* Modal & Karuzela */
+        #viewer-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98); z-index: 9999; flex-direction: column; }
+        #viewer-modal.active { display: flex; }
+        .carousel-track { display: flex; transition: transform 0.3s ease-out; height: 100%; }
+        .carousel-slide { min-width: 100%; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .thumb-strip { display: flex; gap: 8px; overflow-x: auto; padding: 15px; background: rgba(0,0,0,0.5); }
+        .thumb-item { width: 50px; height: 50px; flex-shrink: 0; border-radius: 6px; opacity: 0.5; border: 2px solid transparent; }
+        .thumb-item.active { opacity: 1; border-color: white; }
+        
         .brown-gradient { background: linear-gradient(135deg, #4a3728 0%, #634a38 100%); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        
-        /* Styl Galerii Karuzelowej */
-        .gallery-carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 15px; padding: 10px 5px; -webkit-overflow-scrolling: touch; }
-        .gallery-item { flex: 0 0 85%; scroll-snap-align: center; }
-        #viewer-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 200; flex-direction: column; align-items: center; justify-content: center; }
-        #viewer-modal.active { display: flex; }
-        
-        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: var(--accent); z-index: 100; transform: scaleX(0); transform-origin: left; transition: transform 0.5s; }
-        .loading-overlay.active { transform: scaleX(1); }
-        #lock-screen { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .pass-input { background: white; border: 2px solid var(--sand); border-radius: 15px; padding: 15px; text-align: center; font-size: 1.5rem; letter-spacing: 0.5rem; width: 220px; outline: none; color: var(--primary); font-weight: bold; }
+        #lock-screen { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     </style>
 </head>
 <body class="pb-24">
     <div id="lock-screen">
         <h1 class="serif text-3xl italic mb-8 text-stone-800">Granatowa Piekarnia</h1>
         <div class="glass-card p-8 flex flex-col items-center">
-            <p class="text-[10px] uppercase font-black tracking-widest text-stone-400 mb-4">Hasło dostępu</p>
-            <input type="password" id="pass-field" class="pass-input" placeholder="••••" autofocus onkeydown="if(event.key==='Enter') checkPass()">
-            <button onclick="checkPass()" class="mt-6 w-full brown-gradient text-white px-8 py-3 rounded-xl font-bold shadow-lg transition-transform active:scale-95">Otwórz drzwi</button>
-            <p id="pass-err" class="text-red-500 text-[10px] font-bold mt-4 opacity-0 uppercase">Błędne hasło</p>
+            <input type="password" id="pass-field" class="w-full bg-white border-2 border-stone-100 rounded-xl p-4 text-center text-2xl mb-4" placeholder="••••" onkeydown="if(event.key==='Enter') checkPass()">
+            <button onclick="checkPass()" class="w-full brown-gradient text-white py-3 rounded-xl font-bold">Otwórz</button>
         </div>
     </div>
-
-    <div id="loader" class="loading-overlay"></div>
 
     <header class="p-6 pt-10 text-center bg-white border-b">
         <h1 class="serif text-3xl italic font-bold text-stone-800">Granatowa Piekarnia</h1>
@@ -73,88 +63,11 @@
     </nav>
 
     <main class="max-w-md mx-auto p-4 space-y-6">
-
         <section id="starters" class="tab-content active space-y-4">
-            <h3 class="serif text-xl px-2 font-bold text-stone-800">Twoje Matki</h3>
-            <div id="card-clint" onclick="sel('Clint Yeastwood')" class="starter-card glass-card p-5 flex flex-col gap-3 selected">
-                <div class="flex justify-between items-center">
-                    <div><h4 class="font-bold text-xl text-stone-800">Clint Yeastwood</h4><p class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Żytni • typ 2000</p></div>
-                    <span class="text-3xl">🧔</span>
-                </div>
-                <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl border border-stone-100">
-                    <div class="date-container">
-                        <p class="text-[11px] text-stone-500 uppercase font-bold">Ostatnio: <span id="feed-clint" class="text-stone-800 font-bold date-text">---</span></p>
-                        <input type="date" class="date-input-hidden" onchange="manualDate('clint', this.value)">
-                    </div>
-                    <button id="btn-clint" onclick="markFed('clint', event)" class="btn-feed bg-stone-200 text-stone-600 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-tighter">Regeneruj</button>
-                </div>
-            </div>
-
-            <div id="card-sylvester" onclick="sel('Sylvester Graham')" class="starter-card glass-card p-5 flex flex-col gap-3">
-                <div class="flex justify-between items-center">
-                    <div><h4 class="font-bold text-xl text-stone-800">Sylvester Graham</h4><p class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Pszenny • typ 1850</p></div>
-                    <span class="text-3xl">🌾</span>
-                </div>
-                <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl border border-stone-100">
-                    <div class="date-container">
-                        <p class="text-[11px] text-stone-500 uppercase font-bold">Ostatnio: <span id="feed-sylvester" class="text-stone-800 font-bold date-text">---</span></p>
-                        <input type="date" class="date-input-hidden" onchange="manualDate('sylvester', this.value)">
-                    </div>
-                    <button id="btn-sylvester" onclick="markFed('sylvester', event)" class="btn-feed bg-stone-200 text-stone-600 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-tighter">Regeneruj</button>
-                </div>
-            </div>
-
-            <div id="card-hildegarda" onclick="sel('Hildegarda z Bingen')" class="starter-card glass-card p-5 flex flex-col gap-3">
-                <div class="flex justify-between items-center">
-                    <div><h4 class="font-bold text-xl text-stone-800">Hildegarda z Bingen</h4><p class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Orkiszowy • typ 2000</p></div>
-                    <span class="text-3xl">⛪</span>
-                </div>
-                <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl border border-stone-100">
-                    <div class="date-container">
-                        <p class="text-[11px] text-stone-500 uppercase font-bold">Ostatnio: <span id="feed-hildegarda" class="text-stone-800 font-bold date-text">---</span></p>
-                        <input type="date" class="date-input-hidden" onchange="manualDate('hildegarda', this.value)">
-                    </div>
-                    <button id="btn-hildegarda" onclick="markFed('hildegarda', event)" class="btn-feed bg-stone-200 text-stone-600 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-tighter">Regeneruj</button>
-                </div>
-            </div>
-        </section>
+            </section>
 
         <section id="kalk" class="tab-content space-y-6">
-            <div class="glass-card p-5 text-center bg-stone-50">
-                <h2 id="curr-name" class="serif text-xl font-bold text-stone-800 mb-4 italic">Clint Yeastwood</h2>
-                <div class="flex gap-2">
-                    <button onclick="upd(1)" id="q1" class="qb flex-1 py-3 rounded-xl brown-gradient text-white font-semibold text-sm">1 Chleb</button>
-                    <button onclick="upd(2)" id="q2" class="qb flex-1 py-3 rounded-xl bg-white text-stone-400 border border-stone-200 font-semibold text-sm">2 Chleby</button>
-                </div>
-            </div>
-
-            <div class="glass-card p-6 space-y-4">
-                <div class="flex justify-between border-b border-stone-50 pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Zakwas</span><b id="sv" class="text-2xl text-stone-900 font-semibold">---</b></div>
-                <div class="flex justify-between border-b border-stone-50 pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Woda (30°C)</span><b id="wv" class="text-2xl text-stone-800 font-semibold">---</b></div>
-                <div class="flex justify-between border-b border-stone-50 pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Mąka</span><b id="fv" class="text-2xl text-stone-800 font-semibold">---</b></div>
-                <div class="flex justify-between"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Sól</span><b id="slv" class="text-2xl text-stone-800 font-semibold">---</b></div>
-            </div>
-
-            <div id="tips-box" class="glass-card p-5 bg-white border-l-4 border-accent">
-                <p class="text-[9px] uppercase font-bold text-stone-400 mb-2 tracking-widest">Tajemnica sukcesu:</p>
-                <div id="recipe-tips" class="text-sm leading-relaxed"></div>
-            </div>
-
-            <div class="glass-card p-5 bg-[#f9f5f1]">
-                <div class="flex justify-between items-center mb-5">
-                    <p class="text-[9px] uppercase font-bold text-stone-500 tracking-widest">Mieszanie:</p>
-                    <input type="time" id="start-time" value="22:00" onchange="calcTime()" class="bg-white border border-stone-200 rounded-lg px-3 py-1.5 text-sm font-semibold text-stone-800">
-                </div>
-                <div class="space-y-4 relative border-l border-stone-200 ml-4 pl-6">
-                    <div><p class="text-[9px] uppercase font-medium text-stone-400">Do lodówki</p><p id="t-lodowka" class="text-xl font-bold text-stone-800">05:30</p></div>
-                    <div><p class="text-[9px] uppercase font-medium text-stone-400">Formowanie</p><p id="t-formowanie" class="text-xl font-bold text-stone-800">16:00</p></div>
-                    <div class="bg-white p-4 rounded-xl border border-stone-100 shadow-sm text-center -ml-1">
-                        <p class="text-[9px] uppercase font-bold text-stone-500 mb-1">Pieczenie (235°C)</p>
-                        <p id="t-pieczenie" class="text-3xl font-black text-[#4a3728]">17:15</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+            </section>
 
         <section id="recipes" class="tab-content space-y-4">
             <div class="accordion-item glass-card active">
@@ -164,20 +77,24 @@
                 </button>
                 <div class="accordion-content p-6 pt-0 border-t border-stone-50 text-sm space-y-4">
                     <div class="recipe-step">
-                        <p class="font-bold italic">Etap 1: Aktywacja (ok. 16:00)</p>
+                        <p class="font-bold text-stone-800 italic">Etap 1: Aktywacja (ok. 16:00)</p>
                         <p>Pobierz 30g bazy ze słoika nr 2. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj w słoiku nr 1 i zostaw na blacie w temperaturze pokojowej na 4-6 godzin.</p>
                     </div>
                     <div class="recipe-step">
-                        <p class="font-bold italic">Etap 2: Pobranie (ok. 22:00)</p>
-                        <p>1. Pobierz 115g aktywnego zakwasu ze słoika nr 1 do miski.<br>2. Całą pozostałość (R1) ze słoika nr 1 przełóż do słoika nr 2.</p>
+                        <p class="font-bold text-stone-800 italic">Etap 2: Pobranie (ok. 22:00)</p>
+                        <p>1. Pobierz 115g aktywnego zakwasu ze słoika nr 1 do miski.</p>
+                        <p>2. Całą pozostałość (R1) ze słoika nr 1 przełóż do słoika nr 2.</p>
                     </div>
                     <div class="recipe-step">
-                        <p class="font-bold italic">Etap 3: Święta Porcja (Słoik 2)</p>
-                        <p>1. Wymieszaj starą bazę (R2) ze zrzutem (R1).<br>2. Wymierz z tego 20g ("Święta Porcja") i zostaw w słoiku nr 2.<br>3. Resztę ze słoika nr 2 przełóż do słoika nr 3 (Zlewki).</p>
+                        <p class="font-bold text-stone-800 italic">Etap 3: Święta Porcja (Słoik 2)</p>
+                        <p>1. Wymieszaj starą bazę (R2) ze zrzutem (R1).</p>
+                        <p>2. Wymierz z tego 20g ("Święta Porcja") i zostaw w słoiku nr 2</p>
+                        <p>3. Resztę ze słoika nr 2 przełoż do słoika nr 3 (Zlewki).</p>
                     </div>
                     <div class="recipe-step">
-                        <p class="font-bold italic">Etap 4: Regeneracja Matki</p>
-                        <p>1. Do 20g porcji w słoiku nr 2 dodaj 40g mąki i 40g wody (38°C).<br>2. Zostaw na 1 godzinę na blacie w temperaturze pokojowej, a potem schowaj do lodówki.</p>
+                        <p class="font-bold text-stone-800 italic">Etap 4: Regeneracja Matki</p>
+                        <p>1. Do 20g porcji w słoiku nr 2 dodaj 40g mąki i 40g wody (38°C).</p>
+                        <p>2. Zostaw na 1 godzinę na blacie w temperaturze pokojowej, a potem schowaj do lodówki.</p>
                     </div>
                 </div>
             </div>
@@ -189,16 +106,16 @@
                 </button>
                 <div class="accordion-content p-6 pt-0 border-t border-stone-50 text-sm space-y-4 text-stone-600">
                     <div class="recipe-step">
-                        <p class="font-bold italic text-stone-800">Mieszanie (ok. 22:00)</p>
-                        <p>Woda 340g (30°C) + aktywny zakwas 115g. Dodaj 500g mąki i 14g soli. Wymieszaj, przykryj i zostaw na noc.</p>
+                        <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p>
+                        <p>Zrób zawiesinę: woda 340g (30°C) + aktywny zakwas 115g. Do tego dodaj 500g mąki i 14g soli. Wymieszaj, przykryj miskę i zostaw na noc na blacie w temperaturze pokojowej.</p>
                     </div>
                     <div class="recipe-step">
-                        <p class="font-bold italic text-stone-800">Rano (05:30 - 06:00)</p>
+                        <p class="font-bold text-stone-800 italic">Rano (05:30 - 06:00)</p>
                         <p>Włóż ciasto do lodówki (pod przykryciem).</p>
                     </div>
                     <div class="recipe-step">
-                        <p class="font-bold italic text-stone-800">Pieczenie (od 16:00)</p>
-                        <p>Nagrzej piec (235°C). Uformuj "na kopertę", natnij. Piecz 30 min pod przykryciem, 15 min bez.</p>
+                        <p class="font-bold text-stone-800 italic">Pieczenie (od 16:00)</p>
+                        <p>Nagrzej piec z garnkiem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę" by stało się napięte, po czym natnij ostrym nożem lub żyletką. Gdy piekarnik się już nagrzeje, piecz 30 min pod przykryciem, a następnie zdejmij pokrywkę i piecz kolejne 15 min bez niej.</p>
                     </div>
                 </div>
             </div>
@@ -208,186 +125,137 @@
                     <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Żurek na zlewkach</h3>
                     <span class="plus-icon text-2xl">+</span>
                 </button>
-                <div class="accordion-content p-6 pt-0 border-t border-stone-50 text-sm space-y-4">
+                <div class="accordion-content p-6 pt-0 border-t border-stone-50 text-sm space-y-4 text-stone-600">
                     <div class="recipe-step">
-                        <p class="font-bold italic text-stone-900">Składniki (2.5L):</p>
-                        <ul class="list-disc ml-4 space-y-1 mt-1 text-stone-700 text-xs">
-                            <li>250g żeberek, 150g boczku</li>
-                            <li>Marchew, pietruszka, seler, cebula</li>
-                            <li>Liść laurowy, ziele angielskie</li>
+                        <p class="font-bold text-stone-800 italic text-stone-900">Składniki na wywar (2-2.5L):</p>
+                        <ul class="list-disc ml-4 space-y-1 mt-1 text-stone-700">
+                            <li>250-300g wędzonych żeberek</li>
+                            <li>150g wędzonego boczku</li>
+                            <li>2 marchewki, 1 pietruszka, kawałek selera</li>
+                            <li>1 cebula (opalona nad ogniem)</li>
+                            <li>3 liście laurowe, 5 ziaren ziela angielskiego</li>
+                            <li>2 litry zimnej wody</li>
                         </ul>
                     </div>
                     <div class="recipe-step">
-                        <p class="font-bold italic text-stone-800">Krok 1: Wywar</p>
-                        <p>Gotuj mięso i warzywa przez ok. 2 godziny na małym ogniu.</p>
+                        <p class="font-bold text-stone-800 italic">Krok 1: Wywar Mięsny</p>
+                        <p>Do garnka włóż żeberka, boczek, warzywa i przyprawy. Zalej zimną wodą. Gotuj pod przykryciem na minimalnym ogniu przez ok. 2 godziny, aż mięso będzie bardzo miękkie.</p>
                     </div>
                     <div class="recipe-step">
-                        <p class="font-bold italic text-stone-800">Krok 2: Zakwaszanie</p>
-                        <p>Wymieszaj 400g zlewek (słoik 3) z szklanką wywaru. Wlej do garnka, zagotuj.</p>
+                        <p class="font-bold text-stone-800 italic">Krok 2: Zakwaszanie (Zlewki)</p>
+                        <p>Odlej szklankę gorącego wywaru i wymieszaj ją dokładnie z 400g zlewek ze słoika nr 3 (to zapewni brak grudek). Wlej zawiesinę do garnka, cały czas mieszając. Zagotuj.</p>
                     </div>
                     <div class="recipe-step">
-                        <p class="font-bold italic text-stone-800">Krok 3: Finisz</p>
-                        <p>Daj czosnek, majeranek i 100ml śmietanki 30%.</p>
+                        <p class="font-bold text-stone-800 italic">Krok 3: Wykończenie</p>
+                        <p>Dodaj 2-3 ząbki przeciśniętego czosnku i 2 łyżki majeranku. Dopraw solą i pieprzem. Na koniec zabiel 100ml śmietanki 30%. Podawaj z białą kiełbasą i jajkiem.</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <section id="info" class="tab-content space-y-5">
-            <div class="glass-card p-6">
-                <h4 class="serif text-xl font-bold mb-4 text-stone-800">Słoik 3: Zlewki 🥣</h4>
-                <div class="space-y-5">
-                    <input type="number" id="zw" value="0" onblur="saveToCloud('zlewki', this.value)" class="w-full bg-stone-50 border-2 border-stone-100 rounded-3xl p-6 font-black text-center text-4xl text-stone-800 outline-none">
-                    <div id="za" class="hidden p-4 rounded-2xl bg-orange-50 border border-orange-200 text-orange-800 text-[11px] text-center font-bold">Wystarczy na Żurek!</div>
-                    <div class="h-5 bg-stone-100 rounded-full overflow-hidden"><div id="zb" class="h-full brown-gradient transition-all duration-500" style="width: 0%"></div></div>
-                    <button onclick="rsZ()" class="w-full py-2 text-[10px] uppercase font-bold text-stone-300">Wyczyść słoik</button>
-                </div>
-            </div>
-            <button onclick="logout()" class="w-full text-[9px] uppercase tracking-widest text-stone-300 font-bold">Wyloguj urządzenie</button>
-        </section>
+            </section>
 
         <section id="gallery" class="tab-content">
-            <h3 class="serif text-xl px-2 font-bold text-stone-800 mb-4 italic text-center">Inspiracje</h3>
-            <div id="gal-cont" class="gallery-carousel no-scrollbar"></div>
-            <p class="text-center text-[9px] text-stone-400 mt-4 uppercase tracking-widest">Przesuń, aby zobaczyć więcej</p>
+            <div id="gal-cont" class="grid grid-cols-2 gap-3"></div>
         </section>
     </main>
 
-    <div id="viewer-modal" onclick="closeViewer()">
-        <img id="viewer-img" class="w-full h-auto max-h-[80vh] object-contain">
+    <div id="viewer-modal">
+        <div class="p-4 flex justify-between items-center text-white">
+            <span id="carousel-info" class="text-xs font-bold opacity-70"></span>
+            <button onclick="closeViewer()" class="text-3xl">&times;</button>
+        </div>
+        
+        <div class="relative flex-1 overflow-hidden">
+            <div id="carousel-track" class="carousel-track"></div>
+            <button onclick="moveCarousel(-1)" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 p-4 rounded-full text-white text-2xl">&lsaquo;</button>
+            <button onclick="moveCarousel(1)" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 p-4 rounded-full text-white text-2xl">&rsaquo;</button>
+        </div>
+
+        <div id="thumb-strip" class="thumb-strip no-scrollbar"></div>
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxDTlTcVOKuNua9ZL29lL-HBS1BJpptJtZ5ee9m5JkDPMU1M6bMWVs7fHwi9ccyxhE/exec';
         const GALLERY_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhwbnRbCBfN9LtC-cGPK_ZNLQBPwytrADlL2_WDAcmLrHFXa0TeDWfFkZsNy5Z4421hD1LJRR_kiQO/pub?gid=0&single=true&output=csv';
-        const BREAD_PASS = 'feelgood7'; // <-- WPISZ SWOJE HASŁO
-
-        const RECIPES = {
-            clint: { name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, secret: 'Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy. Garnek wybacza mu wszystko, bo żyto nie "płynie" tak mocno na boki.' },
-            sylvester: { name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, secret: 'Przy 1850 otręby tną gluten. Jeśli dasz 340g wody (jak u Clinta), ciasto po nocy będzie zbyt luźne na garnek. 325g pozwoli utrzymać kształt kuli.', tip: 'Wymaga przynajmniej 2-3 "składań" (stretch & fold) w ciągu pierwszej godziny od wymieszania.' },
-            hildegarda: { name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, secret: 'Orkisz 2000 pije wodę szybko, ale równie szybko "puchnie" i traci napięcie powierzchniowe. Niższa hydratacja (310g) to Twój bezpiecznik, dzięki któremu bochenek w garnku wystrzeli w górę, a nie rozleje się na boki.', tip: 'Hildegarda nie lubi agresywnego wyrabiania. Tylko delikatne mieszanie do połączenia składników.' }
-        };
-
-        let currentStarterKey = 'clint';
-        let currentQty = 1;
         let allGalleryData = [];
-
-        function checkPass() {
-            if(document.getElementById('pass-field').value === BREAD_PASS) {
-                localStorage.setItem('bakery_access', 'granted');
-                document.getElementById('lock-screen').style.display = 'none';
-            } else {
-                const e = document.getElementById('pass-err'); e.style.opacity = '1'; setTimeout(()=>e.style.opacity='0',2000);
-            }
-        }
-        function logout() { if(confirm("Wylogować?")) { localStorage.removeItem('bakery_access'); location.reload(); } }
-
-        async function saveToCloud(key, value) {
-            document.getElementById('loader').classList.add('active');
-            try { await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({key, value})}); setTimeout(loadFromCloud, 1000); } catch(e){}
-            setTimeout(()=>document.getElementById('loader').classList.remove('active'), 1500);
-        }
-
-        async function loadFromCloud() {
-            try {
-                const res = await fetch(SCRIPT_URL); const data = await res.json();
-                ['clint','sylvester','hildegarda'].forEach(k => {
-                    if(data[k]) document.getElementById('feed-'+k).innerText = data[k];
-                    const b = document.getElementById('btn-'+k);
-                    if(data[k] === new Date().toLocaleDateString('pl-PL')) { b.innerText="OK"; b.classList.add('active'); } else { b.innerText="Regeneruj"; b.classList.remove('active'); }
-                });
-                const w = data.zlewki || 0; document.getElementById('zw').value = w;
-                document.getElementById('zb').style.width = Math.min((w/400)*100, 100)+'%';
-                document.getElementById('za').classList.toggle('hidden', w < 400);
-            } catch(e){}
-        }
-
-        window.sel = function(name) {
-            currentStarterKey = name.toLowerCase().includes('hilde') ? 'hildegarda' : (name.toLowerCase().includes('syl') ? 'sylvester' : 'clint');
-            document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
-            document.getElementById('card-'+currentStarterKey).classList.add('selected');
-            document.getElementById('curr-name').innerText = RECIPES[currentStarterKey].name;
-            updateIngredients();
-        };
-
-        window.upd = function(n) {
-            currentQty = n;
-            document.querySelectorAll('.qb').forEach(b => {
-                b.className = 'qb flex-1 py-3 rounded-xl bg-white text-stone-400 border border-stone-200 font-semibold text-sm';
-            });
-            document.getElementById('q'+n).className = 'qb flex-1 py-3 rounded-xl brown-gradient text-white font-semibold text-sm shadow-md';
-            updateIngredients();
-        };
-
-        function updateIngredients() {
-            const r = RECIPES[currentStarterKey];
-            document.getElementById('sv').innerText = (r.sv * currentQty)+'g';
-            document.getElementById('wv').innerText = (r.wv * currentQty)+'g';
-            document.getElementById('fv').innerText = (r.fv * currentQty)+'g';
-            document.getElementById('slv').innerText = (r.slv * currentQty)+'g';
-            let html = `<p class="text-stone-600 italic mb-2">"${r.secret}"</p>`;
-            if(r.tip) html += `<p class="text-[11px] font-bold text-stone-400 uppercase tracking-tight">💡 Wskazówka: ${r.tip}</p>`;
-            document.getElementById('recipe-tips').innerHTML = html;
-            calcTime();
-        }
-
-        window.calcTime = function() {
-            const [h,m] = document.getElementById('start-time').value.split(':').map(Number);
-            const add = (hrs, mns) => {
-                let t = h*60+m + hrs*60+mns;
-                return `${String(Math.floor(t/60)%24).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;
-            };
-            document.getElementById('t-lodowka').innerText = add(7,30);
-            document.getElementById('t-formowanie').innerText = add(18,0);
-            document.getElementById('t-pieczenie').innerText = add(19,15);
-        };
-
-        window.st = function(id, btn) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active'); btn.classList.add('active');
-            if(id === 'gallery' && allGalleryData.length === 0) fetchGallery();
-        };
-
-        window.toggleAccordion = (btn) => btn.parentElement.classList.toggle('active');
-        window.markFed = (k, e) => { if(e) e.stopPropagation(); saveToCloud(k, new Date().toLocaleDateString('pl-PL')); };
-        window.manualDate = (k, v) => { if(v) saveToCloud(k, new Date(v).toLocaleDateString('pl-PL')); };
-        window.rsZ = () => { if(confirm("Reset słoika?")) saveToCloud('zlewki', 0); };
+        let currentImgIndex = 0;
 
         async function fetchGallery() {
             try {
                 const res = await fetch(GALLERY_URL); const txt = await res.text();
                 allGalleryData = txt.split('\n').slice(1).map(r => {
                     const c = r.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
-                    return c.length < 5 ? null : { date: c[1], starter: c[2], thumb: c[3], full: c[4] };
-                }).filter(r => r);
-                renderGallery();
+                    return { date: c[1], starter: c[2], thumb: c[3], full: c[4] };
+                });
+                renderAlbums();
             } catch(e){}
         }
 
-        function renderGallery() {
-            const cont = document.getElementById('gal-cont'); cont.innerHTML = '';
-            allGalleryData.forEach(i => {
-                const d = document.createElement('div'); 
-                d.className = "gallery-item glass-card";
-                d.onclick = () => { document.getElementById('viewer-img').src = i.full; document.getElementById('viewer-modal').classList.add('active'); };
+        function renderAlbums() {
+            const cont = document.getElementById('gal-cont');
+            cont.innerHTML = '';
+            allGalleryData.forEach((i, idx) => {
+                const d = document.createElement('div');
+                d.className = "relative aspect-square rounded-2xl overflow-hidden shadow-sm cursor-pointer";
+                d.onclick = () => openCarousel(idx);
                 d.innerHTML = `
-                    <div class="aspect-[4/5] overflow-hidden">
-                        <img src="${i.thumb}" class="w-full h-full object-cover">
+                    <img src="${i.thumb}" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 inset-x-0 bg-black/60 backdrop-blur-sm p-3 text-white">
+                        <p class="text-[8px] uppercase font-bold opacity-70 mb-0.5">${i.starter}</p>
+                        <p class="text-xs font-black tracking-wider">${i.date}</p>
                     </div>
-                    <div class="p-4 bg-white border-t border-stone-100 flex justify-between items-center">
-                        <span class="text-[10px] font-black uppercase text-stone-400 tracking-tighter">${i.date}</span>
-                        <span class="text-[10px] font-bold italic text-stone-800">${i.starter}</span>
-                    </div>`;
+                `;
                 cont.appendChild(d);
             });
         }
-        window.closeViewer = () => document.getElementById('viewer-modal').classList.remove('active');
 
-        window.onload = () => {
-            if(localStorage.getItem('bakery_access') === 'granted') document.getElementById('lock-screen').style.display = 'none';
-            loadFromCloud(); updateIngredients();
-        };
+        function openCarousel(idx) {
+            currentImgIndex = idx;
+            const modal = document.getElementById('viewer-modal');
+            const track = document.getElementById('carousel-track');
+            const thumbs = document.getElementById('thumb-strip');
+            
+            track.innerHTML = allGalleryData.map(img => `
+                <div class="carousel-slide"><img src="${img.full}" class="max-w-full max-h-full object-contain shadow-2xl"></div>
+            `).join('');
+
+            thumbs.innerHTML = allGalleryData.map((img, i) => `
+                <img src="${img.thumb}" onclick="goToSlide(${i})" class="thumb-item ${i === idx ? 'active' : ''}">
+            `).join('');
+
+            modal.classList.add('active');
+            updateCarouselPosition();
+        }
+
+        function moveCarousel(dir) {
+            currentImgIndex = (currentImgIndex + dir + allGalleryData.length) % allGalleryData.length;
+            updateCarouselPosition();
+        }
+
+        function goToSlide(idx) {
+            currentImgIndex = idx;
+            updateCarouselPosition();
+        }
+
+        function updateCarouselPosition() {
+            document.getElementById('carousel-track').style.transform = `translateX(-${currentImgIndex * 100}%)`;
+            document.getElementById('carousel-info').innerText = `${allGalleryData[currentImgIndex].date} (${currentImgIndex + 1}/${allGalleryData.length})`;
+            
+            document.querySelectorAll('.thumb-item').forEach((t, i) => {
+                t.classList.toggle('active', i === currentImgIndex);
+            });
+        }
+
+        function closeViewer() { document.getElementById('viewer-modal').classList.remove('active'); }
+        function st(id, btn) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active'); btn.classList.add('active');
+            if(id === 'gallery' && allGalleryData.length === 0) fetchGallery();
+        }
+        function toggleAccordion(btn) { btn.parentElement.classList.toggle('active'); }
+        function checkPass() { if(document.getElementById('pass-field').value === 'TWOJE_HASLO') document.getElementById('lock-screen').style.display='none'; }
     </script>
 </body>
 </html>
