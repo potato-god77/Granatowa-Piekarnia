@@ -36,32 +36,20 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         #viewer-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 200; flex-direction: column; align-items: center; justify-content: center; }
         #viewer-modal.active { display: flex; }
-        .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .filter-btn { padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: bold; border: 1px solid #efe3d8; background: white; color: #a89284; cursor: pointer; }
-        .filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
         .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: var(--accent); z-index: 100; transform: scaleX(0); transform-origin: left; transition: transform 0.5s; }
         .loading-overlay.active { transform: scaleX(1); }
-
-        /* Style blokady */
-        #lock-screen {
-            position: fixed; inset: 0; background: var(--bg); z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-        }
-        .pass-input {
-            background: white; border: 2px solid var(--sand); border-radius: 15px;
-            padding: 15px; text-align: center; font-size: 1.5rem; letter-spacing: 0.5rem;
-            width: 220px; outline: none; color: var(--primary); font-weight: bold;
-        }
+        #lock-screen { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .pass-input { background: white; border: 2px solid var(--sand); border-radius: 15px; padding: 15px; text-align: center; font-size: 1.5rem; letter-spacing: 0.5rem; width: 220px; outline: none; color: var(--primary); font-weight: bold; }
     </style>
 </head>
 <body class="pb-24">
     <div id="lock-screen">
         <h1 class="serif text-3xl italic mb-8 text-stone-800">Granatowa Piekarnia</h1>
         <div class="glass-card p-8 flex flex-col items-center">
-            <p class="text-[10px] uppercase font-black tracking-widest text-stone-400 mb-4">Podaj hasło dostępu</p>
-            <input type="password" id="pass-field" class="pass-input" placeholder="••••" autofocus>
+            <p class="text-[10px] uppercase font-black tracking-widest text-stone-400 mb-4">Hasło dostępu</p>
+            <input type="password" id="pass-field" class="pass-input" placeholder="••••" autofocus onkeydown="if(event.key==='Enter') checkPass()">
             <button onclick="checkPass()" class="mt-6 w-full brown-gradient text-white px-8 py-3 rounded-xl font-bold shadow-lg transition-transform active:scale-95">Otwórz drzwi</button>
-            <p id="pass-err" class="text-red-500 text-[10px] font-bold mt-4 opacity-0 uppercase">Nieprawidłowe hasło</p>
+            <p id="pass-err" class="text-red-500 text-[10px] font-bold mt-4 opacity-0 uppercase">Błędne hasło</p>
         </div>
     </div>
 
@@ -82,7 +70,6 @@
     <main class="max-w-md mx-auto p-4 space-y-6">
 
         <section id="starters" class="tab-content active space-y-4">
-            <h3 class="serif text-xl px-2 font-bold text-stone-800">Twoje Matki</h3>
             <div id="card-clint" onclick="sel('Clint Yeastwood')" class="starter-card glass-card p-5 flex flex-col gap-3 selected">
                 <div class="flex justify-between items-center">
                     <div><h4 class="font-bold text-xl text-stone-800">Clint Yeastwood</h4><p class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Żytni • typ 2000</p></div>
@@ -99,7 +86,7 @@
 
             <div id="card-sylvester" onclick="sel('Sylvester Graham')" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
-                    <div><h4 class="font-bold text-xl text-stone-800">Sylvester Graham</h4><p class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Pszenny Pełnoziarnisty • typ 1850</p></div>
+                    <div><h4 class="font-bold text-xl text-stone-800">Sylvester Graham</h4><p class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Pszenny • typ 1850</p></div>
                     <span class="text-3xl">🌾</span>
                 </div>
                 <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl border border-stone-100">
@@ -113,7 +100,7 @@
 
             <div id="card-hildegarda" onclick="sel('Hildegarda z Bingen')" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
-                    <div><h4 class="font-bold text-xl text-stone-800">Hildegarda z Bingen</h4><p class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Orkiszowy • typ 2000</p></div>
+                    <div><h4 class="font-bold text-xl text-stone-800">Hildegarda</h4><p class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Orkiszowy • typ 2000</p></div>
                     <span class="text-3xl">⛪</span>
                 </div>
                 <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl border border-stone-100">
@@ -128,30 +115,29 @@
 
         <section id="kalk" class="tab-content space-y-6">
             <div class="glass-card p-5 text-center bg-stone-50">
-                <p class="text-[9px] uppercase font-bold text-stone-400 mb-1 tracking-[0.2em]">Aktualnie:</p>
                 <h2 id="curr-name" class="serif text-xl font-bold text-stone-800 mb-4 italic">Clint Yeastwood</h2>
                 <div class="flex gap-2">
-                    <button onclick="upd(1)" id="q1" class="qb flex-1 py-3 rounded-xl brown-gradient text-white font-semibold text-sm shadow-md transition-all">1 Chleb</button>
-                    <button onclick="upd(2)" id="q2" class="qb flex-1 py-3 rounded-xl bg-white text-stone-400 border border-stone-200 font-semibold text-sm transition-all">2 Chleby</button>
+                    <button onclick="upd(1)" id="q1" class="qb flex-1 py-3 rounded-xl brown-gradient text-white font-semibold text-sm">1 Chleb</button>
+                    <button onclick="upd(2)" id="q2" class="qb flex-1 py-3 rounded-xl bg-white text-stone-400 border border-stone-200 font-semibold text-sm">2 Chleby</button>
                 </div>
             </div>
 
             <div class="glass-card p-6 space-y-4">
-                <div class="flex justify-between items-center border-b border-stone-50 pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Zakwas</span><b id="sv" class="text-2xl text-stone-900 font-semibold">---</b></div>
-                <div class="flex justify-between items-center border-b border-stone-50 pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Woda (30°C)</span><b id="wv" class="text-2xl text-stone-800 font-semibold">---</b></div>
-                <div class="flex justify-between items-center border-b border-stone-50 pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Mąka</span><b id="fv" class="text-2xl text-stone-800 font-semibold">---</b></div>
-                <div class="flex justify-between items-center"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Sól</span><b id="slv" class="text-2xl text-stone-800 font-semibold">---</b></div>
+                <div class="flex justify-between border-b border-stone-50 pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Zakwas</span><b id="sv" class="text-2xl text-stone-900 font-semibold">---</b></div>
+                <div class="flex justify-between border-b border-stone-50 pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Woda (30°C)</span><b id="wv" class="text-2xl text-stone-800 font-semibold">---</b></div>
+                <div class="flex justify-between border-b border-stone-50 pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Mąka</span><b id="fv" class="text-2xl text-stone-800 font-semibold">---</b></div>
+                <div class="flex justify-between"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Sól</span><b id="slv" class="text-2xl text-stone-800 font-semibold">---</b></div>
             </div>
 
-            <div class="glass-card p-5 bg-white border-l-4 border-accent">
+            <div id="tips-box" class="glass-card p-5 bg-white border-l-4 border-accent">
                 <p class="text-[9px] uppercase font-bold text-stone-400 mb-2 tracking-widest">Tajemnica sukcesu:</p>
                 <div id="recipe-tips" class="text-sm leading-relaxed"></div>
             </div>
 
             <div class="glass-card p-5 bg-[#f9f5f1]">
                 <div class="flex justify-between items-center mb-5">
-                    <p class="text-[9px] uppercase font-bold text-stone-500 tracking-widest">Mieszanie:</p>
-                    <input type="time" id="start-time" value="22:00" onchange="calcTime()" class="bg-white border border-stone-200 rounded-lg px-3 py-1.5 text-sm font-semibold text-stone-800 outline-none">
+                    <p class="text-[9px] uppercase font-bold text-stone-500 tracking-widest">Start mieszania:</p>
+                    <input type="time" id="start-time" value="22:00" onchange="calcTime()" class="bg-white border border-stone-200 rounded-lg px-3 py-1.5 text-sm font-semibold text-stone-800">
                 </div>
                 <div class="space-y-4 relative border-l border-stone-200 ml-4 pl-6">
                     <div><p class="text-[9px] uppercase font-medium text-stone-400">Do lodówki</p><p id="t-lodowka" class="text-xl font-bold text-stone-800">05:30</p></div>
@@ -165,141 +151,142 @@
         </section>
 
         <section id="recipes" class="tab-content space-y-4">
-            <div class="accordion-item glass-card">
-                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left outline-none">
+            <div class="accordion-item glass-card active">
+                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
                     <h3 class="serif text-xl font-bold italic text-stone-800">Logistyka Słoików</h3>
-                    <span class="plus-icon text-2xl transition-transform duration-200 text-stone-400">+</span>
+                    <span class="plus-icon text-2xl">+</span>
                 </button>
-                <div class="accordion-content p-6 pt-0 border-t border-stone-50 text-sm space-y-4 mt-4">
-                    <div class="recipe-step"><b>Etap 1: Aktywacja (ok. 16:00)</b><p>30g bazy (S2) + 50g mąki + 50g wody (38°C) do S1.</p></div>
-                    <div class="recipe-step"><b>Etap 2: Pobranie (ok. 22:00)</b><p>Pobierz 115g zakwasu z S1 do miski. Resztę z S1 przelej do S2.</p></div>
-                    <div class="recipe-step"><b>Etap 3: Święta Porcja</b><p>Zostaw 20g w S2, resztę przelej do S3 (Zlewki).</p></div>
-                    <div class="recipe-step"><b>Etap 4: Regeneracja</b><p>Do 20g w S2 daj 40g mąki + 40g wody. Godzina na blacie, potem lodówka.</p></div>
+                <div class="accordion-content p-6 pt-0 border-t border-stone-50 text-sm space-y-4">
+                    <div class="recipe-step"><p class="font-bold italic">Etap 1: Aktywacja (ok. 16:00)</p><p>Pobierz 30g bazy ze słoika nr 2. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj w słoiku nr 1 i zostaw na blacie na 4-6h.</p></div>
+                    <div class="recipe-step"><p class="font-bold italic">Etap 2: Pobranie (ok. 22:00)</p><p>1. Pobierz 115g aktywnego zakwasu ze słoika nr 1 do miski.<br>2. Całą pozostałość ze słoika nr 1 przełóż do słoika nr 2.</p></div>
+                    <div class="recipe-step"><p class="font-bold italic">Etap 3: Święta Porcja (Słoik 2)</p><p>1. Wymieszaj starą bazę ze zrzutem.<br>2. Wymierz z tego 20g ("Święta Porcja") i zostaw w słoiku nr 2.<br>3. Resztę przelej do słoika nr 3 (Zlewki).</p></div>
+                    <div class="recipe-step"><p class="font-bold italic">Etap 4: Regeneracja Matki</p><p>Do 20g porcji w S2 dodaj 40g mąki i 40g wody (38°C). Zostaw na 1h na blacie, potem lodówka.</p></div>
+                </div>
+            </div>
+
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
+                    <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Chleb</h3>
+                    <span class="plus-icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t border-stone-50 text-sm space-y-4">
+                    <div class="recipe-step"><p class="font-bold italic">Mieszanie (22:00)</p><p>Woda + zakwas + mąka + sól. Dokładnie połącz, przykryj i zostaw na noc w temp. pokojowej.</p></div>
+                    <div class="recipe-step"><p class="font-bold italic">Rano (05:30)</p><p>Włóż ciasto do lodówki pod przykryciem na min. 8-10h.</p></div>
+                    <div class="recipe-step"><p class="font-bold italic">Pieczenie (17:15)</p><p>Nagrzej piec i garnek (235°C). Delikatnie uformuj ciasto na blacie, natnij. Piecz 30 min pod przykryciem, potem 15 min bez.</p></div>
+                </div>
+            </div>
+
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
+                    <h3 class="serif text-xl font-bold italic text-stone-800">Żurek na zlewkach</h3>
+                    <span class="plus-icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t border-stone-50 text-sm space-y-4">
+                    <div class="recipe-step"><p class="font-bold italic">Baza</p><p>Włoszczyzna, żeberka, boczek, liść laurowy i ziele angielskie. Gotuj wywar ok. 2h.</p></div>
+                    <div class="recipe-step"><p class="font-bold italic">Zlewki</p><p>400g zlewek (słoik 3) rozcieńcz wywarem i wlej do garnka ciągle mieszając. Zagotuj do zgęstnienia.</p></div>
+                    <div class="recipe-step"><p class="font-bold italic">Finisz</p><p>Zgnieciony czosnek, dużo majeranku i odrobina śmietanki 30%.</p></div>
                 </div>
             </div>
         </section>
 
         <section id="info" class="tab-content space-y-5">
             <div class="glass-card p-6">
-                <h4 class="serif text-xl font-bold mb-4 text-stone-800">Słoik 3: Zlewki 🥣</h4>
+                <h4 class="serif text-xl font-bold mb-4">Słoik 3: Zlewki 🥣</h4>
                 <div class="space-y-5">
-                    <input type="number" id="zw" value="0" onblur="saveToCloud('zlewki', this.value)" class="w-full bg-stone-50 border-2 border-stone-100 rounded-3xl p-6 font-black text-center text-4xl text-stone-800 outline-none">
-                    <div id="za" class="hidden p-4 rounded-2xl bg-orange-50 border border-orange-200 text-orange-800 text-[11px] text-center font-bold">Wystarczy na Żurek!</div>
+                    <input type="number" id="zw" value="0" onblur="saveToCloud('zlewki', this.value)" class="w-full bg-stone-50 border-2 border-stone-100 rounded-3xl p-6 font-black text-center text-4xl outline-none">
+                    <div id="za" class="hidden p-4 rounded-2xl bg-orange-50 border border-orange-200 text-orange-800 text-[11px] text-center font-bold">Można robić Żurek!</div>
                     <div class="h-5 bg-stone-100 rounded-full overflow-hidden"><div id="zb" class="h-full brown-gradient transition-all duration-500" style="width: 0%"></div></div>
-                    <button onclick="rsZ()" class="w-full py-2 text-[10px] uppercase font-bold text-stone-300">Wyczyść słoik</button>
+                    <button onclick="rsZ()" class="w-full py-2 text-[10px] uppercase font-bold text-stone-300">Wyczyść zlewki</button>
                 </div>
             </div>
-            <button onclick="logout()" class="w-full text-[9px] uppercase tracking-widest text-stone-300 font-bold">Wyloguj z urządzenia</button>
+            <button onclick="logout()" class="w-full text-[9px] uppercase tracking-widest text-stone-300 font-bold">Wyloguj urządzenie</button>
         </section>
 
-        <section id="gallery" class="tab-content space-y-5">
+        <section id="gallery" class="tab-content">
             <div id="gal-cont" class="grid grid-cols-2 gap-3"></div>
         </section>
     </main>
 
     <div id="viewer-modal" onclick="closeViewer()">
-        <img id="viewer-img" class="w-full h-auto max-h-[70vh] object-contain">
+        <img id="viewer-img" class="w-full h-auto max-h-[80vh] object-contain">
     </div>
 
     <script>
-        // KONFIGURACJA
-        const BREAD_PASS = 'feelgood7'; // <-- TUTAJ WPISZ SWOJE HASŁO
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxDTlTcVOKuNua9ZL29lL-HBS1BJpptJtZ5ee9m5JkDPMU1M6bMWVs7fHwi9ccyxhE/exec';
         const GALLERY_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhwbnRbCBfN9LtC-cGPK_ZNLQBPwytrADlL2_WDAcmLrHFXa0TeDWfFkZsNy5Z4421hD1LJRR_kiQO/pub?gid=0&single=true&output=csv';
+        const BREAD_PASS = 'feelgood7'; // <-- WPISZ SWOJE HASŁO
 
         const RECIPES = {
-            clint: { name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, secret: 'Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy. Żyto nie "płynie" tak mocno na boki.' },
-            sylvester: { name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, secret: 'Przy 1850 otręby tną gluten. 325g wody pozwoli utrzymać kształt kuli.', tip: 'Wymaga 2-3 "składań" w ciągu pierwszej godziny.' },
-            hildegarda: { name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, secret: 'Orkisz 2000 szybko traci napięcie. Niższa hydratacja (310g) to Twój bezpiecznik.', tip: 'Tylko delikatne mieszanie do połączenia składników.' }
+            clint: { name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, secret: 'Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy. Garnek wybacza mu wszystko, bo żyto nie "płynie" tak mocno na boki.' },
+            sylvester: { name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, secret: 'Przy 1850 otręby tną gluten. 325g wody pozwoli utrzymać kształt kuli.', tip: 'Wymaga przynajmniej 2-3 "składań" (stretch & fold) w ciągu pierwszej godziny od wymieszania.' },
+            hildegarda: { name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, secret: 'Orkisz 2000 pije wodę szybko, ale równie szybko traci napięcie. Niższa hydratacja (310g) to Twój bezpiecznik.', tip: 'Hildegarda nie lubi agresywnego wyrabiania. Tylko delikatne mieszanie do połączenia składników.' }
         };
 
         let currentStarterKey = 'clint';
         let currentQty = 1;
         let allGalleryData = [];
 
-        // --- BLOKADA ---
         function checkPass() {
-            const val = document.getElementById('pass-field').value;
-            const err = document.getElementById('pass-err');
-            if(val === BREAD_PASS) {
+            if(document.getElementById('pass-field').value === BREAD_PASS) {
                 localStorage.setItem('bakery_access', 'granted');
                 document.getElementById('lock-screen').style.display = 'none';
             } else {
-                err.style.opacity = '1';
-                setTimeout(() => err.style.opacity = '0', 2000);
+                const e = document.getElementById('pass-err'); e.style.opacity = '1'; setTimeout(()=>e.style.opacity='0',2000);
             }
         }
+        function logout() { localStorage.removeItem('bakery_access'); location.reload(); }
 
-        function logout() {
-            if(confirm("Wylogować?")) {
-                localStorage.removeItem('bakery_access');
-                location.reload();
-            }
-        }
-
-        // --- CHMURA ---
         async function saveToCloud(key, value) {
             document.getElementById('loader').classList.add('active');
-            try {
-                await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ key, value })});
-                setTimeout(loadFromCloud, 1000);
-            } catch (e) { console.error(e); }
-            setTimeout(() => document.getElementById('loader').classList.remove('active'), 1500);
+            try { await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({key, value})}); setTimeout(loadFromCloud, 1000); } catch(e){}
+            setTimeout(()=>document.getElementById('loader').classList.remove('active'), 1500);
         }
 
         async function loadFromCloud() {
             try {
-                const res = await fetch(SCRIPT_URL);
-                const data = await res.json();
-                if(data.clint) document.getElementById('feed-clint').innerText = data.clint;
-                if(data.sylvester) document.getElementById('feed-sylvester').innerText = data.sylvester;
-                if(data.hildegarda) document.getElementById('feed-hildegarda').innerText = data.hildegarda;
-                const w = data.zlewki || 0;
-                document.getElementById('zw').value = w;
-                document.getElementById('zb').style.width = Math.min((w/400)*100, 100) + '%';
-                document.getElementById('za').classList.toggle('hidden', w < 400);
-                const today = new Date().toLocaleDateString('pl-PL');
-                ['clint', 'sylvester', 'hildegarda'].forEach(k => {
+                const res = await fetch(SCRIPT_URL); const data = await res.json();
+                ['clint','sylvester','hildegarda'].forEach(k => {
+                    if(data[k]) document.getElementById('feed-'+k).innerText = data[k];
                     const b = document.getElementById('btn-'+k);
-                    if(data[k] === today) { b.innerText = "OK"; b.classList.add('active'); }
-                    else { b.innerText = "Regeneruj"; b.classList.remove('active'); }
+                    if(data[k] === new Date().toLocaleDateString('pl-PL')) { b.innerText="OK"; b.classList.add('active'); } else { b.innerText="Regeneruj"; b.classList.remove('active'); }
                 });
-            } catch (e) { console.error(e); }
+                const w = data.zlewki || 0; document.getElementById('zw').value = w;
+                document.getElementById('zb').style.width = Math.min((w/400)*100, 100)+'%';
+                document.getElementById('za').classList.toggle('hidden', w < 400);
+            } catch(e){}
         }
 
-        // --- KALKULATOR ---
         window.sel = function(name) {
             currentStarterKey = name.toLowerCase().includes('hilde') ? 'hildegarda' : (name.toLowerCase().includes('syl') ? 'sylvester' : 'clint');
             document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
-            document.getElementById('card-' + currentStarterKey).classList.add('selected');
+            document.getElementById('card-'+currentStarterKey).classList.add('selected');
             document.getElementById('curr-name').innerText = RECIPES[currentStarterKey].name;
             updateIngredients();
         };
 
         window.upd = function(n) {
             currentQty = n;
-            document.querySelectorAll('.qb').forEach(b => b.className = 'qb flex-1 py-3 rounded-xl bg-white text-stone-400 border border-stone-200 font-semibold text-sm');
-            document.getElementById('q'+n).className = 'qb flex-1 py-3 rounded-xl brown-gradient text-white font-semibold text-sm shadow-md';
+            document.querySelectorAll('.qb').forEach(b => b.classList.replace('brown-gradient','bg-white'));
+            document.getElementById('q'+n).classList.replace('bg-white','brown-gradient');
             updateIngredients();
         };
 
         function updateIngredients() {
             const r = RECIPES[currentStarterKey];
-            document.getElementById('sv').innerText = (r.sv * currentQty) + 'g';
-            document.getElementById('wv').innerText = (r.wv * currentQty) + 'g';
-            document.getElementById('fv').innerText = (r.fv * currentQty) + 'g';
-            document.getElementById('slv').innerText = (r.slv * currentQty) + 'g';
-            const tipBox = document.getElementById('recipe-tips');
+            document.getElementById('sv').innerText = (r.sv * currentQty)+'g';
+            document.getElementById('wv').innerText = (r.wv * currentQty)+'g';
+            document.getElementById('fv').innerText = (r.fv * currentQty)+'g';
+            document.getElementById('slv').innerText = (r.slv * currentQty)+'g';
             let html = `<p class="text-stone-600 italic mb-2">"${r.secret}"</p>`;
             if(r.tip) html += `<p class="text-[11px] font-bold text-stone-400 uppercase tracking-tight">💡 Wskazówka: ${r.tip}</p>`;
-            tipBox.innerHTML = html;
+            document.getElementById('recipe-tips').innerHTML = html;
             calcTime();
         }
 
         window.calcTime = function() {
-            const [h, m] = document.getElementById('start-time').value.split(':').map(Number);
+            const [h,m] = document.getElementById('start-time').value.split(':').map(Number);
             const add = (hrs, mns) => {
-                let t = h * 60 + m + hrs * 60 + mns;
+                let t = h*60+m + hrs*60+mns;
                 return `${String(Math.floor(t/60)%24).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;
             };
             document.getElementById('t-lodowka').innerText = add(7,30);
@@ -307,51 +294,43 @@
             document.getElementById('t-pieczenie').innerText = add(19,15);
         };
 
-        // --- UI ---
         window.st = function(id, btn) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            btn.classList.add('active');
+            document.getElementById(id).classList.add('active'); btn.classList.add('active');
             if(id === 'gallery' && allGalleryData.length === 0) fetchGallery();
         };
-        window.toggleAccordion = function(btn) { btn.parentElement.classList.toggle('active'); };
-        window.markFed = (key, e) => { if(e) e.stopPropagation(); saveToCloud(key, new Date().toLocaleDateString('pl-PL')); };
-        window.manualDate = (key, val) => { if(val) saveToCloud(key, new Date(val).toLocaleDateString('pl-PL')); };
+
+        window.toggleAccordion = (btn) => btn.parentElement.classList.toggle('active');
+        window.markFed = (k, e) => { if(e) e.stopPropagation(); saveToCloud(k, new Date().toLocaleDateString('pl-PL')); };
+        window.manualDate = (k, v) => { if(v) saveToCloud(k, new Date(v).toLocaleDateString('pl-PL')); };
         window.rsZ = () => { if(confirm("Reset?")) saveToCloud('zlewki', 0); };
 
         async function fetchGallery() {
             try {
-                const res = await fetch(GALLERY_URL);
-                const txt = await res.text();
-                const rows = txt.split('\n').slice(1);
-                allGalleryData = rows.map(r => {
+                const res = await fetch(GALLERY_URL); const txt = await res.text();
+                allGalleryData = txt.split('\n').slice(1).map(r => {
                     const c = r.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
-                    return c.length < 5 ? null : { id: c[0], date: c[1], starter: c[2], thumb: c[3], full: c[4] };
+                    return c.length < 5 ? null : { date: c[1], thumb: c[3], full: c[4] };
                 }).filter(r => r);
                 renderGallery();
-            } catch(e) { console.error(e); }
+            } catch(e){}
         }
 
         function renderGallery() {
-            const cont = document.getElementById('gal-cont');
-            cont.innerHTML = '';
+            const cont = document.getElementById('gal-cont'); cont.innerHTML = '';
             allGalleryData.forEach(i => {
-                const div = document.createElement('div');
-                div.className = "relative aspect-square rounded-2xl overflow-hidden shadow-sm";
-                div.onclick = () => { document.getElementById('viewer-img').src = i.full; document.getElementById('viewer-modal').classList.add('active'); };
-                div.innerHTML = `<img src="${i.thumb}" class="w-full h-full object-cover"><div class="absolute bottom-0 p-2 text-white text-[10px] bg-black/40 w-full">${i.date}</div>`;
-                cont.appendChild(div);
+                const d = document.createElement('div'); d.className = "relative aspect-square rounded-2xl overflow-hidden shadow-sm cursor-pointer";
+                d.onclick = () => { document.getElementById('viewer-img').src = i.full; document.getElementById('viewer-modal').classList.add('active'); };
+                d.innerHTML = `<img src="${i.thumb}" class="w-full h-full object-cover"><div class="absolute bottom-0 p-2 text-white text-[10px] bg-black/40 w-full">${i.date}</div>`;
+                cont.appendChild(d);
             });
         }
         window.closeViewer = () => document.getElementById('viewer-modal').classList.remove('active');
 
         window.onload = () => {
-            if(localStorage.getItem('bakery_access') === 'granted') {
-                document.getElementById('lock-screen').style.display = 'none';
-            }
-            loadFromCloud();
-            updateIngredients();
+            if(localStorage.getItem('bakery_access') === 'granted') document.getElementById('lock-screen').style.display = 'none';
+            loadFromCloud(); updateIngredients();
         };
     </script>
 </body>
