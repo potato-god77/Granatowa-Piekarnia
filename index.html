@@ -266,15 +266,21 @@
 
         // AUTH & TABS
       function checkPass() {
-    const input = document.getElementById('pass-field').value;
-    if (input === BREAD_PASS) {
+    const poleHasla = document.getElementById('pass-field');
+    const wpisaneHaslo = poleHasla.value;
+    
+    // Log do konsoli, żebyś mógł sprawdzić pod F12 czy w ogóle klika
+    console.log("Próba logowania..."); 
+
+    if (wpisaneHaslo === BREAD_PASS) {
         localStorage.setItem('bakery_access', 'granted');
-        // Zamiast tylko ukrywać div, odświeżamy stronę, 
-        // by window.onload odpaliło całą resztę skryptów
+        console.log("Hasło poprawne, przeładowuję...");
         location.reload(); 
     } else {
         alert("Hasło nieprawidłowe");
-        document.getElementById('pass-field').value = ''; // czyścimy pole
+        poleHasla.value = '';
+    }
+} document.getElementById('pass-field').value = ''; // czyścimy pole
     }
 }}
         }
@@ -427,44 +433,33 @@ function updateCarouselPosition() {
         }
     });
 }
-        // --- 1. OBSŁUGA GESTÓW (SWIPE) ---
-let touchStartX = 0;
-let touchEndX = 0;
-
-// Reagujemy na dotyk tylko wewnątrz otwartego albumu
-document.getElementById('viewer-modal').addEventListener('touchstart', e => {
-    touchStartX = e.changedTouches[0].screenX;
-}, { passive: true });
-
-document.getElementById('viewer-modal').addEventListener('touchend', e => {
-    touchEndX = e.changedTouches[0].screenX;
-    const swipeThreshold = 50;
-    if (touchEndX < touchStartX - swipeThreshold) moveCarousel(1);
-    if (touchEndX > touchStartX + swipeThreshold) moveCarousel(-1);
-}, { passive: true });
-
-// --- 2. START APLIKACJI (ZAMIAST ONLOAD) ---
+        // --- JEDEN BLOK STARTOWY ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Sprawdzamy czy hasło zostało już kiedyś podane
-    if (localStorage.getItem('bakery_access') === 'granted') {
+    // 1. Sprawdź hasło
+    const czyZalogowano = localStorage.getItem('bakery_access');
+    
+    if (czyZalogowano === 'granted') {
         document.getElementById('lock-screen').style.display = 'none';
-        
-        // Wywołujemy startowe funkcje Twojej aplikacji
-        if (typeof loadFromCloud === "function") loadFromCloud();
-        if (typeof updateIngredients === "function") updateIngredients();
+        // Odpal funkcje danych tylko jeśli zalogowany
+        if (typeof loadFromCloud === 'function') loadFromCloud();
+        if (typeof updateIngredients === 'function') updateIngredients();
     }
+
+    // 2. Obsługa Swipe (przesuwanie zdjęć)
+    const obszarModala = document.getElementById('viewer-modal');
+    let xStart = 0;
+
+    obszarModala.addEventListener('touchstart', e => {
+        xStart = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    obszarModala.addEventListener('touchend', e => {
+        let xEnd = e.changedTouches[0].screenX;
+        if (xStart - xEnd > 50) moveCarousel(1);  // Swipe w lewo
+        if (xEnd - xStart > 50) moveCarousel(-1); // Swipe w prawo
+    }, { passive: true });
 });
 
-// --- 3. POPRAWKA FUNKCJI HASŁA ---
-// Podmień też swoją funkcję checkPass na tę poniżej:
-function checkPass() {
-    const field = document.getElementById('pass-field');
-    if (field.value === BREAD_PASS) {
-        localStorage.setItem('bakery_access', 'granted');
-        location.reload(); // To jest kluczowe - odświeża stronę z nowymi uprawnieniami
-    } else {
-        alert("Błędne hasło");
-        field.value = '';
     }
 }
     </script>
