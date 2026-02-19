@@ -40,7 +40,7 @@
         .nav-arrow:active { background: rgba(255,255,255,0.3); }
         
         #viewer-strip { scroll-behavior: smooth; }
-        .strip-thumb { width: 50px; height: 50px; object-cover: cover; border-radius: 8px; opacity: 0.4; transition: 0.3s; flex-shrink: 0; border: 2px solid transparent; }
+        .strip-thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 8px; opacity: 0.4; transition: 0.3s; flex-shrink: 0; border: 2px solid transparent; }
         .strip-thumb.active { opacity: 1; border-color: white; transform: scale(1.1); }
 
         .brown-gradient { background: linear-gradient(135deg, #4a3728 0%, #634a38 100%); }
@@ -217,8 +217,7 @@
                 <p id="viewer-starter" class="text-[10px] uppercase font-black text-stone-400 tracking-[0.2em] mb-1"></p>
                 <h4 id="viewer-date" class="serif text-xl font-bold mb-4"></h4>
                 
-                <div id="viewer-strip" class="flex justify-center gap-2 overflow-x-auto no-scrollbar px-4 py-2">
-                    </div>
+                <div id="viewer-strip" class="flex justify-center gap-2 overflow-x-auto no-scrollbar px-4 py-2"></div>
             </div>
         </div>
     </div>
@@ -325,11 +324,13 @@
                 const card = document.createElement('div');
                 card.className = "relative aspect-square rounded-2xl overflow-hidden shadow-sm active:scale-95 transition-all cursor-pointer group";
                 card.onclick = () => openSmartViewer(item.fullLinks, item.starter, item.date);
+                
+                // ZMODYFIKOWANA MINIATURKA: Data na pierwszym planie + szary pasek z blur-em
                 card.innerHTML = `
                     <img src="${item.thumb}" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent p-3 flex flex-col justify-end">
-                        <span class="text-[8px] text-stone-300 font-black uppercase tracking-widest">${item.date}</span>
-                        <h4 class="text-white serif italic text-sm font-bold leading-tight">${item.starter}</h4>
+                    <div class="absolute bottom-0 left-0 right-0 bg-stone-900/60 backdrop-blur-md p-2 flex flex-col items-start border-t border-white/10">
+                        <span class="text-[7px] text-stone-300 font-bold uppercase tracking-widest leading-none mb-0.5">${item.starter}</span>
+                        <h4 class="text-white serif italic text-sm font-bold leading-none">${item.date}</h4>
                     </div>`;
                 container.appendChild(card);
             });
@@ -350,7 +351,6 @@
             document.getElementById('viewer-starter').dataset.baseName = starter;
             document.getElementById('viewer-date').innerText = date;
             
-            // Generuj pasek miniatur
             const strip = document.getElementById('viewer-strip');
             strip.innerHTML = '';
             if(currentPhotos.length > 1) {
@@ -380,7 +380,6 @@
                 img.style.opacity = 1;
             }, 150);
 
-            // Aktualizacja miniatur
             document.querySelectorAll('.strip-thumb').forEach((t, i) => {
                 t.classList.toggle('active', i === currentPhotoIdx);
             });
