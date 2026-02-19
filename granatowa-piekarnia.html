@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#4a3728">
+    <title data-id="th-modified">Granatowa Piekarnia</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- STYLE BAZOWE --- */
+        :root { --primary: #4a3728; --bg: #fdfaf7; --accent: #8b5e3c; --sand: #f5ece2; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--primary); margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        .serif { font-family: 'Playfair Display', serif; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .nav-btn { border-bottom: 3px solid transparent; transition: all 0.2s; flex-shrink: 0; color: #a89284; }
+        .nav-btn.active { color: var(--primary); font-weight: 900; border-bottom: 3px solid var(--accent); }
+        
+        .glass-card { background: white; border-radius: 20px; box-shadow: 0 4px 15px rgba(74, 55, 40, 0.05); border: 1px solid #efe3d8; overflow: hidden; }
+        .btn-feed.active { background-color: #e7dfd8 !important; color: #4a3728 !important; border-color: #d4c5ba !important; }
+        
+        .recipe-step { 
+            position: relative; 
+            padding-left: 1.2rem; 
+            margin-bottom: 0.8rem; 
+            border-left: 2px solid var(--sand); 
+            margin-left: 0.4rem; 
+            font-size: 0.9rem; 
+            line-height: 1.5; 
+        }
+        
+        .starter-card.selected { border: 2px solid var(--accent); background: #fffcf9; }
+
+        .date-container { position: relative; display: inline-block; cursor: pointer; }
+        .date-input-hidden { position: absolute; opacity: 0; width: 100%; height: 100%; left: 0; top: 0; cursor: pointer; z-index: 10; }
+        .date-text { border-bottom: 1px dashed var(--accent); }
+
+        /* Modal Galeria */
+        #photo-modal { display: none; position: fixed; inset: 0; background: rgba(42, 32, 23, 0.9); z-index: 100; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(5px); }
+        #photo-modal.active { display: flex; }
+
+        /* Pełny ekran dla zdjęcia */
+        #viewer-modal { display: none; position: fixed; inset: 0; background: black; z-index: 200; flex-direction: column; align-items: center; justify-content: center; }
+        #viewer-modal.active { display: flex; }
+        
+        .brown-gradient { background: linear-gradient(135deg, #4a3728 0%, #634a38 100%); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+<meta property="og:title" content="Granatowa Piekarnia" data-id="th-modified" ><meta name="description" content="Piekarnia" data-id="th-modified" ><meta property="og:description" content="Piekarnia" data-id="th-modified" ><meta property="og:image" content="https://tiiny.host/assets/logo-purple-bg.png" data-id="th-modified" ><meta property="og:url" content="https://granatowa-piekarnia.tiiny.site/" data-id="th-modified" ><meta property="og:type" content="website" data-id="th-modified" ><script defer data-domain="granatowa-piekarnia.tiiny.site" src="https://analytics.tiiny.site/js/plausible.js"></script><script type="text/javascript" src="https://tiiny.host/ad-script.js"></script></head>
+<body class="pb-24">
+
+    <header class="p-6 pt-10 text-center bg-white border-b">
+        <h1 class="serif text-3xl italic font-bold text-stone-800">Granatowa Piekarnia</h1>
+    </header>
+
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b flex justify-around shadow-sm overflow-x-auto no-scrollbar">
+        <button onclick="st('starters', this)" class="nav-btn active px-4 py-4 text-[10px] uppercase font-black tracking-widest whitespace-nowrap">Zakwasy</button>
+        <button onclick="st('kalk', this)" class="nav-btn px-4 py-4 text-[10px] uppercase font-black tracking-widest whitespace-nowrap">Pieczenie</button>
+        <button onclick="st('recipes', this)" class="nav-btn px-4 py-4 text-[10px] uppercase font-black tracking-widest whitespace-nowrap">Wiedza</button>
+        <button onclick="st('info', this)" class="nav-btn px-4 py-4 text-[10px] uppercase font-black tracking-widest whitespace-nowrap">Magazyn</button>
+        <button onclick="st('gallery', this)" class="nav-btn px-4 py-4 text-[10px] uppercase font-black tracking-widest whitespace-nowrap">Galeria</button>
+    </nav>
+
+    <main class="max-w-md mx-auto p-4 space-y-6">
+
+        <!-- SEKCJA 1: ZAKWASY -->
+        <section id="starters" class="tab-content active space-y-4">
+            <h3 class="serif text-xl px-2 font-bold text-stone-800">Twoje Matki</h3>
+            
+            <div id="card-clint" onclick="sel('Clint Yeastwood', 7)" class="starter-card glass-card p-5 flex flex-col gap-3 selected">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-xl text-stone-800">Clint Yeastwood</h4>
+                        <p class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Żytni • typ 2000</p>
+                    </div>
+                    <span class="text-3xl">🧔</span>
+                </div>
+                <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl border border-stone-100">
+                    <div class="date-container">
+                        <p class="text-[11px] text-stone-500 uppercase font-bold">Ostatnio: <span id="feed-clint" class="text-stone-800 font-bold date-text">---</span></p>
+                        <input type="date" class="date-input-hidden" onchange="manualDate('clint', this.value)">
+                    </div>
+                    <button id="btn-clint" onclick="markFed('clint', event)" class="btn-feed bg-stone-200 text-stone-600 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-tighter">Regeneruj</button>
+                </div>
+            </div>
+
+            <div id="card-sylvester" onclick="sel('Sylvester Graham', 7)" class="starter-card glass-card p-5 flex flex-col gap-3">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-xl text-stone-800">Sylvester Graham</h4>
+                        <p class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Pszenny Pełnoziarnisty • typ 1850</p>
+                    </div>
+                    <span class="text-3xl">🌾</span>
+                </div>
+                <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl border border-stone-100">
+                    <div class="date-container">
+                        <p class="text-[11px] text-stone-500 uppercase font-bold">Ostatnio: <span id="feed-sylvester" class="text-stone-800 font-bold date-text">---</span></p>
+                        <input type="date" class="date-input-hidden" onchange="manualDate('sylvester', this.value)">
+                    </div>
+                    <button id="btn-sylvester" onclick="markFed('sylvester', event)" class="btn-feed bg-stone-200 text-stone-600 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-tighter">Regeneruj</button>
+                </div>
+            </div>
+
+            <div id="card-hildegarda" onclick="sel('Hildegarda z Bingen', 5)" class="starter-card glass-card p-5 flex flex-col gap-3">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h4 class="font-bold text-xl text-stone-800">Hildegarda z Bingen</h4>
+                        <p class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Orkiszowy • typ 2000</p>
+                    </div>
+                    <span class="text-3xl">⛪</span>
+                </div>
+                <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl border border-stone-100">
+                    <div class="date-container">
+                        <p class="text-[11px] text-stone-500 uppercase font-bold">Ostatnio: <span id="feed-hildegarda" class="text-stone-800 font-bold date-text">---</span></p>
+                        <input type="date" class="date-input-hidden" onchange="manualDate('hildegarda', this.value)">
+                    </div>
+                    <button id="btn-hildegarda" onclick="markFed('hildegarda', event)" class="btn-feed bg-stone-200 text-stone-600 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-tighter">Regeneruj</button>
+                </div>
+            </div>
+
+            <button onclick="addToCal()" class="w-full py-5 brown-gradient text-white rounded-2xl font-bold text-[11px] uppercase tracking-[0.25em] shadow-lg active:scale-[0.98] transition-all mt-4">📅 Dodaj do kalendarza</button>
+        </section>
+
+        <!-- SEKCJA 2: PIECZENIE (SUBTELNIEJSZA CZCIONKA) -->
+        <section id="kalk" class="tab-content space-y-6">
+            <div class="glass-card p-5 text-center bg-stone-50">
+                <p class="text-[9px] uppercase font-bold text-stone-400 mb-1 tracking-[0.2em]">Aktualnie:</p>
+                <h2 id="curr-name" class="serif text-xl font-bold text-stone-800 mb-4 italic">Clint Yeastwood</h2>
+                <div class="flex gap-2">
+                    <button onclick="upd(1)" id="q1" class="qb flex-1 py-3 rounded-xl brown-gradient text-white font-semibold text-sm shadow-md transition-all">1 Chleb</button>
+                    <button onclick="upd(2)" id="q2" class="qb flex-1 py-3 rounded-xl bg-white text-stone-400 border border-stone-200 font-semibold text-sm transition-all">2 Chleby</button>
+                </div>
+            </div>
+            
+            <div class="glass-card p-6 space-y-4">
+                <div class="flex justify-between items-center border-b border-stone-50 pb-3">
+                    <span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Zakwas</span>
+                    <b id="sv" class="text-2xl text-stone-900 font-semibold">115g</b>
+                </div>
+                <div class="flex justify-between items-center border-b border-stone-50 pb-3">
+                    <span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Woda (30°C)</span>
+                    <b id="wv" class="text-2xl text-stone-800 font-semibold">340g</b>
+                </div>
+                <div class="flex justify-between items-center border-b border-stone-50 pb-3">
+                    <span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Mąka</span>
+                    <b id="fv" class="text-2xl text-stone-800 font-semibold">500g</b>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Sól</span>
+                    <b id="slv" class="text-2xl text-stone-800 font-semibold">14g</b>
+                </div>
+            </div>
+
+            <div class="glass-card p-5 bg-[#f9f5f1] border-none">
+                <div class="flex justify-between items-center mb-5">
+                    <p class="text-[9px] uppercase font-bold text-stone-500 tracking-widest">Mieszanie:</p>
+                    <input type="time" id="start-time" value="22:00" onchange="calcTime()" class="bg-white border border-stone-200 rounded-lg px-3 py-1.5 text-sm font-semibold text-stone-800 outline-none">
+                </div>
+                <div class="space-y-4 relative border-l border-stone-200 ml-4 pl-6">
+                    <div>
+                        <p class="text-[9px] uppercase font-medium text-stone-400">Do lodówki</p>
+                        <p id="t-lodowka" class="text-xl font-bold text-stone-800">05:30</p>
+                    </div>
+                    <div>
+                        <p class="text-[9px] uppercase font-medium text-stone-400">Formowanie</p>
+                        <p id="t-formowanie" class="text-xl font-bold text-stone-800">16:00</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-stone-100 shadow-sm text-center -ml-1">
+                        <p class="text-[9px] uppercase font-bold text-stone-500 mb-1">Pieczenie (235°C)</p>
+                        <p id="t-pieczenie" class="text-3xl font-black text-[#4a3728]">17:15</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEKCJA 3: WIEDZA (PEŁNA TREŚĆ) -->
+        <section id="recipes" class="tab-content space-y-6">
+            <div class="glass-card p-6">
+                <h3 class="serif text-xl font-bold mb-4 italic text-stone-800">Logistyka Słoików</h3>
+                <div class="text-sm space-y-4">
+                    <div class="recipe-step">
+                        <p class="font-bold text-stone-800 italic">Etap 1: Aktywacja (ok. 16:00)</p>
+                        <p>Pobierz 30g bazy ze słoika nr 2. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj w słoiku nr 1 i zostaw na blacie w temperaturze pokojowej na 4-6 godzin.</p>
+                    </div>
+                    <div class="recipe-step">
+                        <p class="font-bold text-stone-800 italic">Etap 2: Pobranie (ok. 22:00)</p>
+                        <p>1. Pobierz 115g aktywnego zakwasu ze słoika nr 1 do miski.</p>
+                        <p>2. Całą pozostałość (R1) ze słoika nr 1 przełóż do słoika nr 2.</p>
+                    </div>
+                    <div class="recipe-step">
+                        <p class="font-bold text-stone-800 italic">Etap 3: Święta Porcja (Słoik 2)</p>
+                        <p>1. Wymieszaj starą bazę (R2) ze zrzutem (R1).</p>
+                        <p>2. Wymierz z tego 20g ("Święta Porcja") i pozostaw w słoiku nr 2</p>
+                        <p>3. Resztę ze słoika nr 2 przełoż do słoika nr 3 (Zlewki).</p>
+                    </div>
+                    <div class="recipe-step">
+                        <p class="font-bold text-stone-800 italic">Etap 4: Regeneracja Matki</p>
+                        <p>1. Do 20g porcji w słoiku nr 2 dodaj 40g mąki i 40g wody (38°C).</p>
+                        <p>2. Zostaw na 1 godzinę na blacie w temperaturze pokojowej, a potem schowaj do lodówki.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="serif text-xl font-bold mb-4 italic text-stone-800">Przepis: Chleb</h3>
+                <div class="space-y-4 text-stone-600">
+                    <div class="recipe-step">
+                        <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p>
+                        <p>Zrób zawiesinę: woda 340g (30°C) + aktywny zakwas 115g. Do tego dodaj 500g mąki i 14g soli. Wymieszaj, przykryj miskę i zostaw na noc na blacie w temperaturze pokojowej.</p>
+                    </div>
+                    <div class="recipe-step">
+                        <p class="font-bold text-stone-800 italic">Rano (05:30 - 06:00)</p>
+                        <p>Włóż ciasto do lodówki (pod przykryciem).</p>
+                    </div>
+                    <div class="recipe-step">
+                        <p class="font-bold text-stone-800 italic">Pieczenie (od 16:00)</p>
+                        <p>Nagrzej piec z garnkiem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę" by stało się spięte, po czym natnij ostrym nożem lub żyletką. Gdy piekarnik się już nagrzeje, piecz 30 min pod przykryciem, a następnie zdejmij pokrywkę i piecz kolejne 15 min bez niej.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card p-6">
+                <h3 class="serif text-xl font-bold mb-4 italic text-stone-800">Przepis: Żurek na zlewkach</h3>
+                <div class="space-y-4 text-stone-600">
+                    <div class="recipe-step">
+                        <p class="font-bold text-stone-800 italic text-stone-900">Składniki na wywar (2-2.5L):</p>
+                        <ul class="list-disc ml-4 space-y-1 mt-1 text-stone-700">
+                            <li>250-300g wędzonych żeberek</li>
+                            <li>150g wędzonego boczku</li>
+                            <li>2 marchewki, 1 pietruszka, kawałek selera</li>
+                            <li>1 cebula (opalona nad ogniem)</li>
+                            <li>3 liście laurowe, 5 ziaren ziela angielskiego</li>
+                            <li>2 litry zimnej wody</li>
+                        </ul>
+                    </div>
+                    <div class="recipe-step">
+                        <p class="font-bold text-stone-800 italic">Krok 1: Wywar Mięsny</p>
+                        <p>Do garnka włóż żeberka, boczek, warzywa i przyprawy. Zalej zimną wodą. Gotuj pod przykryciem na minimalnym ogniu przez ok. 2 godziny, aż mięso będzie bardzo miękkie.</p>
+                    </div>
+                    <div class="recipe-step">
+                        <p class="font-bold text-stone-800 italic">Krok 2: Zakwaszanie (Zlewki)</p>
+                        <p>Odlej szklankę gorącego wywaru i wymieszaj ją dokładnie z 400g zlewek ze słoika nr 3 (to zapewni brak grudek). Wlej zawiesinę do garnka, cały czas mieszając. Zagotuj.</p>
+                    </div>
+                    <div class="recipe-step">
+                        <p class="font-bold text-stone-800 italic">Krok 3: Wykończenie</p>
+                        <p>Dodaj 2-3 ząbki przeciśniętego czosnku i 2 łyżki majeranku. Dopraw solą i pieprzem. Na koniec zabiel 100ml śmietanki 30%. Podawaj z białą kiełbasą i jajkiem.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEKCJA 4: MAGAZYN -->
+        <section id="info" class="tab-content space-y-5">
+            <div class="glass-card p-6">
+                <h4 class="serif text-xl font-bold mb-4 text-stone-800">Słoik 3: Zlewki 🥣</h4>
+                <div class="space-y-5">
+                    <div class="relative">
+                        <input type="number" id="zw" value="0" onchange="svZ()" class="w-full bg-stone-50 border-2 border-stone-100 rounded-3xl p-6 font-black text-center text-4xl text-stone-800 outline-none">
+                        <span class="absolute right-6 top-1/2 -translate-y-1/2 text-stone-300 font-bold">g</span>
+                    </div>
+                    <div id="za" class="hidden p-4 rounded-2xl bg-orange-50 border border-orange-200 text-orange-800 text-[11px] text-center font-bold italic uppercase tracking-widest">Wystarczy na Żurek! (400g+)</div>
+                    <div class="h-5 bg-stone-100 rounded-full overflow-hidden border border-stone-50 shadow-inner">
+                        <div id="zb" class="h-full brown-gradient transition-all duration-1000 ease-out" style="width: 0%"></div>
+                    </div>
+                    <button onclick="rsZ()" class="w-full py-2 text-[10px] uppercase font-bold text-stone-300 tracking-widest">Wyczyść słoik</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEKCJA 5: GALERIA (MINIATURKI) -->
+        <section id="gallery" class="tab-content space-y-5">
+            <div class="flex justify-between items-center px-2">
+                <h3 class="serif text-2xl font-bold italic text-stone-800">Galeria</h3>
+                <label class="brown-gradient text-white px-6 py-3 rounded-full text-[10px] font-bold uppercase shadow-md active:scale-95 transition-all cursor-pointer">
+                    + Dodaj Foto
+                    <input type="file" id="photo-input" accept="image/*" class="hidden" onchange="proc(event)">
+                </label>
+            </div>
+            <div id="gal-cont" class="grid grid-cols-3 gap-2"></div>
+        </section>
+
+    </main>
+
+    <!-- MODAL FOTO (FORMULARZ) -->
+    <div id="photo-modal">
+        <div class="bg-white p-8 rounded-[2.5rem] w-full max-w-xs space-y-6 shadow-2xl">
+            <h4 class="serif font-bold text-xl text-center text-stone-800">Opisz wypiek</h4>
+            <div class="space-y-3">
+                <label class="text-[10px] uppercase font-black text-stone-400 tracking-widest">Użyty zakwas:</label>
+                <select id="modal-starter" class="w-full bg-stone-50 border-2 border-stone-100 p-4 rounded-2xl text-sm font-bold text-stone-700 outline-none">
+                    <option>Clint Yeastwood</option>
+                    <option>Sylvester Graham</option>
+                    <option>Hildegarda z Bingen</option>
+                </select>
+            </div>
+            <div class="space-y-3">
+                <label class="text-[10px] uppercase font-black text-stone-400 tracking-widest">Data:</label>
+                <input type="date" id="modal-date" class="w-full bg-stone-50 border-2 border-stone-100 p-4 rounded-2xl text-sm font-bold text-stone-700 outline-none">
+            </div>
+            <div class="flex gap-3 pt-4">
+                <button onclick="closePhotoModal()" class="flex-1 py-4 text-[10px] uppercase font-bold text-stone-400 border-2 border-stone-50 rounded-2xl">Anuluj</button>
+                <button onclick="savePhoto()" class="flex-1 py-4 text-[10px] uppercase font-bold brown-gradient text-white rounded-2xl shadow-lg">Zapisz</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PRZEGLĄDARKI (FULL SCREEN) -->
+    <div id="viewer-modal" onclick="closeViewer()">
+        <img id="viewer-img" class="w-full h-auto max-h-[80vh] object-contain">
+        <div class="p-6 text-white text-center w-full" onclick="event.stopPropagation()">
+            <p id="viewer-starter" class="text-[10px] uppercase font-black text-stone-400 tracking-[0.2em] mb-1"></p>
+            <h4 id="viewer-date" class="serif text-2xl font-bold"></h4>
+            <button id="viewer-del-btn" class="mt-8 text-red-400 text-[10px] uppercase font-bold tracking-widest">Usuń zdjęcie</button>
+        </div>
+        <button class="absolute top-6 right-6 text-white text-2xl">✕</button>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'gp_gal_vfinal_final_v5';
+        let curSKey = 'clint';
+        let curSName = 'Clint Yeastwood';
+        let curSDays = 7;
+        let tempPhoto = null;
+
+        function st(id, b) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            b.classList.add('active');
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function sel(name, d) {
+            curSName = name;
+            curSKey = name.toLowerCase().includes('hilde') ? 'hildegarda' : (name.toLowerCase().includes('syl') ? 'sylvester' : 'clint');
+            curSDays = d;
+            document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('card-' + curSKey).classList.add('selected');
+            document.getElementById('curr-name').innerText = name;
+        }
+
+        function upd(n) {
+            document.querySelectorAll('.qb').forEach(b => b.className = 'qb flex-1 py-3 rounded-xl bg-white text-stone-400 border border-stone-200 font-semibold text-sm transition-all');
+            document.getElementById('q'+n).className = 'qb flex-1 py-3 rounded-xl brown-gradient text-white font-semibold text-sm shadow-md transition-all';
+            document.getElementById('sv').innerText = (115 * n) + 'g';
+            document.getElementById('fv').innerText = (500 * n) + 'g';
+            document.getElementById('wv').innerText = (340 * n) + 'g';
+            document.getElementById('slv').innerText = (14 * n) + 'g';
+        }
+
+        function calcTime() {
+            const startStr = document.getElementById('start-time').value;
+            const [h, m] = startStr.split(':').map(Number);
+            const addTime = (hours, mins) => {
+                let totalMin = h * 60 + m + hours * 60 + mins;
+                let finalH = Math.floor(totalMin / 60) % 24;
+                let finalM = totalMin % 60;
+                return `${String(finalH).padStart(2, '0')}:${String(finalM).padStart(2, '0')}`;
+            };
+            document.getElementById('t-lodowka').innerText = addTime(7, 30);
+            document.getElementById('t-formowanie').innerText = addTime(18, 0);
+            document.getElementById('t-pieczenie').innerText = addTime(19, 15);
+        }
+
+        function markFed(key, e) {
+            if(e) e.stopPropagation();
+            localStorage.setItem('feed_' + key, new Date().toLocaleDateString('pl-PL'));
+            load();
+        }
+
+        function manualDate(key, iso) {
+            if(!iso) return;
+            localStorage.setItem('feed_' + key, new Date(iso).toLocaleDateString('pl-PL'));
+            load();
+        }
+
+        function addToCal() {
+            const date = new Date();
+            date.setDate(date.getDate() + curSDays);
+            date.setHours(10, 0, 0, 0);
+            const f = (d) => d.toISOString().replace(/-|:|\.\d+/g, "");
+            const ics = ["BEGIN:VCALENDAR", "VERSION:2.0", "BEGIN:VEVENT", `DTSTART:${f(date)}`, `SUMMARY:Karmienie: ${curSName}`, "END:VEVENT", "END:VCALENDAR"].join("\r\n");
+            const blob = new Blob([ics], { type: "text/calendar" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url; a.download = `karmienie.ics`;
+            a.click();
+        }
+
+        function proc(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const size = 1000; 
+                    let w = img.width, h = img.height;
+                    if(w > h) { h *= size/w; w = size; } else { w *= size/h; h = size; }
+                    canvas.width = w; canvas.height = h;
+                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+                    tempPhoto = canvas.toDataURL('image/jpeg', 0.6);
+                    document.getElementById('modal-date').valueAsDate = new Date();
+                    document.getElementById('modal-starter').value = curSName;
+                    document.getElementById('photo-modal').classList.add('active');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function closePhotoModal() {
+            document.getElementById('photo-modal').classList.remove('active');
+            tempPhoto = null;
+            document.getElementById('photo-input').value = ""; 
+        }
+
+        function savePhoto() {
+            if(!tempPhoto) return;
+            const starter = document.getElementById('modal-starter').value;
+            const dateStr = document.getElementById('modal-date').value;
+            let p = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+            p.unshift({ src: tempPhoto, starter, date: dateStr });
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
+                renderGal();
+                closePhotoModal();
+            } catch (e) {
+                alert("Błąd zapisu: Pamięć pełna.");
+            }
+        }
+
+        function renderGal() {
+            const container = document.getElementById('gal-cont');
+            const p = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+            container.innerHTML = p.map((item, idx) => `
+                <div onclick="openViewer(${idx})" class="aspect-square bg-stone-100 rounded-lg overflow-hidden border border-stone-200">
+                    <img src="${item.src}" class="w-full h-full object-cover">
+                </div>
+            `).join('');
+        }
+
+        function openViewer(idx) {
+            const p = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+            const item = p[idx];
+            document.getElementById('viewer-img').src = item.src;
+            document.getElementById('viewer-starter').innerText = item.starter;
+            document.getElementById('viewer-date').innerText = item.date || '---';
+            document.getElementById('viewer-del-btn').onclick = () => delPhoto(idx);
+            document.getElementById('viewer-modal').classList.add('active');
+        }
+
+        function closeViewer() {
+            document.getElementById('viewer-modal').classList.remove('active');
+        }
+
+        function delPhoto(idx) {
+            if(!confirm("Usunąć to zdjęcie z galerii?")) return;
+            let p = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+            p.splice(idx, 1);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(p));
+            closeViewer();
+            renderGal();
+        }
+
+        function svZ() { localStorage.setItem('z_w', document.getElementById('zw').value); load(); }
+        function rsZ() { if(confirm("Reset?")) { document.getElementById('zw').value = 0; svZ(); } }
+
+        function load() {
+            ['clint', 'sylvester', 'hildegarda'].forEach(k => {
+                const date = localStorage.getItem('feed_' + k);
+                const el = document.getElementById('feed-' + k);
+                if(el) el.innerText = date || "---";
+                const btn = document.getElementById('btn-' + k);
+                if(btn && date === new Date().toLocaleDateString('pl-PL')) {
+                    btn.innerText = "OK"; btn.classList.add('active');
+                }
+            });
+            const w = localStorage.getItem('z_w') || 0;
+            document.getElementById('zw').value = w;
+            document.getElementById('zb').style.width = Math.min((w / 400) * 100, 100) + '%'; 
+            document.getElementById('za').className = w >= 400 ? 'p-4 rounded-2xl bg-orange-50 border border-orange-200 text-orange-800 text-[11px] text-center font-bold italic uppercase tracking-widest' : 'hidden';
+            renderGal();
+            calcTime();
+        }
+
+        window.onload = load;
+    </script>
+</body>
+</html>
