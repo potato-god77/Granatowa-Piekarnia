@@ -331,52 +331,81 @@
         window.markFed = (k, e) => { e.stopPropagation(); saveToCloud(k, new Date().toLocaleDateString('pl-PL')); };
 
         // GALLERY
-        async function fetchGallery() {
-            try {
-                const res = await fetch(GALLERY_URL); const txt = await res.text();
-                allGalleryData = txt.split('\n').slice(1).map(r => {
-                    const c = r.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
-                    return { date: c[1], starter: c[2], thumb: c[3], full: c[4] };
-                }).filter(i => i.date);
-                renderAlbums();
-            } catch(e){}
-        }
-        function renderAlbums() {
-            const cont = document.getElementById('gal-cont');
-            cont.innerHTML = allGalleryData.map((i, idx) => `
-                <div onclick="openCarousel(${idx})" class="relative aspect-square rounded-2xl overflow-hidden shadow-sm">
-                    <img src="${i.thumb}" class="w-full h-full object-cover">
-                    <div class="absolute bottom-0 inset-x-0 bg-black/60 backdrop-blur-sm p-3 text-white">
-                        <p class="text-[8px] uppercase font-bold opacity-70 mb-0.5">${i.starter}</p>
-                        <p class="text-xs font-black tracking-wider">${i.date}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-        window.openCarousel = (idx) => {
-            currentImgIndex = idx;
-            document.getElementById('carousel-track').innerHTML = allGalleryData.map(img => `
-                <div class="carousel-slide"><img src="${img.full}" class="max-w-full max-h-full object-contain"></div>
-            `).join('');
-            document.getElementById('thumb-strip').innerHTML = allGalleryData.map((img, i) => `
-                <img src="${img.thumb}" onclick="goToSlide(${i})" class="thumb-item ${i === idx ? 'active' : ''}">
-            `).join('');
-            document.getElementById('viewer-modal').classList.add('active');
-            updateCarouselPosition();
-        };
-        window.moveCarousel = (dir) => { currentImgIndex = (currentImgIndex + dir + allGalleryData.length) % allGalleryData.length; updateCarouselPosition(); };
-        window.goToSlide = (idx) => { currentImgIndex = idx; updateCarouselPosition(); };
-        function updateCarouselPosition() {
-            document.getElementById('carousel-track').style.transform = `translateX(-${currentImgIndex * 100}%)`;
-            document.getElementById('carousel-info').innerText = `${allGalleryData[currentImgIndex].date} (${currentImgIndex + 1}/${allGalleryData.length})`;
-            document.querySelectorAll('.thumb-item').forEach((t, i) => t.classList.toggle('active', i === currentImgIndex));
-        }
-        window.closeViewer = () => document.getElementById('viewer-modal').classList.remove('active');
+      // 1. Fetching - Czytamy albumy tak, jak są w arkuszu
+async function fetchGallery() {
+    try {
+        const res = await fetch(GALLERY_URL); 
+        const txt = await res.text();
+        // Zakładamy: c[1]=Data, c[2]=Zakwas, c[3]=Miniaturka(Okładka), c[4]=Lista wszystkich zdjęć (full)
+        allGalleryData = txt.split('\n').slice(1).map(r => {
+            const c = r.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
+            return { 
+                date: c[1], 
+                starter: c[2], 
+                cover: c[3], 
+                // Rozbijamy kolumnę 'full' na tablicę osobnych zdjęć
+                photos: c[4] ? c[4].split(';') : [c[3]] 
+            };
+        }).filter(i => i.date);
+        
+        renderAlbums();
+    } catch(e) { console.error("Błąd ładowania albumów:", e); }
+}
 
-        window.onload = () => {
-            if(localStorage.getItem('bakery_access') === 'granted') document.getElementById('lock-screen').style.display = 'none';
-            loadFromCloud(); updateIngredients();
-        };
+// 2. Siatka 2 kolumny z szarym paskiem
+function renderAlbums() {
+    const cont = document.getElementById('gal-cont');
+    cont.innerHTML = allGalleryData.map((album, idx) => `
+        <div onclick="openAlbum(${idx})" class="relative aspect-square rounded-2xl overflow-hidden shadow-sm group active:scale-95 transition-transform">
+            <img src="${album.cover}" class="w-full h-full object-cover">
+            <div class="absolute bottom-0 inset-x-0 bg-stone-900/60 backdrop-blur-md p-3 text-white">
+                <p class="text-[9px] uppercase font-medium opacity-80 leading-none mb-1">${album.starter}</p>
+                <p class="text-lg font-black tracking-tighter leading-none">${album.date}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+// 3. Karuzela wewnątrz albumu
+let currentAlbumPhotos = [];
+
+window.openAlbum = (idx) => {
+    currentImgIndex = 0;
+    const album = allGalleryData[idx];
+    currentAlbumPhotos = album.photos; // To są te zdjęcia "wnętrza"
+    
+    const track = document.getElementById('carousel-track');
+    const thumbs = document.getElementById('thumb-strip');
+    
+    // Ładujemy zdjęcia do tracka
+    track.innerHTML = currentAlbumPhotos.map(url => `
+        <div class="carousel-slide">
+            <img src="${url}" class="max-w-full max-h-[75vh] object-contain rounded-lg">
+        </div>
+    `).join('');
+    
+    // Miniaturki na dole (korzystamy z tych samych URLi lub tych samych co w albumie)
+    thumbs.innerHTML = currentAlbumPhotos.map((url, i) => `
+        <img src="${url}" onclick="goToSlide(${i})" class="thumb-item ${i === 0 ? 'active' : ''}">
+    `).join('');
+    
+    document.getElementById('carousel-info').innerText = `${album.starter} • ${album.date}`;
+    document.getElementById('viewer-modal').classList.add('active');
+    updateCarouselPosition();
+}
+
+// 4. Nawigacja (blokuje się na granicach albumu)
+window.moveCarousel = (dir) => {
+    currentImgIndex = (currentImgIndex + dir + currentAlbumPhotos.length) % currentAlbumPhotos.length;
+    updateCarouselPosition();
+};
+
+function updateCarouselPosition() {
+    document.getElementById('carousel-track').style.transform = `translateX(-${currentImgIndex * 100}%)`;
+    document.querySelectorAll('.thumb-item').forEach((t, i) => {
+        t.classList.toggle('active', i === currentImgIndex);
+    });
+}
     </script>
 </body>
 </html>
