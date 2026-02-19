@@ -34,8 +34,13 @@
         .date-text { border-bottom: 1px dashed var(--accent); }
         .brown-gradient { background: linear-gradient(135deg, #4a3728 0%, #634a38 100%); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        
+        /* Styl Galerii Karuzelowej */
+        .gallery-carousel { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 15px; padding: 10px 5px; -webkit-overflow-scrolling: touch; }
+        .gallery-item { flex: 0 0 85%; scroll-snap-align: center; }
         #viewer-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 200; flex-direction: column; align-items: center; justify-content: center; }
         #viewer-modal.active { display: flex; }
+        
         .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: var(--accent); z-index: 100; transform: scaleX(0); transform-origin: left; transition: transform 0.5s; }
         .loading-overlay.active { transform: scaleX(1); }
         #lock-screen { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -242,7 +247,9 @@
         </section>
 
         <section id="gallery" class="tab-content">
-            <div id="gal-cont" class="grid grid-cols-2 gap-3"></div>
+            <h3 class="serif text-xl px-2 font-bold text-stone-800 mb-4 italic text-center">Inspiracje</h3>
+            <div id="gal-cont" class="gallery-carousel no-scrollbar"></div>
+            <p class="text-center text-[9px] text-stone-400 mt-4 uppercase tracking-widest">Przesuń, aby zobaczyć więcej</p>
         </section>
     </main>
 
@@ -253,23 +260,12 @@
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxDTlTcVOKuNua9ZL29lL-HBS1BJpptJtZ5ee9m5JkDPMU1M6bMWVs7fHwi9ccyxhE/exec';
         const GALLERY_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhwbnRbCBfN9LtC-cGPK_ZNLQBPwytrADlL2_WDAcmLrHFXa0TeDWfFkZsNy5Z4421hD1LJRR_kiQO/pub?gid=0&single=true&output=csv';
-        const BREAD_PASS = 'TWOJE_HASLO'; // <-- TUTAJ WPISZ SWOJE HASŁO
+        const BREAD_PASS = 'feelgood7'; // <-- WPISZ SWOJE HASŁO
 
         const RECIPES = {
-            clint: { 
-                name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, 
-                secret: 'Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy. Garnek wybacza mu wszystko, bo żyto nie "płynie" tak mocno na boki.' 
-            },
-            sylvester: { 
-                name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, 
-                secret: 'Przy 1850 otręby tną gluten. Jeśli dasz 340g wody (jak u Clinta), ciasto po nocy będzie zbyt luźne na garnek. 325g pozwoli utrzymać kształt kuli.', 
-                tip: 'Wymaga przynajmniej 2-3 "składań" (stretch & fold) w ciągu pierwszej godziny od wymieszania.' 
-            },
-            hildegarda: { 
-                name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, 
-                secret: 'Orkisz 2000 pije wodę szybko, ale równie szybko "puchnie" i traci napięcie powierzchniowe. Niższa hydratacja (310g) to Twój bezpiecznik, dzięki któremu bochenek w garnku wystrzeli w górę, a nie rozleje się na boki.', 
-                tip: 'Hildegarda nie lubi agresywnego wyrabiania. Tylko delikatne mieszanie do połączenia składników.' 
-            }
+            clint: { name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, secret: 'Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy. Garnek wybacza mu wszystko, bo żyto nie "płynie" tak mocno na boki.' },
+            sylvester: { name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, secret: 'Przy 1850 otręby tną gluten. Jeśli dasz 340g wody (jak u Clinta), ciasto po nocy będzie zbyt luźne na garnek. 325g pozwoli utrzymać kształt kuli.', tip: 'Wymaga przynajmniej 2-3 "składań" (stretch & fold) w ciągu pierwszej godziny od wymieszania.' },
+            hildegarda: { name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, secret: 'Orkisz 2000 pije wodę szybko, ale równie szybko "puchnie" i traci napięcie powierzchniowe. Niższa hydratacja (310g) to Twój bezpiecznik, dzięki któremu bochenek w garnku wystrzeli w górę, a nie rozleje się na boki.', tip: 'Hildegarda nie lubi agresywnego wyrabiania. Tylko delikatne mieszanie do połączenia składników.' }
         };
 
         let currentStarterKey = 'clint';
@@ -363,7 +359,7 @@
                 const res = await fetch(GALLERY_URL); const txt = await res.text();
                 allGalleryData = txt.split('\n').slice(1).map(r => {
                     const c = r.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
-                    return c.length < 5 ? null : { date: c[1], thumb: c[3], full: c[4] };
+                    return c.length < 5 ? null : { date: c[1], starter: c[2], thumb: c[3], full: c[4] };
                 }).filter(r => r);
                 renderGallery();
             } catch(e){}
@@ -372,9 +368,17 @@
         function renderGallery() {
             const cont = document.getElementById('gal-cont'); cont.innerHTML = '';
             allGalleryData.forEach(i => {
-                const d = document.createElement('div'); d.className = "relative aspect-square rounded-2xl overflow-hidden shadow-sm cursor-pointer";
+                const d = document.createElement('div'); 
+                d.className = "gallery-item glass-card";
                 d.onclick = () => { document.getElementById('viewer-img').src = i.full; document.getElementById('viewer-modal').classList.add('active'); };
-                d.innerHTML = `<img src="${i.thumb}" class="w-full h-full object-cover"><div class="absolute bottom-0 p-2 text-white text-[10px] bg-black/40 w-full">${i.date}</div>`;
+                d.innerHTML = `
+                    <div class="aspect-[4/5] overflow-hidden">
+                        <img src="${i.thumb}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-4 bg-white border-t border-stone-100 flex justify-between items-center">
+                        <span class="text-[10px] font-black uppercase text-stone-400 tracking-tighter">${i.date}</span>
+                        <span class="text-[10px] font-bold italic text-stone-800">${i.starter}</span>
+                    </div>`;
                 cont.appendChild(d);
             });
         }
