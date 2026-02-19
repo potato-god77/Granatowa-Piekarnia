@@ -358,6 +358,9 @@
     
     // 4. Przeliczenie składników i logistyki
     updateIngredients();
+
+    // 5. Jeśli jesteśmy w zakładce galeria, odśwież widok albumów
+    renderAlbums();
 }
 
     function upd(n) {
@@ -433,18 +436,32 @@
         } catch(e) { console.error(e); }
     }
 
-    function renderAlbums() {
-        const cont = document.getElementById('gal-cont');
-        cont.innerHTML = allGalleryData.map((album, idx) => `
-            <div onclick="openAlbum(${idx})" class="relative aspect-square rounded-2xl overflow-hidden shadow-sm active:scale-95 transition-transform cursor-pointer">
-                <img src="${album.cover}" class="w-full h-full object-cover">
-                <div class="absolute bottom-0 inset-x-0 bg-stone-900/65 backdrop-blur-md p-3 text-white">
-                    <p class="text-[9px] uppercase font-bold opacity-70 mb-1">${album.starter}</p>
-                    <p class="text-lg font-black tracking-tighter">${album.date}</p>
-                </div>
-            </div>
-        `).join('');
-    }
+    function openAlbumFiltered(filteredIdx, starterName) {
+    // Znajdujemy album w pełnej bazie danych, żeby karuzela miała poprawne dane
+    const filteredData = allGalleryData.filter(album => 
+        album.starter.toLowerCase().trim() === starterName.toLowerCase().trim()
+    );
+    const album = filteredData[filteredIdx];
+    
+    // Teraz wywołujemy standardowe otwieranie, które już masz
+    // (Upewnij się, że Twoja funkcja openAlbum przyjmuje obiekt albumu lub indeks)
+    currentImgIndex = 0;
+    currentAlbumPhotos = album.photos;
+    
+    document.getElementById('carousel-track').innerHTML = currentAlbumPhotos.map(url => `
+        <div class="carousel-slide min-w-full h-full flex items-center justify-center p-4">
+            <img src="${url}" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl">
+        </div>
+    `).join('');
+    
+    document.getElementById('thumb-strip').innerHTML = currentAlbumPhotos.map((url, i) => `
+        <img src="${url}" onclick="goToSlide(${i})" class="thumb-item ${i === 0 ? 'active' : ''} cursor-pointer">
+    `).join('');
+    
+    document.getElementById('carousel-info').innerText = `${album.starter} • ${album.date}`;
+    document.getElementById('viewer-modal').style.display = 'flex';
+    updateCarouselPosition();
+}
 
     function openAlbum(idx) {
         currentImgIndex = 0;
