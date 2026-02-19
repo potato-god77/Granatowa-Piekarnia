@@ -33,12 +33,18 @@
         .date-input-hidden { position: absolute; opacity: 0; width: 100%; height: 100%; left: 0; top: 0; cursor: pointer; z-index: 10; }
         .date-text { border-bottom: 1px dashed var(--accent); }
 
-        #viewer-modal { display: none; position: fixed; inset: 0; background: black; z-index: 200; flex-direction: column; align-items: center; justify-content: center; }
+        /* VIEWER STYLES */
+        #viewer-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 200; flex-direction: column; align-items: center; justify-content: center; }
         #viewer-modal.active { display: flex; }
+        .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 210; }
+        .nav-arrow:active { background: rgba(255,255,255,0.3); }
         
+        #viewer-strip { scroll-behavior: smooth; }
+        .strip-thumb { width: 50px; height: 50px; object-cover: cover; border-radius: 8px; opacity: 0.4; transition: 0.3s; flex-shrink: 0; border: 2px solid transparent; }
+        .strip-thumb.active { opacity: 1; border-color: white; transform: scale(1.1); }
+
         .brown-gradient { background: linear-gradient(135deg, #4a3728 0%, #634a38 100%); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-
         .filter-btn { padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: bold; border: 1px solid #efe3d8; background: white; color: #a89284; }
         .filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
     </style>
@@ -194,31 +200,38 @@
                     <button onclick="filterGallery('Hildegarda z Bingen', this)" class="filter-btn">Hildegarda</button>
                 </div>
             </div>
-            <div id="gal-cont" class="grid grid-cols-2 gap-3">
-                </div>
+            <div id="gal-cont" class="grid grid-cols-2 gap-3"></div>
         </section>
-
     </main>
 
     <div id="viewer-modal" onclick="closeViewer()">
-        <img id="viewer-img" class="w-full h-auto max-h-[80vh] object-contain">
-        <div class="p-6 text-white text-center w-full" onclick="event.stopPropagation()">
-            <p id="viewer-starter" class="text-[10px] uppercase font-black text-stone-400 tracking-[0.2em] mb-1"></p>
-            <h4 id="viewer-date" class="serif text-2xl font-bold"></h4>
-            <p id="viewer-hint" class="text-[9px] text-stone-500 mt-2 uppercase tracking-widest hidden">Kliknij zdjęcie, aby zobaczyć kolejne</p>
+        <button class="absolute top-6 right-6 text-white text-3xl z-[250]">&times;</button>
+        
+        <div id="arrow-prev" class="nav-arrow left-4" onclick="changePhoto(-1, event)">&#10094;</div>
+        <div id="arrow-next" class="nav-arrow right-4" onclick="changePhoto(1, event)">&#10095;</div>
+
+        <div class="w-full flex flex-col items-center">
+            <img id="viewer-img" class="w-full h-auto max-h-[70vh] object-contain transition-opacity duration-300" onclick="changePhoto(1, event)">
+            
+            <div class="p-4 text-white text-center w-full" onclick="event.stopPropagation()">
+                <p id="viewer-starter" class="text-[10px] uppercase font-black text-stone-400 tracking-[0.2em] mb-1"></p>
+                <h4 id="viewer-date" class="serif text-xl font-bold mb-4"></h4>
+                
+                <div id="viewer-strip" class="flex justify-center gap-2 overflow-x-auto no-scrollbar px-4 py-2">
+                    </div>
+            </div>
         </div>
-        <button class="absolute top-6 right-6 text-white text-2xl">✕</button>
     </div>
 
     <script>
         const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhwbnRbCBfN9LtC-cGPK_ZNLQBPwytrADlL2_WDAcmLrHFXa0TeDWfFkZsNy5Z4421hD1LJRR_kiQO/pub?output=csv';
         
-        let curSKey = 'clint';
-        let curSName = 'Clint Yeastwood';
-        let curSDays = 7;
-        let allGalleryData = []; // Tutaj będziemy trzymać wszystkie wiersze z CSV
+        let allGalleryData = [];
         let currentPhotos = [];
         let currentPhotoIdx = 0;
+        let curSName = 'Clint Yeastwood';
+        let curSKey = 'clint';
+        let curSDays = 7;
 
         function st(id, b) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -287,37 +300,17 @@
             a.click();
         }
 
-        // --- GALERIA Z SORTOWANIEM I FILTROWANIEM ---
-
         async function fetchGallery() {
             try {
                 const response = await fetch(CSV_URL);
                 const csvText = await response.text();
-                // Parsowanie z uwzględnieniem kolumny A (ID)
-                // A:ID, B:Data, C:Zakwas, D:Link_Miniaturka, E:Linki_Galeria
                 const rows = csvText.split('\n').slice(1);
-                
                 allGalleryData = rows.map(row => {
                     const cols = row.split(',').map(c => c.trim().replace(/^"|"$/g, ''));
                     if(cols.length < 5) return null;
-                    return {
-                        id: cols[0],
-                        date: cols[1],
-                        starter: cols[2],
-                        thumb: cols[3],
-                        fullLinks: cols[4]
-                    };
+                    return { id: cols[0], date: cols[1], starter: cols[2], thumb: cols[3], fullLinks: cols[4] };
                 }).filter(r => r !== null);
-
-                // SORTOWANIE: Domyślnie od najnowszej daty
-                allGalleryData.sort((a, b) => {
-                    // Zakładamy format daty RRRR-MM-DD lub DD.MM.RRRR
-                    // Dla pewności spróbujemy stworzyć obiekt Date
-                    const dateA = new Date(a.date.split('.').reverse().join('-'));
-                    const dateB = new Date(b.date.split('.').reverse().join('-'));
-                    return dateB - dateA;
-                });
-
+                allGalleryData.sort((a, b) => new Date(b.date.split('.').reverse().join('-')) - new Date(a.date.split('.').reverse().join('-')));
                 renderGallery('Wszystkie');
             } catch (e) {
                 document.getElementById('gal-cont').innerHTML = `<p class="text-center text-xs text-stone-400">Błąd ładowania...</p>`;
@@ -327,28 +320,17 @@
         function renderGallery(filter) {
             const container = document.getElementById('gal-cont');
             container.innerHTML = '';
-
-            const filtered = filter === 'Wszystkie' 
-                ? allGalleryData 
-                : allGalleryData.filter(item => item.starter === filter);
-
-            if(filtered.length === 0) {
-                container.innerHTML = `<p class="col-span-2 text-center py-10 text-stone-300 text-xs italic">Brak wypieków w tej kategorii</p>`;
-                return;
-            }
-
+            const filtered = filter === 'Wszystkie' ? allGalleryData : allGalleryData.filter(item => item.starter === filter);
             filtered.forEach((item) => {
                 const card = document.createElement('div');
                 card.className = "relative aspect-square rounded-2xl overflow-hidden shadow-sm active:scale-95 transition-all cursor-pointer group";
                 card.onclick = () => openSmartViewer(item.fullLinks, item.starter, item.date);
-                
                 card.innerHTML = `
                     <img src="${item.thumb}" class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent p-3 flex flex-col justify-end">
                         <span class="text-[8px] text-stone-300 font-black uppercase tracking-widest">${item.date}</span>
                         <h4 class="text-white serif italic text-sm font-bold leading-tight">${item.starter}</h4>
-                    </div>
-                `;
+                    </div>`;
                 container.appendChild(card);
             });
         }
@@ -359,38 +341,69 @@
             renderGallery(type);
         }
 
-        // --- VIEWER ---
-
+        // VIEWER LOGIC
         function openSmartViewer(linksStr, starter, date) {
             currentPhotos = linksStr.split(';').map(l => l.trim());
             currentPhotoIdx = 0;
-            updateViewerImage();
-            document.getElementById('viewer-starter').dataset.baseName = starter;
+            
             document.getElementById('viewer-starter').innerText = starter;
+            document.getElementById('viewer-starter').dataset.baseName = starter;
             document.getElementById('viewer-date').innerText = date;
-            document.getElementById('viewer-hint').style.display = currentPhotos.length > 1 ? 'block' : 'none';
+            
+            // Generuj pasek miniatur
+            const strip = document.getElementById('viewer-strip');
+            strip.innerHTML = '';
+            if(currentPhotos.length > 1) {
+                currentPhotos.forEach((url, index) => {
+                    const t = document.createElement('img');
+                    t.src = url;
+                    t.className = `strip-thumb ${index === 0 ? 'active' : ''}`;
+                    t.onclick = (e) => { e.stopPropagation(); goToPhoto(index); };
+                    strip.appendChild(t);
+                });
+                document.getElementById('arrow-prev').style.display = 'flex';
+                document.getElementById('arrow-next').style.display = 'flex';
+            } else {
+                document.getElementById('arrow-prev').style.display = 'none';
+                document.getElementById('arrow-next').style.display = 'none';
+            }
+
+            updateViewerImage();
             document.getElementById('viewer-modal').classList.add('active');
         }
 
         function updateViewerImage() {
             const img = document.getElementById('viewer-img');
-            img.src = currentPhotos[currentPhotoIdx];
-            const baseName = document.getElementById('viewer-starter').dataset.baseName || "";
-            const counter = currentPhotos.length > 1 ? ` (${currentPhotoIdx + 1}/${currentPhotos.length})` : '';
-            document.getElementById('viewer-starter').innerText = baseName + counter;
+            img.style.opacity = 0;
+            setTimeout(() => {
+                img.src = currentPhotos[currentPhotoIdx];
+                img.style.opacity = 1;
+            }, 150);
+
+            // Aktualizacja miniatur
+            document.querySelectorAll('.strip-thumb').forEach((t, i) => {
+                t.classList.toggle('active', i === currentPhotoIdx);
+            });
+
+            const baseName = document.getElementById('viewer-starter').dataset.baseName;
+            document.getElementById('viewer-starter').innerText = currentPhotos.length > 1 
+                ? `${baseName} (${currentPhotoIdx + 1}/${currentPhotos.length})` 
+                : baseName;
         }
 
-        document.getElementById('viewer-img').onclick = (e) => {
-            e.stopPropagation();
-            if (currentPhotos.length > 1) {
-                currentPhotoIdx = (currentPhotoIdx + 1) % currentPhotos.length;
-                updateViewerImage();
-            }
-        };
+        function changePhoto(dir, e) {
+            if(e) e.stopPropagation();
+            if(currentPhotos.length <= 1) return;
+            currentPhotoIdx = (currentPhotoIdx + dir + currentPhotos.length) % currentPhotos.length;
+            updateViewerImage();
+        }
+
+        function goToPhoto(idx) {
+            currentPhotoIdx = idx;
+            updateViewerImage();
+        }
 
         function closeViewer() { document.getElementById('viewer-modal').classList.remove('active'); }
-        
-        // --- RESZTA LOGIKI ---
 
         function svZ() { localStorage.setItem('z_w', document.getElementById('zw').value); load(); }
         function rsZ() { if(confirm("Reset?")) { document.getElementById('zw').value = 0; svZ(); } }
@@ -415,7 +428,6 @@
             fetchGallery();
             calcTime();
         }
-
         window.onload = load;
     </script>
 </body>
