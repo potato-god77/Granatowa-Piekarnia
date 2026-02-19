@@ -138,30 +138,38 @@
         </section>
 
         <section id="recipes" class="tab-content space-y-4">
-            <div class="accordion-item glass-card active">
-                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
-                    <h3 class="serif text-xl font-bold italic">Logistyka Słoików</h3>
-                    <span class="plus-icon text-2xl">+</span>
-                </button>
-                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
-                    <div class="recipe-step">
-                        <p class="font-bold italic">Etap 1: Aktywacja (ok. 16:00)</p>
-                        <p>Pobierz 30g bazy ze słoika nr 2. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj w słoiku nr 1 i zostaw na blacie w temperaturze pokojowej na 4-6 godzin.</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold italic">Etap 2: Pobranie (ok. 22:00)</p>
-                        <p>1. Pobierz 115g aktywnego zakwasu ze słoika nr 1 do miski.<br>2. Całą pozostałość (R1) ze słoika nr 1 przełóż do słoika nr 2.</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold italic">Etap 3: Święta Porcja (Słoik 2)</p>
-                        <p>1. Wymieszaj starą bazę (R2) ze zrzutem (R1).<br>2. Wymierz z tego 20g ("Święta Porcja") i zostaw w słoiku nr 2.<br>3. Resztę ze słoika nr 2 przełoż do słoika nr 3 (Zlewki).</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold italic">Etap 4: Regeneracja Matki</p>
-                        <p>1. Do 20g porcji w słoiku nr 2 dodaj 40g mąki i 40g wody (38°C).<br>2. Zostaw na 1 godzinę na blacie w temperaturze pokojowej, a potem schowaj do lodówki.</p>
-                    </div>
-                </div>
-            </div>
+            <div class="accordion-item glass-card">
+    <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
+        <h3 class="serif text-xl font-bold italic">Logistyka Słoików</h3>
+        <span class="plus-icon text-2xl">+</span>
+    </button>
+    <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
+        <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 mb-4">
+            <p class="text-[10px] uppercase font-black text-stone-400 mb-1">Wybrany Zakwas</p>
+            <p id="w-name" class="serif text-lg font-bold text-stone-800 leading-none mb-2"></p>
+            <p class="text-xs text-stone-600 mb-1"><strong>Cel:</strong> <span id="w-target"></span></p>
+            <p class="text-xs text-stone-600 mb-1"><strong>Stosunek:</strong> <span id="w-ratio"></span></p>
+            <p class="text-xs italic text-stone-500 mt-2" id="w-desc"></p>
+        </div>
+
+        <div class="recipe-step">
+            <p class="font-bold italic text-stone-700">Etap 1: Aktywacja (ok. 16:00)</p>
+            <p>Pobierz 30g bazy ze słoika nr 2. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj w słoiku nr 1 i zostaw na blacie (4-6h).</p>
+        </div>
+        <div class="recipe-step">
+            <p class="font-bold italic text-stone-700">Etap 2: Pobranie (ok. 22:00)</p>
+            <p>1. Pobierz <span class="font-bold text-amber-800" id="w-sv"></span> aktywnego zakwasu ze słoika nr 1 do miski.<br>2. Całą pozostałość przełóż do słoika nr 2.</p>
+        </div>
+        <div class="recipe-step">
+            <p class="font-bold italic text-stone-700">Etap 3: Święta Porcja (Słoik 2)</p>
+            <p>Wymieszaj starą bazę ze zrzutem. Wymierz z tego 20g ("Święta Porcja") i zostaw w słoiku nr 2. Reszta do słoika nr 3 (Zlewki).</p>
+        </div>
+        <div class="recipe-step">
+            <p class="font-bold italic text-stone-700">Etap 4: Regeneracja Matki</p>
+            <p>1. Do 20g porcji w słoiku nr 2 dodaj <span class="font-bold text-amber-800" id="w-regMF"></span> mąki i <span class="font-bold text-amber-800" id="w-regWF"></span> wody (38°C).<br>2. Zostaw na 1h na blacie, potem schowaj do lodówki.</p>
+        </div>
+    </div>
+</div>
 
             <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
@@ -254,10 +262,31 @@
     const BREAD_PASS = 'feelgood7'; // <-- WPISZ SWOJE HASŁO
 
     const RECIPES = {
-        clint: { name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, secret: 'Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy.' },
-        sylvester: { name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, secret: 'Przy 1850 otręby tną gluten. Wymaga przynajmniej 2-3 składań.' },
-        hildegarda: { name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, secret: 'Orkisz 2000 pije wodę szybko. Niższa hydratacja to Twój bezpiecznik.' }
-    };
+    clint: { 
+        name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, 
+        secret: 'Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy.',
+        target: 'Stabilność i mocny, octowy profil.',
+        ratio: '1:2:2',
+        desc: 'Żyto kocha gęstą konsystencję. Taka dawka wody sprawia, że Clint jest jak plastelina. Drożdże żytnie pracują miarowo.',
+        regMF: 40, regWF: 40 // Regeneracja: mąka i woda
+    },
+    sylvester: { 
+        name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, 
+        secret: 'Przy 1850 otręby tną gluten. Wymaga przynajmniej 2-3 składań.',
+        target: 'Szybka fermentacja i mleczno-orzechowy zapach.',
+        ratio: '1:2:1.75',
+        desc: 'Dając nieco mniej wody, zmuszasz bakterie do wolniejszej pracy. Zakwas będzie gęstszy, co zapobiegnie opadaniu.',
+        regMF: 40, regWF: 35
+    },
+    hildegarda: { 
+        name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, 
+        secret: 'Orkisz 2000 pije wodę szybko. Niższa hydratacja to Twój bezpiecznik.',
+        target: 'Delikatność i ochrona przed przekwaszeniem.',
+        ratio: '1:2.25:2.25',
+        desc: 'Orkisz fermentuje najszybciej. Dając jej więcej jedzenia, wydłużasz czas jej optymalnej aktywności.',
+        regMF: 45, regWF: 45
+    }
+};
 
     let currentStarterKey = 'clint';
     let currentQty = 1;
@@ -318,14 +347,29 @@
     }
 
     function updateIngredients() {
-        const r = RECIPES[currentStarterKey];
-        document.getElementById('sv').innerText = (r.sv * currentQty)+'g';
-        document.getElementById('wv').innerText = (r.wv * currentQty)+'g';
-        document.getElementById('fv').innerText = (r.fv * currentQty)+'g';
-        document.getElementById('slv').innerText = (r.slv * currentQty)+'g';
-        document.getElementById('recipe-tips').innerText = r.secret;
-        calcTime();
-    }
+    const r = RECIPES[currentStarterKey];
+    const q = currentQty;
+
+    // Aktualizacja Kalkulatora (to co już miałeś)
+    document.getElementById('sv').innerText = (r.sv * q) + 'g';
+    document.getElementById('wv').innerText = (r.wv * q) + 'g';
+    document.getElementById('fv').innerText = (r.fv * q) + 'g';
+    document.getElementById('slv').innerText = (r.slv * q) + 'g';
+    document.getElementById('recipe-tips').innerText = r.secret;
+
+    // NOWE: Aktualizacja sekcji WIEDZA
+    document.getElementById('w-name').innerText = r.name;
+    document.getElementById('w-target').innerText = r.target;
+    document.getElementById('w-ratio').innerText = r.ratio;
+    document.getElementById('w-desc').innerText = r.desc;
+    
+    // Gramatury w krokach (uwzględniają liczbę chlebów tam gdzie trzeba)
+    document.getElementById('w-sv').innerText = (r.sv * q) + 'g';
+    document.getElementById('w-regMF').innerText = r.regMF + 'g'; // Regeneracja matki jest stała niezależnie od ilości chleba
+    document.getElementById('w-regWF').innerText = r.regWF + 'g';
+
+    calcTime();
+}
 
     function calcTime() {
         const timeIn = document.getElementById('start-time').value;
