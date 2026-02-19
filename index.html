@@ -179,27 +179,18 @@
         </div>
     </div>
 </div>
-
-            <div class="accordion-item glass-card">
-                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
-                    <h3 class="serif text-xl font-bold italic">Przepis: Chleb</h3>
-                    <span class="plus-icon text-2xl">+</span>
-                </button>
-                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
-                    <div class="recipe-step">
-                        <p class="font-bold italic">Mieszanie (ok. 22:00)</p>
-                        <p>Zrób zawiesinę: woda 340g (30°C) + aktywny zakwas 115g. Do tego dodaj 500g mąki i 14g soli. Wymieszaj, przykryj miskę i zostaw na noc na blacie w temperaturze pokojowej.</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold italic">Rano (05:30 - 06:00)</p>
-                        <p>Włóż ciasto do lodówki (pod przykryciem).</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold italic">Pieczenie (od 16:00)</p>
-                        <p>Nagrzej piec z garnkiem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę" by stało się napięte, po czym natnij ostrym nożem lub żyletką. Gdy piekarnik się już nagrzeje, piecz 30 min pod przykryciem, a następnie zdejmij pokrywkę i piecz kolejne 15 min bez niej.</p>
-                    </div>
-                </div>
-            </div>
+                   
+                <div class="accordion-item glass-card">
+    <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
+        <h3 class="serif text-xl font-bold italic">Przepis: Chleb</h3>
+        <span class="plus-icon text-2xl">+</span>
+    </button>
+    <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
+        <div class="recipe-step">
+            <p class="font-bold italic text-stone-700 underline mb-2">Technika dla wybranego zakwasu:</p>
+            <p id="w-bread-step" class="text-stone-600 leading-relaxed"></p> </div>
+        </div>
+</div>
 
             <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
@@ -277,7 +268,8 @@
         target: 'Stabilność i mocny, octowy profil.',
         ratio: '1:2:2',
         desc: 'Żyto kocha gęstą konsystencję. Taka dawka wody sprawia, że Clint jest jak plastelina. Drożdże żytnie pracują miarowo.',
-        regMF: 40, regWF: 40 // Regeneracja: mąka i woda
+        regMF: 40, regWF: 40, // Regeneracja: mąka i woda
+        breadStep: 'Mieszanie żytnie: Nie wyrabiaj ciasta intensywnie. Połącz składniki tak, by nie było suchych grudek mąki. Żyto nie buduje siatki glutenowej jak pszenica – po wymieszaniu od razu przejdź do fermentacji.'
     },
     sylvester: { 
         name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, 
@@ -285,7 +277,8 @@
         target: 'Szybka fermentacja i mleczno-orzechowy zapach.',
         ratio: '1:2:1.75',
         desc: 'Dając nieco mniej wody, zmuszasz bakterie do wolniejszej pracy. Zakwas będzie gęstszy, co zapobiegnie opadaniu.',
-        regMF: 40, regWF: 35
+        regMF: 40, regWF: 35,
+        breadStep: 'Autoliza i składanie: Połącz mąkę z wodą na 30 min przed dodaniem zakwasu. Wykonaj 3 serie składań (stretch & fold) co 30 minut, aby wzmocnić strukturę pszenicy 1850.'
     },
     hildegarda: { 
         name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, 
@@ -293,7 +286,8 @@
         target: 'Delikatność i ochrona przed przekwaszeniem.',
         ratio: '1:2.25:2.25',
         desc: 'Orkisz fermentuje najszybciej. Dając jej więcej jedzenia, wydłużasz czas jej optymalnej aktywności.',
-        regMF: 45, regWF: 45
+        regMF: 45, regWF: 45,
+        breadStep: 'Delikatny orkisz: Mieszaj krótko. Orkisz ma delikatny gluten, który łatwo "przerobić". Składaj ciasto bardzo ostrożnie, tylko 2 razy. Pilnuj temperatury – orkisz nie lubi przegrzania.'
     }
 };
 
@@ -371,33 +365,34 @@
     }
 
    function updateIngredients() {
-    const r = RECIPES[currentStarterKey]; // pobiera dane wybranego zakwasu (Clint, Sylvester lub Hildegarda)
-    const q = currentQty; // pobiera aktualną liczbę chlebów (1, 2 lub 3)
+    const r = RECIPES[currentStarterKey];
+    const q = currentQty;
 
-    // A. AKTUALIZACJA KALKULATORA (Sekcja Pieczenie)
+    // Kalkulator Pieczenie
     document.getElementById('sv').innerText = (r.sv * q) + 'g';
     document.getElementById('wv').innerText = (r.wv * q) + 'g';
     document.getElementById('fv').innerText = (r.fv * q) + 'g';
     document.getElementById('slv').innerText = (r.slv * q) + 'g';
     document.getElementById('recipe-tips').innerText = r.secret;
 
-    // B. AKTUALIZACJA LOGISTYKI (Sekcja Wiedza)
-    // Te ID (np. 'w-name') musisz mieć w kodzie HTML w sekcji Wiedza
+    // Wiedza: Logistyka Słoika
     if (document.getElementById('w-name')) {
         document.getElementById('w-name').innerText = r.name;
         document.getElementById('w-target').innerText = r.target;
         document.getElementById('w-ratio').innerText = r.ratio;
         document.getElementById('w-desc').innerText = r.desc;
-        
-        // Gramatura pobrania (zależna od liczby chlebów)
         document.getElementById('w-sv').innerText = (r.sv * q) + 'g';
-        
-        // Gramatury regeneracji (stałe dla matki)
         document.getElementById('w-regMF').innerText = r.regMF + 'g';
         document.getElementById('w-regWF').innerText = r.regWF + 'g';
     }
 
-    calcTime(); // przelicza godziny na harmonogramie
+    // NOWE: Wiedza: Przepis Chleb
+    const breadStepEl = document.getElementById('w-bread-step');
+    if (breadStepEl) {
+        breadStepEl.innerText = r.breadStep;
+    }
+
+    calcTime();
 }
 
     function calcTime() {
