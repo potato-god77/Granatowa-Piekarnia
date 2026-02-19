@@ -420,21 +420,50 @@
 
     // --- GALERIA ---
     async function fetchGallery() {
-        try {
-            const res = await fetch(GALLERY_URL);
-            const txt = await res.text();
-            allGalleryData = txt.split('\n').slice(1).map(r => {
-                const c = r.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
-                return { 
-                    date: c[1], 
-                    starter: c[2], 
-                    cover: c[3], 
-                    photos: c[4] ? c[4].split(';') : [c[3]] 
-                };
-            }).filter(i => i.date);
-            renderAlbums();
-        } catch(e) { console.error(e); }
+    try {
+        const res = await fetch(GALLERY_URL);
+        const txt = await res.text();
+        allGalleryData = txt.split('\n').slice(1).map(r => {
+            const c = r.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
+            return { 
+                date: c[1], 
+                starter: c[2], 
+                cover: c[3], 
+                photos: c[4] ? c[4].split(';') : [c[3]] 
+            };
+        }).filter(i => i.date);
+        
+        renderAlbums(); // Wywołujemy rysowanie po pobraniu danych
+    } catch(e) { console.error("Błąd galerii:", e); }
+}
+        function renderAlbums() {
+    const cont = document.getElementById('gal-cont');
+    if (!cont) return;
+
+    // Pobieramy pierwsze słowo aktualnego zakwasu (np. "Clint")
+    const keyword = RECIPES[currentStarterKey].name.split(' ')[0].toLowerCase();
+
+    // Filtrujemy bazę zdjęć
+    const filteredData = allGalleryData.filter(album => 
+        album.starter.toLowerCase().trim().includes(keyword)
+    );
+
+    if (filteredData.length === 0) {
+        cont.innerHTML = `<div class="col-span-2 text-center py-10 text-stone-400 text-xs italic">Brak zdjęć dla: ${RECIPES[currentStarterKey].name}</div>`;
+        return;
     }
+
+    // Wyświetlamy tylko przefiltrowane albumy
+    cont.innerHTML = filteredData.map((album, idx) => `
+        <div onclick="openAlbumFiltered(${idx}, '${keyword}')" class="relative aspect-square rounded-2xl overflow-hidden shadow-sm active:scale-95 transition-transform cursor-pointer">
+            <img src="${album.cover}" class="w-full h-full object-cover">
+            <div class="absolute bottom-0 inset-x-0 bg-stone-900/65 backdrop-blur-md p-3 text-white">
+                <p class="text-[9px] uppercase font-bold opacity-70 mb-1">${album.starter}</p>
+                <p class="text-lg font-black tracking-tighter">${album.date}</p>
+            </div>
+        </div>
+    `).join('');
+}
 
     function openAlbumFiltered(filteredIdx, starterName) {
     // Znajdujemy album w pełnej bazie danych, żeby karuzela miała poprawne dane
@@ -508,13 +537,21 @@
     }
 
     // --- INTERFEJS ---
-    function st(id, btn) {
-        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(id).classList.add('active'); 
-        btn.classList.add('active');
-        if(id === 'gallery' && allGalleryData.length === 0) fetchGallery();
+   function st(id, btn) {
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active'); 
+    btn.classList.add('active');
+
+    // Jeśli wchodzimy do galerii
+    if(id === 'gallery') {
+        if(allGalleryData.length === 0) {
+            fetchGallery(); // Jeśli pusto - pobierz
+        } else {
+            renderAlbums(); // Jeśli dane już są - po prostu odśwież filtr
+        }
     }
+}
 
     function toggleAccordion(btn) { 
         btn.parentElement.classList.toggle('active'); 
