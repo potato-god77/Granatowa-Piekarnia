@@ -62,7 +62,7 @@
 
         <section id="starters" class="tab-content active space-y-4">
             <h3 class="serif text-xl px-2 font-bold text-stone-800">Twoje Matki</h3>
-            <div id="card-clint" onclick="sel('Clint Yeastwood', 7)" class="starter-card glass-card p-5 flex flex-col gap-3 selected">
+            <div id="card-clint" onclick="sel('Clint Yeastwood')" class="starter-card glass-card p-5 flex flex-col gap-3 selected">
                 <div class="flex justify-between items-center">
                     <div><h4 class="font-bold text-xl text-stone-800">Clint Yeastwood</h4><p class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Żytni • typ 2000</p></div>
                     <span class="text-3xl">🧔</span>
@@ -76,7 +76,7 @@
                 </div>
             </div>
 
-            <div id="card-sylvester" onclick="sel('Sylvester Graham', 7)" class="starter-card glass-card p-5 flex flex-col gap-3">
+            <div id="card-sylvester" onclick="sel('Sylvester Graham')" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
                     <div><h4 class="font-bold text-xl text-stone-800">Sylvester Graham</h4><p class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Pszenny Pełnoziarnisty • typ 1850</p></div>
                     <span class="text-3xl">🌾</span>
@@ -90,7 +90,7 @@
                 </div>
             </div>
 
-            <div id="card-hildegarda" onclick="sel('Hildegarda z Bingen', 5)" class="starter-card glass-card p-5 flex flex-col gap-3">
+            <div id="card-hildegarda" onclick="sel('Hildegarda z Bingen')" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
                     <div><h4 class="font-bold text-xl text-stone-800">Hildegarda z Bingen</h4><p class="text-[10px] text-stone-400 uppercase font-bold tracking-wider">Orkiszowy • typ 2000</p></div>
                     <span class="text-3xl">⛪</span>
@@ -114,12 +114,20 @@
                     <button onclick="upd(2)" id="q2" class="qb flex-1 py-3 rounded-xl bg-white text-stone-400 border border-stone-200 font-semibold text-sm transition-all">2 Chleby</button>
                 </div>
             </div>
+
             <div class="glass-card p-6 space-y-4">
-                <div class="flex justify-between items-center border-b border-stone-50 pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Zakwas</span><b id="sv" class="text-2xl text-stone-900 font-semibold">115g</b></div>
-                <div class="flex justify-between items-center border-b border-stone-50 pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Woda (30°C)</span><b id="wv" class="text-2xl text-stone-800 font-semibold">340g</b></div>
-                <div class="flex justify-between items-center border-b border-stone-50 pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Mąka</span><b id="fv" class="text-2xl text-stone-800 font-semibold">500g</b></div>
-                <div class="flex justify-between items-center"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Sól</span><b id="slv" class="text-2xl text-stone-800 font-semibold">14g</b></div>
+                <div class="flex justify-between items-center border-b border-stone-50 pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Zakwas</span><b id="sv" class="text-2xl text-stone-900 font-semibold">---</b></div>
+                <div class="flex justify-between items-center border-b border-stone-50 pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Woda (30°C)</span><b id="wv" class="text-2xl text-stone-800 font-semibold">---</b></div>
+                <div class="flex justify-between items-center border-b border-stone-50 pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Mąka</span><b id="fv" class="text-2xl text-stone-800 font-semibold">---</b></div>
+                <div class="flex justify-between items-center"><span class="text-[10px] text-stone-400 font-bold uppercase tracking-wider">Sól</span><b id="slv" class="text-2xl text-stone-800 font-semibold">---</b></div>
             </div>
+
+            <div class="glass-card p-5 bg-white border-l-4 border-accent">
+                <p class="text-[9px] uppercase font-bold text-stone-400 mb-2 tracking-widest">Tajemnica sukcesu:</p>
+                <div id="recipe-tips" class="text-sm leading-relaxed">
+                    </div>
+            </div>
+
             <div class="glass-card p-5 bg-[#f9f5f1]">
                 <div class="flex justify-between items-center mb-5">
                     <p class="text-[9px] uppercase font-bold text-stone-500 tracking-widest">Mieszanie:</p>
@@ -261,10 +269,31 @@
     </div>
 
     <script>
-        // PODMIEŃ TEN ADRES NA SWÓJ Z KROKU 2!
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxDTlTcVOKuNua9ZL29lL-HBS1BJpptJtZ5ee9m5JkDPMU1M6bMWVs7fHwi9ccyxhE/exec';
         const GALLERY_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhwbnRbCBfN9LtC-cGPK_ZNLQBPwytrADlL2_WDAcmLrHFXa0TeDWfFkZsNy5Z4421hD1LJRR_kiQO/pub?gid=0&single=true&output=csv';
 
+        const RECIPES = {
+            clint: {
+                name: 'Clint Yeastwood',
+                sv: 115, wv: 340, fv: 500, slv: 14,
+                secret: 'Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy. Garnek wybacza mu wszystko, bo żyto nie "płynie" tak mocno na boki.'
+            },
+            sylvester: {
+                name: 'Sylvester Graham',
+                sv: 100, wv: 325, fv: 500, slv: 13,
+                secret: 'Przy 1850 otręby tną gluten. Jeśli dasz 340g wody, ciasto po nocy będzie zbyt luźne. 325g pozwoli utrzymać kształt kuli.',
+                tip: 'Wymaga przynajmniej 2-3 "składań" (stretch & fold) w ciągu pierwszej godziny od wymieszania.'
+            },
+            hildegarda: {
+                name: 'Hildegarda z Bingen',
+                sv: 95, wv: 310, fv: 500, slv: 15,
+                secret: 'Orkisz 2000 pije wodę szybko, ale równie szybko traci napięcie. Niższa hydratacja (310g) to Twój bezpiecznik.',
+                tip: 'Hildegarda nie lubi agresywnego wyrabiania. Tylko delikatne mieszanie do połączenia składników.'
+            }
+        };
+
+        let currentStarterKey = 'clint';
+        let currentQty = 1;
         let allGalleryData = [];
         let currentPhotos = [];
         let currentPhotoIdx = 0;
@@ -278,7 +307,7 @@
                     mode: 'no-cors',
                     body: JSON.stringify({ key: key, value: value })
                 });
-                setTimeout(loadFromCloud, 1000); // Odśwież widok
+                setTimeout(loadFromCloud, 1000);
             } catch (e) { console.error("Cloud Error", e); }
             setTimeout(() => document.getElementById('loader').classList.remove('active'), 1500);
         }
@@ -288,18 +317,15 @@
                 const res = await fetch(SCRIPT_URL);
                 const data = await res.json();
                 
-                // Aktualizuj daty w UI
                 if(data.clint) document.getElementById('feed-clint').innerText = data.clint;
                 if(data.sylvester) document.getElementById('feed-sylvester').innerText = data.sylvester;
                 if(data.hildegarda) document.getElementById('feed-hildegarda').innerText = data.hildegarda;
                 
-                // Aktualizuj zlewki
                 const w = data.zlewki || 0;
                 document.getElementById('zw').value = w;
                 document.getElementById('zb').style.width = Math.min((w/400)*100, 100) + '%';
                 document.getElementById('za').classList.toggle('hidden', w < 400);
 
-                // Oznacz przyciski jako OK jeśli dzisiejsze
                 const today = new Date().toLocaleDateString('pl-PL');
                 ['clint', 'sylvester', 'hildegarda'].forEach(k => {
                     const btn = document.getElementById('btn-' + k);
@@ -309,7 +335,49 @@
             } catch (e) { console.error("Load Error", e); }
         }
 
-        // --- LOGIKA UI (Nienaruszona) ---
+        // --- LOGIKA KALKULATORA ---
+        window.sel = function(name) {
+            currentStarterKey = name.toLowerCase().includes('hilde') ? 'hildegarda' : (name.toLowerCase().includes('syl') ? 'sylvester' : 'clint');
+            document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('card-' + currentStarterKey).classList.add('selected');
+            document.getElementById('curr-name').innerText = RECIPES[currentStarterKey].name;
+            updateIngredients();
+        };
+
+        window.upd = function(n) {
+            currentQty = n;
+            document.querySelectorAll('.qb').forEach(b => b.className = 'qb flex-1 py-3 rounded-xl bg-white text-stone-400 border border-stone-200 font-semibold text-sm');
+            document.getElementById('q'+n).className = 'qb flex-1 py-3 rounded-xl brown-gradient text-white font-semibold text-sm shadow-md';
+            updateIngredients();
+        };
+
+        function updateIngredients() {
+            const r = RECIPES[currentStarterKey];
+            document.getElementById('sv').innerText = (r.sv * currentQty) + 'g';
+            document.getElementById('wv').innerText = (r.wv * currentQty) + 'g';
+            document.getElementById('fv').innerText = (r.fv * currentQty) + 'g';
+            document.getElementById('slv').innerText = (r.slv * currentQty) + 'g';
+            
+            const tipBox = document.getElementById('recipe-tips');
+            let html = `<p class="text-stone-600 italic mb-2">"${r.secret}"</p>`;
+            if(r.tip) html += `<p class="text-[11px] font-bold text-stone-400 uppercase tracking-tight">💡 Wskazówka: ${r.tip}</p>`;
+            tipBox.innerHTML = html;
+            calcTime();
+        }
+
+        window.calcTime = function() {
+            const startStr = document.getElementById('start-time').value;
+            const [h, m] = startStr.split(':').map(Number);
+            const add = (hrs, mns) => {
+                let t = h * 60 + m + hrs * 60 + mns;
+                return `${String(Math.floor(t/60)%24).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;
+            };
+            document.getElementById('t-lodowka').innerText = add(7,30);
+            document.getElementById('t-formowanie').innerText = add(18,0);
+            document.getElementById('t-pieczenie').innerText = add(19,15);
+        };
+
+        // --- INNE FUNKCJE ---
         window.st = function(id, btn) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -330,28 +398,6 @@
             if(!val) return;
             const formatted = new Date(val).toLocaleDateString('pl-PL');
             saveToCloud(key, formatted);
-        };
-
-        window.upd = function(n) {
-            document.querySelectorAll('.qb').forEach(b => b.className = 'qb flex-1 py-3 rounded-xl bg-white text-stone-400 border border-stone-200 font-semibold text-sm');
-            document.getElementById('q'+n).className = 'qb flex-1 py-3 rounded-xl brown-gradient text-white font-semibold text-sm shadow-md';
-            document.getElementById('sv').innerText = (115 * n) + 'g';
-            document.getElementById('fv').innerText = (500 * n) + 'g';
-            document.getElementById('wv').innerText = (340 * n) + 'g';
-            document.getElementById('slv').innerText = (14 * n) + 'g';
-            calcTime();
-        };
-
-        window.calcTime = function() {
-            const startStr = document.getElementById('start-time').value;
-            const [h, m] = startStr.split(':').map(Number);
-            const add = (hrs, mns) => {
-                let t = h * 60 + m + hrs * 60 + mns;
-                return `${String(Math.floor(t/60)%24).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;
-            };
-            document.getElementById('t-lodowka').innerText = add(7,30);
-            document.getElementById('t-formowanie').innerText = add(18,0);
-            document.getElementById('t-pieczenie').innerText = add(19,15);
         };
 
         async function fetchGallery() {
@@ -404,16 +450,10 @@
 
         window.closeViewer = function() { document.getElementById('viewer-modal').classList.remove('active'); };
         window.rsZ = function() { if(confirm("Reset?")) saveToCloud('zlewki', 0); };
-        window.sel = function(n, d) {
-            let k = n.toLowerCase().includes('hilde') ? 'hildegarda' : (n.toLowerCase().includes('syl') ? 'sylvester' : 'clint');
-            document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
-            document.getElementById('card-' + k).classList.add('selected');
-            document.getElementById('curr-name').innerText = n;
-        };
 
         window.onload = () => {
             loadFromCloud();
-            calcTime();
+            updateIngredients(); // Inicjalizacja Clinta na starcie
         };
     </script>
 </body>
