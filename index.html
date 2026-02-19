@@ -427,58 +427,46 @@ function updateCarouselPosition() {
         }
     });
 }
-        // --- OBSŁUGA SWIPE (PRZESUWANIE PALCEM) ---
+        // --- 1. OBSŁUGA GESTÓW (SWIPE) ---
 let touchStartX = 0;
 let touchEndX = 0;
 
-const modal = document.getElementById('viewer-modal');
-
-modal.addEventListener('touchstart', e => {
+// Reagujemy na dotyk tylko wewnątrz otwartego albumu
+document.getElementById('viewer-modal').addEventListener('touchstart', e => {
     touchStartX = e.changedTouches[0].screenX;
 }, { passive: true });
 
-modal.addEventListener('touchend', e => {
+document.getElementById('viewer-modal').addEventListener('touchend', e => {
     touchEndX = e.changedTouches[0].screenX;
-    handleSwipe();
+    const swipeThreshold = 50;
+    if (touchEndX < touchStartX - swipeThreshold) moveCarousel(1);
+    if (touchEndX > touchStartX + swipeThreshold) moveCarousel(-1);
 }, { passive: true });
 
-function handleSwipe() {
-    const swipeThreshold = 50; // czułość przesunięcia w pikselach
-    if (touchEndX < touchStartX - swipeThreshold) {
-        moveCarousel(1); // przesuń w prawo (następne)
-    }
-    if (touchEndX > touchStartX + swipeThreshold) {
-        moveCarousel(-1); // przesuń w lewo (poprzednie)
-    }
-}
-
-// --- INITIALIZATION (WŁAŚCIWE MIEJSCE DLA ONLOAD) ---
-window.onload = () => {
-    // 1. Sprawdź zapamiętane hasło
+// --- 2. START APLIKACJI (ZAMIAST ONLOAD) ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Sprawdzamy czy hasło zostało już kiedyś podane
     if (localStorage.getItem('bakery_access') === 'granted') {
         document.getElementById('lock-screen').style.display = 'none';
-    }
-
-    // 2. Wczytaj dane z arkusza (zlewki, daty karmienia)
-    if (typeof loadFromCloud === "function") loadFromCloud();
-    
-    // 3. Zainicjuj kalkulator składników
-    if (typeof updateIngredients === "function") updateIngredients();
-};
-        // To powinno być na samym dole, tuż przed 
-document.addEventListener('DOMContentLoaded', () => {
-    const access = localStorage.getItem('bakery_access');
-    
-    if (access === 'granted') {
-        // Ukrywamy ekran blokady
-        const lock = document.getElementById('lock-screen');
-        if (lock) lock.style.display = 'none';
         
-        // Odpalamy resztę logiki piekarni
+        // Wywołujemy startowe funkcje Twojej aplikacji
         if (typeof loadFromCloud === "function") loadFromCloud();
         if (typeof updateIngredients === "function") updateIngredients();
     }
 });
+
+// --- 3. POPRAWKA FUNKCJI HASŁA ---
+// Podmień też swoją funkcję checkPass na tę poniżej:
+function checkPass() {
+    const field = document.getElementById('pass-field');
+    if (field.value === BREAD_PASS) {
+        localStorage.setItem('bakery_access', 'granted');
+        location.reload(); // To jest kluczowe - odświeża stronę z nowymi uprawnieniami
+    } else {
+        alert("Błędne hasło");
+        field.value = '';
+    }
+}
     </script>
 </body>
 </html>
