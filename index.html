@@ -28,7 +28,6 @@
         .starter-card.selected { border-color: var(--amber-gold) !important; background-color: #fffaf0; }
         .starter-title { color: var(--starter-name); }
 
-        /* Przycisk Nakarm - Efekt naciśnięcia */
         .btn-feed:active { transform: scale(0.95); box-shadow: inset 0 3px 5px rgba(0,0,0,0.1); }
         .btn-feed.fed-success { background-color: #e2e8f0 !important; color: #64748b !important; border-color: #cbd5e1 !important; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); pointer-events: none; }
 
@@ -121,7 +120,7 @@
         </section>
 
         <section id="pieczenie-section" class="tab-content space-y-4">
-            <div class="accordion-item glass-card active">
+            <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
                     <h3 class="serif text-lg font-bold italic">Kalkulator składników</h3>
                     <span class="plus-icon text-xl">+</span>
@@ -141,7 +140,7 @@
                 </div>
             </div>
 
-            <div class="accordion-item glass-card active">
+            <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
                     <h3 class="serif text-lg font-bold italic">Składniki</h3>
                     <span class="plus-icon text-xl">+</span>
@@ -156,11 +155,23 @@
 
             <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
-                    <h3 class="serif text-lg font-bold italic">Wskazówka</h3>
+                    <h3 class="serif text-lg font-bold italic">Przepis</h3>
                     <span class="plus-icon text-xl">+</span>
                 </button>
-                <div class="accordion-content p-5 pt-0">
-                    <div id="recipe-tips" class="text-sm text-stone-700 leading-relaxed border-l-4 border-accent pl-4"></div>
+                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4 text-stone-600"> 
+                    <div class="recipe-step"> 
+                        <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p> 
+                        <p>Zrób zawiesinę: woda <span id="p-wv" class="font-bold text-stone-800"></span> (30°C) + aktywny zakwas <span id="p-sv" class="font-bold text-stone-800"></span>. Do tego dodaj <span id="p-fv" class="font-bold text-stone-800"></span> mąki i <span id="p-slv" class="font-bold text-stone-800"></span> soli. Wymieszaj, przykryj miskę i zostaw na noc na blacie w temperaturze pokojowej.</p> 
+                        <div id="p-secret" class="mt-2 text-xs italic font-medium"></div>
+                    </div> 
+                    <div class="recipe-step"> 
+                        <p class="font-bold text-stone-800 italic">Rano (05:30 - 06:00)</p> 
+                        <p>Włóż ciasto do lodówki (pod przykryciem).</p> 
+                    </div> 
+                    <div class="recipe-step"> 
+                        <p class="font-bold text-stone-800 italic">Pieczenie (od 16:00)</p> 
+                        <p>Nagrzej piec z garnkiem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę" by stało się spięte, po czym natnij ostrym nożem lub żyletką. Gdy piekarnik się już nagrzeje, piecz 30 min pod przykryciem, a następnie zdejmij pokrywkę i piecz kolejne 15 min bez niej.</p> 
+                    </div> 
                 </div>
             </div>
 
@@ -216,28 +227,6 @@
                         <p>1. Do 20g porcji w słoiku nr 2 dodaj <span id="w-regMF" class="font-bold"></span> mąki i <span id="w-regWF" class="font-bold"></span> wody (38°C).<br>2. Zostaw na 1h na blacie, potem schowaj do lodówki.</p>
                     </div>
                 </div>
-            </div>
-
-            <div class="accordion-item glass-card"> 
-                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
-                    <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Chleb</h3> 
-                    <span class="plus-icon text-2xl">+</span>
-                </button>
-                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4 text-stone-600"> 
-                    <div class="recipe-step"> 
-                        <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p> 
-                        <p>Zrób zawiesinę: woda <span id="p-wv" class="font-bold text-stone-800"></span> (30°C) + aktywny zakwas <span id="p-sv" class="font-bold text-stone-800"></span>. Do tego dodaj <span id="p-fv" class="font-bold text-stone-800"></span> mąki i <span id="p-slv" class="font-bold text-stone-800"></span> soli. Wymieszaj, przykryj miskę i zostaw na noc na blacie w temperaturze pokojowej.</p> 
-                        <div id="p-secret" class="mt-2 text-xs italic font-medium"></div>
-                    </div> 
-                    <div class="recipe-step"> 
-                        <p class="font-bold text-stone-800 italic">Rano (05:30 - 06:00)</p> 
-                        <p>Włóż ciasto do lodówki (pod przykryciem).</p> 
-                    </div> 
-                    <div class="recipe-step"> 
-                        <p class="font-bold text-stone-800 italic">Pieczenie (od 16:00)</p> 
-                        <p>Nagrzej piec z garnkiem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę" by stało się spięte, po czym natnij ostrym nożem lub żyletką. Gdy piekarnik się już nagrzeje, piecz 30 min pod przykryciem, a następnie zdejmij pokrywkę i piecz kolejne 15 min bez niej.</p> 
-                    </div> 
-                </div> 
             </div>
 
             <div class="accordion-item glass-card">
@@ -439,7 +428,6 @@
             }
         }
 
-        // Poprawiona funkcja karmienia z efektem wizualnym
         function markFed(k, e) { 
             e.stopPropagation(); 
             const btn = e.currentTarget;
