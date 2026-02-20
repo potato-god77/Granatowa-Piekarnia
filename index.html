@@ -606,31 +606,22 @@
 // --- SEKCJA GALERII I MODALA ---
 // ==========================================
 
-async function fetchGallery() {
-    try {
-        // Dodajemy timestamp, aby uniknąć problemów z cache i CORS
-        const finalUrl = GALLERY_URL + "&t=" + new Date().getTime();
-        
-        // To proxy doda brakujące nagłówki CORS "w locie"
-     const res = await fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(GALLERY_URL));
-        
-        if (!res.ok) throw new Error('Problem z odpowiedzią sieci');
-        
-        const txt = await res.text();
-        allGalleryData = txt.split('\n').slice(1).map(r => {
-            const c = r.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
-            return { 
-                date: c[1], 
-                starter: c[2], 
-                cover: c[3], 
-                photos: c[4] ? c[4].split(';') : [c[3]] 
-            };
-        }).filter(i => i.date);
-        
-        renderAlbums(); // Rysujemy galerię po pobraniu danych
-    } catch(e) { 
-        console.error("Błąd ładowania galerii:", e); 
-    }
+function fetchGallery() {
+    // Czyścimy stare ślady
+    window.handleGalleryData = function(res) {
+        if (res.status === 'success') {
+            allGalleryData = res.data;
+            console.log("Galeria załadowana z chmury:", allGalleryData.length, "pozycji");
+            renderAlbums();
+        }
+        document.getElementById('gallery-jsonp')?.remove();
+    };
+
+    const script = document.createElement('script');
+    script.id = 'gallery-jsonp';
+    // Używamy akcji getGallery
+    script.src = `${SCRIPT_URL}?action=getGallery&callback=handleGalleryData&t=${Date.now()}`;
+    document.body.appendChild(script);
 }
 
 function renderAlbums() {
