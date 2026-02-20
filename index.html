@@ -632,9 +632,8 @@ function renderAlbums() {
     const cont = document.getElementById('gal-cont');
     if (!cont) return;
 
-    // ZMIANA: Zwiększamy odstępy (gap-10) i ograniczamy liczbę kolumn na PC do max 4, 
-    // aby kafelki były fizycznie większe.
-    cont.className = "grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-10 mx-auto max-w-screen-2xl px-6 justify-items-center";
+    // Grid: Na PC dajemy max 4 kolumny, ale z większymi odstępami i max szerokością
+    cont.className = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8 mx-auto max-w-6xl px-4";
 
     const r = RECIPES[currentStarterKey];
     const starterName = r.name.split(' ')[0].toLowerCase();
@@ -650,17 +649,17 @@ function renderAlbums() {
 
     cont.innerHTML = filteredData.map((album, idx) => `
         <div onclick="openAlbumFiltered(${idx}, '${starterName}')" 
-             class="group relative w-full aspect-[3/4] rounded-[2rem] overflow-hidden shadow-2xl active:scale-95 transition-all duration-500 cursor-pointer bg-stone-100 border border-white/10">
+             class="group relative w-full aspect-square rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer bg-stone-100">
             
-            <img src="${album.cover}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" loading="lazy">
+            <img src="${album.cover}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
             
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90 transition-opacity"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-80"></div>
             
-            <div class="absolute bottom-0 inset-x-0 p-6 md:p-8 text-white">
-                <p class="text-2xl md:text-3xl font-black tracking-tighter leading-none mb-2 drop-shadow-lg">
+            <div class="absolute bottom-0 left-0 right-0 p-3 md:p-4 text-white">
+                <p class="text-sm md:text-base font-bold leading-none mb-1">
                     ${album.date}
                 </p>
-                <p class="text-[10px] md:text-sm uppercase font-bold tracking-[0.2em] text-amber-400/90 italic drop-shadow-md">
+                <p class="text-[9px] md:text-[11px] uppercase tracking-wider text-stone-300 font-medium">
                     ${album.starter}
                 </p>
             </div>
