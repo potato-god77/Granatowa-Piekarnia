@@ -149,7 +149,7 @@
         <section id="recipes" class="tab-content space-y-6">
     <div class="accordion-item glass-card">
         <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
-            <h3 class="serif text-xl font-bold italic">Logistyka Słoików</h3>
+            <h3 class="serif text-xl font-bold italic text-stone-800">Logistyka Słoików</h3>
             <span class="plus-icon text-2xl">+</span>
         </button>
         <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
@@ -181,8 +181,11 @@
     </div>
 
     <div class="accordion-item glass-card"> 
-        <h3 class="serif text-xl font-bold mb-4 italic text-stone-800">Przepis: Chleb</h3> 
-        <div class="space-y-4 text-stone-600"> 
+        <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
+            <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Chleb</h3> 
+            <span class="plus-icon text-2xl">+</span>
+        </button>
+        <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4 text-stone-600"> 
             <div class="recipe-step"> 
                 <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p> 
                 <p>Zrób zawiesinę: woda <span id="p-wv" class="font-bold text-stone-800"></span> (30°C) + 
@@ -203,38 +206,38 @@
         </div> 
     </div>
 
-            <div class="accordion-item glass-card">
-                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
-                    <h3 class="serif text-xl font-bold italic">Przepis: Żurek na zlewkach</h3>
-                    <span class="plus-icon text-2xl">+</span>
-                </button>
-                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
-                    <div class="recipe-step">
-                        <p class="font-bold italic">Składniki (2-2.5L):</p>
-                        <ul class="list-disc ml-4 space-y-1">
-                            <li>250-300g wędzonych żeberek</li>
-                            <li>150g wędzonego boczku</li>
-                            <li>2 marchewki, 1 pietruszka, kawałek selera</li>
-                            <li>1 cebula (opalona nad ogniem)</li>
-                            <li>3 liście laurowe, 5 ziaren ziela angielskiego</li>
-                            <li>2 litry zimnej wody</li>
-                        </ul>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold italic">Krok 1: Wywar Mięsny</p>
-                        <p>Do garnka włóż żeberka, boczek, warzywa i przyprawy. Zalej zimną wodą. Gotuj pod przykryciem na minimalnym ogniu przez ok. 2 godziny, aż mięso będzie bardzo miękkie.</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold italic">Krok 2: Zakwaszanie (Zlewki)</p>
-                        <p>Odlej szklankę gorącego wywaru i wymieszaj ją dokładnie z 400g zlewek ze słoika nr 3 (to zapewni brak grudek). Wlej zawiesinę do garnka, cały czas mieszając. Zagotuj.</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold italic">Krok 3: Wykończenie</p>
-                        <p>Dodaj 2-3 ząbki przeciśniętego czosnku i 2 łyżki majeranku. Dopraw solą i pieprzem. Na koniec zabiel 100ml śmietanki 30%.</p>
-                    </div>
-                </div>
+    <div class="accordion-item glass-card">
+        <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
+            <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Żurek na zlewkach</h3>
+            <span class="plus-icon text-2xl">+</span>
+        </button>
+        <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
+            <div class="recipe-step">
+                <p class="font-bold italic">Składniki (2-2.5L):</p>
+                <ul class="list-disc ml-4 space-y-1 text-stone-600">
+                    <li>250-300g wędzonych żeberek</li>
+                    <li>150g wędzonego boczku</li>
+                    <li>2 marchewki, 1 pietruszka, kawałek selera</li>
+                    <li>1 cebula (opalona nad ogniem)</li>
+                    <li>3 liście laurowe, 5 ziaren ziela angielskiego</li>
+                    <li>2 litry zimnej wody</li>
+                </ul>
             </div>
-        </section>
+            <div class="recipe-step text-stone-600">
+                <p class="font-bold italic text-stone-800">Krok 1: Wywar Mięsny</p>
+                <p>Do garnka włóż żeberka, boczek, warzywa i przyprawy. Zalej zimną wodą. Gotuj pod przykryciem na minimalnym ogniu przez ok. 2 godziny, aż mięso będzie bardzo miękkie.</p>
+            </div>
+            <div class="recipe-step text-stone-600">
+                <p class="font-bold italic text-stone-800">Krok 2: Zakwaszanie (Zlewki)</p>
+                <p>Odlej szklankę gorącego wywaru i wymieszaj ją dokładnie z 400g zlewek ze słoika nr 3 (to zapewni brak grudek). Wlej zawiesinę do garnka, cały czas mieszając. Zagotuj.</p>
+            </div>
+            <div class="recipe-step text-stone-600">
+                <p class="font-bold italic text-stone-800">Krok 3: Wykończenie</p>
+                <p>Dodaj 2-3 ząbki przeciśniętego czosnku i 2 łyżki majeranku. Dopraw solą i pieprzem. Na koniec zabiel 100ml śmietanki 30%.</p>
+            </div>
+        </div>
+    </div>
+</section>
 
         <section id="info" class="tab-content space-y-5">
             <div class="glass-card p-6 text-center">
