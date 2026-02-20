@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 
     <style>
-        :root { --primary: #4a3728; --bg: #fdfaf7; --accent: #8b5e3c; --sand: #f5ece2; --amber-gold: #d97706; }
+        :root { --primary: #4a3728; --bg: #fdfaf7; --accent: #8b5e3c; --sand: #f5ece2; --amber-gold: #d97706; --starter-name: #2c5364; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--primary); margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         .serif { font-family: 'Playfair Display', serif; }
         .tab-content { display: none; }
@@ -25,6 +25,7 @@
         .glass-card { background: white; border-radius: 20px; box-shadow: 0 4px 15px rgba(74, 55, 40, 0.05); border: 1px solid #efe3d8; overflow: hidden; color: var(--primary); }
         .starter-card { transition: all 0.2s; border: 2px solid transparent; cursor: pointer; }
         .starter-card.selected { border-color: var(--amber-gold) !important; background-color: #fffaf0; }
+        .starter-title { color: var(--starter-name); }
 
         .accordion-content { display: none; }
         .accordion-item.active .accordion-content { display: block; animation: slideDown 0.2s ease-out; }
@@ -45,7 +46,7 @@
         .brown-gradient { background: linear-gradient(135deg, #6d4c41 0%, #4a3728 100%); }
 
         #viewer-modal { z-index: 999999 !important; }
-        .date-clickable { cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
+        .date-clickable { cursor: pointer; border: 1px solid #e5e7eb; padding: 2px 8px; border-radius: 6px; background: white; display: inline-block; }
     </style>
 </head>
 <body class="pb-24">
@@ -84,7 +85,7 @@
         <section id="zakwasy-section" class="tab-content active space-y-4">
             <div id="card-clint" onclick="sel('clint')" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
-                    <div><h4 class="font-bold text-xl">Clint Yeastwood</h4><p class="text-[9px] text-stone-400 uppercase font-bold">Żytni • typ 2000</p></div>
+                    <div><h4 class="font-bold text-xl starter-title">Clint Yeastwood</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Żytni<br><br>• typ 2000</p></div>
                     <span class="text-3xl">🤠</span>
                 </div>
                 <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
@@ -94,7 +95,7 @@
             </div>
             <div id="card-sylvester" onclick="sel('sylvester')" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
-                    <div><h4 class="font-bold text-xl">Sylvester Graham</h4><p class="text-[9px] text-stone-400 uppercase font-bold">Pszenny Pełnoziarnisty • typ 1850</p></div>
+                    <div><h4 class="font-bold text-xl starter-title">Sylvester Graham</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Pszenny Pełnoziarnisty<br><br>• typ 1850</p></div>
                     <span class="text-3xl">👨‍🌾</span>
                 </div>
                 <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
@@ -104,7 +105,7 @@
             </div>
             <div id="card-hildegarda" onclick="sel('hildegarda')" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
-                    <div><h4 class="font-bold text-xl">Hildegarda z Bingen</h4><p class="text-[9px] text-stone-400 uppercase font-bold">Orkiszowy • typ 2000</p></div>
+                    <div><h4 class="font-bold text-xl starter-title">Hildegarda z Bingen</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Orkiszowy<br><br>• typ 2000</p></div>
                     <span class="text-3xl">⛪</span>
                 </div>
                 <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
@@ -247,248 +248,4 @@
 
         <section id="galeria-section" class="tab-content pt-4">
             <div id="gal-cont" class="flex justify-center items-center py-20">
-                <div class="w-8 h-8 border-4 border-stone-200 border-t-amber-600 rounded-full animate-spin"></div>
-            </div>
-        </section>
-    </main>
-
-    <div id="viewer-modal" class="hidden fixed inset-0 bg-black flex flex-col items-center justify-center">
-        <button onclick="closeViewer()" class="absolute top-6 right-6 w-14 h-14 bg-black/50 rounded-full text-white text-5xl flex items-center justify-center z-[9999999] leading-none transition-all active:scale-90">&times;</button>
-
-        <span id="carousel-info" class="absolute top-8 left-6 text-white text-[10px] font-black opacity-50 z-[999999] pointer-events-none uppercase tracking-widest bg-black/30 px-2 py-1 rounded"></span>
-
-        <div id="img-container" class="relative w-full flex-1 flex items-center justify-center cursor-pointer p-4" onclick="if(event.target === this) closeViewer()">
-            <img id="carousel-img" src="" class="max-w-full max-h-[70vh] object-contain transition-opacity duration-200 cursor-default" onclick="event.stopPropagation()">
-
-            <button onclick="moveCarousel(-1); event.stopPropagation()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 p-5 rounded-full text-white text-3xl z-[999999]">❮</button>
-            <button onclick="moveCarousel(1); event.stopPropagation()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 p-5 rounded-full text-white text-3xl z-[999999]">❯</button>
-        </div>
-
-        <div id="thumb-strip" class="no-scrollbar flex gap-2 overflow-x-auto p-6 w-full bg-black border-t border-stone-900 z-[999999]"></div>
-    </div>
-
-    <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxDTlTcVOKuNua9ZL29lL-HBS1BJpptJtZ5ee9m5JkDPMU1M6bMWVs7fHwi9ccyxhE/exec';
-        const BREAD_PASS = 'feelgood7';
-        let currentStarterKey = 'clint';
-        let currentQty = 1;
-        let allGalleryData = [];
-        let currentAlbumPhotos = [];
-        let currentImgIndex = 0;
-        let isGalleryLoaded = false;
-
-        const RECIPES = {
-            clint: { 
-                name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, 
-                secret: 'Ciasto jest jak mokra glina.<br>Nie wyrabiamy go, tylko dokładnie mieszamy.<br>Garnek wybacza mu wszystko, bo żyto nie "płynie" tak mocno na boki. ',
-                target: 'Stabilność i mocny, octowy profil.', ratio: '1:2:2',
-                desc: 'Żyto kocha gęstą konsystencję. Taka dawka wody sprawia, że Clint jest jak plastelina.',
-                regMF: 40, regWF: 40,
-            },
-            sylvester: { 
-                name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, 
-                secret: ' Przy 1850 otręby tną gluten. Jeśli dasz 340g wody (jak u Clinta), ciasto po nocy będzie zbyt luźne na garnek. 325g pozwoli utrzymać kształt kuli.<br><br>Wymaga przynajmniej 2-3 "składań" (stretch & fold) w ciągu pierwszej godziny od wymieszania.',
-                target: 'Szybka fermentacja i mleczno-orzechowy zapach.', ratio: '1:2:1.75',
-                desc: 'Pszenica przy 1:1 staje się rzadka. Dając mniej wody, zmuszasz bakterie do wolniejszej pracy.',
-                regMF: 40, regWF: 35,
-            },
-            hildegarda: { 
-                name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, 
-                secret: 'Orkisz 2000 pije wodę szybko, ale równie szybko "puchnie" i traci napięcie powierzchniowe. Niższa hydratacja (310g) to Twój bezpiecznik, dzięki któremu bochenek w garnku wystrzeli w górę, a nie rozleje się na boki.<br><br>Hildegarda nie lubi agresywnego wyrabiania. Tylko delikatne mieszanie do połączenia składników.',
-                target: 'Delikatność i ochrona przed przekwaszeniem.', ratio: '1:2.25:2.25',
-                regMF: 45, regWF: 45,
-            }
-        };
-
-        function checkPass() {
-            if (document.getElementById('pass-field').value === BREAD_PASS) {
-                localStorage.setItem('bakery_access', 'granted');
-                location.reload();
-            } else { alert("Błędne hasło"); }
-        }
-
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(tabId + '-section').classList.add('active');
-            document.getElementById('btn-' + tabId).classList.add('active');
-            if (tabId === 'galeria') renderAlbums();
-            sessionStorage.setItem('lastTab', tabId);
-            window.scrollTo(0,0);
-        }
-
-        async function saveToCloud(key, value) {
-            try { await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({key, value})}); setTimeout(loadFromCloud, 1000); } catch(e){ console.error(e); }
-        }
-
-        function loadFromCloud() {
-            window.handleCloudData = function(data) {
-                if (data.status === 'success') {
-                    for (let k in data.data) {
-                        const el = document.getElementById('feed-' + k);
-                        if (el) el.innerText = data.data[k];
-                        if (k === 'zlewki') document.getElementById('zw').value = data.data[k];
-                    }
-                }
-            };
-            const script = document.createElement('script');
-            script.src = `${SCRIPT_URL}?action=get&callback=handleCloudData&t=${Date.now()}`;
-            document.body.appendChild(script);
-        }
-
-        function sel(n) {
-            currentStarterKey = n.toLowerCase();
-            document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
-            document.getElementById('card-' + currentStarterKey).classList.add('selected');
-            document.getElementById('quick-select').value = currentStarterKey;
-            document.getElementById('curr-name').innerText = RECIPES[currentStarterKey].name;
-            updateIngredients();
-            if (isGalleryLoaded) renderAlbums();
-        }
-
-        function changeQty(delta) {
-            currentQty = Math.max(1, currentQty + delta);
-            document.getElementById('display-qty').innerText = currentQty;
-            updateIngredients();
-        }
-
-        function updateIngredients() {
-            const r = RECIPES[currentStarterKey];
-            const q = currentQty;
-            ['sv', 'wv', 'fv', 'slv'].forEach(id => { document.getElementById(id).innerText = (r[id] * q) + 'g'; });
-            document.getElementById('recipe-tips').innerHTML = `<b>Wskazówka:</b><br>${r.secret}`;
-            document.getElementById('w-name').innerText = r.name;
-            document.getElementById('w-target').innerText = r.target;
-            document.getElementById('w-ratio').innerText = r.ratio;
-            document.getElementById('w-desc').innerText = r.desc;
-            document.getElementById('w-sv').innerText = (r.sv * q) + 'g';
-            document.getElementById('w-regMF').innerText = r.regMF + 'g';
-            document.getElementById('w-regWF').innerText = r.regWF + 'g';
-            document.getElementById('p-wv').innerText = (r.wv * q) + 'g';
-            document.getElementById('p-sv').innerText = (r.sv * q) + 'g';
-            document.getElementById('p-fv').innerText = (r.fv * q) + 'g';
-            document.getElementById('p-slv').innerText = (r.slv * q) + 'g';
-            document.getElementById('p-secret').innerHTML = `<b>Wskazówka:</b><br>${r.secret}`;
-            calcTime();
-        }
-
-        function calcTime() {
-            const [h,m] = (document.getElementById('start-time').value || "22:00").split(':').map(Number);
-            const add = (hrs, mns) => {
-                let t = h*60+m + hrs*60+mns;
-                return `${String(Math.floor(t/60)%24).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;
-            };
-            document.getElementById('t-lodowka').innerText = add(7,30);
-            document.getElementById('t-formowanie').innerText = add(18,0);
-            document.getElementById('t-pieczenie').innerText = add(19,15);
-        }
-
-        function markFed(k, e) { e.stopPropagation(); saveToCloud(k, new Date().toLocaleDateString('pl-PL')); }
-        
-        function manualDate(k, e) {
-            e.stopPropagation();
-            const current = document.getElementById('feed-'+k).innerText;
-            const input = document.createElement('input');
-            input.type = 'date';
-            input.style.position = 'fixed';
-            input.style.opacity = '0';
-            document.body.appendChild(input);
-            input.showPicker();
-            input.onchange = () => {
-                const val = input.value ? new Date(input.value).toLocaleDateString('pl-PL') : "---";
-                saveToCloud(k, val);
-                document.body.removeChild(input);
-            };
-            input.onblur = () => { if(document.body.contains(input)) document.body.removeChild(input); };
-        }
-
-        function toggleAccordion(btn) { btn.parentElement.classList.toggle('active'); }
-
-        function fetchGallery() {
-            window.handleGalleryData = function(res) {
-                if (res.status === 'success') { allGalleryData = res.data; isGalleryLoaded = true; renderAlbums(); }
-            };
-            const script = document.createElement('script');
-            script.src = `${SCRIPT_URL}?action=getGallery&callback=handleGalleryData&t=${Date.now()}`;
-            document.body.appendChild(script);
-        }
-
-        function renderAlbums() {
-            const cont = document.getElementById('gal-cont');
-            if (!cont || !isGalleryLoaded) return;
-            const sn = RECIPES[currentStarterKey].name.split(' ')[0].toLowerCase();
-            const f = allGalleryData.filter(a => a.starter && a.starter.toLowerCase().includes(sn));
-            if (f.length === 0) {
-                cont.style.display = 'block';
-                cont.innerHTML = `<p class="p-10 text-stone-400 italic text-center">Brak zdjęć dla: ${sn}</p>`;
-                return;
-            }
-            cont.style.display = 'grid';
-            cont.style.gridTemplateColumns = 'repeat(2, 1fr)';
-            cont.style.gap = '16px';
-            cont.innerHTML = f.map((a, i) => `
-                <div onclick="openAlbumFiltered(${i}, '${sn}')" class="relative aspect-[3/4] rounded-xl overflow-hidden shadow-lg bg-stone-800">
-                    <img src="${a.cover}" class="w-full h-full object-cover">
-                    <div class="absolute bottom-0 inset-x-0 p-3 bg-black/60 backdrop-blur-sm text-white text-[10px]">
-                        <b>${a.date}</b><br>${a.starter}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function openAlbumFiltered(idx, name) {
-            const filtered = allGalleryData.filter(a => a.starter && a.starter.toLowerCase().includes(name));
-            const album = filtered[idx];
-            if (!album) return;
-            currentAlbumPhotos = album.photos;
-            currentImgIndex = 0;
-            const thumbStrip = document.getElementById('thumb-strip');
-            thumbStrip.innerHTML = currentAlbumPhotos.map((url, i) => `
-                <img src="${url}" onclick="jumpToImage(${i}); event.stopPropagation()" class="h-16 w-12 object-cover rounded cursor-pointer flex-shrink-0 border-2 border-transparent opacity-50 transition-all">
-            `).join('');
-            document.getElementById('carousel-info').innerText = `${album.starter} • ${album.date}`;
-            document.getElementById('viewer-modal').classList.remove('hidden');
-            document.getElementById('viewer-modal').classList.add('flex');
-            updateCarouselUI();
-        }
-
-        function moveCarousel(dir) {
-            currentImgIndex = (currentImgIndex + dir + currentAlbumPhotos.length) % currentAlbumPhotos.length;
-            updateCarouselUI();
-        }
-
-        function jumpToImage(i) { currentImgIndex = i; updateCarouselUI(); }
-
-        function updateCarouselUI() {
-            const img = document.getElementById('carousel-img');
-            img.style.opacity = '0';
-            setTimeout(() => {
-                img.src = currentAlbumPhotos[currentImgIndex];
-                img.style.opacity = '1';
-            }, 100);
-            const thumbs = document.querySelectorAll('#thumb-strip img');
-            thumbs.forEach((t, i) => {
-                if(i === currentImgIndex) {
-                    t.classList.add('border-amber-500', 'opacity-100');
-                    t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                } else { t.classList.remove('border-amber-500', 'opacity-100'); }
-            });
-        }
-
-        function closeViewer() {
-            const modal = document.getElementById('viewer-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem('bakery_access') === 'granted') {
-                document.getElementById('lock-screen').style.display = 'none';
-                loadFromCloud(); fetchGallery(); updateIngredients(); sel('clint');
-                const saved = sessionStorage.getItem('lastTab');
-                if (saved) switchTab(saved);
-            }
-        });
-    </script>
-</body>
-</html>
+                <div class="w-8 h-8 border-4
