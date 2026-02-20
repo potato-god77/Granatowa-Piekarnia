@@ -478,32 +478,33 @@
     }
 
     function loadFromCloud() {
-    // 1. Definiujemy funkcję, którą wywoła Google
     window.handleCloudData = function(data) {
         if (data.status === 'success') {
             const cloudData = data.data;
+            
+            // Tabela w konsoli (F12), żebyś widział co przyszło
+            console.log("DANE Z CHMURY:");
+            console.table(cloudData);
+
             for (let k in cloudData) {
-                if (RECIPES[k]) {
-                    RECIPES[k].lastFed = cloudData[k];
-                    const fedEl = document.getElementById('fed-' + k);
-                    if (fedEl) fedEl.innerText = cloudData[k];
+                // Szukamy elementu o ID np. fed-clint
+                const fedEl = document.getElementById('fed-' + k);
+                if (fedEl) {
+                    fedEl.innerText = cloudData[k];
+                    // Opcjonalnie: aktualizujemy też obiekt RECIPES w pamięci
+                    if (RECIPES[k]) RECIPES[k].lastFed = cloudData[k];
                 }
             }
-            console.log("Dane załadowane przez JSONP");
         }
-        // Sprzątamy po sobie
         document.getElementById('jsonp-script')?.remove();
     };
 
-    // 2. Tworzymy element <script>, który "oszuka" CORS
     const script = document.createElement('script');
     script.id = 'jsonp-script';
     script.src = `${SCRIPT_URL}?action=get&callback=handleCloudData&t=${Date.now()}`;
-    
-    // 3. Dodajemy do strony - to automatycznie odpali zapytanie
     document.body.appendChild(script);
-}
-
+} 
+    
     function sel(n) {
     currentStarterKey = n.toLowerCase();
     
