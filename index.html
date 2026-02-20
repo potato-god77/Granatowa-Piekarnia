@@ -414,28 +414,20 @@
 
     if (targetSection) {
         targetSection.classList.add('active');
-        // Zapisz w pamięci sesji
         sessionStorage.setItem('lastTab', tabId);
     }
-
     if (targetBtn) targetBtn.classList.add('active');
 
-        // 4. Jeśli galeria - odśwież zdjęcia
+    // 4. Jeśli galeria - odśwież zdjęcia
     if (tabId === 'galeria') {
-        // ZMIANA: Używamy currentStarterKey, bo tak masz w przepisach
-        if (typeof currentStarterKey === 'undefined' || !currentStarterKey) {
-            currentStarterKey = 'clint'; 
-        }
-
-        // Wywołujemy renderAlbums (skoro taką funkcję mamy)
         if (typeof renderAlbums === 'function') {
             renderAlbums();
         }
     }
+    window.scrollTo(0,0);
 }
+
     
-    window.scrollTo(0,0); // Przewiń na górę przy zmianie
-}
 
 // Przywracanie zakładki po odświeżeniu
 window.addEventListener('DOMContentLoaded', () => {
