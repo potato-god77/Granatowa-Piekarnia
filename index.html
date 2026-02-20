@@ -1,170 +1,40 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
- <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-
-<meta name="theme-color" content="#4a3728">
-<meta name="mobile-web-app-capable" content="yes">
-<link rel="manifest" href="manifest.json">
-
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="apple-touch-icon" href="favicon.png">
-
-<title>Granatowa Piekarnia</title>
-<link rel="icon" type="image/png" href="favicon.png">
-    
-   <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#4a3728">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Granatowa Piekarnia</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    
-  <style>
-    /* --- ZMIENNE I PODSTAWY --- */
-    :root { 
-        --primary: #4a3728; 
-        --bg: #fdfaf7; 
-        --accent: #8b5e3c; 
-        --sand: #f5ece2; 
-    }
-    body { 
-        font-family: 'Inter', sans-serif; 
-        background-color: var(--bg); 
-        color: var(--primary); 
-        margin: 0; padding: 0; 
-        -webkit-tap-highlight-color: transparent; 
-    }
-    .serif { font-family: 'Playfair Display', serif; }
 
-    /* --- NAWIGACJA (Taby) --- */
-    .tab-content { display: none; }
-    .tab-content.active { display: block; animation: fadeIn 0.3s ease-out; }
-    @keyframes fadeIn { 
-        from { opacity: 0; transform: translateY(5px); } 
-        to { opacity: 1; transform: translateY(0); } 
-    }
-    .nav-btn { 
-        border-bottom: 3px solid transparent; 
-        transition: all 0.2s; 
-        flex-shrink: 0; 
-        color: #a89284; 
-        cursor: pointer; 
-    }
-    .nav-btn.active { 
-        color: var(--primary); 
-        font-weight: 900; 
-        border-bottom: 3px solid var(--accent); 
-    }
-
-    /* --- ELEMENTY INTERFEJSU (Karty, Akordeony) --- */
-    .glass-card { 
-        background: white; 
-        border-radius: 20px; 
-        box-shadow: 0 4px 15px rgba(74, 55, 40, 0.05); 
-        border: 1px solid #efe3d8; 
-        overflow: hidden; 
-        color: var(--primary); /* Wymuszenie koloru tekstu w kartach */
-    }
-    .btn-feed.active { 
-        background-color: #e7dfd8 !important; 
-        color: #4a3728 !important; 
-        border-color: #d4c5ba !important; 
-    }
-    .accordion-content { display: none; }
-    .accordion-item.active .accordion-content { 
-        display: block; 
-        animation: slideDown 0.2s ease-out; 
-    }
-    .accordion-item.active .plus-icon { transform: rotate(45deg); }
-    
-    .recipe-step { 
-        position: relative; 
-        padding-left: 1.2rem; 
-        margin-bottom: 0.8rem; 
-        /* ZMIANA: tutaj był var(--sand), który był zbyt jasny. Ustawiamy --accent */
-        border-left: 2px solid var(--accent); 
-        margin-left: 0.4rem; 
-        font-size: 0.9rem; 
-        line-height: 1.5; 
-        color: #57534e; /* Kolor zbliżony do stone-600 dla czytelności kroków */
-    }
-    .recipe-step p.font-bold, .recipe-step p.font-italic {
-        color: var(--primary); /* Nagłówki kroków w głównym brązie */
-    }
-
-    /* --- LOGOWANIE I BLOKADA --- */
-    #lock-screen { 
-        position: fixed; inset: 0; 
-        background: var(--bg); 
-        z-index: 10000; 
-        display: flex; flex-direction: column; align-items: center; justify-content: center; 
-    }
-    .pass-input { 
-        background: white; 
-        border: 2px solid var(--sand); 
-        border-radius: 15px; 
-        padding: 15px; 
-        text-align: center; 
-        font-size: 1.5rem; 
-        letter-spacing: 0.5rem; 
-        width: 220px; 
-        outline: none; 
-    }
-/* Główny brąz dla tekstu w sekcjach (zamiast inherit) */
-.tab-content {
-    color: var(--primary);
-}
-
-/* POMARAŃCZOWE GRAMATURY (Twoje p-wv, p-sv itd.) */
-#p-wv, #p-sv, #p-fv, #p-fv2, #p-slv {
-    color: #d97706 !important; /* amber-600 */
-    font-weight: 700;
-}
-
-/* WSKAZÓWKI (p-secret) */
-#p-secret {
-    color: #b45309 !important; /* amber-800 */
-    font-style: italic;
-    display: block;
-    margin-top: 4px;
-}
-    
-    }
-
-    /* Fix dla klas stone z Tailwind, które mogły stracić kolor */
-    .text-stone-400 { color: #a8a29e !important; }
-    .text-stone-500 { color: #78716c !important; }
-    .text-stone-600 { color: #57534e !important; }
-    .text-stone-800 { color: #292524 !important; }
-
-    /* --- LAYOUT BREAKOUT --- */
-    main > section, 
-    main > div {
-        max-width: 448px;
-        margin-left: auto;
-        margin-right: auto;
-        width: 100%;
-        box-sizing: border-box;
-    }
-
-    /* WYJĄTEK DLA GALERII - zmieniony selektor na ogólny (bez >), by działał w sekcjach */
-    main #gal-cont {
-        max-width: 1100px !important;
-        width: 100% !important;
-        display: grid !important;
-        margin: 40px auto !important;
-        padding: 0 16px;
-    }
-
-    /* --- DODATKI RWD --- */
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-    @media (max-width: 640px) {
-        .recipe-step { font-size: 0.85rem; }
-        .thumb-item { width: 45px; height: 45px; }
-        main #gal-cont { gap: 12px; padding: 10px; margin-top: 20px !important; }
-    }
-</style>
+    <style>
+        :root { --primary: #4a3728; --bg: #fdfaf7; --accent: #8b5e3c; --sand: #f5ece2; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--primary); margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        .serif { font-family: 'Playfair Display', serif; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .nav-btn { border-bottom: 3px solid transparent; transition: all 0.2s; flex-shrink: 0; color: #a89284; cursor: pointer; }
+        .nav-btn.active { color: var(--primary); font-weight: 900; border-bottom: 3px solid var(--accent); }
+        .glass-card { background: white; border-radius: 20px; box-shadow: 0 4px 15px rgba(74, 55, 40, 0.05); border: 1px solid #efe3d8; overflow: hidden; color: var(--primary); }
+        .btn-feed.active { background-color: #e7dfd8 !important; color: #4a3728 !important; border-color: #d4c5ba !important; }
+        .accordion-content { display: none; }
+        .accordion-item.active .accordion-content { display: block; animation: slideDown 0.2s ease-out; }
+        .accordion-item.active .plus-icon { transform: rotate(45deg); }
+        .recipe-step { position: relative; padding-left: 1.2rem; margin-bottom: 0.8rem; border-left: 2px solid var(--accent); margin-left: 0.4rem; font-size: 0.9rem; line-height: 1.5; color: #57534e; }
+        #lock-screen { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .pass-input { background: white; border: 2px solid var(--sand); border-radius: 15px; padding: 15px; text-align: center; font-size: 1.5rem; letter-spacing: 0.5rem; width: 220px; outline: none; }
+        #p-wv, #p-sv, #p-fv, #p-slv { color: #d97706 !important; font-weight: 700; }
+        #p-secret { color: #b45309 !important; font-style: italic; display: block; margin-top: 4px; }
+        main #gal-cont { max-width: 1100px !important; width: 100% !important; display: grid !important; margin: 40px auto !important; padding: 0 16px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .brown-gradient { background: linear-gradient(135deg, #6d4c41 0%, #4a3728 100%); }
+    </style>
 </head>
 <body class="pb-24">
     <div id="lock-screen">
@@ -176,35 +46,31 @@
         </div>
     </div>
 
-    <div id="loader" class="loading-overlay"></div>
+    <header style="position: sticky; top: 0; z-index: 1000; background-color: var(--bg); border-bottom: 1px solid #efe3d8;">
+        <div class="max-w-md mx-auto py-4 text-center">
+            <h1 class="serif text-3xl italic" style="margin: 0;">Granatowa Piekarnia</h1>
+        </div>
+        <nav class="flex justify-around bg-white/80 backdrop-blur-md py-2 border-t border-b border-sand no-scrollbar" style="overflow-x: auto; white-space: nowrap;">
+            <div id="btn-zakwasy" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('zakwasy')">ZAKWASY</div>
+            <div id="btn-pieczenie" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('pieczenie')">PIECZENIE</div>
+            <div id="btn-wiedza" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('wiedza')">WIEDZA</div>
+            <div id="btn-magazyn" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('magazyn')">MAGAZYN</div>
+            <div id="btn-galeria" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('galeria')">GALERIA</div>
+        </nav>
+    </header>
 
-<header style="position: sticky; top: 0; z-index: 1000; background-color: var(--bg); border-bottom: 1px solid #efe3d8;">
-    <div class="max-w-md mx-auto py-4 text-center">
-        <h1 class="serif text-3xl italic" style="margin: 0;">Granatowa Piekarnia</h1>
+    <div class="bg-white border-b px-6 py-3 flex justify-center items-center gap-3">
+        <label for="quick-select" class="text-[10px] uppercase font-black text-stone-400 tracking-widest">Zakwas:</label>
+        <select id="quick-select" onchange="sel(this.value)" class="bg-stone-100 border-none rounded-lg px-3 py-1.5 text-sm font-bold text-stone-800 outline-none">
+            <option value="clint">Clint Yeastwood</option>
+            <option value="sylvester">Sylvester Graham</option>
+            <option value="hildegarda">Hildegarda z Bingen</option>
+        </select>
     </div>
 
-    <nav class="flex justify-around bg-white/80 backdrop-blur-md py-2 border-t border-b border-sand no-scrollbar" style="overflow-x: auto; white-space: nowrap;">
-        <div id="btn-zakwasy" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('zakwasy')">ZAKWASY</div>
-        <div id="btn-pieczenie" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('pieczenie')">PIECZENIE</div>
-        <div id="btn-wiedza" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('wiedza')">WIEDZA</div>
-        <div id="btn-magazyn" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('magazyn')">MAGAZYN</div>
-        <div id="btn-galeria" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('galeria')">GALERIA</div>
-    </nav>
-</header>
- 
-
-     <div class="bg-white border-b px-6 py-3 flex justify-center items-center gap-3">
-    <label for="quick-select" class="text-[10px] uppercase font-black text-stone-400 tracking-widest">Zakwas:</label>
-    <select id="quick-select" onchange="sel(this.value)" class="bg-stone-100 border-none rounded-lg px-3 py-1.5 text-sm font-bold text-stone-800 focus:ring-2 focus:ring-amber-500 outline-none">
-        <option value="clint">Clint Yeastwood</option>
-        <option value="sylvester">Sylvester Graham</option>
-        <option value="hildegarda">Hildegarda z Bingen</option>
-    </select>
-</div>
-
-    <main class=" mx-auto p-4 space-y-6">
-       <section id="zakwasy-section" class="tab-content active space-y-4">
-            <div id="card-clint" onclick="sel('Clint')" class="starter-card glass-card p-5 flex flex-col gap-3 selected">
+    <main class="mx-auto p-4 space-y-6">
+        <section id="zakwasy-section" class="tab-content active space-y-4">
+            <div id="card-clint" onclick="sel('clint')" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
                     <div><h4 class="font-bold text-xl">Clint Yeastwood</h4><p class="text-[10px] text-stone-400 uppercase font-bold">Żytni • typ 2000</p></div>
                     <span class="text-3xl">🧔</span>
@@ -214,9 +80,9 @@
                     <button onclick="markFed('clint', event)" id="btn-clint" class="btn-feed bg-stone-200 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Regeneruj</button>
                 </div>
             </div>
-            <div id="card-sylvester" onclick="sel('Sylvester')" class="starter-card glass-card p-5 flex flex-col gap-3">
+            <div id="card-sylvester" onclick="sel('sylvester')" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
-                    <div><h4 class="font-bold text-xl">Sylvester Graham</h4><p class="text-[10px] text-stone-400 uppercase font-bold">Pszenny Pełnoziarnisty • typ 1850</p></div>
+                    <div><h4 class="font-bold text-xl">Sylvester Graham</h4><p class="text-[10px] text-stone-400 uppercase font-bold">Pszenny • typ 1850</p></div>
                     <span class="text-3xl">🌾</span>
                 </div>
                 <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
@@ -224,7 +90,7 @@
                     <button onclick="markFed('sylvester', event)" id="btn-sylvester" class="btn-feed bg-stone-200 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Regeneruj</button>
                 </div>
             </div>
-            <div id="card-hildegarda" onclick="sel('Hildegarda')" class="starter-card glass-card p-5 flex flex-col gap-3">
+            <div id="card-hildegarda" onclick="sel('hildegarda')" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
                     <div><h4 class="font-bold text-xl">Hildegarda z Bingen</h4><p class="text-[10px] text-stone-400 uppercase font-bold">Orkiszowy • typ 2000</p></div>
                     <span class="text-3xl">⛪</span>
@@ -246,13 +112,11 @@
             </div>
             <div class="glass-card p-6 space-y-4">
                 <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Zakwas</span><b id="sv" class="text-2xl">---</b></div>
-                <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Woda (30°C)</span><b id="wv" class="text-2xl">---</b></div>
+                <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Woda</span><b id="wv" class="text-2xl">---</b></div>
                 <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Mąka</span><b id="fv" class="text-2xl">---</b></div>
-                <div class="flex justify-between"><span class="text-[10px] text-stone-400 font-bold uppercase">Sól</span><b id="slv" class="text-2xl">---</b></div>
+                <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Sól</span><b id="slv" class="text-2xl">---</b></div>
             </div>
-            <div id="tips-box" class="glass-card p-5 bg-white border-l-4 border-accent">
-                <div id="recipe-tips" class="text-sm leading-relaxed"></div>
-            </div>
+            <div id="tips-box" class="glass-card p-5 bg-white border-l-4 border-accent"><div id="recipe-tips" class="text-sm"></div></div>
             <div class="glass-card p-5 bg-[#f9f5f1]">
                 <div class="flex justify-between items-center mb-5">
                     <p class="text-[9px] uppercase font-bold text-stone-500">Mieszanie:</p>
@@ -270,541 +134,269 @@
         </section>
 
         <section id="wiedza-section" class="tab-content space-y-6">
-    <div class="accordion-item glass-card">
-        <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
-            <h3 class="serif text-xl font-bold italic text-stone-800">Logistyka Słoików</h3>
-            <span class="plus-icon text-2xl">+</span>
-        </button>
-        <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
-            <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 mb-4">
-                <p class="text-[10px] uppercase font-black text-stone-400 mb-1">Wybrany Zakwas</p>
-                <p id="w-name" class="serif text-lg font-bold text-stone-800 leading-none mb-2"></p>
-                <p class="text-xs text-stone-600"><strong>Cel:</strong> <span id="w-target"></span></p>
-                <p class="text-xs text-stone-600"><strong>Stosunek:</strong> <span id="w-ratio"></span></p>
-                <p class="text-xs italic text-stone-500 mt-2" id="w-desc"></p>
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
+                    <h3 class="serif text-xl font-bold italic text-stone-800">Logistyka Słoików</h3>
+                    <span class="plus-icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
+                    <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 mb-4">
+                        <p id="w-name" class="serif text-lg font-bold text-stone-800 leading-none mb-2"></p>
+                        <p class="text-xs text-stone-600"><strong>Cel:</strong> <span id="w-target"></span></p>
+                        <p class="text-xs text-stone-600"><strong>Stosunek:</strong> <span id="w-ratio"></span></p>
+                        <p class="text-xs italic text-stone-500 mt-2" id="w-desc"></p>
+                    </div>
+                    <div class="recipe-step">
+                        <p class="font-bold italic text-stone-700">Etap 4: Regeneracja Matki</p>
+                        <p>1. Do 20g porcji dodaj <span id="w-regMF" class="font-bold"></span> mąki i <span id="w-regWF" class="font-bold"></span> wody (38°C).</p>
+                    </div>
+                </div>
             </div>
-
-            <div class="recipe-step">
-                <p class="font-bold italic text-stone-700">Etap 1: Aktywacja (ok. 16:00)</p>
-                <p>Pobierz 30g bazy ze słoika nr 2. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj w słoiku nr 1 i zostaw na blacie na 4-6 godzin.</p>
+            <div class="accordion-item glass-card"> 
+                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
+                    <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Chleb</h3> 
+                    <span class="plus-icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4"> 
+                    <div class="recipe-step"> 
+                        <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p> 
+                        <p>Woda <span id="p-wv"></span> + zakwas <span id="p-sv"></span> + mąka <span id="p-fv"></span> + sól <span id="p-slv"></span>.</p> 
+                        <p id="p-secret"></p>
+                    </div> 
+                </div> 
             </div>
-            <div class="recipe-step">
-                <p class="font-bold italic text-stone-700">Etap 2: Pobranie (ok. 22:00)</p>
-                <p>1. Pobierz <span class="font-bold text-amber-800" id="w-sv"></span> aktywnego zakwasu ze słoika nr 1 do miski.<br>2. Całą pozostałość przełóż do słoika nr 2.</p>
-            </div>
-            <div class="recipe-step">
-                <p class="font-bold italic text-stone-700">Etap 3: Święta Porcja (Słoik 2)</p>
-                <p>Wymieszaj starą bazę ze zrzutem. Wymierz z tego 20g ("Święta Porcja") i zostaw w słoiku nr 2. Resztę do słoika nr 3.</p>
-            </div>
-            <div class="recipe-step">
-                <p class="font-bold italic text-stone-700">Etap 4: Regeneracja Matki</p>
-                <p>1. Do 20g porcji w słoiku nr 2 dodaj <span id="w-regMF" class="font-bold"></span> mąki i <span id="w-regWF" class="font-bold"></span> wody (38°C).<br>2. Zostaw na 1h na blacie, potem schowaj do lodówki.</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="accordion-item glass-card"> 
-        <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
-            <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Chleb</h3> 
-            <span class="plus-icon text-2xl">+</span>
-        </button>
-        <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4 text-stone-600"> 
-            <div class="recipe-step"> 
-                <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p> 
-                <p>Zrób zawiesinę: woda <span id="p-wv" class="font-bold text-stone-800"></span> (30°C) + 
-                aktywny zakwas <span id="p-sv" class="font-bold text-stone-800"></span>. 
-                Do tego dodaj <span id="p-fv" class="font-bold text-stone-800"></span> mąki i 
-                <span id="p-slv" class="font-bold text-stone-800"></span> soli. 
-                Wymieszaj, przykryj miskę i zostaw na noc na blacie w temperaturze pokojowej.</p> 
-                <p id="p-secret" class="mt-2 text-xs italic text-amber-700 font-medium"></p>
-            </div> 
-            <div class="recipe-step"> 
-                <p class="font-bold text-stone-800 italic">Rano (05:30 - 06:00)</p> 
-                <p>Włóż ciasto do lodówki (pod przykryciem).</p> 
-            </div> 
-            <div class="recipe-step"> 
-                <p class="font-bold text-stone-800 italic">Pieczenie (od 16:00)</p> 
-                <p>Nagrzej piec z garnkiem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę" by stało się spięte, po czym natnij ostrym nożem lub żyletką. Gdy piekarnik się już nagrzeje, piecz 30 min pod przykryciem, a następnie zdejmij pokrywkę i piecz kolejne 15 min bez niej.</p> 
-            </div> 
-        </div> 
-    </div>
-
-    <div class="accordion-item glass-card">
-        <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
-            <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Żurek na zlewkach</h3>
-            <span class="plus-icon text-2xl">+</span>
-        </button>
-        <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
-            <div class="recipe-step">
-                <p class="font-bold italic">Składniki (2-2.5L):</p>
-                <ul class="list-disc ml-4 space-y-1 text-stone-600">
-                    <li>250-300g wędzonych żeberek</li>
-                    <li>150g wędzonego boczku</li>
-                    <li>2 marchewki, 1 pietruszka, kawałek selera</li>
-                    <li>1 cebula (opalona nad ogniem)</li>
-                    <li>3 liście laurowe, 5 ziaren ziela angielskiego</li>
-                    <li>2 litry zimnej wody</li>
-                </ul>
-            </div>
-            <div class="recipe-step text-stone-600">
-                <p class="font-bold italic text-stone-800">Krok 1: Wywar Mięsny</p>
-                <p>Do garnka włóż żeberka, boczek, warzywa i przyprawy. Zalej zimną wodą. Gotuj pod przykryciem na minimalnym ogniu przez ok. 2 godziny, aż mięso będzie bardzo miękkie.</p>
-            </div>
-            <div class="recipe-step text-stone-600">
-                <p class="font-bold italic text-stone-800">Krok 2: Zakwaszanie (Zlewki)</p>
-                <p>Odlej szklankę gorącego wywaru i wymieszaj ją dokładnie z 400g zlewek ze słoika nr 3 (to zapewni brak grudek). Wlej zawiesinę do garnka, cały czas mieszając. Zagotuj.</p>
-            </div>
-            <div class="recipe-step text-stone-600">
-                <p class="font-bold italic text-stone-800">Krok 3: Wykończenie</p>
-                <p>Dodaj 2-3 ząbki przeciśniętego czosnku i 2 łyżki majeranku. Dopraw solą i pieprzem. Na koniec zabiel 100ml śmietanki 30%.</p>
-            </div>
-        </div>
-    </div>
-</section>
+        </section>
 
         <section id="magazyn-section" class="tab-content space-y-5">
             <div class="glass-card p-6 text-center">
                 <h4 class="serif text-xl mb-4">Słoik 3: Zlewki 🥣</h4>
                 <input type="number" id="zw" value="0" onblur="saveToCloud('zlewki', this.value)" class="w-full bg-stone-50 border-2 rounded-3xl p-6 font-black text-4xl text-center outline-none">
-                <div class="mt-4 h-3 bg-stone-100 rounded-full overflow-hidden"><div id="zb" class="h-full brown-gradient" style="width:0%"></div></div>
                 <button onclick="if(confirm('Reset?')) saveToCloud('zlewki', 0)" class="mt-4 text-[10px] uppercase font-bold text-stone-300">Resetuj zlewki</button>
             </div>
             <button onclick="if(confirm('Wylogować?')) {localStorage.removeItem('bakery_access'); location.reload();}" class="w-full text-[9px] font-bold text-stone-300 uppercase">Wyloguj urządzenie</button>
         </section>
 
-       <section id="galeria-section" class="tab-content pt-4">
+        <section id="galeria-section" class="tab-content pt-4">
             <div id="gal-cont" class="flex justify-center items-center py-20">
-    <div class="flex flex-col items-center gap-3">
-        <div class="w-8 h-8 border-4 border-stone-200 border-t-amber-600 rounded-full animate-spin"></div>
-        <p class="text-stone-400 text-sm font-medium animate-pulse">Ładuję galerię...</p>
-    </div>
-</div>
+                <div class="flex flex-col items-center gap-3">
+                    <div class="w-8 h-8 border-4 border-stone-200 border-t-amber-600 rounded-full animate-spin"></div>
+                    <p class="text-stone-400 text-sm font-medium animate-pulse">Ładuję galerię...</p>
+                </div>
+            </div>
         </section>
     </main>
 
-    <div id="viewer-modal" class="hidden fixed inset-0 bg-black/98 z-[9999] flex-col" onclick="if(event.target === this) closeViewer()">
-    <div class="p-4 flex justify-between items-center text-white">
-        <span id="carousel-info" class="text-xs font-bold opacity-70"></span>
-        <button onclick="closeViewer()" class="text-4xl px-4">&times;</button>
+    <div id="viewer-modal" class="hidden fixed inset-0 bg-black bg-opacity-95 z-[9999] flex flex-col" onclick="if(event.target === this) closeViewer()">
+        <div class="p-4 flex justify-between items-center text-white">
+            <span id="carousel-info" class="text-xs font-bold opacity-70"></span>
+            <button onclick="closeViewer()" class="text-4xl px-4">&times;</button>
+        </div>
+        <div class="relative flex-1 overflow-hidden">
+            <div id="carousel-track" class="h-full flex transition-transform duration-300 ease-out"></div>
+            <button onclick="moveCarousel(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/10 p-4 rounded-full text-white text-3xl">❮</button>
+            <button onclick="moveCarousel(1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/10 p-4 rounded-full text-white text-3xl">❯</button>
+        </div>
+        <div id="thumb-strip" class="no-scrollbar flex gap-2 overflow-x-auto p-4 bg-black/50"></div>
     </div>
-    
-    <div class="relative flex-1 overflow-hidden">
-        <div id="carousel-track" class="carousel-track h-full flex transition-transform duration-300"></div>
-        
-        <button onclick="moveCarousel(-1)" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/10 p-4 rounded-full text-white text-3xl hover:bg-white/20">&lsaquo;</button>
-        <button onclick="moveCarousel(1)" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/10 p-4 rounded-full text-white text-3xl hover:bg-white/20">&rsaquo;</button>
-    </div>
-
-    <div id="thumb-strip" class="thumb-strip no-scrollbar flex gap-2 overflow-x-auto p-4 bg-black/50"></div>
-</div>
 
     <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxDTlTcVOKuNua9ZL29lL-HBS1BJpptJtZ5ee9m5JkDPMU1M6bMWVs7fHwi9ccyxhE/exec';
-    const BREAD_PASS = 'feelgood7'; // <-- WPISZ SWOJE HASŁO
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxDTlTcVOKuNua9ZL29lL-HBS1BJpptJtZ5ee9m5JkDPMU1M6bMWVs7fHwi9ccyxhE/exec';
+        const BREAD_PASS = 'feelgood7';
+        let currentStarterKey = 'clint';
+        let currentQty = 1;
+        let allGalleryData = [];
+        let currentAlbumPhotos = [];
+        let currentImgIndex = 0;
+        let isGalleryLoaded = false;
 
-     function switchTab(tabId) {
-    // 1. Ukryj wszystkie sekcje
-    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-    // 2. Dezaktywuj wszystkie przyciski
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-
-    // 3. Pokaż właściwą sekcję i przycisk
-    const targetSection = document.getElementById(tabId + '-section');
-    const targetBtn = document.getElementById('btn-' + tabId);
-
-    if (targetSection) {
-        targetSection.classList.add('active');
-        sessionStorage.setItem('lastTab', tabId);
-    }
-    if (targetBtn) targetBtn.classList.add('active');
-
-    // 4. Jeśli galeria - odśwież zdjęcia
-    if (tabId === 'galeria') {
-        if (typeof renderAlbums === 'function') {
-            renderAlbums();
-        }
-    }
-    window.scrollTo(0,0);
-}
-
-    
-
-// Przywracanie zakładki po odświeżeniu
-window.addEventListener('DOMContentLoaded', () => {
-    const saved = sessionStorage.getItem('lastTab');
-    if (saved) switchTab(saved);
-});
-
-    const RECIPES = {
-    clint: { 
-        name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, 
-        secret: 'Ciasto jest jak mokra glina.<br>Nie wyrabiamy go, tylko dokładnie mieszamy.<br>Garnek wybacza mu wszystko, bo żyto nie "płynie" tak mocno na boki. ',
-        target: 'Stabilność i mocny, octowy profil.', ratio: '1:2:2',
-        desc: 'Żyto kocha gęstą konsystencję. Taka dawka wody sprawia, że Clint jest jak plastelina.',
-        regMF: 40, regWF: 40,
-    },
-    sylvester: { 
-        name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, 
-        secret: ' Przy 1850 otręby tną gluten. Jeśli dasz 340g wody (jak u Clinta), ciasto po nocy będzie zbyt luźne na garnek. 325g pozwoli utrzymać kształt kuli. <br><br>Wymaga przynajmniej 2-3 "składań" (stretch & fold) w ciągu pierwszej godziny od wymieszania.',
-        target: 'Szybka fermentacja i mleczno-orzechowy zapach.', ratio: '1:2:1.75',
-        desc: 'Pszenica przy 1:1 staje się rzadka. Dając mniej wody, zmuszasz bakterie do wolniejszej pracy.',
-        regMF: 40, regWF: 35,
-    },
-    hildegarda: { 
-        name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, 
-        secret: 'Orkisz 2000 pije wodę szybko, ale równie szybko "puchnie" i traci napięcie powierzchniowe. Niższa hydratacja (310g) to Twój bezpiecznik, dzięki któremu bochenek w garnku wystrzeli w górę, a nie rozleje się na boki.<br><br>Hildegarda nie lubi agresywnego wyrabiania. Tylko delikatne mieszanie do połączenia składników.',
-        target: 'Delikatność i ochrona przed przekwaszeniem.', ratio: '1:2.25:2.25',
-        desc: 'Orkisz fermentuje najszybciej. Dając jej więcej jedzenia, wydłużasz czas aktywności.',
-        regMF: 45, regWF: 45,
-    }
-};
-
-    let currentStarterKey = 'clint';
-    let currentQty = 1;
-    let allGalleryData = [];
-    let currentAlbumPhotos = [];
-    let currentImgIndex = 0;
-    let isGalleryLoaded = false;
-
-    // --- LOGOWANIE ---
-    function checkPass() {
-        const input = document.getElementById('pass-field').value;
-        if (input === BREAD_PASS) {
-            localStorage.setItem('bakery_access', 'granted');
-            location.reload();
-        } else {
-            alert("Błędne hasło");
-        }
-    }
-
-    // --- LOGIKA CHMURY I KALKULATORA ---
-    async function saveToCloud(key, value) {
-        try { 
-            await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({key, value})}); 
-            setTimeout(loadFromCloud, 1000); 
-        } catch(e){ console.error(e); }
-    }
-
-    function loadFromCloud() {
-    window.handleCloudData = function(data) {
-        if (data.status === 'success') {
-            const cloudData = data.data;
-            
-            // Tabela w konsoli (F12), żebyś widział co przyszło
-            console.log("DANE Z CHMURY:");
-            console.table(cloudData);
-
-            for (let k in cloudData) {
-                // Szukamy elementu o ID np. feed-clint
-                const fedEl = document.getElementById('feed-' + k);
-                if (fedEl) {
-                    fedEl.innerText = cloudData[k];
-                    // Opcjonalnie: aktualizujemy też obiekt RECIPES w pamięci
-                    if (RECIPES[k]) RECIPES[k].lastFed = cloudData[k];
-                }
-            }
-        }
-        document.getElementById('jsonp-script')?.remove();
-    };
-
-    const script = document.createElement('script');
-    script.id = 'jsonp-script';
-    script.src = `${SCRIPT_URL}?action=get&callback=handleCloudData&t=${Date.now()}`;
-    document.body.appendChild(script);
-} 
-    
-    function sel(n) {
-    currentStarterKey = n.toLowerCase();
-    
-    // 1. Aktualizacja kart w sekcji "Zakwasy"
-    document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
-    const selectedC = document.getElementById('card-' + currentStarterKey);
-    if(selectedC) selectedC.classList.add('selected');
-    
-    // 2. Aktualizacja dropdowna (Szybkie Menu)
-    const quickSelect = document.getElementById('quick-select');
-    if(quickSelect) quickSelect.value = currentStarterKey;
-    
-    // 3. Aktualizacja nazwy w kalkulatorze
-    const currName = document.getElementById('curr-name');
-    if(currName) currName.innerText = RECIPES[currentStarterKey].name;
-    
-    // 4. Przeliczenie składników i logistyki
-    updateIngredients();
-
-    // 5. Jeśli jesteśmy w zakładce galeria, odśwież widok albumów
-    renderAlbums();
-}
-
-    function upd(n) {
-        currentQty = n;
-        document.querySelectorAll('.qb').forEach(b => b.className = 'qb flex-1 py-3 rounded-xl bg-white text-stone-400 border border-stone-200 font-semibold text-sm');
-        document.getElementById('q'+n).className = 'qb flex-1 py-3 rounded-xl brown-gradient text-white font-semibold text-sm';
-        updateIngredients();
-    }
-
-   function updateIngredients() {
-    const r = RECIPES[currentStarterKey];
-    const q = currentQty;
-
-    // 1. GÓRNY KALKULATOR
-    const ids = ['sv', 'wv', 'fv', 'slv'];
-    ids.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.innerText = (r[id] * q) + 'g';
-    });
-    const tips = document.getElementById('recipe-tips');
-    if (tips) tips.innerHTML = r.secret;
-
-    // 2. LOGISTYKA SŁOIKA
-    const logMap = {
-        'w-name': r.name, 
-        'w-target': r.target, 
-        'w-ratio': r.ratio, 
-        'w-desc': r.desc, 
-        'w-sv': (r.sv * q) + 'g', 
-        'w-regMF': r.regMF + 'g', 
-        'w-regWF': r.regWF + 'g'
-    };
-    for (let id in logMap) {
-        const el = document.getElementById(id);
-        if (el) el.innerText = logMap[id];
-    }
-
-    // 3. TWÓJ PRZEPIS CHLEBA
-    const breadMap = {
-        'p-wv': (r.wv * q) + 'g', 
-        'p-sv': (r.sv * q) + 'g',
-        'p-fv': (r.fv * q) + 'g', 
-        'p-slv': (r.slv * q) + 'g'
-    };
-    for (let id in breadMap) {
-        const el = document.getElementById(id);
-        if (el) el.innerText = breadMap[id];
-    }
-
-    // POPRAWKA: Wskazówka musi być obsługiwana osobno, poza obiektem breadMap
-    const pSecret = document.getElementById('p-secret');
-    if (pSecret) pSecret.innerHTML = "Wskazówka: " + r.secret;
-
-    // 4. WYWOŁANIE DODATKOWYCH FUNKCJI
-    if (typeof calcTime === 'function') calcTime();
-    if (typeof renderAlbums === 'function') renderAlbums();
-}
-        
-        function calcTime() {
-        const timeIn = document.getElementById('start-time').value;
-        if(!timeIn) return;
-        const [h,m] = timeIn.split(':').map(Number);
-        const add = (hrs, mns) => {
-            let t = h*60+m + hrs*60+mns;
-            return `${String(Math.floor(t/60)%24).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;
+        const RECIPES = {
+            clint: { name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, secret: 'Ciasto jest jak mokra glina. Nie wyrabiamy go.', target: 'Stabilność i profil.', ratio: '1:2:2', desc: 'Żyto kocha gęstość.', regMF: 40, regWF: 40 },
+            sylvester: { name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, secret: 'Otręby tną gluten.', target: 'Szybka fermentacja.', ratio: '1:2:1.75', desc: 'Pszenica 1850.', regMF: 40, regWF: 35 },
+            hildegarda: { name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, secret: 'Orkisz pije szybko.', target: 'Delikatność.', ratio: '1:2.25:2.25', desc: 'Orkisz 2000.', regMF: 45, regWF: 45 }
         };
-        document.getElementById('t-lodowka').innerText = add(7,30);
-        document.getElementById('t-formowanie').innerText = add(18,0);
-        document.getElementById('t-pieczenie').innerText = add(19,15);
-    }
 
-    function markFed(k, e) { 
-        e.stopPropagation(); 
-        saveToCloud(k, new Date().toLocaleDateString('pl-PL')); 
-    }
-
-   // ==========================================
-// --- SEKCJA GALERII I MODALA ---
-// ==========================================
-
-function fetchGallery() {
-    console.log("Inicjalizacja pobierania galerii...");
-    
-    window.handleGalleryData = function(res) {
-        if (res.status === 'success') {
-            allGalleryData = res.data;
-            isGalleryLoaded = true; 
-            console.log("Dane galerii pobrane pomyślnie. Renderuję...");
-            renderAlbums(); // Wywołaj renderowanie zaraz po otrzymaniu danych
-        } else {
-            console.error("Błąd serwera Google Apps Script:", res.message);
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            const targetSection = document.getElementById(tabId + '-section');
+            const targetBtn = document.getElementById('btn-' + tabId);
+            if (targetSection) { targetSection.classList.add('active'); sessionStorage.setItem('lastTab', tabId); }
+            if (targetBtn) targetBtn.classList.add('active');
+            if (tabId === 'galeria') renderAlbums();
+            window.scrollTo(0,0);
         }
-        
-        // Sprzątanie po JSONP
-        const oldScript = document.getElementById('gallery-jsonp');
-        if (oldScript) oldScript.remove();
-    };
 
-    const script = document.createElement('script');
-    script.id = 'gallery-jsonp';
-    // SCRIPT_URL musi być zdefiniowane wcześniej w Twoim kodzie!
-    script.src = `${SCRIPT_URL}?action=getGallery&callback=handleGalleryData&t=${Date.now()}`;
-    
-    // Obsługa błędu sieciowego
-    script.onerror = function() {
-        console.error("Błąd ładowania skryptu galerii. Sprawdź połączenie lub SCRIPT_URL.");
-    };
-    
-    document.body.appendChild(script);
-}
-
-function renderAlbums() {
-    const cont = document.getElementById('gal-cont');
-    if (!cont) return;
-
-    // 1. Jeśli dane jeszcze nie dotarły, zostaw komunikat o ładowaniu
-    if (!isGalleryLoaded) {
-        cont.innerHTML = `<div style="text-align:center; padding:50px; color:#a8a29e; font-family:sans-serif;">
-            <p>Pobieranie zdjęć z serwera...</p>
-        </div>`;
-        return;
-    }
-
-    // 2. Bezpieczne pobranie aktualnego przepisu
-    const r = RECIPES[currentStarterKey];
-    if (!r) {
-        console.error("BŁĄD: Nie znaleziono przepisu dla klucza:", currentStarterKey);
-        cont.innerHTML = `<p style="text-align:center; color:#a8a29e; padding:50px;">Błąd: Nie wybrano poprawnego zakwasu.</p>`;
-        return;
-    }
-
-    const starterName = r.name.split(' ')[0].toLowerCase();
-    
-    // 3. Filtrowanie danych
-    const filteredData = allGalleryData.filter(album => 
-        album.starter && album.starter.toLowerCase().includes(starterName)
-    );
-
-    // 4. Obsługa braku zdjęć dla konkretnego zakwasu
-    if (filteredData.length === 0) {
-        cont.style.setProperty('display', 'block', 'important');
-        cont.innerHTML = `<p style="text-align:center; color:#a8a29e; padding:50px; font-style:italic; font-family:sans-serif;">Brak zdjęć dla: ${r.name}</p>`;
-        return;
-    }
-
-    // 5. Renderowanie siatki
-    const isMobile = window.innerWidth < 768;
-    cont.style.setProperty('display', 'grid', 'important');
-    cont.style.gridTemplateColumns = isMobile ? "repeat(2, 1fr)" : "repeat(auto-fit, 200px)";
-    cont.style.gap = isMobile ? "12px" : "30px";
-    cont.style.justifyContent = "center"; 
-
-    cont.innerHTML = filteredData.map((album, idx) => `
-        <div onclick="openAlbumFiltered(${idx}, '${starterName}')" 
-             style="position:relative; width:100%; max-width:200px; aspect-ratio:3/4; border-radius:15px; overflow:hidden; cursor:pointer; background:#292524; box-shadow: 0 10px 20px rgba(0,0,0,0.15); margin: 0 auto;">
-            
-            <img src="${album.cover}" style="width:100%; height:100%; object-fit:cover; display:block;" loading="lazy">
-            
-            <div style="position:absolute; bottom:0; left:0; right:0; background:rgba(43, 39, 37, 0.9); padding:12px; border-top:1px solid rgba(255,255,255,0.05); backdrop-filter:blur(4px);">
-                <div style="display:flex; flex-direction:column; gap:2px;">
-                    <p style="margin:0; font-family:sans-serif; font-size:15px; font-weight:800; color:#ffffff; line-height:1.2;">
-                        ${album.date}
-                    </p>
-                    <p style="margin:0; font-family:sans-serif; font-size:10px; font-weight:700; color:#a8a29e; text-transform:uppercase; letter-spacing:0.5px;">
-                        ${album.starter}
-                    </p>
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
-
-
-    // --- INTERFEJS ---
-   function st(id, btn) {
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(id).classList.add('active'); 
-    btn.classList.add('active');
-
-    // Jeśli wchodzimy do galerii
-    if(id === 'gallery') {
-        if(allGalleryData.length === 0) {
-            fetchGallery(); // Jeśli pusto - pobierz
-        } else {
-            renderAlbums(); // Jeśli dane już są - po prostu odśwież filtr
+        function checkPass() {
+            if (document.getElementById('pass-field').value === BREAD_PASS) {
+                localStorage.setItem('bakery_access', 'granted');
+                location.reload();
+            } else alert("Błędne hasło");
         }
-    }
-}
 
-    function toggleAccordion(btn) { 
-        btn.parentElement.classList.toggle('active'); 
-    }
+        async function saveToCloud(key, value) {
+            try { await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({key, value})}); setTimeout(loadFromCloud, 1000); } catch(e){ console.error(e); }
+        }
 
-        // --- INICJALIZACJA ---
-        // --- INTERFEJS I NAWIGACJA ---
-    function toggleAccordion(btn) { 
-        btn.parentElement.classList.toggle('active'); 
-    }
+        function loadFromCloud() {
+            window.handleCloudData = function(data) {
+                if (data.status === 'success') {
+                    for (let k in data.data) {
+                        const el = document.getElementById('feed-' + k);
+                        if (el) el.innerText = data.data[k];
+                    }
+                }
+            };
+            const script = document.createElement('script');
+            script.src = `${SCRIPT_URL}?action=get&callback=handleCloudData&t=${Date.now()}`;
+            document.body.appendChild(script);
+        }
 
-    // --- FUNKCJA OTWIERANIA ALBUMU (Tego brakowało!) ---
-    function openAlbumFiltered(filteredIdx, starterName) {
-        const filteredData = allGalleryData.filter(album => 
-            album.starter && album.starter.toLowerCase().includes(starterName.toLowerCase())
-        );
-        const album = filteredData[filteredIdx];
-        if (!album) return;
+        function sel(n) {
+            currentStarterKey = n.toLowerCase();
+            document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected', 'border-2', 'border-amber-500'));
+            document.getElementById('card-' + currentStarterKey).classList.add('selected', 'border-2', 'border-amber-500');
+            document.getElementById('quick-select').value = currentStarterKey;
+            document.getElementById('curr-name').innerText = RECIPES[currentStarterKey].name;
+            updateIngredients();
+        }
 
-        currentImgIndex = 0;
-        currentAlbumPhotos = album.photos;
-        
-        const track = document.getElementById('carousel-track');
-        if(track) {
-            track.innerHTML = currentAlbumPhotos.map(url => `
-                <div class="carousel-slide min-w-full h-full flex items-center justify-center p-2">
-                    <img src="${url}" class="max-w-full max-h-[80vh] object-contain rounded-lg">
+        function upd(n) {
+            currentQty = n;
+            document.querySelectorAll('.qb').forEach(b => b.className = 'qb flex-1 py-3 rounded-xl bg-white text-stone-400 border border-stone-200 font-semibold text-sm');
+            document.getElementById('q'+n).className = 'qb flex-1 py-3 rounded-xl brown-gradient text-white font-semibold text-sm';
+            updateIngredients();
+        }
+
+        function updateIngredients() {
+            const r = RECIPES[currentStarterKey];
+            const q = currentQty;
+            ['sv', 'wv', 'fv', 'slv'].forEach(id => document.getElementById(id).innerText = (r[id] * q) + 'g');
+            document.getElementById('recipe-tips').innerHTML = r.secret;
+            document.getElementById('w-name').innerText = r.name;
+            document.getElementById('w-target').innerText = r.target;
+            document.getElementById('w-ratio').innerText = r.ratio;
+            document.getElementById('w-desc').innerText = r.desc;
+            document.getElementById('w-sv').innerText = (r.sv * q) + 'g';
+            document.getElementById('w-regMF').innerText = r.regMF + 'g';
+            document.getElementById('w-regWF').innerText = r.regWF + 'g';
+            document.getElementById('p-wv').innerText = (r.wv * q) + 'g';
+            document.getElementById('p-sv').innerText = (r.sv * q) + 'g';
+            document.getElementById('p-fv').innerText = (r.fv * q) + 'g';
+            document.getElementById('p-slv').innerText = (r.slv * q) + 'g';
+            document.getElementById('p-secret').innerHTML = "Wskazówka: " + r.secret;
+            calcTime();
+            if (isGalleryLoaded) renderAlbums();
+        }
+
+        function calcTime() {
+            const timeIn = document.getElementById('start-time').value;
+            const [h,m] = timeIn.split(':').map(Number);
+            const add = (hrs, mns) => {
+                let t = h*60+m + hrs*60+mns;
+                return `${String(Math.floor(t/60)%24).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;
+            };
+            document.getElementById('t-lodowka').innerText = add(7,30);
+            document.getElementById('t-formowanie').innerText = add(18,0);
+            document.getElementById('t-pieczenie').innerText = add(19,15);
+        }
+
+        function markFed(k, e) { e.stopPropagation(); saveToCloud(k, new Date().toLocaleDateString('pl-PL')); }
+        function toggleAccordion(btn) { btn.parentElement.classList.toggle('active'); }
+
+        function fetchGallery() {
+            window.handleGalleryData = function(res) {
+                if (res.status === 'success') { allGalleryData = res.data; isGalleryLoaded = true; renderAlbums(); }
+            };
+            const script = document.createElement('script');
+            script.src = `${SCRIPT_URL}?action=getGallery&callback=handleGalleryData&t=${Date.now()}`;
+            document.body.appendChild(script);
+        }
+
+        function renderAlbums() {
+            const cont = document.getElementById('gal-cont');
+            if (!isGalleryLoaded || !cont) return;
+            const starterName = RECIPES[currentStarterKey].name.split(' ')[0].toLowerCase();
+            const filtered = allGalleryData.filter(a => a.starter && a.starter.toLowerCase().includes(starterName));
+            
+            if (filtered.length === 0) {
+                cont.innerHTML = `<p class="p-10 text-stone-400 italic">Brak zdjęć dla: ${starterName}</p>`;
+                return;
+            }
+
+            cont.style.display = 'grid';
+            cont.style.gridTemplateColumns = window.innerWidth < 640 ? 'repeat(2, 1fr)' : 'repeat(auto-fit, 200px)';
+            cont.style.gap = '16px';
+
+            cont.innerHTML = filtered.map((album, idx) => `
+                <div onclick="openAlbumFiltered(${idx}, '${starterName}')" class="relative aspect-[3/4] rounded-xl overflow-hidden shadow-lg cursor-pointer bg-stone-800">
+                    <img src="${album.cover}" class="w-full h-full object-cover">
+                    <div class="absolute bottom-0 inset-x-0 p-3 bg-black/60 backdrop-blur-sm text-white text-[10px]">
+                        <b>${album.date}</b><br>${album.starter}
+                    </div>
                 </div>
             `).join('');
         }
-        
-        const info = document.getElementById('carousel-info');
-        if(info) info.innerText = `${album.starter} • ${album.date}`;
-        
-        const modal = document.getElementById('viewer-modal');
-        if(modal) modal.style.display = 'flex';
-        
-        if (typeof updateCarouselPosition === 'function') updateCarouselPosition();
-    }
 
-    function closeViewer() {
-        const modal = document.getElementById('viewer-modal');
-        if(modal) modal.style.display = 'none';
-    }
+        // --- POPRAWIONA LOGIKA MODALA ---
+        function openAlbumFiltered(idx, name) {
+            const filtered = allGalleryData.filter(a => a.starter && a.starter.toLowerCase().includes(name));
+            const album = filtered[idx];
+            if (!album) return;
 
-    // --- FINALNA INICJALIZACJA (Naprawia logowanie i galerię) ---
-    document.addEventListener('DOMContentLoaded', () => {
-        const isGranted = localStorage.getItem('bakery_access') === 'granted';
-        
-        if (isGranted) {
-            // Ukryj lock-screen
-            const lock = document.getElementById('lock-screen');
-            if(lock) lock.style.display = 'none';
+            currentAlbumPhotos = album.photos;
+            currentImgIndex = 0;
 
-            // Uruchom procesy
-            loadFromCloud();
-            fetchGallery();
-            updateIngredients();
+            const track = document.getElementById('carousel-track');
+            // KLUCZ: Każde zdjęcie w divie min-w-full
+            track.innerHTML = currentAlbumPhotos.map(url => `
+                <div class="min-w-full h-full flex items-center justify-center flex-shrink-0">
+                    <img src="${url}" class="max-w-full max-h-full object-contain p-2">
+                </div>
+            `).join('');
 
-            // Przywróć zakładkę
-            const saved = sessionStorage.getItem('lastTab');
-            if (saved) {
-                switchTab(saved);
-            } else {
-                switchTab('kalkulator'); // domyślna zakładka
+            const thumbStrip = document.getElementById('thumb-strip');
+            thumbStrip.innerHTML = currentAlbumPhotos.map((url, i) => `
+                <img src="${url}" onclick="jumpToImage(${i})" class="h-16 w-12 object-cover rounded cursor-pointer flex-shrink-0 border-2 border-transparent">
+            `).join('');
+
+            document.getElementById('viewer-modal').classList.remove('hidden');
+            updateCarouselUI();
+        }
+
+        function moveCarousel(dir) {
+            currentImgIndex = (currentImgIndex + dir + currentAlbumPhotos.length) % currentAlbumPhotos.length;
+            updateCarouselUI();
+        }
+
+        function jumpToImage(i) {
+            currentImgIndex = i;
+            updateCarouselUI();
+        }
+
+        function updateCarouselUI() {
+            const track = document.getElementById('carousel-track');
+            // KLUCZ: Fizyczne przesunięcie taśmy
+            track.style.transform = `translateX(-${currentImgIndex * 100}%)`;
+            
+            const info = document.getElementById('carousel-info');
+            info.innerText = `${currentImgIndex + 1} / ${currentAlbumPhotos.length}`;
+
+            const thumbs = document.querySelectorAll('#thumb-strip img');
+            thumbs.forEach((t, i) => t.style.borderColor = i === currentImgIndex ? '#f59e0b' : 'transparent');
+        }
+
+        function closeViewer() { document.getElementById('viewer-modal').classList.add('hidden'); }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('bakery_access') === 'granted') {
+                document.getElementById('lock-screen').style.display = 'none';
+                loadFromCloud();
+                fetchGallery();
+                updateIngredients();
+                const saved = sessionStorage.getItem('lastTab');
+                if (saved) switchTab(saved);
             }
-        }
-
-        // Obsługa Swipe
-        const modal = document.getElementById('viewer-modal');
-        if (modal) {
-            let touchStartX = 0;
-            modal.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
-            modal.addEventListener('touchend', e => {
-                const touchEndX = e.changedTouches[0].screenX;
-                if (touchEndX < touchStartX - 50) moveCarousel(1);
-                if (touchEndX > touchStartX + 50) moveCarousel(-1);
-            }, { passive: true });
-        }
-    });
-
-
-</script>
+        });
+    </script>
 </body>
 </html>
