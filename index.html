@@ -44,6 +44,12 @@
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .brown-gradient { background: linear-gradient(135deg, #6d4c41 0%, #4a3728 100%); }
+
+        /* Poprawka widoczności modala */
+        #viewer-modal { 
+            z-index: 99999 !important; 
+            padding-top: env(safe-area-inset-top, 0);
+        }
     </style>
 </head>
 <body class="pb-24">
@@ -103,7 +109,7 @@
             <div id="card-hildegarda" onclick="sel('hildegarda')" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
                     <div><h4 class="font-bold text-xl">Hildegarda z Bingen</h4><p class="text-[9px] text-stone-400 uppercase font-bold">Orkiszowy • typ 2000</p></div>
-                    <span class="text-3xl">⛪</span>
+                    <span class="text-3xl">🧕</span>
                 </div>
                 <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
                     <p class="text-[11px] font-bold">Ostatnio: <span id="feed-hildegarda">---</span></p>
@@ -247,19 +253,19 @@
         </section>
     </main>
 
-    <div id="viewer-modal" class="hidden fixed inset-0 bg-black z-[10000] flex flex-col items-center justify-center">
-        <button onclick="closeViewer()" class="absolute top-4 right-4 text-white text-5xl p-2 z-[10001] leading-none cursor-pointer hover:text-gray-300">&times;</button>
+    <div id="viewer-modal" class="hidden fixed inset-0 bg-black flex flex-col items-center justify-center">
+        <button onclick="closeViewer()" class="absolute top-12 right-6 text-white text-6xl p-4 z-[100001] leading-none cursor-pointer hover:scale-110 active:scale-95 transition-transform" style="text-shadow: 0 0 20px rgba(0,0,0,0.8);">&times;</button>
         
-        <span id="carousel-info" class="absolute top-6 left-6 text-white text-sm font-bold opacity-70 z-[10001] pointer-events-none"></span>
+        <span id="carousel-info" class="absolute top-14 left-6 text-white text-xs font-bold opacity-60 z-[100001] pointer-events-none uppercase tracking-widest"></span>
         
         <div id="img-container" class="relative w-full flex-1 flex items-center justify-center cursor-pointer" onclick="if(event.target === this) closeViewer()">
-            <img id="carousel-img" src="" class="max-w-full max-h-[80vh] object-contain transition-opacity duration-200 cursor-default" onclick="event.stopPropagation()">
+            <img id="carousel-img" src="" class="max-w-full max-h-[75vh] object-contain transition-opacity duration-200 cursor-default" onclick="event.stopPropagation()">
             
-            <button onclick="moveCarousel(-1); event.stopPropagation()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 p-4 rounded-full text-white text-3xl z-[10001] transition-colors">❮</button>
-            <button onclick="moveCarousel(1); event.stopPropagation()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 p-4 rounded-full text-white text-3xl z-[10001] transition-colors">❯</button>
+            <button onclick="moveCarousel(-1); event.stopPropagation()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 p-5 rounded-full text-white text-3xl z-[100001]">❮</button>
+            <button onclick="moveCarousel(1); event.stopPropagation()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 p-5 rounded-full text-white text-3xl z-[100001]">❯</button>
         </div>
 
-        <div id="thumb-strip" class="no-scrollbar flex gap-2 overflow-x-auto p-6 w-full bg-black border-t border-stone-800 z-[10001]"></div>
+        <div id="thumb-strip" class="no-scrollbar flex gap-2 overflow-x-auto p-6 w-full bg-black/80 border-t border-stone-900 z-[100001]"></div>
     </div>
 
     <script>
