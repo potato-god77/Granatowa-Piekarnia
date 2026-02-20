@@ -479,21 +479,27 @@
 
     async function loadFromCloud() {
     try {
-        // Używamy proxy AllOrigins, aby ominąć brak nagłówka CORS z Google
+        // 1. Tworzymy czysty link do skryptu
         const targetUrl = SCRIPT_URL + "?action=get";
-        const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`);
         
+        // 2. Używamy proxy AllOrigins, aby dodać brakujące nagłówki CORS
+        // Dodajemy timestamp (&t=), żeby uniknąć starych danych z pamięci (cache)
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}&t=${Date.now()}`;
+        
+        const res = await fetch(proxyUrl);
+        if (!res.ok) throw new Error('Błąd połączenia z proxy');
+
         const txt = await res.text();
-        
+
+        // 3. Sprawdzamy czy to nie HTML (Google często wysyła HTML przy błędach)
         if (txt.trim().startsWith('<')) {
-            console.error("Otrzymano HTML zamiast danych. Sprawdź czy skrypt jest opublikowany.");
+            console.error("Skrypt Google zwrócił HTML. Upewnij się, że SCRIPT_URL jest poprawny i skrypt ma uprawnienia 'Anyone'.");
             return;
         }
 
         const data = JSON.parse(txt);
         if (data.status === 'success') {
             const cloudData = data.data;
-            // Aktualizacja dat w bazie lokalnej RECIPES
             for (let k in cloudData) {
                 if (RECIPES[k]) {
                     RECIPES[k].lastFed = cloudData[k];
@@ -501,7 +507,7 @@
                     if (fedEl) fedEl.innerText = cloudData[k];
                 }
             }
-            console.log("Dane o karmieniu zsynchronizowane.");
+            console.log("Pomyślnie zasysano daty karmienia.");
         }
     } catch (e) {
         console.error("Błąd podczas zasysania danych z chmury:", e);
