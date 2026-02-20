@@ -8,9 +8,9 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Granatowa Piekarnia</title>
+    <link rel="manifest" href="manifest.json">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-<link rel="manifest" href="manifest.json">
 
     <style>
         :root { --primary: #4a3728; --bg: #fdfaf7; --accent: #8b5e3c; --sand: #f5ece2; --amber-gold: #d97706; --starter-name: #2c5364; }
@@ -27,6 +27,10 @@
         .starter-card { transition: all 0.2s; border: 2px solid transparent; cursor: pointer; }
         .starter-card.selected { border-color: var(--amber-gold) !important; background-color: #fffaf0; }
         .starter-title { color: var(--starter-name); }
+
+        /* Przycisk Nakarm - Efekt naciśnięcia */
+        .btn-feed:active { transform: scale(0.95); box-shadow: inset 0 3px 5px rgba(0,0,0,0.1); }
+        .btn-feed.fed-success { background-color: #e2e8f0 !important; color: #64748b !important; border-color: #cbd5e1 !important; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); pointer-events: none; }
 
         .accordion-content { display: none; }
         .accordion-item.active .accordion-content { display: block; animation: slideDown 0.2s ease-out; }
@@ -116,36 +120,67 @@
             </div>
         </section>
 
-        <section id="pieczenie-section" class="tab-content space-y-6">
-            <div class="glass-card p-5 text-center bg-stone-50">
-                <h2 id="curr-name" class="serif text-xl font-bold text-stone-800 mb-4 italic">Clint Yeastwood</h2>
-                <div class="flex items-center justify-center gap-4 bg-white p-3 rounded-2xl border border-stone-200">
-                    <button onclick="changeQty(-1)" class="w-12 h-12 rounded-full bg-stone-100 flex items-center justify-center text-2xl font-bold text-stone-600 active:scale-95 transition-all">-</button>
-                    <div class="flex flex-col">
-                        <span id="display-qty" class="text-3xl font-black text-stone-800">1</span>
-                        <span class="text-[9px] uppercase font-bold text-stone-400">Ilość chlebów</span>
+        <section id="pieczenie-section" class="tab-content space-y-4">
+            <div class="accordion-item glass-card active">
+                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+                    <h3 class="serif text-lg font-bold italic">Kalkulator składników</h3>
+                    <span class="plus-icon text-xl">+</span>
+                </button>
+                <div class="accordion-content p-5 pt-0 bg-stone-50">
+                    <div class="text-center mb-4">
+                        <h2 id="curr-name" class="serif text-xl font-bold text-stone-800 mb-4 italic">Clint Yeastwood</h2>
+                        <div class="flex items-center justify-center gap-4 bg-white p-3 rounded-2xl border border-stone-200">
+                            <button onclick="changeQty(-1)" class="w-12 h-12 rounded-full bg-stone-100 flex items-center justify-center text-2xl font-bold text-stone-600 active:scale-95 transition-all">-</button>
+                            <div class="flex flex-col">
+                                <span id="display-qty" class="text-3xl font-black text-stone-800">1</span>
+                                <span class="text-[9px] uppercase font-bold text-stone-400">Ilość chlebów</span>
+                            </div>
+                            <button onclick="changeQty(1)" class="w-12 h-12 rounded-full bg-stone-100 flex items-center justify-center text-2xl font-bold text-stone-600 active:scale-95 transition-all">+</button>
+                        </div>
                     </div>
-                    <button onclick="changeQty(1)" class="w-12 h-12 rounded-full bg-stone-100 flex items-center justify-center text-2xl font-bold text-stone-600 active:scale-95 transition-all">+</button>
                 </div>
             </div>
-            <div class="glass-card p-6 space-y-4">
-                <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Zakwas</span><b id="sv" class="text-2xl">---</b></div>
-                <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Woda</span><b id="wv" class="text-2xl">---</b></div>
-                <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Mąka</span><b id="fv" class="text-2xl">---</b></div>
-                <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Sól</span><b id="slv" class="text-2xl">---</b></div>
-            </div>
-            <div class="glass-card p-5 bg-white border-l-4 border-accent"><div id="recipe-tips" class="text-sm text-stone-700" style="color: #4a3728;"></div></div>
-            <div class="glass-card p-5 bg-[#f9f5f1]">
-                <div class="flex justify-between items-center mb-5">
-                    <p class="text-[9px] uppercase font-bold text-stone-500">Mieszanie:</p>
-                    <input type="time" id="start-time" value="22:00" onchange="calcTime()" class="bg-white border rounded-lg px-3 py-1 text-sm font-semibold">
+
+            <div class="accordion-item glass-card active">
+                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+                    <h3 class="serif text-lg font-bold italic">Składniki</h3>
+                    <span class="plus-icon text-xl">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 space-y-4">
+                    <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Zakwas</span><b id="sv" class="text-2xl">---</b></div>
+                    <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Woda</span><b id="wv" class="text-2xl">---</b></div>
+                    <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Mąka</span><b id="fv" class="text-2xl">---</b></div>
+                    <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Sól</span><b id="slv" class="text-2xl">---</b></div>
                 </div>
-                <div class="space-y-4 relative border-l ml-4 pl-6">
-                    <div><p class="text-[9px] uppercase font-medium text-stone-400">Do lodówki</p><p id="t-lodowka" class="text-xl font-bold">05:30</p></div>
-                    <div><p class="text-[9px] uppercase font-medium text-stone-400">Formowanie</p><p id="t-formowanie" class="text-xl font-bold">16:00</p></div>
-                    <div class="bg-white p-4 rounded-xl border text-center -ml-1">
-                        <p class="text-[9px] uppercase font-bold text-stone-500">Pieczenie (235°C)</p>
-                        <p id="t-pieczenie" class="text-3xl font-black text-[#4a3728]">17:15</p>
+            </div>
+
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+                    <h3 class="serif text-lg font-bold italic">Wskazówka</h3>
+                    <span class="plus-icon text-xl">+</span>
+                </button>
+                <div class="accordion-content p-5 pt-0">
+                    <div id="recipe-tips" class="text-sm text-stone-700 leading-relaxed border-l-4 border-accent pl-4"></div>
+                </div>
+            </div>
+
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+                    <h3 class="serif text-lg font-bold italic">Kalkulator czasu</h3>
+                    <span class="plus-icon text-xl">+</span>
+                </button>
+                <div class="accordion-content p-5 pt-0 bg-[#f9f5f1]">
+                    <div class="flex justify-between items-center mb-5">
+                        <p class="text-[9px] uppercase font-bold text-stone-500">Mieszanie:</p>
+                        <input type="time" id="start-time" value="22:00" onchange="calcTime()" class="bg-white border rounded-lg px-3 py-1 text-sm font-semibold">
+                    </div>
+                    <div class="space-y-4 relative border-l ml-4 pl-6">
+                        <div><p class="text-[9px] uppercase font-medium text-stone-400">Do lodówki</p><p id="t-lodowka" class="text-xl font-bold">05:30</p></div>
+                        <div><p class="text-[9px] uppercase font-medium text-stone-400">Formowanie</p><p id="t-formowanie" class="text-xl font-bold">16:00</p></div>
+                        <div class="bg-white p-4 rounded-xl border text-center -ml-1">
+                            <p class="text-[9px] uppercase font-bold text-stone-500">Pieczenie (235°C)</p>
+                            <p id="t-pieczenie" class="text-3xl font-black text-[#4a3728]">17:15</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -374,7 +409,7 @@
             });
 
             const tips = document.getElementById('recipe-tips');
-            if(tips) tips.innerHTML = `<b>Wskazówka:</b><br>${r.secret}`;
+            if(tips) tips.innerHTML = r.secret;
             
             const sec = document.getElementById('p-secret');
             if(sec) sec.innerHTML = `<b>Wskazówka:</b><br>${r.secret}`;
@@ -404,7 +439,14 @@
             }
         }
 
-        function markFed(k, e) { e.stopPropagation(); saveToCloud(k, new Date().toLocaleDateString('pl-PL')); }
+        // Poprawiona funkcja karmienia z efektem wizualnym
+        function markFed(k, e) { 
+            e.stopPropagation(); 
+            const btn = e.currentTarget;
+            btn.classList.add('fed-success');
+            btn.innerText = "Nakarmiono";
+            saveToCloud(k, new Date().toLocaleDateString('pl-PL')); 
+        }
         
         function manualDate(k, e) {
             e.stopPropagation();
