@@ -479,12 +479,14 @@
 
     async function loadFromCloud() {
     try {
-        const res = await fetch(SCRIPT_URL + "?action=get");
-        const txt = await res.text(); // Pobieramy najpierw surowy tekst
-
-        // BEZPIECZNIK: Sprawdź, czy odpowiedź nie jest kodem HTML (stroną logowania)
-        if (txt.trim().startsWith('<!DOCTYPE') || txt.trim().startsWith('<html')) {
-            console.error("Błąd: Skrypt Google zwrócił HTML zamiast danych. Prawdopodobnie brak uprawnień 'Anyone' we wdrożeniu skryptu.");
+        // Używamy proxy AllOrigins, aby ominąć brak nagłówka CORS z Google
+        const targetUrl = SCRIPT_URL + "?action=get";
+        const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`);
+        
+        const txt = await res.text();
+        
+        if (txt.trim().startsWith('<')) {
+            console.error("Otrzymano HTML zamiast danych. Sprawdź czy skrypt jest opublikowany.");
             return;
         }
 
