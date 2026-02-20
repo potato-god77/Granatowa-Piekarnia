@@ -407,7 +407,7 @@
         </section>
 
        <section id="gallery" class="tab-content pt-4">
-            <<div id="gal-cont" class="flex justify-center items-center py-20">
+            <div id="gal-cont" class="flex justify-center items-center py-20">
     <div class="flex flex-col items-center gap-3">
         <div class="w-8 h-8 border-4 border-stone-200 border-t-amber-600 rounded-full animate-spin"></div>
         <p class="text-stone-400 text-sm font-medium animate-pulse">Ładuję galerię...</p>
@@ -639,7 +639,9 @@ function renderAlbums() {
     const cont = document.getElementById('gal-cont');
     if (!cont) return;
 
-    // Pobieramy dane dla konkretnego zakwasu
+    // Jeśli dane się ładują, nie czyścimy loadera
+    if (!isGalleryLoaded) return;
+
     const r = RECIPES[currentStarterKey];
     const starterName = r.name.split(' ')[0].toLowerCase();
     
@@ -647,26 +649,30 @@ function renderAlbums() {
         album.starter.toLowerCase().includes(starterName)
     );
 
-    // Jeśli dane są puste, ale wiemy, że pobieranie się zakończyło
     if (filteredData.length === 0) {
-        cont.className = "block w-full text-center py-20"; // resetujemy grid dla komunikatu
-        cont.innerHTML = `
-            <p class="text-stone-400 text-sm italic">Brak zdjęć dla: ${r.name}</p>
-        `;
+        cont.className = "block w-full text-center py-20";
+        cont.innerHTML = `<p class="text-stone-400 text-sm italic">Brak zdjęć dla: ${r.name}</p>`;
         return;
     }
 
-    // Jeśli są dane, ustawiamy siatkę (Grid) i renderujemy
-    cont.className = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8 mx-auto max-w-6xl px-4";
+    // Widok PC: Zmniejszamy liczbę kolumn do 2 lub 3, co drastycznie zwiększa rozmiar okładek (ok. 150%)
+    cont.className = "grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-12 mx-auto max-w-7xl px-4";
     
     cont.innerHTML = filteredData.map((album, idx) => `
         <div onclick="openAlbumFiltered(${idx}, '${starterName}')" 
-             class="group relative w-full aspect-square rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer bg-stone-100 border border-stone-100">
-            <img src="${album.cover}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-80"></div>
-            <div class="absolute bottom-0 left-0 right-0 p-3 md:p-4 text-white">
-                <p class="text-sm md:text-base font-bold leading-none mb-1">${album.date}</p>
-                <p class="text-[9px] md:text-[11px] uppercase tracking-wider text-stone-300 font-medium">${album.starter}</p>
+             class="group relative w-full aspect-square rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer bg-stone-200">
+            
+            <img src="${album.cover}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+            
+            <div class="absolute bottom-0 left-0 right-0 bg-stone-900/70 backdrop-blur-sm p-4 md:p-6 translate-y-0 transition-transform">
+                <div class="flex flex-col gap-1">
+                    <p class="text-white text-lg md:text-2xl font-black tracking-tight">
+                        ${album.date}
+                    </p>
+                    <p class="text-stone-300 text-[10px] md:text-sm uppercase font-bold tracking-widest">
+                        ${album.starter}
+                    </p>
+                </div>
             </div>
         </div>
     `).join('');
