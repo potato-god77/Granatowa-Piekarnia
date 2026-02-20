@@ -157,6 +157,7 @@
         background: rgba(0,0,0,0.5); 
         justify-content: center; /* Wyśrodkowanie miniatur */
     }
+    
     .thumb-item { 
         width: 50px; height: 50px; 
         flex-shrink: 0; 
@@ -164,6 +165,9 @@
         opacity: 0.4; 
         border: 2px solid transparent; 
         object-fit: cover; 
+     .date-text-shadow {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
     }
     .thumb-item.active { opacity: 1; border-color: white; }
 
@@ -628,13 +632,12 @@ function renderAlbums() {
     const cont = document.getElementById('gal-cont');
     if (!cont) return;
 
-    // Grid: 2 kolumny na mobile, 3-4 na większych. mx-auto centruje cały blok.
-    cont.className = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 mx-auto max-w-screen-xl px-4 justify-items-center";
+    // Grid: 2 kolumny na małych, 3 na tabletach, 4-5 na dużych monitorach.
+    cont.className = "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-8 mx-auto max-w-screen-2xl px-4 justify-items-center";
 
-    // Wyciągamy pierwsze słowo imienia zakwasu do filtrowania (np. "Clint")
     const r = RECIPES[currentStarterKey];
     const starterName = r.name.split(' ')[0].toLowerCase();
-
+    
     const filteredData = allGalleryData.filter(album => 
         album.starter.toLowerCase().includes(starterName)
     );
@@ -646,15 +649,19 @@ function renderAlbums() {
 
     cont.innerHTML = filteredData.map((album, idx) => `
         <div onclick="openAlbumFiltered(${idx}, '${starterName}')" 
-             class="group relative w-full aspect-square rounded-2xl overflow-hidden shadow-md active:scale-95 transition-all duration-300 cursor-pointer border border-stone-100 bg-stone-200">
+             class="group relative w-full aspect-[4/5] rounded-3xl overflow-hidden shadow-lg active:scale-95 transition-all duration-300 cursor-pointer bg-stone-100">
             
-            <img src="${album.cover}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+            <img src="${album.cover}" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" loading="lazy">
             
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90 transition-opacity"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity"></div>
             
-            <div class="absolute bottom-0 inset-x-0 p-3 text-white">
-                <p class="text-[8px] md:text-[10px] uppercase font-black tracking-widest text-amber-200/80 mb-0.5">${album.starter}</p>
-                <p class="text-xs md:text-base font-bold tracking-tight leading-tight">${album.date}</p>
+            <div class="absolute bottom-0 inset-x-0 p-4 md:p-6 text-white translate-y-1 group-hover:translate-y-0 transition-transform">
+                <p class="text-lg md:text-xl font-black tracking-tight leading-none mb-1">
+                    ${album.date}
+                </p>
+                <p class="text-[10px] md:text-xs uppercase font-bold tracking-[0.15em] text-amber-300/90 italic">
+                    ${album.starter}
+                </p>
             </div>
         </div>
     `).join('');
