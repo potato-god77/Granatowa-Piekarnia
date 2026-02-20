@@ -414,8 +414,39 @@
 
     <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxDTlTcVOKuNua9ZL29lL-HBS1BJpptJtZ5ee9m5JkDPMU1M6bMWVs7fHwi9ccyxhE/exec';
-    const GALLERY_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRhwbnRbCBfN9LtC-cGPK_ZNLQBPwytrADlL2_WDAcmLrHFXa0TeDWfFkZsNy5Z4421hD1LJRR_kiQO/pub?gid=0&single=true&output=csv';
     const BREAD_PASS = 'feelgood7'; // <-- WPISZ SWOJE HASŁO
+
+     function switchTab(tabId) {
+    // 1. Ukryj wszystkie sekcje
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    // 2. Dezaktywuj wszystkie przyciski
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+    // 3. Pokaż właściwą sekcję i przycisk
+    const targetSection = document.getElementById(tabId + '-section');
+    const targetBtn = document.getElementById('btn-' + tabId);
+
+    if (targetSection) {
+        targetSection.classList.add('active');
+        // Zapisz w pamięci sesji
+        sessionStorage.setItem('lastTab', tabId);
+    }
+
+    if (targetBtn) targetBtn.classList.add('active');
+
+    // 4. Jeśli galeria - odśwież zdjęcia
+    if (tabId === 'galeria' && typeof renderAlbums === 'function') {
+        renderAlbums();
+    }
+    
+    window.scrollTo(0,0); // Przewiń na górę przy zmianie
+}
+
+// Przywracanie zakładki po odświeżeniu
+window.addEventListener('DOMContentLoaded', () => {
+    const saved = sessionStorage.getItem('lastTab');
+    if (saved) switchTab(saved);
+});
 
     const RECIPES = {
     clint: { 
