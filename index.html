@@ -31,7 +31,6 @@
         .accordion-item.active .plus-icon { transform: rotate(45deg); }
         .recipe-step { position: relative; padding-left: 1.2rem; margin-bottom: 0.8rem; border-left: 2px solid var(--accent); margin-left: 0.4rem; font-size: 0.9rem; line-height: 1.5; color: #57534e; }
         
-        /* Kolorowanie gramatur i sekretów we wskazówkach z ORYGINALNYM ID */
         #w-sv, #w-regMF, #w-regWF, #p-wv, #p-sv, #p-fv, #p-slv { color: var(--amber-gold) !important; font-weight: 800; }
         #p-secret { color: var(--amber-gold) !important; font-style: italic; font-weight: 600; }
 
@@ -45,11 +44,7 @@
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .brown-gradient { background: linear-gradient(135deg, #6d4c41 0%, #4a3728 100%); }
 
-        /* Poprawka widoczności modala */
-        #viewer-modal { 
-            z-index: 99999 !important; 
-            padding-top: env(safe-area-inset-top, 0);
-        }
+        #viewer-modal { z-index: 999999 !important; }
     </style>
 </head>
 <body class="pb-24">
@@ -109,7 +104,7 @@
             <div id="card-hildegarda" onclick="sel('hildegarda')" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
                     <div><h4 class="font-bold text-xl">Hildegarda z Bingen</h4><p class="text-[9px] text-stone-400 uppercase font-bold">Orkiszowy • typ 2000</p></div>
-                    <span class="text-3xl">🧕</span>
+                    <span class="text-3xl">⛪</span>
                 </div>
                 <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
                     <p class="text-[11px] font-bold">Ostatnio: <span id="feed-hildegarda">---</span></p>
@@ -254,18 +249,18 @@
     </main>
 
     <div id="viewer-modal" class="hidden fixed inset-0 bg-black flex flex-col items-center justify-center">
-        <button onclick="closeViewer()" class="absolute top-12 right-6 text-white text-6xl p-4 z-[100001] leading-none cursor-pointer hover:scale-110 active:scale-95 transition-transform" style="text-shadow: 0 0 20px rgba(0,0,0,0.8);">&times;</button>
+        <button onclick="closeViewer()" class="absolute top-12 right-6 w-14 h-14 bg-black/50 rounded-full text-white text-5xl flex items-center justify-center z-[9999999] leading-none transition-all active:scale-90">&times;</button>
         
-        <span id="carousel-info" class="absolute top-14 left-6 text-white text-xs font-bold opacity-60 z-[100001] pointer-events-none uppercase tracking-widest"></span>
+        <span id="carousel-info" class="absolute top-14 left-6 text-white text-[10px] font-black opacity-50 z-[999999] pointer-events-none uppercase tracking-widest bg-black/30 px-2 py-1 rounded"></span>
         
-        <div id="img-container" class="relative w-full flex-1 flex items-center justify-center cursor-pointer" onclick="if(event.target === this) closeViewer()">
-            <img id="carousel-img" src="" class="max-w-full max-h-[75vh] object-contain transition-opacity duration-200 cursor-default" onclick="event.stopPropagation()">
+        <div id="img-container" class="relative w-full flex-1 flex items-center justify-center cursor-pointer p-4" onclick="if(event.target === this) closeViewer()">
+            <img id="carousel-img" src="" class="max-w-full max-h-[70vh] object-contain transition-opacity duration-200 cursor-default" onclick="event.stopPropagation()">
             
-            <button onclick="moveCarousel(-1); event.stopPropagation()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 p-5 rounded-full text-white text-3xl z-[100001]">❮</button>
-            <button onclick="moveCarousel(1); event.stopPropagation()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 p-5 rounded-full text-white text-3xl z-[100001]">❯</button>
+            <button onclick="moveCarousel(-1); event.stopPropagation()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 p-5 rounded-full text-white text-3xl z-[999999]">❮</button>
+            <button onclick="moveCarousel(1); event.stopPropagation()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 p-5 rounded-full text-white text-3xl z-[999999]">❯</button>
         </div>
 
-        <div id="thumb-strip" class="no-scrollbar flex gap-2 overflow-x-auto p-6 w-full bg-black/80 border-t border-stone-900 z-[100001]"></div>
+        <div id="thumb-strip" class="no-scrollbar flex gap-2 overflow-x-auto p-6 w-full bg-black border-t border-stone-900 z-[999999]"></div>
     </div>
 
     <script>
@@ -288,16 +283,18 @@
             },
             sylvester: { 
                 name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, 
-                secret: ' Przy 1850 otręby tną gluten. Jeśli dasz 340g wody (jak u Clinta), ciasto po nocy będzie zbyt luźne na garnek. 325g pozwoli utrzymać kształt kuli. <br><br>Wymaga przynajmniej 2-3 "składań" (stretch & fold) w ciągu pierwszej godziny od wymieszania.',
+                secret: ' Przy 1850 otręby tną gluten. Jeśli dasz 340g wody (jak u Clinta), ciasto po nocy będzie zbyt luźne na garnek. 325g pozwoli utrzymać kształt kuli.<br><br>Wymaga przynajmniej 2-3 "składań" (stretch & fold) w ciągu pierwszej godziny od wymieszania.',
                 target: 'Szybka fermentacja i mleczno-orzechowy zapach.', ratio: '1:2:1.75',
                 desc: 'Pszenica przy 1:1 staje się rzadka. Dając mniej wody, zmuszasz bakterie do wolniejszej pracy.',
                 regMF: 40, regWF: 35,
             },
+            
+            Indywidualne Proporcje dla Granatowej PiekarniCel: Idealny bochenek z garnka (Dutch Oven)Każdy przepis oparty jest na 500g mąki. Różnice w wodzie wynikają z wytrzymałości glutenu danej odmiany.🧔 Clint Yeastwood (Żyto 2000)Klasyk: Stabilny, ciężki, wybaczający.Zakwas: 115gWoda: 340g (Hydratacja: 68%)Mąka: 500gSól: 14gCharakterystyka: Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy. Garnek wybacza mu wszystko, bo żyto nie "płynie" tak mocno na boki.🌾 Sylvester Graham (Pszenica 1850)Siłacz: Wymaga dyscypliny, odwdzięcza się sprężystością.Zakwas: 100g (Pszenica szybciej fermentuje, mniej zakwasu daje lepszą kontrolę)Woda: 325g (Hydratacja: 65%)Mąka: 500gSól: 13gTajemnica sukcesu: ⛪ Hildegarda z Bingen (Orkisz 2000)Księżniczka: Delikatna, szlachetna, łatwo ją urazić.Zakwas: 90g - 100g (Orkisz fermentuje najagresywniej)Woda: 310g (Hydratacja: 62%)Mąka: 500gSól: 15g (Wyższa dawka soli pomaga usztywnić delikatny gluten orkiszowy)Tajemnica sukcesu: Porównanie w skrócie (na 500g mąki):PostaćZakwasWodaSólGłówne wyzwanieClint115g340g14gBrak (stabilność)Sylvester100g325g13gBudowanie siły (składanie)Hildegarda100g310g15gPilnowanie strukturyUwagi do pieczenia w garnku:Dla Sylvestra i Hildegardy kluczowy będzie moment nacinania. Ponieważ to mąki pełnoziarniste i bochenki będą z tych "cięższych", tnij pewnym, szybkim ruchem na głębokość ok. 1-1.5 cm pod kątem 45 stopni. To pozwoli im kontrolowanie "eksplodować" w garnku mimo niższej hydratacji.
+            
             hildegarda: { 
                 name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, 
                 secret: 'Orkisz 2000 pije wodę szybko, ale równie szybko "puchnie" i traci napięcie powierzchniowe. Niższa hydratacja (310g) to Twój bezpiecznik, dzięki któremu bochenek w garnku wystrzeli w górę, a nie rozleje się na boki.<br><br>Hildegarda nie lubi agresywnego wyrabiania. Tylko delikatne mieszanie do połączenia składników.',
                 target: 'Delikatność i ochrona przed przekwaszeniem.', ratio: '1:2.25:2.25',
-                desc: 'Orkisz fermentuje najszybciej. Dając herbaty więcej jedzenia, wydłużasz czas aktywności.',
                 regMF: 45, regWF: 45,
             }
         };
