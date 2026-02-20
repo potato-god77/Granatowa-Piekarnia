@@ -407,7 +407,12 @@
         </section>
 
        <section id="gallery" class="tab-content pt-4">
-            <div id="gal-cont" class="mx-auto"></div>
+            <<div id="gal-cont" class="flex justify-center items-center py-20">
+    <div class="flex flex-col items-center gap-3">
+        <div class="w-8 h-8 border-4 border-stone-200 border-t-amber-600 rounded-full animate-spin"></div>
+        <p class="text-stone-400 text-sm font-medium animate-pulse">Ładuję galerię...</p>
+    </div>
+</div>
         </section>
     </main>
 
@@ -461,6 +466,7 @@
     let allGalleryData = [];
     let currentAlbumPhotos = [];
     let currentImgIndex = 0;
+    let isGalleryLoaded = false;
 
     // --- LOGOWANIE ---
     function checkPass() {
@@ -613,13 +619,14 @@
 function fetchGallery() {
     // Czyścimy stare ślady
     window.handleGalleryData = function(res) {
-        if (res.status === 'success') {
-            allGalleryData = res.data;
-            console.log("Galeria załadowana z chmury:", allGalleryData.length, "pozycji");
-            renderAlbums();
-        }
-        document.getElementById('gallery-jsonp')?.remove();
-    };
+    if (res.status === 'success') {
+        allGalleryData = res.data;
+        isGalleryLoaded = true; // <--- POTWIERDZAMY ZAŁADOWANIE
+        console.log("Galeria gotowa");
+        renderAlbums();
+    }
+    document.getElementById('gallery-jsonp')?.remove();
+};
 
     const script = document.createElement('script');
     script.id = 'gallery-jsonp';
@@ -632,9 +639,7 @@ function renderAlbums() {
     const cont = document.getElementById('gal-cont');
     if (!cont) return;
 
-    // Grid: Na PC dajemy max 4 kolumny, ale z większymi odstępami i max szerokością
-    cont.className = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8 mx-auto max-w-6xl px-4";
-
+    // Pobieramy dane dla konkretnego zakwasu
     const r = RECIPES[currentStarterKey];
     const starterName = r.name.split(' ')[0].toLowerCase();
     
@@ -642,26 +647,26 @@ function renderAlbums() {
         album.starter.toLowerCase().includes(starterName)
     );
 
+    // Jeśli dane są puste, ale wiemy, że pobieranie się zakończyło
     if (filteredData.length === 0) {
-        cont.innerHTML = `<div class="col-span-full text-center py-20 text-stone-400 text-sm italic">Brak zdjęć dla: ${r.name}</div>`;
+        cont.className = "block w-full text-center py-20"; // resetujemy grid dla komunikatu
+        cont.innerHTML = `
+            <p class="text-stone-400 text-sm italic">Brak zdjęć dla: ${r.name}</p>
+        `;
         return;
     }
 
+    // Jeśli są dane, ustawiamy siatkę (Grid) i renderujemy
+    cont.className = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8 mx-auto max-w-6xl px-4";
+    
     cont.innerHTML = filteredData.map((album, idx) => `
         <div onclick="openAlbumFiltered(${idx}, '${starterName}')" 
-             class="group relative w-full aspect-square rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer bg-stone-100">
-            
+             class="group relative w-full aspect-square rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer bg-stone-100 border border-stone-100">
             <img src="${album.cover}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy">
-            
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-80"></div>
-            
             <div class="absolute bottom-0 left-0 right-0 p-3 md:p-4 text-white">
-                <p class="text-sm md:text-base font-bold leading-none mb-1">
-                    ${album.date}
-                </p>
-                <p class="text-[9px] md:text-[11px] uppercase tracking-wider text-stone-300 font-medium">
-                    ${album.starter}
-                </p>
+                <p class="text-sm md:text-base font-bold leading-none mb-1">${album.date}</p>
+                <p class="text-[9px] md:text-[11px] uppercase tracking-wider text-stone-300 font-medium">${album.starter}</p>
             </div>
         </div>
     `).join('');
