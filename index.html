@@ -624,21 +624,33 @@ window.addEventListener('DOMContentLoaded', () => {
 // ==========================================
 
 function fetchGallery() {
-    // Czyścimy stare ślady
+    console.log("Inicjalizacja pobierania galerii...");
+    
     window.handleGalleryData = function(res) {
-    if (res.status === 'success') {
-        allGalleryData = res.data;
-        isGalleryLoaded = true; // <--- POTWIERDZAMY ZAŁADOWANIE
-        console.log("Galeria gotowa");
-        renderAlbums();
-    }
-    document.getElementById('gallery-jsonp')?.remove();
-};
+        if (res.status === 'success') {
+            allGalleryData = res.data;
+            isGalleryLoaded = true; 
+            console.log("Dane galerii pobrane pomyślnie. Renderuję...");
+            renderAlbums(); // Wywołaj renderowanie zaraz po otrzymaniu danych
+        } else {
+            console.error("Błąd serwera Google Apps Script:", res.message);
+        }
+        
+        // Sprzątanie po JSONP
+        const oldScript = document.getElementById('gallery-jsonp');
+        if (oldScript) oldScript.remove();
+    };
 
     const script = document.createElement('script');
     script.id = 'gallery-jsonp';
-    // Używamy akcji getGallery
+    // SCRIPT_URL musi być zdefiniowane wcześniej w Twoim kodzie!
     script.src = `${SCRIPT_URL}?action=getGallery&callback=handleGalleryData&t=${Date.now()}`;
+    
+    // Obsługa błędu sieciowego
+    script.onerror = function() {
+        console.error("Błąd ładowania skryptu galerii. Sprawdź połączenie lub SCRIPT_URL.");
+    };
+    
     document.body.appendChild(script);
 }
 
@@ -646,32 +658,40 @@ function renderAlbums() {
     const cont = document.getElementById('gal-cont');
     if (!cont) return;
 
-    // Nie renderuj, dopóki dane nie zostaną w pełni załadowane
-    if (!isGalleryLoaded) return;
+    // 1. Jeśli dane jeszcze nie dotarły, zostaw komunikat o ładowaniu
+    if (!isGalleryLoaded) {
+        cont.innerHTML = `<div style="text-align:center; padding:50px; color:#a8a29e; font-family:sans-serif;">
+            <p>Pobieranie zdjęć z serwera...</p>
+        </div>`;
+        return;
+    }
 
+    // 2. Bezpieczne pobranie aktualnego przepisu
     const r = RECIPES[currentStarterKey];
+    if (!r) {
+        console.error("BŁĄD: Nie znaleziono przepisu dla klucza:", currentStarterKey);
+        cont.innerHTML = `<p style="text-align:center; color:#a8a29e; padding:50px;">Błąd: Nie wybrano poprawnego zakwasu.</p>`;
+        return;
+    }
+
     const starterName = r.name.split(' ')[0].toLowerCase();
     
+    // 3. Filtrowanie danych
     const filteredData = allGalleryData.filter(album => 
-        album.starter.toLowerCase().includes(starterName)
+        album.starter && album.starter.toLowerCase().includes(starterName)
     );
 
+    // 4. Obsługa braku zdjęć dla konkretnego zakwasu
     if (filteredData.length === 0) {
         cont.style.setProperty('display', 'block', 'important');
         cont.innerHTML = `<p style="text-align:center; color:#a8a29e; padding:50px; font-style:italic; font-family:sans-serif;">Brak zdjęć dla: ${r.name}</p>`;
         return;
     }
 
+    // 5. Renderowanie siatki
     const isMobile = window.innerWidth < 768;
-    
-    // Wymuszamy układ siatki (Grid)
     cont.style.setProperty('display', 'grid', 'important');
-    
-    // Siatka: na PC min 200px na album, na Mobile 2 kolumny obok siebie
-    cont.style.gridTemplateColumns = isMobile 
-        ? "repeat(2, 1fr)" 
-        : "repeat(auto-fit, 200px)";
-        
+    cont.style.gridTemplateColumns = isMobile ? "repeat(2, 1fr)" : "repeat(auto-fit, 200px)";
     cont.style.gap = isMobile ? "12px" : "30px";
     cont.style.justifyContent = "center"; 
 
@@ -694,62 +714,7 @@ function renderAlbums() {
         </div>
     `).join('');
 }
-function openAlbumFiltered(filteredIdx, starterName) {
-    const filteredData = allGalleryData.filter(album => 
-        album.starter.toLowerCase().includes(starterName.toLowerCase())
-    );
-    const album = filteredData[filteredIdx];
-    if (!album) return;
 
-    currentImgIndex = 0;
-    currentAlbumPhotos = album.photos;
-    
-    // Generowanie slajdów - max-h-[80vh] zapobiega ucinaniu na telefonie
-    document.getElementById('carousel-track').innerHTML = currentAlbumPhotos.map(url => `
-        <div class="carousel-slide min-w-full h-full flex items-center justify-center p-2 md:p-4">
-            <img src="${url}" class="max-w-full max-h-[80vh] md:max-h-full object-contain rounded-lg shadow-2xl">
-        </div>
-    `).join('');
-    
-    // Generowanie paska miniatur
-    document.getElementById('thumb-strip').innerHTML = currentAlbumPhotos.map((url, i) => `
-        <img src="${url}" onclick="goToSlide(${i})" class="thumb-item ${i === 0 ? 'active' : ''} cursor-pointer">
-    `).join('');
-    
-    document.getElementById('carousel-info').innerText = `${album.starter} • ${album.date}`;
-    document.getElementById('viewer-modal').style.display = 'flex';
-    updateCarouselPosition();
-}
-
-function closeViewer() {
-    document.getElementById('viewer-modal').style.display = 'none';
-}
-
-function moveCarousel(dir) {
-    if (!currentAlbumPhotos || currentAlbumPhotos.length === 0) return;
-    currentImgIndex = (currentImgIndex + dir + currentAlbumPhotos.length) % currentAlbumPhotos.length;
-    updateCarouselPosition();
-}
-
-function goToSlide(idx) {
-    currentImgIndex = idx;
-    updateCarouselPosition();
-}
-
-function updateCarouselPosition() {
-    const track = document.getElementById('carousel-track');
-    if (!track) return;
-    
-    track.style.transform = `translateX(-${currentImgIndex * 100}%)`;
-    
-    const thumbs = document.querySelectorAll('#thumb-strip .thumb-item');
-    thumbs.forEach((t, i) => {
-        t.classList.toggle('active', i === currentImgIndex);
-        if(i === currentImgIndex) {
-            t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        }
-    });
-}
 
     // --- INTERFEJS ---
    function st(id, btn) {
