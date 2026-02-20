@@ -729,40 +729,81 @@ function renderAlbums() {
     }
 
         // --- INICJALIZACJA ---
+        // --- INTERFEJS I NAWIGACJA ---
+    function toggleAccordion(btn) { 
+        btn.parentElement.classList.toggle('active'); 
+    }
+
+    // --- FUNKCJA OTWIERANIA ALBUMU (Tego brakowało!) ---
+    function openAlbumFiltered(filteredIdx, starterName) {
+        const filteredData = allGalleryData.filter(album => 
+            album.starter && album.starter.toLowerCase().includes(starterName.toLowerCase())
+        );
+        const album = filteredData[filteredIdx];
+        if (!album) return;
+
+        currentImgIndex = 0;
+        currentAlbumPhotos = album.photos;
+        
+        const track = document.getElementById('carousel-track');
+        if(track) {
+            track.innerHTML = currentAlbumPhotos.map(url => `
+                <div class="carousel-slide min-w-full h-full flex items-center justify-center p-2">
+                    <img src="${url}" class="max-w-full max-h-[80vh] object-contain rounded-lg">
+                </div>
+            `).join('');
+        }
+        
+        const info = document.getElementById('carousel-info');
+        if(info) info.innerText = `${album.starter} • ${album.date}`;
+        
+        const modal = document.getElementById('viewer-modal');
+        if(modal) modal.style.display = 'flex';
+        
+        if (typeof updateCarouselPosition === 'function') updateCarouselPosition();
+    }
+
+    function closeViewer() {
+        const modal = document.getElementById('viewer-modal');
+        if(modal) modal.style.display = 'none';
+    }
+
+    // --- FINALNA INICJALIZACJA (Naprawia logowanie i galerię) ---
     document.addEventListener('DOMContentLoaded', () => {
-        // 1. Sprawdź dostęp
-        if (localStorage.getItem('bakery_access') === 'granted') {
-            document.getElementById('lock-screen').style.display = 'none';
-            
-            // 2. Pobierz dane w tle
+        const isGranted = localStorage.getItem('bakery_access') === 'granted';
+        
+        if (isGranted) {
+            // Ukryj lock-screen
+            const lock = document.getElementById('lock-screen');
+            if(lock) lock.style.display = 'none';
+
+            // Uruchom procesy
             loadFromCloud();
-            fetchGallery(); // <--- URUCHAMIAMY POBIERANIE ZDJĘĆ
-            
-            // 3. Ustaw startowe składniki
+            fetchGallery();
             updateIngredients();
+
+            // Przywróć zakładkę
+            const saved = sessionStorage.getItem('lastTab');
+            if (saved) {
+                switchTab(saved);
+            } else {
+                switchTab('kalkulator'); // domyślna zakładka
+            }
         }
 
-        // 4. Obsługa Swipe w galerii
+        // Obsługa Swipe
         const modal = document.getElementById('viewer-modal');
         if (modal) {
             let touchStartX = 0;
-            modal.addEventListener('touchstart', e => { 
-                touchStartX = e.changedTouches[0].screenX; 
-            }, { passive: true });
-
+            modal.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
             modal.addEventListener('touchend', e => {
                 const touchEndX = e.changedTouches[0].screenX;
-                const swipeThreshold = 50;
-                if (touchEndX < touchStartX - swipeThreshold) moveCarousel(1);
-                if (touchEndX > touchStartX + swipeThreshold) moveCarousel(-1);
+                if (touchEndX < touchStartX - 50) moveCarousel(1);
+                if (touchEndX > touchStartX + 50) moveCarousel(-1);
             }, { passive: true });
         }
     });
 
-    // Dodaj to na samym końcu, żeby mieć pewność, że galeria wystartuje nawet bez DOMContentLoaded
-    if (localStorage.getItem('bakery_access') === 'granted' && !isGalleryLoaded) {
-        fetchGallery();
-    }
 
 </script>
 </body>
