@@ -478,22 +478,25 @@
     }
 
     async function loadFromCloud() {
-        try {
-            const res = await fetch(SCRIPT_URL); 
-            const data = await res.json();
-            ['clint','sylvester','hildegarda'].forEach(k => {
-                if(data[k]) document.getElementById('feed-'+k).innerText = data[k];
-                const b = document.getElementById('btn-'+k);
-                if(data[k] === new Date().toLocaleDateString('pl-PL')) { 
-                    b.innerText="OK"; 
-                    b.classList.add('active'); 
-                }
-            });
-            const w = data.zlewki || 0; 
-            document.getElementById('zw').value = w;
-            document.getElementById('zb').style.width = Math.min((w/400)*100, 100)+'%';
-        } catch(e){ console.error(e); }
+    try {
+        const res = await fetch(SCRIPT_URL + "?action=get");
+        const txt = await res.text(); // Najpierw pobieramy surowy tekst
+        
+        // Sprawdzamy, czy to w ogóle jest JSON (czy nie zaczyna się od < html)
+        if (txt.trim().startsWith('<')) {
+            console.error("Skrypt Google zwrócił HTML zamiast danych. Sprawdź uprawnienia 'Anyone' w Apps Script.");
+            return;
+        }
+
+        const data = JSON.parse(txt);
+        if (data.status === 'success') {
+            // ... Twoja logika przypisywania danych do pól ...
+            console.log("Dane załadowane pomyślnie");
+        }
+    } catch (e) {
+        console.error("Błąd loadFromCloud:", e);
     }
+}
 
     function sel(n) {
     currentStarterKey = n.toLowerCase();
@@ -601,7 +604,8 @@ async function fetchGallery() {
         // Dodajemy timestamp, aby uniknąć problemów z cache i CORS
         const finalUrl = GALLERY_URL + "&t=" + new Date().getTime();
         
-        const res = await fetch(finalUrl);
+        // To proxy doda brakujące nagłówki CORS "w locie"
+     const res = await fetch("https://api.allorigins.win/raw?url=" + encodeURIComponent(GALLERY_URL));
         
         if (!res.ok) throw new Error('Problem z odpowiedzią sieci');
         
