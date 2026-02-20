@@ -18,33 +18,34 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeIn 0.3s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        
+
         .nav-btn { border-bottom: 3px solid transparent; transition: all 0.2s; flex-shrink: 0; color: #a89284; cursor: pointer; }
         .nav-btn.active { color: var(--primary); font-weight: 900; border-bottom: 3px solid var(--accent); }
-        
+
         .glass-card { background: white; border-radius: 20px; box-shadow: 0 4px 15px rgba(74, 55, 40, 0.05); border: 1px solid #efe3d8; overflow: hidden; color: var(--primary); }
         .starter-card { transition: all 0.2s; border: 2px solid transparent; cursor: pointer; }
         .starter-card.selected { border-color: var(--amber-gold) !important; background-color: #fffaf0; }
-        
+
         .accordion-content { display: none; }
         .accordion-item.active .accordion-content { display: block; animation: slideDown 0.2s ease-out; }
         .accordion-item.active .plus-icon { transform: rotate(45deg); }
         .recipe-step { position: relative; padding-left: 1.2rem; margin-bottom: 0.8rem; border-left: 2px solid var(--accent); margin-left: 0.4rem; font-size: 0.9rem; line-height: 1.5; color: #57534e; }
-        
+
         #w-sv, #w-regMF, #w-regWF, #p-wv, #p-sv, #p-fv, #p-slv { color: var(--amber-gold) !important; font-weight: 800; }
-        #p-secret { color: var(--amber-gold) !important; font-style: italic; font-weight: 600; }
+        #p-secret { color: var(--accent) !important; font-style: italic; font-weight: 600; }
 
         #lock-screen { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .pass-input { background: white; border: 2px solid var(--sand); border-radius: 15px; padding: 15px; text-align: center; font-size: 1.5rem; letter-spacing: 0.5rem; width: 220px; outline: none; }
-        
+
         main > section, main > div { max-width: 448px; margin-left: auto; margin-right: auto; width: 100%; }
         main #gal-cont { max-width: 1100px !important; width: 100% !important; display: grid !important; margin: 40px auto !important; padding: 0 16px; }
-        
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .brown-gradient { background: linear-gradient(135deg, #6d4c41 0%, #4a3728 100%); }
 
         #viewer-modal { z-index: 999999 !important; }
+        .date-clickable { cursor: pointer; text-decoration: underline; text-decoration-style: dotted; }
     </style>
 </head>
 <body class="pb-24">
@@ -87,8 +88,8 @@
                     <span class="text-3xl">🤠</span>
                 </div>
                 <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-                    <p class="text-[11px] font-bold">Ostatnio: <span id="feed-clint">---</span></p>
-                    <button onclick="markFed('clint', event)" class="btn-feed bg-stone-200 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Regeneruj</button>
+                    <p class="text-[11px] font-bold">Ostatnio: <span id="feed-clint" class="date-clickable" onclick="manualDate('clint', event)">---</span></p>
+                    <button onclick="markFed('clint', event)" class="btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
                 </div>
             </div>
             <div id="card-sylvester" onclick="sel('sylvester')" class="starter-card glass-card p-5 flex flex-col gap-3">
@@ -97,8 +98,8 @@
                     <span class="text-3xl">👨‍🌾</span>
                 </div>
                 <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-                    <p class="text-[11px] font-bold">Ostatnio: <span id="feed-sylvester">---</span></p>
-                    <button onclick="markFed('sylvester', event)" class="btn-feed bg-stone-200 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Regeneruj</button>
+                    <p class="text-[11px] font-bold">Ostatnio: <span id="feed-sylvester" class="date-clickable" onclick="manualDate('sylvester', event)">---</span></p>
+                    <button onclick="markFed('sylvester', event)" class="btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
                 </div>
             </div>
             <div id="card-hildegarda" onclick="sel('hildegarda')" class="starter-card glass-card p-5 flex flex-col gap-3">
@@ -107,8 +108,8 @@
                     <span class="text-3xl">⛪</span>
                 </div>
                 <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-                    <p class="text-[11px] font-bold">Ostatnio: <span id="feed-hildegarda">---</span></p>
-                    <button onclick="markFed('hildegarda', event)" class="btn-feed bg-stone-200 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Regeneruj</button>
+                    <p class="text-[11px] font-bold">Ostatnio: <span id="feed-hildegarda" class="date-clickable" onclick="manualDate('hildegarda', event)">---</span></p>
+                    <button onclick="markFed('hildegarda', event)" class="btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
                 </div>
             </div>
         </section>
@@ -116,9 +117,13 @@
         <section id="pieczenie-section" class="tab-content space-y-6">
             <div class="glass-card p-5 text-center bg-stone-50">
                 <h2 id="curr-name" class="serif text-xl font-bold text-stone-800 mb-4 italic">Clint Yeastwood</h2>
-                <div class="flex gap-2">
-                    <button onclick="upd(1)" id="q1" class="qb flex-1 py-3 rounded-xl brown-gradient text-white font-semibold text-sm">1 Chleb</button>
-                    <button onclick="upd(2)" id="q2" class="qb flex-1 py-3 rounded-xl bg-white text-stone-400 border border-stone-200 font-semibold text-sm">2 Chleby</button>
+                <div class="flex items-center justify-center gap-4 bg-white p-3 rounded-2xl border border-stone-200">
+                    <button onclick="changeQty(-1)" class="w-12 h-12 rounded-full bg-stone-100 flex items-center justify-center text-2xl font-bold text-stone-600 active:scale-95 transition-all">-</button>
+                    <div class="flex flex-col">
+                        <span id="display-qty" class="text-3xl font-black text-stone-800">1</span>
+                        <span class="text-[9px] uppercase font-bold text-stone-400">Ilość chlebów</span>
+                    </div>
+                    <button onclick="changeQty(1)" class="w-12 h-12 rounded-full bg-stone-100 flex items-center justify-center text-2xl font-bold text-stone-600 active:scale-95 transition-all">+</button>
                 </div>
             </div>
             <div class="glass-card p-6 space-y-4">
@@ -127,7 +132,7 @@
                 <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Mąka</span><b id="fv" class="text-2xl">---</b></div>
                 <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Sól</span><b id="slv" class="text-2xl">---</b></div>
             </div>
-            <div class="glass-card p-5 bg-white border-l-4 border-accent"><div id="recipe-tips" class="text-sm"></div></div>
+            <div class="glass-card p-5 bg-white border-l-4 border-accent"><div id="recipe-tips" class="text-sm text-stone-700"></div></div>
             <div class="glass-card p-5 bg-[#f9f5f1]">
                 <div class="flex justify-between items-center mb-5">
                     <p class="text-[9px] uppercase font-bold text-stone-500">Mieszanie:</p>
@@ -198,7 +203,6 @@
                     </div> 
                 </div> 
             </div>
-
             <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
                     <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Żurek na zlewkach</h3>
@@ -249,13 +253,13 @@
     </main>
 
     <div id="viewer-modal" class="hidden fixed inset-0 bg-black flex flex-col items-center justify-center">
-        <button onclick="closeViewer()" class="absolute top-12 right-6 w-14 h-14 bg-black/50 rounded-full text-white text-5xl flex items-center justify-center z-[9999999] leading-none transition-all active:scale-90">&times;</button>
-        
-        <span id="carousel-info" class="absolute top-14 left-6 text-white text-[10px] font-black opacity-50 z-[999999] pointer-events-none uppercase tracking-widest bg-black/30 px-2 py-1 rounded"></span>
-        
+        <button onclick="closeViewer()" class="absolute top-6 right-6 w-14 h-14 bg-black/50 rounded-full text-white text-5xl flex items-center justify-center z-[9999999] leading-none transition-all active:scale-90">&times;</button>
+
+        <span id="carousel-info" class="absolute top-8 left-6 text-white text-[10px] font-black opacity-50 z-[999999] pointer-events-none uppercase tracking-widest bg-black/30 px-2 py-1 rounded"></span>
+
         <div id="img-container" class="relative w-full flex-1 flex items-center justify-center cursor-pointer p-4" onclick="if(event.target === this) closeViewer()">
             <img id="carousel-img" src="" class="max-w-full max-h-[70vh] object-contain transition-opacity duration-200 cursor-default" onclick="event.stopPropagation()">
-            
+
             <button onclick="moveCarousel(-1); event.stopPropagation()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 p-5 rounded-full text-white text-3xl z-[999999]">❮</button>
             <button onclick="moveCarousel(1); event.stopPropagation()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 p-5 rounded-full text-white text-3xl z-[999999]">❯</button>
         </div>
@@ -342,10 +346,9 @@
             if (isGalleryLoaded) renderAlbums();
         }
 
-        function upd(n) {
-            currentQty = n;
-            document.querySelectorAll('.qb').forEach(b => b.className = 'qb flex-1 py-3 rounded-xl bg-white text-stone-400 border border-stone-200 font-semibold text-sm');
-            document.getElementById('q'+n).className = 'qb flex-1 py-3 rounded-xl brown-gradient text-white font-semibold text-sm';
+        function changeQty(delta) {
+            currentQty = Math.max(1, currentQty + delta);
+            document.getElementById('display-qty').innerText = currentQty;
             updateIngredients();
         }
 
@@ -353,7 +356,7 @@
             const r = RECIPES[currentStarterKey];
             const q = currentQty;
             ['sv', 'wv', 'fv', 'slv'].forEach(id => { document.getElementById(id).innerText = (r[id] * q) + 'g'; });
-            document.getElementById('recipe-tips').innerHTML = r.secret;
+            document.getElementById('recipe-tips').innerHTML = `<b>Wskazówka:</b><br>${r.secret}`;
             document.getElementById('w-name').innerText = r.name;
             document.getElementById('w-target').innerText = r.target;
             document.getElementById('w-ratio').innerText = r.ratio;
@@ -365,7 +368,7 @@
             document.getElementById('p-sv').innerText = (r.sv * q) + 'g';
             document.getElementById('p-fv').innerText = (r.fv * q) + 'g';
             document.getElementById('p-slv').innerText = (r.slv * q) + 'g';
-            document.getElementById('p-secret').innerHTML = "Wskazówka: " + r.secret;
+            document.getElementById('p-secret').innerHTML = `<b>Wskazówka:</b><br>${r.secret}`;
             calcTime();
         }
 
@@ -381,6 +384,24 @@
         }
 
         function markFed(k, e) { e.stopPropagation(); saveToCloud(k, new Date().toLocaleDateString('pl-PL')); }
+        
+        function manualDate(k, e) {
+            e.stopPropagation();
+            const current = document.getElementById('feed-'+k).innerText;
+            const input = document.createElement('input');
+            input.type = 'date';
+            input.style.position = 'fixed';
+            input.style.opacity = '0';
+            document.body.appendChild(input);
+            input.showPicker();
+            input.onchange = () => {
+                const val = input.value ? new Date(input.value).toLocaleDateString('pl-PL') : "---";
+                saveToCloud(k, val);
+                document.body.removeChild(input);
+            };
+            input.onblur = () => { if(document.body.contains(input)) document.body.removeChild(input); };
+        }
+
         function toggleAccordion(btn) { btn.parentElement.classList.toggle('active'); }
 
         function fetchGallery() {
