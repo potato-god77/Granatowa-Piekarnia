@@ -62,6 +62,7 @@
         box-shadow: 0 4px 15px rgba(74, 55, 40, 0.05); 
         border: 1px solid #efe3d8; 
         overflow: hidden; 
+        color: var(--primary); /* Wymuszenie koloru tekstu w kartach */
     }
     .btn-feed.active { 
         background-color: #e7dfd8 !important; 
@@ -79,10 +80,15 @@
         position: relative; 
         padding-left: 1.2rem; 
         margin-bottom: 0.8rem; 
-        border-left: 2px solid var(--sand); 
+        /* ZMIANA: tutaj był var(--sand), który był zbyt jasny. Ustawiamy --accent */
+        border-left: 2px solid var(--accent); 
         margin-left: 0.4rem; 
         font-size: 0.9rem; 
         line-height: 1.5; 
+        color: #57534e; /* Kolor zbliżony do stone-600 dla czytelności kroków */
+    }
+    .recipe-step p.font-bold, .recipe-step p.font-italic {
+        color: var(--primary); /* Nagłówki kroków w głównym brązie */
     }
 
     /* --- LOGOWANIE I BLOKADA --- */
@@ -104,53 +110,20 @@
         outline: none; 
     }
 
-    /* --- MODAL PODGLĄDU --- */
-    #viewer-modal { 
-        display: none; 
-        position: fixed; inset: 0; 
-        background: rgba(0,0,0,0.98); 
-        z-index: 9999; 
-        flex-direction: column; 
-    }
-    #viewer-modal.active { display: flex; }
-    .carousel-track { 
-        display: flex; 
-        transition: transform 0.3s ease-out; 
-        height: 100%; 
-    }
-    .carousel-slide { 
-        min-width: 100%; 
-        display: flex; align-items: center; justify-content: center; 
-        padding: 10px; 
-    }
-    .carousel-slide img {
-        max-height: 85vh;
-        max-width: 100%;
-        object-fit: contain;
+    /* --- WYMUSZENIE KOLORÓW DLA TEKSTU (Fix dla czarnego tekstu) --- */
+    main section, 
+    .tab-content, 
+    h3, p {
+        color: inherit; /* Pozwala dziedziczyć var(--primary) z body */
     }
 
-    /* Pasek miniatur */
-    .thumb-strip { 
-        display: flex; 
-        gap: 8px; 
-        overflow-x: auto; 
-        padding: 15px; 
-        background: rgba(0,0,0,0.5); 
-        justify-content: center; 
-    }
-    .thumb-item { 
-        width: 50px; height: 50px; 
-        flex-shrink: 0; 
-        border-radius: 8px; 
-        opacity: 0.4; 
-        border: 2px solid transparent; 
-        object-fit: cover; 
-    }
-    .thumb-item.active { opacity: 1; border-color: white; }
+    /* Fix dla klas stone z Tailwind, które mogły stracić kolor */
+    .text-stone-400 { color: #a8a29e !important; }
+    .text-stone-500 { color: #78716c !important; }
+    .text-stone-600 { color: #57534e !important; }
+    .text-stone-800 { color: #292524 !important; }
 
-    /* --- LAYOUT BREAKOUT (Klucz do siatki) --- */
-    
-    /* 1. Ograniczamy szerokość wszystkich sekcji tekstowych w main */
+    /* --- LAYOUT BREAKOUT --- */
     main > section, 
     main > div {
         max-width: 448px;
@@ -160,8 +133,8 @@
         box-sizing: border-box;
     }
 
-    /* 2. WYJĄTEK DLA GALERII - musi być szeroka i wyśrodkowana */
-    main > #gal-cont {
+    /* WYJĄTEK DLA GALERII - zmieniony selektor na ogólny (bez >), by działał w sekcjach */
+    main #gal-cont {
         max-width: 1100px !important;
         width: 100% !important;
         display: grid !important;
@@ -176,7 +149,7 @@
     @media (max-width: 640px) {
         .recipe-step { font-size: 0.85rem; }
         .thumb-item { width: 45px; height: 45px; }
-        main > #gal-cont { gap: 12px; padding: 10px; margin-top: 20px !important; }
+        main #gal-cont { gap: 12px; padding: 10px; margin-top: 20px !important; }
     }
 </style>
 </head>
