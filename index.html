@@ -236,7 +236,7 @@
     </select>
 </div>
 
-    <main class="max-w-md mx-auto p-4 space-y-6">
+    <main class=" mx-auto p-4 space-y-6">
         <section id="starters" class="tab-content active space-y-4">
             <div id="card-clint" onclick="sel('Clint')" class="starter-card glass-card p-5 flex flex-col gap-3 selected">
                 <div class="flex justify-between items-center">
@@ -650,35 +650,40 @@ function renderAlbums() {
 
     if (filteredData.length === 0) {
         cont.style.display = "block";
-        cont.innerHTML = `<p style="text-align:center; color:#a8a29e; padding:50px; font-style:italic; font-family:sans-serif;">Brak zdjęć dla: ${r.name}</p>`;
+        cont.innerHTML = `<p style="text-align:center; color:#a8a29e; padding:50px; font-style:italic;">Brak zdjęć dla: ${r.name}</p>`;
         return;
     }
 
     const isMobile = window.innerWidth < 768;
     
-    // RESET I USTAWIENIA SIATKI
+    // KLUCZOWA POPRAWKA STYLÓW:
     cont.className = ""; 
     cont.style.display = "grid";
     
-    // Na PC: Tworzy tyle kolumn po 200px, ile się zmieści, ale nie mniej niż 2.
-    // Na Mobile: Zawsze 2 kolumny.
+    // Na PC: stałe 200px. Na Mobile: 2 kolumny (fr)
     cont.style.gridTemplateColumns = isMobile 
         ? "repeat(2, 1fr)" 
         : "repeat(auto-fit, 200px)";
         
     cont.style.gap = isMobile ? "12px" : "30px";
-    cont.style.justifyContent = "center"; // Centruje całą siatkę na ekranie
-    cont.style.width = "100%";
-    cont.style.maxWidth = "1200px";
-    cont.style.margin = "0 auto";
-    cont.style.padding = "20px";
+    cont.style.justifyContent = "center";
+    
+    // Wyjście poza ograniczenie max-w-md rodzica:
+    cont.style.width = "100vw"; 
+    cont.style.position = "relative";
+    cont.style.left = "50%";
+    cont.style.right = "50%";
+    cont.style.marginLeft = "-50vw";
+    cont.style.marginRight = "-50vw";
+    
+    cont.style.maxWidth = "1200px"; // Sama siatka niech nie będzie szersza niż 1200px
+    cont.style.margin = "40px auto"; // Centrowanie siatki wewnątrz tych 100vw
+    cont.style.padding = "0 20px";
 
     cont.innerHTML = filteredData.map((album, idx) => {
-        const cardWidth = isMobile ? "100%" : "200px";
-        
         return `
         <div onclick="openAlbumFiltered(${idx}, '${starterName}')" 
-             style="position:relative; width:${cardWidth}; aspect-ratio:2/3; border-radius:12px; overflow:hidden; cursor:pointer; background:#292524; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); transition: transform 0.2s ease;">
+             style="position:relative; width:100%; max-width:200px; aspect-ratio:2/3; border-radius:12px; overflow:hidden; cursor:pointer; background:#292524; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); margin: 0 auto;">
             
             <img src="${album.cover}" style="width:100%; height:100%; object-fit:cover; display:block;" loading="lazy">
             
