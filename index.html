@@ -146,11 +146,26 @@
                         <p class="text-xs italic text-stone-500 mt-2" id="w-desc"></p>
                     </div>
                     <div class="recipe-step">
+                        <p class="font-bold italic text-stone-700">Etap 1: Słoik "Matka" (Lodówka)</p>
+                        <p>Zawsze trzymaj w lodówce ok. 50-100g aktywnego zakwasu. To serce Twojej piekarni.</p>
+                    </div>
+                    <div class="recipe-step">
+                        <p class="font-bold italic text-stone-700">Etap 2: Produkcja Chleba</p>
+                        <p>Wieczorem pobierz ze słoika "Matki" porcję potrzebną do przepisu (np. <span id="w-sv" class="font-bold text-amber-700"></span>). Resztę w słoiku zostaw na Etap 3.</p>
+                    </div>
+                    <div class="recipe-step">
+                        <p class="font-bold italic text-stone-700">Etap 3: Słoik "Zlewki" (Słoik nr 3)</p>
+                        <p>Wszystko co zostanie w słoiku po pobraniu porcji na chleb (tzw. discard), przelej do słoika nr 3. To baza na żurek!</p>
+                    </div>
+                    <div class="recipe-step">
                         <p class="font-bold italic text-stone-700">Etap 4: Regeneracja Matki</p>
-                        <p>1. Do 20g porcji dodaj <span id="w-regMF" class="font-bold"></span> mąki i <span id="w-regWF" class="font-bold"></span> wody (38°C).</p>
+                        <p>1. Do pustego (prawie) słoika "Matki" dodaj <span id="w-regMF" class="font-bold text-amber-700"></span> świeżej mąki i <span id="w-regWF" class="font-bold text-amber-700"></span> ciepłej wody (ok. 38°C).<br>
+                        2. Wymieszaj i zostaw na blacie na 2-4h aż podwoi objętość.<br>
+                        3. Schowaj do lodówki na kolejny tydzień.</p>
                     </div>
                 </div>
             </div>
+
             <div class="accordion-item glass-card"> 
                 <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
                     <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Chleb</h3> 
@@ -161,9 +176,18 @@
                         <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p> 
                         <p>Woda <span id="p-wv"></span> + zakwas <span id="p-sv"></span> + mąka <span id="p-fv"></span> + sól <span id="p-slv"></span>.</p> 
                         <p id="p-secret" class="text-amber-800 italic mt-2"></p>
-                    </div> 
+                    </div>
+                    <div class="recipe-step"> 
+                        <p class="font-bold text-stone-800 italic">Fermentacja nocna</p> 
+                        <p>Zostaw na blacie w temp. pokojowej (ok. 20-22°C) na całą noc (7-9h).</p>
+                    </div>
+                    <div class="recipe-step"> 
+                        <p class="font-bold text-stone-800 italic">Chłodzenie i Formowanie</p> 
+                        <p>Rano wstaw do lodówki na kilka godzin. Zimne ciasto łatwiej uformować przed samym pieczeniem.</p>
+                    </div>
                 </div> 
             </div>
+
             <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
                     <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Żurek na zlewkach</h3>
@@ -171,19 +195,23 @@
                 </button>
                 <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4 text-stone-600">
                     <div class="recipe-step">
-                        <p class="font-bold italic">Składniki (2-2.5L):</p>
+                        <p class="font-bold italic">Krok 1: Wywar (Baza)</p>
                         <ul class="list-disc ml-4 space-y-1">
-                            <li>250-300g wędzonych żeberek</li>
-                            <li>150g wędzonego boczku</li>
-                            <li>2 marchewki, 1 pietruszka, kawałek selera</li>
-                            <li>1 cebula (opalona)</li>
-                            <li>3 liście laurowe, 5 ziela ang.</li>
-                            <li>2 litry zimnej wody</li>
+                            <li>250-300g wędzonych żeberek, 150g boczku.</li>
+                            <li>Warzywa: 2 marchewki, pietruszka, kawałek selera, opalona cebula.</li>
+                            <li>Przyprawy: 3 liście laurowe, 5 ziela ang., pieprz ziarnisty.</li>
+                            <li>Gotuj na małym ogniu przez 1.5h w 2 litrach wody.</li>
                         </ul>
                     </div>
                     <div class="recipe-step">
                         <p class="font-bold italic">Krok 2: Zakwaszanie</p>
-                        <p>Odlej szklankę wywaru i wymieszaj z 400g zlewek (słoik nr 3). Wlej do garnka, zagotuj.</p>
+                        <p>1. Wyjmij warzywa i mięso. Mięso pokrój w kostkę i wrzuć z powrotem.<br>
+                        2. Odlej szklankę wywaru i wymieszaj z 400g zlewek (słoik nr 3).<br>
+                        3. Wlej miksturę do garnka, ciągle mieszając. Zagotuj.</p>
+                    </div>
+                    <div class="recipe-step">
+                        <p class="font-bold italic">Krok 3: Wykończenie</p>
+                        <p>Dodaj 2 ząbki czosnku przeciśnięte przez praskę, dużą łyżkę majeranku i opcjonalnie 100ml śmietanki 30%.</p>
                     </div>
                 </div>
             </div>
@@ -232,9 +260,27 @@
         let isGalleryLoaded = false;
 
         const RECIPES = {
-            clint: { name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, secret: 'Ciasto jest jak mokra glina. Nie wyrabiamy go.', target: 'Stabilność i profil.', ratio: '1:2:2', desc: 'Żyto kocha gęstość.', regMF: 40, regWF: 40 },
-            sylvester: { name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, secret: 'Otręby tną gluten.', target: 'Szybka fermentacja.', ratio: '1:2:1.75', desc: 'Pszenica 1850.', regMF: 40, regWF: 35 },
-            hildegarda: { name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, secret: 'Orkisz pije szybko.', target: 'Delikatność.', ratio: '1:2.25:2.25', desc: 'Orkisz 2000.', regMF: 45, regWF: 45 }
+            clint: { 
+                name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, 
+                secret: 'Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy. Żyto nie płynie tak na boki.',
+                target: 'Stabilność i mocny, octowy profil.', ratio: '1:2:2',
+                desc: 'Żyto kocha gęstą konsystencję. Clint jest jak plastelina.',
+                regMF: 40, regWF: 40
+            },
+            sylvester: { 
+                name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, 
+                secret: 'Przy 1850 otręby tną gluten. Wymaga przynajmniej 2-3 składań (stretch & fold) w 1h.',
+                target: 'Szybka fermentacja i mleczno-orzechowy zapach.', ratio: '1:2:1.75',
+                desc: 'Pszenica przy 1:1 staje się rzadka. Mniej wody zwalnia bakterie.',
+                regMF: 40, regWF: 35
+            },
+            hildegarda: { 
+                name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, 
+                secret: 'Orkisz pije szybko, ale traci napięcie. Hildegarda nie lubi agresywnego wyrabiania.',
+                target: 'Delikatność i ochrona przed przekwaszeniem.', ratio: '1:2.25:2.25',
+                desc: 'Orkisz fermentuje najszybciej. Więcej jedzenia wydłuża czas.',
+                regMF: 45, regWF: 45
+            }
         };
 
         function checkPass() {
@@ -266,6 +312,10 @@
                     for (let k in data.data) {
                         const el = document.getElementById('feed-' + k);
                         if (el) el.innerText = data.data[k];
+                        if (k === 'zlewki') {
+                            const zwInput = document.getElementById('zw');
+                            if(zwInput) zwInput.value = data.data[k];
+                        }
                     }
                 }
             };
