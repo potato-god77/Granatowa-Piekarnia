@@ -477,27 +477,9 @@
         } catch(e){ console.error(e); }
     }
 
-    async function loadFromCloud() {
-    try {
-        // 1. Tworzymy czysty link do skryptu
-        const targetUrl = SCRIPT_URL + "?action=get";
-        
-        // 2. Używamy proxy AllOrigins, aby dodać brakujące nagłówki CORS
-        // Dodajemy timestamp (&t=), żeby uniknąć starych danych z pamięci (cache)
-        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}&t=${Date.now()}`;
-        
-        const res = await fetch(proxyUrl);
-        if (!res.ok) throw new Error('Błąd połączenia z proxy');
-
-        const txt = await res.text();
-
-        // 3. Sprawdzamy czy to nie HTML (Google często wysyła HTML przy błędach)
-        if (txt.trim().startsWith('<')) {
-            console.error("Skrypt Google zwrócił HTML. Upewnij się, że SCRIPT_URL jest poprawny i skrypt ma uprawnienia 'Anyone'.");
-            return;
-        }
-
-        const data = JSON.parse(txt);
+    function loadFromCloud() {
+    // 1. Definiujemy funkcję, którą wywoła Google
+    window.handleCloudData = function(data) {
         if (data.status === 'success') {
             const cloudData = data.data;
             for (let k in cloudData) {
@@ -507,11 +489,19 @@
                     if (fedEl) fedEl.innerText = cloudData[k];
                 }
             }
-            console.log("Pomyślnie zasysano daty karmienia.");
+            console.log("Dane załadowane przez JSONP");
         }
-    } catch (e) {
-        console.error("Błąd podczas zasysania danych z chmury:", e);
-    }
+        // Sprzątamy po sobie
+        document.getElementById('jsonp-script')?.remove();
+    };
+
+    // 2. Tworzymy element <script>, który "oszuka" CORS
+    const script = document.createElement('script');
+    script.id = 'jsonp-script';
+    script.src = `${SCRIPT_URL}?action=get&callback=handleCloudData&t=${Date.now()}`;
+    
+    // 3. Dodajemy do strony - to automatycznie odpali zapytanie
+    document.body.appendChild(script);
 }
 
     function sel(n) {
