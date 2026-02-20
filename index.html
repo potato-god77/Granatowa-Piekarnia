@@ -31,9 +31,9 @@
         .accordion-item.active .plus-icon { transform: rotate(45deg); }
         .recipe-step { position: relative; padding-left: 1.2rem; margin-bottom: 0.8rem; border-left: 2px solid var(--accent); margin-left: 0.4rem; font-size: 0.9rem; line-height: 1.5; color: #57534e; }
         
-        /* Kolorowanie gramatur i sekretów */
+        /* Kolorowanie gramatur i sekretów we wskazówkach z ORYGINALNYM ID */
         #w-sv, #w-regMF, #w-regWF, #p-wv, #p-sv, #p-fv, #p-slv { color: var(--amber-gold) !important; font-weight: 800; }
-        #p-secret, #recipe-tips { color: var(--amber-gold) !important; font-style: italic; font-weight: 600; }
+        #p-secret { color: var(--amber-gold) !important; font-style: italic; font-weight: 600; }
 
         #lock-screen { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .pass-input { background: white; border: 2px solid var(--sand); border-radius: 15px; padding: 15px; text-align: center; font-size: 1.5rem; letter-spacing: 0.5rem; width: 220px; outline: none; }
@@ -151,28 +151,27 @@
                 </button>
                 <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
                     <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 mb-4">
+                        <p class="text-[10px] uppercase font-black text-stone-400 mb-1">Wybrany Zakwas</p>
                         <p id="w-name" class="serif text-lg font-bold text-stone-800 leading-none mb-2"></p>
                         <p class="text-xs text-stone-600"><strong>Cel:</strong> <span id="w-target"></span></p>
                         <p class="text-xs text-stone-600"><strong>Stosunek:</strong> <span id="w-ratio"></span></p>
                         <p class="text-xs italic text-stone-500 mt-2" id="w-desc"></p>
                     </div>
                     <div class="recipe-step">
-                        <p class="font-bold italic text-stone-700">Etap 1: Słoik "Matka" (Lodówka)</p>
-                        <p>Zawsze trzymaj w lodówce ok. 50-100g aktywnego zakwasu. To serce Twojej piekarni.</p>
+                        <p class="font-bold italic text-stone-700">Etap 1: Aktywacja (ok. 16:00)</p>
+                        <p>Pobierz 30g bazy ze słoika nr 2. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj w słoiku nr 1 i zostaw na blacie na 4-6 godzin.</p>
                     </div>
                     <div class="recipe-step">
-                        <p class="font-bold italic text-stone-700">Etap 2: Produkcja Chleba</p>
-                        <p>Wieczorem pobierz ze słoika "Matki" porcję potrzebną do przepisu (np. <span id="w-sv"></span>). Resztę w słoiku zostaw na Etap 3.</p>
+                        <p class="font-bold italic text-stone-700">Etap 2: Pobranie (ok. 22:00)</p>
+                        <p>1. Pobierz <span class="font-bold" id="w-sv"></span> aktywnego zakwasu ze słoika nr 1 do miski.<br>2. Całą pozostałość przełóż do słoika nr 2.</p>
                     </div>
                     <div class="recipe-step">
-                        <p class="font-bold italic text-stone-700">Etap 3: Słoik "Zlewki" (Słoik nr 3)</p>
-                        <p>Wszystko co zostanie w słoiku po pobraniu porcji na chleb (tzw. discard), przelej do słoika nr 3. To baza na żurek!</p>
+                        <p class="font-bold italic text-stone-700">Etap 3: Święta Porcja (Słoik 2)</p>
+                        <p>Wymieszaj starą bazę ze zrzutem. Wymierz z tego 20g ("Święta Porcja") i zostaw w słoiku nr 2. Resztę do słoika nr 3.</p>
                     </div>
                     <div class="recipe-step">
                         <p class="font-bold italic text-stone-700">Etap 4: Regeneracja Matki</p>
-                        <p>1. Do pustego (prawie) słoika "Matki" dodaj <span id="w-regMF"></span> świeżej mąki i <span id="w-regWF"></span> ciepłej wody (ok. 38°C).<br>
-                        2. Wymieszaj i zostaw na blacie na 2-4h aż podwoi objętość.<br>
-                        3. Schowaj do lodówki na kolejny tydzień.</p>
+                        <p>1. Do 20g porcji w słoiku nr 2 dodaj <span id="w-regMF" class="font-bold"></span> mąki i <span id="w-regWF" class="font-bold"></span> wody (38°C).<br>2. Zostaw na 1h na blacie, potem schowaj do lodówki.</p>
                     </div>
                 </div>
             </div>
@@ -182,20 +181,20 @@
                     <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Chleb</h3> 
                     <span class="plus-icon text-2xl">+</span>
                 </button>
-                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4"> 
+                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4 text-stone-600"> 
                     <div class="recipe-step"> 
                         <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p> 
-                        <p>Woda <span id="p-wv"></span> + zakwas <span id="p-sv"></span> + mąka <span id="p-fv"></span> + sól <span id="p-slv"></span>.</p> 
-                        <p id="p-secret" class="mt-2"></p>
-                    </div>
+                        <p>Zrób zawiesinę: woda <span id="p-wv" class="font-bold text-stone-800"></span> (30°C) + aktywny zakwas <span id="p-sv" class="font-bold text-stone-800"></span>. Do tego dodaj <span id="p-fv" class="font-bold text-stone-800"></span> mąki i <span id="p-slv" class="font-bold text-stone-800"></span> soli. Wymieszaj, przykryj miskę i zostaw na noc na blacie w temperaturze pokojowej.</p> 
+                        <p id="p-secret" class="mt-2 text-xs italic font-medium"></p>
+                    </div> 
                     <div class="recipe-step"> 
-                        <p class="font-bold text-stone-800 italic">Fermentacja nocna</p> 
-                        <p>Zostaw na blacie w temp. pokojowej (ok. 20-22°C) na całą noc (7-9h).</p>
-                    </div>
+                        <p class="font-bold text-stone-800 italic">Rano (05:30 - 06:00)</p> 
+                        <p>Włóż ciasto do lodówki (pod przykryciem).</p> 
+                    </div> 
                     <div class="recipe-step"> 
-                        <p class="font-bold text-stone-800 italic">Chłodzenie i Formowanie</p> 
-                        <p>Rano wstaw do lodówki na kilka godzin. Zimne ciasto łatwiej uformować przed samym pieczeniem.</p>
-                    </div>
+                        <p class="font-bold text-stone-800 italic">Pieczenie (od 16:00)</p> 
+                        <p>Nagrzej piec z garnkiem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę" by stało się spięte, po czym natnij ostrym nożem lub żyletką. Gdy piekarnik się już nagrzeje, piecz 30 min pod przykryciem, a następnie zdejmij pokrywkę i piecz kolejne 15 min bez niej.</p> 
+                    </div> 
                 </div> 
             </div>
 
@@ -204,25 +203,29 @@
                     <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Żurek na zlewkach</h3>
                     <span class="plus-icon text-2xl">+</span>
                 </button>
-                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4 text-stone-600">
+                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
                     <div class="recipe-step">
-                        <p class="font-bold italic">Krok 1: Wywar (Baza)</p>
-                        <ul class="list-disc ml-4 space-y-1">
-                            <li>250-300g wędzonych żeberek, 150g boczku.</li>
-                            <li>Warzywa: 2 marchewki, pietruszka, kawałek selera, opalona cebula.</li>
-                            <li>Przyprawy: 3 liście laurowe, 5 ziela ang., pieprz ziarnisty.</li>
-                            <li>Gotuj na małym ogniu przez 1.5h w 2 litrach wody.</li>
+                        <p class="font-bold italic">Składniki (2-2.5L):</p>
+                        <ul class="list-disc ml-4 space-y-1 text-stone-600">
+                            <li>250-300g wędzonych żeberek</li>
+                            <li>150g wędzonego boczku</li>
+                            <li>2 marchewki, 1 pietruszka, kawałek selera</li>
+                            <li>1 cebula (opalona nad ogniem)</li>
+                            <li>3 liście laurowe, 5 ziaren ziela angielskiego</li>
+                            <li>2 litry zimnej wody</li>
                         </ul>
                     </div>
-                    <div class="recipe-step">
-                        <p class="font-bold italic">Krok 2: Zakwaszanie</p>
-                        <p>1. Wyjmij warzywa i mięso. Mięso pokrój w kostkę i wrzuć z powrotem.<br>
-                        2. Odlej szklankę wywaru i wymieszaj z 400g zlewek (słoik nr 3).<br>
-                        3. Wlej miksturę do garnka, ciągle mieszając. Zagotuj.</p>
+                    <div class="recipe-step text-stone-600">
+                        <p class="font-bold italic text-stone-800">Krok 1: Wywar Mięsny</p>
+                        <p>Do garnka włóż żeberka, boczek, warzywa i przyprawy. Zalej zimną wodą. Gotuj pod przykryciem na minimalnym ogniu przez ok. 2 godziny, aż mięso będzie bardzo miękkie.</p>
                     </div>
-                    <div class="recipe-step">
-                        <p class="font-bold italic">Krok 3: Wykończenie</p>
-                        <p>Dodaj 2 ząbki czosnku przeciśnięte przez praskę, dużą łyżkę majeranku i opcjonalnie 100ml śmietanki 30%.</p>
+                    <div class="recipe-step text-stone-600">
+                        <p class="font-bold italic text-stone-800">Krok 2: Zakwaszanie (Zlewki)</p>
+                        <p>Odlej szklankę gorącego wywaru i wymieszaj ją dokładnie z 400g zlewek ze słoika nr 3 (to zapewni brak grudek). Wlej zawiesinę do garnka, cały czas mieszając. Zagotuj.</p>
+                    </div>
+                    <div class="recipe-step text-stone-600">
+                        <p class="font-bold italic text-stone-800">Krok 3: Wykończenie</p>
+                        <p>Dodaj 2-3 ząbki przeciśniętego czosnku i 2 łyżki majeranku. Dopraw solą i pieprzem. Na koniec zabiel 100ml śmietanki 30%.</p>
                     </div>
                 </div>
             </div>
@@ -244,19 +247,19 @@
         </section>
     </main>
 
-    <div id="viewer-modal" class="hidden fixed inset-0 bg-black/95 z-[10000] flex flex-col items-center justify-center" onclick="closeViewer()">
+    <div id="viewer-modal" class="hidden fixed inset-0 bg-black/95 z-[10000] flex flex-col items-center justify-center cursor-pointer" onclick="closeViewer()">
         <div class="absolute top-0 left-0 right-0 p-6 flex justify-between items-center text-white pointer-events-none">
             <span id="carousel-info" class="text-xs font-bold opacity-70"></span>
-            <button onclick="closeViewer()" class="text-5xl pointer-events-auto p-4">&times;</button>
+            <button onclick="closeViewer()" class="text-5xl pointer-events-auto p-4 cursor-pointer">&times;</button>
         </div>
         
-        <div class="relative w-full flex-1 flex items-center justify-center" onclick="event.stopPropagation()">
+        <div class="relative w-full flex-1 flex items-center justify-center cursor-default" onclick="event.stopPropagation()">
             <img id="carousel-img" src="" class="max-w-full max-h-[85vh] object-contain shadow-2xl transition-opacity duration-200">
-            <button onclick="moveCarousel(-1); event.stopPropagation()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 p-4 rounded-full text-white text-3xl">❮</button>
-            <button onclick="moveCarousel(1); event.stopPropagation()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 p-4 rounded-full text-white text-3xl">❯</button>
+            <button onclick="moveCarousel(-1); event.stopPropagation()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 p-4 rounded-full text-white text-3xl cursor-pointer">❮</button>
+            <button onclick="moveCarousel(1); event.stopPropagation()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 p-4 rounded-full text-white text-3xl cursor-pointer">❯</button>
         </div>
 
-        <div id="thumb-strip" class="no-scrollbar flex gap-2 overflow-x-auto p-6 w-full bg-black/40" onclick="event.stopPropagation()"></div>
+        <div id="thumb-strip" class="no-scrollbar flex gap-2 overflow-x-auto p-6 w-full bg-black/40 cursor-default" onclick="event.stopPropagation()"></div>
     </div>
 
     <script>
@@ -269,24 +272,28 @@
         let currentImgIndex = 0;
         let isGalleryLoaded = false;
 
+        // ORYGINALNE SEKRETY Z TWOJEGO KODU BEZ SKRÓTÓW
         const RECIPES = {
             clint: { 
                 name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, 
-                secret: 'Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy. Żyto nie płynie tak na boki.', 
-                target: 'Stabilność i mocny, octowy profil.', ratio: '1:2:2', 
-                desc: 'Żyto kocha gęstą konsystencję. Clint jest jak plastelina.', regMF: 40, regWF: 40 
+                secret: 'Ciasto jest jak mokra glina.<br>Nie wyrabiamy go, tylko dokładnie mieszamy.<br>Garnek wybacza mu wszystko, bo żyto nie "płynie" tak mocno na boki. ',
+                target: 'Stabilność i mocny, octowy profil.', ratio: '1:2:2',
+                desc: 'Żyto kocha gęstą konsystencję. Taka dawka wody sprawia, że Clint jest jak plastelina.',
+                regMF: 40, regWF: 40,
             },
             sylvester: { 
                 name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, 
-                secret: 'Przy 1850 otręby tną gluten. Wymaga przynajmniej 2-3 składań (stretch & fold) w 1h.', 
-                target: 'Szybka fermentacja i mleczno-orzechowy zapach.', ratio: '1:2:1.75', 
-                desc: 'Pszenica przy 1:1 staje się rzadka. Mniej wody zwalnia bakterie.', regMF: 40, regWF: 35 
+                secret: ' Przy 1850 otręby tną gluten. Jeśli dasz 340g wody (jak u Clinta), ciasto po nocy będzie zbyt luźne na garnek. 325g pozwoli utrzymać kształt kuli. <br><br>Wymaga przynajmniej 2-3 "składań" (stretch & fold) w ciągu pierwszej godziny od wymieszania.',
+                target: 'Szybka fermentacja i mleczno-orzechowy zapach.', ratio: '1:2:1.75',
+                desc: 'Pszenica przy 1:1 staje się rzadka. Dając mniej wody, zmuszasz bakterie do wolniejszej pracy.',
+                regMF: 40, regWF: 35,
             },
             hildegarda: { 
                 name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, 
-                secret: 'Orkisz pije szybko, ale traci napięcie. Hildegarda nie lubi agresywnego wyrabiania.', 
-                target: 'Delikatność i ochrona przed przekwaszeniem.', ratio: '1:2.25:2.25', 
-                desc: 'Orkisz fermentuje najszybciej. Więcej jedzenia wydłuża czas.', regMF: 45, regWF: 45 
+                secret: 'Orkisz 2000 pije wodę szybko, ale równie szybko "puchnie" i traci napięcie powierzchniowe. Niższa hydratacja (310g) to Twój bezpiecznik, dzięki któremu bochenek w garnku wystrzeli w górę, a nie rozleje się na boki.<br><br>Hildegarda nie lubi agresywnego wyrabiania. Tylko delikatne mieszanie do połączenia składników.',
+                target: 'Delikatność i ochrona przed przekwaszeniem.', ratio: '1:2.25:2.25',
+                desc: 'Orkisz fermentuje najszybciej. Dając herbaty więcej jedzenia, wydłużasz czas aktywności.',
+                regMF: 45, regWF: 45,
             }
         };
 
