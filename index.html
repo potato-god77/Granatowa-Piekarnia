@@ -192,9 +192,14 @@
 
     <div id="loader" class="loading-overlay"></div>
 
-    <header class="p-6 pt-10 text-center bg-white border-b">
+ <header style="position: sticky; top: 0; z-index: 50; background-color: var(--bg); border-bottom: 1px solid #efe3d8;">
+    <div class="max-w-md mx-auto py-4 text-center">
         <h1 class="serif text-3xl italic font-bold text-stone-800">Granatowa Piekarnia</h1>
-    </header>
+    </div>
+    <nav class="flex justify-around bg-white/80 backdrop-blur-md py-2 border-t border-b border-sand">
+        </nav>
+</header>   
+ 
 
     <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b flex justify-around shadow-sm overflow-x-auto no-scrollbar">
         <button onclick="st('starters', this)" class="nav-btn active px-4 py-4 text-[10px] uppercase font-black tracking-widest">Zakwasy</button>
