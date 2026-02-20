@@ -639,7 +639,6 @@ function renderAlbums() {
     const cont = document.getElementById('gal-cont');
     if (!cont) return;
 
-    // Jeśli dane się ładują, nie czyścimy loadera
     if (!isGalleryLoaded) return;
 
     const r = RECIPES[currentStarterKey];
@@ -650,32 +649,44 @@ function renderAlbums() {
     );
 
     if (filteredData.length === 0) {
-        cont.className = "block w-full text-center py-20";
-        cont.innerHTML = `<p class="text-stone-400 text-sm italic">Brak zdjęć dla: ${r.name}</p>`;
+        cont.style.display = "block";
+        cont.innerHTML = `<p style="text-align:center; color:#a8a29e; padding:50px; font-style:italic; font-family:sans-serif;">Brak zdjęć dla: ${r.name}</p>`;
         return;
     }
 
-    // Widok PC: Zmniejszamy liczbę kolumn do 2 lub 3, co drastycznie zwiększa rozmiar okładek (ok. 150%)
-    cont.className = "grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-12 mx-auto max-w-7xl px-4";
+    const isMobile = window.innerWidth < 768;
     
-    cont.innerHTML = filteredData.map((album, idx) => `
+    // Wymuszamy brak nadpisywania przez CSS
+    cont.className = ""; 
+    cont.style.display = "flex";
+    cont.style.flexWrap = "wrap";
+    cont.style.justifyContent = "center";
+    cont.style.gap = isMobile ? "12px" : "25px";
+    cont.style.padding = "20px 0";
+
+    cont.innerHTML = filteredData.map((album, idx) => {
+        // Ustawienie szerokości: na PC sztywne 200px, na telefonie połowa ekranu
+        const cardWidth = isMobile ? "calc(50% - 10px)" : "200px";
+        
+        return `
         <div onclick="openAlbumFiltered(${idx}, '${starterName}')" 
-             class="group relative w-full aspect-square rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer bg-stone-200">
+             style="position:relative; width:${cardWidth}; aspect-ratio:2/3; border-radius:12px; overflow:hidden; cursor:pointer; background:#292524; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2); flex-shrink:0;">
             
-            <img src="${album.cover}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+            <img src="${album.cover}" style="width:100%; height:100%; object-fit:cover; display:block;" loading="lazy">
             
-            <div class="absolute bottom-0 left-0 right-0 bg-stone-900/70 backdrop-blur-sm p-4 md:p-6 translate-y-0 transition-transform">
-                <div class="flex flex-col gap-1">
-                    <p class="text-white text-lg md:text-2xl font-black tracking-tight">
+            <div style="position:absolute; bottom:0; left:0; right:0; background:rgba(41, 37, 36, 0.85); backdrop-filter:blur(5px); -webkit-backdrop-filter:blur(5px); padding:12px; border-top:1px solid rgba(255,255,255,0.1);">
+                <div style="display:flex; flex-direction:column; gap:2px;">
+                    <p style="margin:0; font-family:sans-serif; font-size:16px; font-weight:900; color:#ffffff; line-height:1.2;">
                         ${album.date}
                     </p>
-                    <p class="text-stone-300 text-[10px] md:text-sm uppercase font-bold tracking-widest">
+                    <p style="margin:0; font-family:sans-serif; font-size:10px; font-weight:700; color:#d6d3d1; text-transform:uppercase; letter-spacing:0.5px; opacity:0.9;">
                         ${album.starter}
                     </p>
                 </div>
             </div>
         </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 function openAlbumFiltered(filteredIdx, starterName) {
