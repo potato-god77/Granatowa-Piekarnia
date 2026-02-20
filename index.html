@@ -431,7 +431,7 @@
         if (typeof renderAlbums === 'function') {
             renderAlbums();
         }
-    }, 50);
+    }
 }
     
     window.scrollTo(0,0); // Przewiń na górę przy zmianie
@@ -736,27 +736,42 @@ function renderAlbums() {
         btn.parentElement.classList.toggle('active'); 
     }
 
-    // --- INICJALIZACJA I SWIPE ---
+        // --- INICJALIZACJA ---
     document.addEventListener('DOMContentLoaded', () => {
+        // 1. Sprawdź dostęp
         if (localStorage.getItem('bakery_access') === 'granted') {
             document.getElementById('lock-screen').style.display = 'none';
+            
+            // 2. Pobierz dane w tle
             loadFromCloud();
+            fetchGallery(); // <--- URUCHAMIAMY POBIERANIE ZDJĘĆ
+            
+            // 3. Ustaw startowe składniki
             updateIngredients();
         }
 
-        let touchStartX = 0;
+        // 4. Obsługa Swipe w galerii
         const modal = document.getElementById('viewer-modal');
-        modal.addEventListener('touchstart', e => { 
-            touchStartX = e.changedTouches[0].screenX; 
-        }, { passive: true });
-        
-        modal.addEventListener('touchend', e => {
-            const touchEndX = e.changedTouches[0].screenX;
-            const swipeThreshold = 50;
-            if (touchEndX < touchStartX - swipeThreshold) moveCarousel(1);
-            if (touchEndX > touchStartX + swipeThreshold) moveCarousel(-1);
-        }, { passive: true });
+        if (modal) {
+            let touchStartX = 0;
+            modal.addEventListener('touchstart', e => { 
+                touchStartX = e.changedTouches[0].screenX; 
+            }, { passive: true });
+
+            modal.addEventListener('touchend', e => {
+                const touchEndX = e.changedTouches[0].screenX;
+                const swipeThreshold = 50;
+                if (touchEndX < touchStartX - swipeThreshold) moveCarousel(1);
+                if (touchEndX > touchStartX + swipeThreshold) moveCarousel(-1);
+            }, { passive: true });
+        }
     });
+
+    // Dodaj to na samym końcu, żeby mieć pewność, że galeria wystartuje nawet bez DOMContentLoaded
+    if (localStorage.getItem('bakery_access') === 'granted' && !isGalleryLoaded) {
+        fetchGallery();
+    }
+
 </script>
 </body>
 </html>
