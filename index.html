@@ -109,12 +109,25 @@
         width: 220px; 
         outline: none; 
     }
+/* Główny brąz dla tekstu w sekcjach (zamiast inherit) */
+.tab-content {
+    color: var(--primary);
+}
 
-    /* --- WYMUSZENIE KOLORÓW DLA TEKSTU (Fix dla czarnego tekstu) --- */
-    main section, 
-    .tab-content, 
-    h3, p {
-        color: inherit; /* Pozwala dziedziczyć var(--primary) z body */
+/* POMARAŃCZOWE GRAMATURY (Twoje p-wv, p-sv itd.) */
+#p-wv, #p-sv, #p-fv, #p-fv2, #p-slv {
+    color: #d97706 !important; /* amber-600 */
+    font-weight: 700;
+}
+
+/* WSKAZÓWKI (p-secret) */
+#p-secret {
+    color: #b45309 !important; /* amber-800 */
+    font-style: italic;
+    display: block;
+    margin-top: 4px;
+}
+    
     }
 
     /* Fix dla klas stone z Tailwind, które mogły stracić kolor */
