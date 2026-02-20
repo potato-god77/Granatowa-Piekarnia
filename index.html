@@ -592,8 +592,15 @@
         saveToCloud(k, new Date().toLocaleDateString('pl-PL')); 
     }
 
-    // --- GALERIA ---
-    async function fetchGallery() {
+   // ==========================================
+// --- SEKCJA GALERII I MODALA ---
+// ==========================================
+
+let allGalleryData = [];
+let currentAlbumPhotos = [];
+let currentImgIndex = 0;
+
+async function fetchGallery() {
     try {
         const res = await fetch(GALLERY_URL);
         const txt = await res.text();
@@ -607,29 +614,66 @@
             };
         }).filter(i => i.date);
         
-        renderAlbums(); // Wywołujemy rysowanie po pobraniu danych
-    } catch(e) { console.error("Błąd galerii:", e); }
+        renderAlbums(); // Rysujemy galerię po pobraniu danych
+    } catch(e) { 
+        console.error("Błąd ładowania galerii:", e); 
+    }
+}
 
-        }
+function renderAlbums() {
+    const cont = document.getElementById('gal-cont');
+    if (!cont) return;
 
-    function openAlbumFiltered(filteredIdx, starterName) {
-    // Znajdujemy album w pełnej bazie danych, żeby karuzela miała poprawne dane
+    // Grid: 2 kolumny na mobile, 3-4 na większych. mx-auto centruje cały blok.
+    cont.className = "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6 mx-auto max-w-screen-xl px-4 justify-items-center";
+
+    // Wyciągamy pierwsze słowo imienia zakwasu do filtrowania (np. "Clint")
+    const r = RECIPES[currentStarterKey];
+    const starterName = r.name.split(' ')[0].toLowerCase();
+
     const filteredData = allGalleryData.filter(album => 
-        album.starter.toLowerCase().trim() === starterName.toLowerCase().trim()
+        album.starter.toLowerCase().includes(starterName)
+    );
+
+    if (filteredData.length === 0) {
+        cont.innerHTML = `<div class="col-span-full text-center py-20 text-stone-400 text-sm italic">Brak zdjęć dla: ${r.name}</div>`;
+        return;
+    }
+
+    cont.innerHTML = filteredData.map((album, idx) => `
+        <div onclick="openAlbumFiltered(${idx}, '${starterName}')" 
+             class="group relative w-full aspect-square rounded-2xl overflow-hidden shadow-md active:scale-95 transition-all duration-300 cursor-pointer border border-stone-100 bg-stone-200">
+            
+            <img src="${album.cover}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy">
+            
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-90 transition-opacity"></div>
+            
+            <div class="absolute bottom-0 inset-x-0 p-3 text-white">
+                <p class="text-[8px] md:text-[10px] uppercase font-black tracking-widest text-amber-200/80 mb-0.5">${album.starter}</p>
+                <p class="text-xs md:text-base font-bold tracking-tight leading-tight">${album.date}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+function openAlbumFiltered(filteredIdx, starterName) {
+    const filteredData = allGalleryData.filter(album => 
+        album.starter.toLowerCase().includes(starterName.toLowerCase())
     );
     const album = filteredData[filteredIdx];
-    
-    // Teraz wywołujemy standardowe otwieranie, które już masz
-    // (Upewnij się, że Twoja funkcja openAlbum przyjmuje obiekt albumu lub indeks)
+    if (!album) return;
+
     currentImgIndex = 0;
     currentAlbumPhotos = album.photos;
     
+    // Generowanie slajdów - max-h-[80vh] zapobiega ucinaniu na telefonie
     document.getElementById('carousel-track').innerHTML = currentAlbumPhotos.map(url => `
-        <div class="carousel-slide min-w-full h-full flex items-center justify-center p-4">
-            <img src="${url}" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl">
+        <div class="carousel-slide min-w-full h-full flex items-center justify-center p-2 md:p-4">
+            <img src="${url}" class="max-w-full max-h-[80vh] md:max-h-full object-contain rounded-lg shadow-2xl">
         </div>
     `).join('');
     
+    // Generowanie paska miniatur
     document.getElementById('thumb-strip').innerHTML = currentAlbumPhotos.map((url, i) => `
         <img src="${url}" onclick="goToSlide(${i})" class="thumb-item ${i === 0 ? 'active' : ''} cursor-pointer">
     `).join('');
@@ -639,49 +683,35 @@
     updateCarouselPosition();
 }
 
-    function openAlbum(idx) {
-        currentImgIndex = 0;
-        const album = allGalleryData[idx];
-        currentAlbumPhotos = album.photos;
-        
-        document.getElementById('carousel-track').innerHTML = currentAlbumPhotos.map(url => `
-            <div class="carousel-slide min-w-full h-full flex items-center justify-center p-4">
-                <img src="${url}" class="max-w-full max-h-full object-contain rounded-lg shadow-2xl">
-            </div>
-        `).join('');
-        
-        document.getElementById('thumb-strip').innerHTML = currentAlbumPhotos.map((url, i) => `
-            <img src="${url}" onclick="goToSlide(${i})" class="thumb-item ${i === 0 ? 'active' : ''} cursor-pointer">
-        `).join('');
-        
-        document.getElementById('carousel-info').innerText = `${album.starter} • ${album.date}`;
-        document.getElementById('viewer-modal').style.display = 'flex';
-        updateCarouselPosition();
-    }
+function closeViewer() {
+    document.getElementById('viewer-modal').style.display = 'none';
+}
 
-    function closeViewer() {
-        document.getElementById('viewer-modal').style.display = 'none';
-    }
+function moveCarousel(dir) {
+    if (!currentAlbumPhotos || currentAlbumPhotos.length === 0) return;
+    currentImgIndex = (currentImgIndex + dir + currentAlbumPhotos.length) % currentAlbumPhotos.length;
+    updateCarouselPosition();
+}
 
-    function moveCarousel(dir) {
-        if (currentAlbumPhotos.length === 0) return;
-        currentImgIndex = (currentImgIndex + dir + currentAlbumPhotos.length) % currentAlbumPhotos.length;
-        updateCarouselPosition();
-    }
+function goToSlide(idx) {
+    currentImgIndex = idx;
+    updateCarouselPosition();
+}
 
-    function goToSlide(idx) {
-        currentImgIndex = idx;
-        updateCarouselPosition();
-    }
-
-    function updateCarouselPosition() {
-        document.getElementById('carousel-track').style.transform = `translateX(-${currentImgIndex * 100}%)`;
-        const thumbs = document.querySelectorAll('#thumb-strip .thumb-item');
-        thumbs.forEach((t, i) => {
-            t.classList.toggle('active', i === currentImgIndex);
-            if(i === currentImgIndex) t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-        });
-    }
+function updateCarouselPosition() {
+    const track = document.getElementById('carousel-track');
+    if (!track) return;
+    
+    track.style.transform = `translateX(-${currentImgIndex * 100}%)`;
+    
+    const thumbs = document.querySelectorAll('#thumb-strip .thumb-item');
+    thumbs.forEach((t, i) => {
+        t.classList.toggle('active', i === currentImgIndex);
+        if(i === currentImgIndex) {
+            t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+    });
+}
 
     // --- INTERFEJS ---
    function st(id, btn) {
