@@ -103,24 +103,6 @@
         width: 220px; 
         outline: none; 
     }
-    .loading-overlay { 
-        position: fixed; top: 0; left: 0; 
-        width: 100%; height: 3px; 
-        background: var(--accent); 
-        z-index: 101; 
-        transform: scaleX(0); 
-        transform-origin: left; 
-        transition: transform 0.5s; 
-    }
-    .loading-overlay.active { transform: scaleX(1); }
-
-    /* --- WYBÓR ZAKWASU (Startery) --- */
-    .starter-card { cursor: pointer; transition: transform 0.1s; }
-    .starter-card.selected { 
-        border: 2px solid var(--accent); 
-        background: #fffcf9; 
-    }
-    .brown-gradient { background: linear-gradient(135deg, #4a3728 0%, #634a38 100%); }
 
     /* --- MODAL PODGLĄDU --- */
     #viewer-modal { 
@@ -165,43 +147,36 @@
         object-fit: cover; 
     }
     .thumb-item.active { opacity: 1; border-color: white; }
-    .date-text-shadow { text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
 
     /* --- LAYOUT BREAKOUT (Klucz do siatki) --- */
     
-    /* 1. Ograniczamy szerokość tekstu dla wszystkich dzieci <main>, które nie są galerią */
-    main > *:not(#gal-cont):not(nav):not(header) {
-        max-width: 448px; /* Odpowiednik max-w-md */
+    /* 1. Ograniczamy szerokość wszystkich sekcji tekstowych w main */
+    main > section, 
+    main > div {
+        max-width: 448px;
         margin-left: auto;
         margin-right: auto;
         width: 100%;
         box-sizing: border-box;
     }
 
-    /* 2. Galeria może być szeroka (max-w-6xl), by pomieścić kafelki obok siebie */
-    #gal-cont {
-        width: 100%;
-        max-width: 1100px; /* Maksymalna szerokość siatki na PC */
-        margin: 40px auto;
+    /* 2. WYJĄTEK DLA GALERII - musi być szeroka i wyśrodkowana */
+    main > #gal-cont {
+        max-width: 1100px !important;
+        width: 100% !important;
+        display: grid !important;
+        margin: 40px auto !important;
         padding: 0 16px;
-        box-sizing: border-box;
     }
 
     /* --- DODATKI RWD --- */
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    @supports (padding: env(safe-area-inset-top)) {
-        #viewer-modal {
-            padding-top: env(safe-area-inset-top);
-            padding-bottom: env(safe-area-inset-bottom);
-        }
-    }
-
     @media (max-width: 640px) {
         .recipe-step { font-size: 0.85rem; }
         .thumb-item { width: 45px; height: 45px; }
-        #gal-cont { gap: 12px; padding: 10px; margin-top: 20px; }
+        main > #gal-cont { gap: 12px; padding: 10px; margin-top: 20px !important; }
     }
 </style>
 </head>
@@ -641,6 +616,7 @@ function renderAlbums() {
     const cont = document.getElementById('gal-cont');
     if (!cont) return;
 
+    // Nie renderuj, dopóki dane nie zostaną w pełni załadowane
     if (!isGalleryLoaded) return;
 
     const r = RECIPES[currentStarterKey];
@@ -651,15 +627,17 @@ function renderAlbums() {
     );
 
     if (filteredData.length === 0) {
-        cont.style.display = "block";
-        cont.innerHTML = `<p style="text-align:center; color:#a8a29e; padding:50px; font-style:italic;">Brak zdjęć dla: ${r.name}</p>`;
+        cont.style.setProperty('display', 'block', 'important');
+        cont.innerHTML = `<p style="text-align:center; color:#a8a29e; padding:50px; font-style:italic; font-family:sans-serif;">Brak zdjęć dla: ${r.name}</p>`;
         return;
     }
 
     const isMobile = window.innerWidth < 768;
     
-    // Ustawiamy siatkę - bez siłowego rozpychania strony
-    cont.style.display = "grid";
+    // Wymuszamy układ siatki (Grid)
+    cont.style.setProperty('display', 'grid', 'important');
+    
+    // Siatka: na PC min 200px na album, na Mobile 2 kolumny obok siebie
     cont.style.gridTemplateColumns = isMobile 
         ? "repeat(2, 1fr)" 
         : "repeat(auto-fit, 200px)";
@@ -673,7 +651,7 @@ function renderAlbums() {
             
             <img src="${album.cover}" style="width:100%; height:100%; object-fit:cover; display:block;" loading="lazy">
             
-            <div style="position:absolute; bottom:0; left:0; right:0; background:rgba(43, 39, 37, 0.9); padding:12px; border-top:1px solid rgba(255,255,255,0.05);">
+            <div style="position:absolute; bottom:0; left:0; right:0; background:rgba(43, 39, 37, 0.9); padding:12px; border-top:1px solid rgba(255,255,255,0.05); backdrop-filter:blur(4px);">
                 <div style="display:flex; flex-direction:column; gap:2px;">
                     <p style="margin:0; font-family:sans-serif; font-size:15px; font-weight:800; color:#ffffff; line-height:1.2;">
                         ${album.date}
