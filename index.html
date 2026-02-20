@@ -519,56 +519,55 @@
     }
 
    function updateIngredients() {
-        const r = RECIPES[currentStarterKey];
-        const q = currentQty;
+    const r = RECIPES[currentStarterKey];
+    const q = currentQty;
 
-        // 1. GÓRNY KALKULATOR
-        const ids = ['sv', 'wv', 'fv', 'slv'];
-        ids.forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.innerText = (r[id] * q) + 'g';
-        });
-        // Tu używamy innerHTML, żeby obsłużyć <br> w górnym kalkulatorze
-        const tips = document.getElementById('recipe-tips');
-        if (tips) tips.innerHTML = r.secret;
+    // 1. GÓRNY KALKULATOR
+    const ids = ['sv', 'wv', 'fv', 'slv'];
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = (r[id] * q) + 'g';
+    });
+    const tips = document.getElementById('recipe-tips');
+    if (tips) tips.innerHTML = r.secret;
 
-        // 2. LOGISTYKA SŁOIKA (Wiedza)
-        const logMap = {
-            'w-name': r.name, 'w-target': r.target, 'w-ratio': r.ratio, 
-            'w-desc': r.desc, 'w-sv': (r.sv * q) + 'g', 
-            'w-regMF': r.regMF + 'g', 'w-regWF': r.regWF + 'g'
-        };
-        for (let id in logMap) {
-            const el = document.getElementById(id);
-            if (el) el.innerText = logMap[id];
-        }
+    // 2. LOGISTYKA SŁOIKA
+    const logMap = {
+        'w-name': r.name, 
+        'w-target': r.target, 
+        'w-ratio': r.ratio, 
+        'w-desc': r.desc, 
+        'w-sv': (r.sv * q) + 'g', 
+        'w-regMF': r.regMF + 'g', 
+        'w-regWF': r.regWF + 'g'
+    };
+    for (let id in logMap) {
+        const el = document.getElementById(id);
+        if (el) el.innerText = logMap[id];
+    }
 
-        // 3. TWÓJ PRZEPIS CHLEBA (Wiedza)
-        const breadMap = {
-            'p-wv': (r.wv * q) + 'g', 
-            'p-sv': (r.sv * q) + 'g',
-            'p-fv': (r.fv * q) + 'g', 
-            'p-slv': (r.slv * q) + 'g'
-        };
+    // 3. TWÓJ PRZEPIS CHLEBA
+    const breadMap = {
+        'p-wv': (r.wv * q) + 'g', 
+        'p-sv': (r.sv * q) + 'g',
+        'p-fv': (r.fv * q) + 'g', 
+        'p-slv': (r.slv * q) + 'g'
+    };
+    for (let id in breadMap) {
+        const el = document.getElementById(id);
+        if (el) el.innerText = breadMap[id];
+    }
+
+    // POPRAWKA: Wskazówka musi być obsługiwana osobno, poza obiektem breadMap
+    const pSecret = document.getElementById('p-secret');
+    if (pSecret) pSecret.innerHTML = "Wskazówka: " + r.secret;
+
+    // 4. WYWOŁANIE DODATKOWYCH FUNKCJI
+    if (typeof calcTime === 'function') calcTime();
+    if (typeof renderAlbums === 'function') renderAlbums();
+}
         
-        // Pętla dla wag
-        for (let id in breadMap) {
-            const el = document.getElementById(id);
-            if (el) el.innerText = breadMap[id];
-        }
-
-        // Oddzielna obsługa wskazówki pod przepisem (obsługuje <br>)
-        const pSecret = document.getElementById('p-secret');
-        if (pSecret) pSecret.innerHTML = "Wskazówka: " + r.secret;
-
-        // Kontynuacja funkcji
-        if (typeof calcTime === 'function') calcTime();
-        if (typeof allGalleryData !== 'undefined' && allGalleryData.length > 0) {
-            if (typeof renderAlbums === 'function') renderAlbums();
-        }
-    } // Ta klamra zamyka całą funkcję updateIngredients
-
-    function calcTime() {
+        function calcTime() {
         const timeIn = document.getElementById('start-time').value;
         if(!timeIn) return;
         const [h,m] = timeIn.split(':').map(Number);
