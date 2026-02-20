@@ -435,8 +435,19 @@
     if (targetBtn) targetBtn.classList.add('active');
 
     // 4. Jeśli galeria - odśwież zdjęcia
-    if (tabId === 'galeria' && typeof renderAlbums === 'function') {
-        renderAlbums();
+   if (tabId === 'galeria') {
+    // Sprawdź czy mamy wybrany starter, jeśli nie - daj Clinta (Twoja nazwa!)
+    if (!window.currentStarter) window.currentStarter = 'clint'; 
+    
+    setTimeout(() => {
+        // Upewnij się czy funkcja u Ciebie to renderAlbums czy renderGallery
+        if (typeof renderGallery === 'function') {
+            renderGallery();
+        } else if (typeof renderAlbums === 'function') {
+            renderAlbums();
+        }
+    }, 50);
+}
     }
     
     window.scrollTo(0,0); // Przewiń na górę przy zmianie
