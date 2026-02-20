@@ -133,7 +133,7 @@
                 <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Mąka</span><b id="fv" class="text-2xl">---</b></div>
                 <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Sól</span><b id="slv" class="text-2xl">---</b></div>
             </div>
-            <div class="glass-card p-5 bg-white border-l-4 border-accent"><div id="recipe-tips" class="text-sm text-stone-700"></div></div>
+            <div class="glass-card p-5 bg-white border-l-4 border-accent"><div id="recipe-tips" class="text-sm text-stone-700" style="color: #4a3728;"></div></div>
             <div class="glass-card p-5 bg-[#f9f5f1]">
                 <div class="flex justify-between items-center mb-5">
                     <p class="text-[9px] uppercase font-bold text-stone-500">Mieszanie:</p>
@@ -192,7 +192,7 @@
                     <div class="recipe-step"> 
                         <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p> 
                         <p>Zrób zawiesinę: woda <span id="p-wv" class="font-bold text-stone-800"></span> (30°C) + aktywny zakwas <span id="p-sv" class="font-bold text-stone-800"></span>. Do tego dodaj <span id="p-fv" class="font-bold text-stone-800"></span> mąki i <span id="p-slv" class="font-bold text-stone-800"></span> soli. Wymieszaj, przykryj miskę i zostaw na noc na blacie w temperaturze pokojowej.</p> 
-                        <p id="p-secret" class="mt-2 text-xs italic font-medium"></p>
+                        <div id="p-secret" class="mt-2 text-xs italic font-medium"></div>
                     </div> 
                     <div class="recipe-step"> 
                         <p class="font-bold text-stone-800 italic">Rano (05:30 - 06:00)</p> 
@@ -203,37 +203,6 @@
                         <p>Nagrzej piec z garnkiem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę" by stało się spięte, po czym natnij ostrym nożem lub żyletką. Gdy piekarnik się już nagrzeje, piecz 30 min pod przykryciem, a następnie zdejmij pokrywkę i piecz kolejne 15 min bez niej.</p> 
                     </div> 
                 </div> 
-            </div>
-            <div class="accordion-item glass-card">
-                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
-                    <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Żurek na zlewkach</h3>
-                    <span class="plus-icon text-2xl">+</span>
-                </button>
-                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
-                    <div class="recipe-step">
-                        <p class="font-bold italic">Składniki (2-2.5L):</p>
-                        <ul class="list-disc ml-4 space-y-1 text-stone-600">
-                            <li>250-300g wędzonych żeberek</li>
-                            <li>150g wędzonego boczku</li>
-                            <li>2 marchewki, 1 pietruszka, kawałek selera</li>
-                            <li>1 cebula (opalona nad ogniem)</li>
-                            <li>3 liście laurowe, 5 ziaren ziela angielskiego</li>
-                            <li>2 litry zimnej wody</li>
-                        </ul>
-                    </div>
-                    <div class="recipe-step text-stone-600">
-                        <p class="font-bold italic text-stone-800">Krok 1: Wywar Mięsny</p>
-                        <p>Do garnka włóż żeberka, boczek, warzywa i przyprawy. Zalej zimną wodą. Gotuj pod przykryciem na minimalnym ogniu przez ok. 2 godziny, aż mięso będzie bardzo miękkie.</p>
-                    </div>
-                    <div class="recipe-step text-stone-600">
-                        <p class="font-bold italic text-stone-800">Krok 2: Zakwaszanie (Zlewki)</p>
-                        <p>Odlej szklankę gorącego wywaru i wymieszaj ją dokładnie z 400g zlewek ze słoika nr 3 (to zapewni brak grudek). Wlej zawiesinę do garnka, cały czas mieszając. Zagotuj.</p>
-                    </div>
-                    <div class="recipe-step text-stone-600">
-                        <p class="font-bold italic text-stone-800">Krok 3: Wykończenie</p>
-                        <p>Dodaj 2-3 ząbki przeciśniętego czosnku i 2 łyżki majeranku. Dopraw solą i pieprzem. Na koniec zabiel 100ml śmietanki 30%.</p>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -255,16 +224,12 @@
 
     <div id="viewer-modal" class="hidden fixed inset-0 bg-black flex flex-col items-center justify-center">
         <button onclick="closeViewer()" class="absolute top-6 right-6 w-14 h-14 bg-black/50 rounded-full text-white text-5xl flex items-center justify-center z-[9999999] leading-none transition-all active:scale-90">&times;</button>
-
         <span id="carousel-info" class="absolute top-8 left-6 text-white text-[9px] font-black opacity-60 z-[999999] pointer-events-none uppercase tracking-widest bg-black/40 px-3 py-1.5 rounded leading-relaxed text-left"></span>
-
         <div id="img-container" class="relative w-full flex-1 flex items-center justify-center cursor-pointer p-4" onclick="if(event.target === this) closeViewer()">
             <img id="carousel-img" src="" class="max-w-full max-h-[70vh] object-contain transition-opacity duration-200 cursor-default" onclick="event.stopPropagation()">
-
             <button onclick="moveCarousel(-1); event.stopPropagation()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 p-5 rounded-full text-white text-3xl z-[999999]">❮</button>
             <button onclick="moveCarousel(1); event.stopPropagation()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 p-5 rounded-full text-white text-3xl z-[999999]">❯</button>
         </div>
-
         <div id="thumb-strip" class="no-scrollbar flex gap-2 overflow-x-auto p-6 w-full bg-black border-t border-stone-900 z-[999999]"></div>
     </div>
 
@@ -340,7 +305,8 @@
         function sel(n) {
             currentStarterKey = n.toLowerCase();
             document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
-            document.getElementById('card-' + currentStarterKey).classList.add('selected');
+            const card = document.getElementById('card-' + currentStarterKey);
+            if(card) card.classList.add('selected');
             document.getElementById('quick-select').value = currentStarterKey;
             document.getElementById('curr-name').innerText = RECIPES[currentStarterKey].name;
             updateIngredients();
@@ -356,39 +322,49 @@
         function updateIngredients() {
             const r = RECIPES[currentStarterKey];
             const q = currentQty;
-            ['sv', 'wv', 'fv', 'slv'].forEach(id => { document.getElementById(id).innerText = (r[id] * q) + 'g'; });
-            document.getElementById('recipe-tips').innerHTML = `<b>Wskazówka:</b><br>${r.secret}`;
-            document.getElementById('w-name').innerText = r.name;
-            document.getElementById('w-target').innerText = r.target;
-            document.getElementById('w-ratio').innerText = r.ratio;
-            document.getElementById('w-desc').innerText = r.desc;
-            document.getElementById('w-sv').innerText = (r.sv * q) + 'g';
-            document.getElementById('w-regMF').innerText = r.regMF + 'g';
-            document.getElementById('w-regWF').innerText = r.regWF + 'g';
-            document.getElementById('p-wv').innerText = (r.wv * q) + 'g';
-            document.getElementById('p-sv').innerText = (r.sv * q) + 'g';
-            document.getElementById('p-fv').innerText = (r.fv * q) + 'g';
-            document.getElementById('p-slv').innerText = (r.slv * q) + 'g';
-            document.getElementById('p-secret').innerHTML = `<b>Wskazówka:</b><br>${r.secret}`;
+            if(!r) return;
+
+            const ids = { 'sv':'sv', 'wv':'wv', 'fv':'fv', 'slv':'slv', 'w-sv':'sv', 'p-wv':'wv', 'p-sv':'sv', 'p-fv':'fv', 'p-slv':'slv' };
+            for(let htmlId in ids) {
+                const el = document.getElementById(htmlId);
+                if(el) el.innerText = (r[ids[htmlId]] * q) + 'g';
+            }
+
+            const tips = document.getElementById('recipe-tips');
+            if(tips) tips.innerHTML = `<b>Wskazówka:</b><br>${r.secret}`;
+            
+            const sec = document.getElementById('p-secret');
+            if(sec) sec.innerHTML = `<b>Wskazówka:</b><br>${r.secret}`;
+
+            if(document.getElementById('w-name')) {
+                document.getElementById('w-name').innerText = r.name;
+                document.getElementById('w-target').innerText = r.target;
+                document.getElementById('w-ratio').innerText = r.ratio;
+                document.getElementById('w-desc').innerText = r.desc;
+                document.getElementById('w-regMF').innerText = r.regMF + 'g';
+                document.getElementById('w-regWF').innerText = r.regWF + 'g';
+            }
             calcTime();
         }
 
         function calcTime() {
-            const [h,m] = (document.getElementById('start-time').value || "22:00").split(':').map(Number);
+            const timeInput = document.getElementById('start-time');
+            const [h,m] = (timeInput ? timeInput.value : "22:00").split(':').map(Number);
             const add = (hrs, mns) => {
                 let t = h*60+m + hrs*60+mns;
                 return `${String(Math.floor(t/60)%24).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;
             };
-            document.getElementById('t-lodowka').innerText = add(7,30);
-            document.getElementById('t-formowanie').innerText = add(18,0);
-            document.getElementById('t-pieczenie').innerText = add(19,15);
+            if(document.getElementById('t-lodowka')) {
+                document.getElementById('t-lodowka').innerText = add(7,30);
+                document.getElementById('t-formowanie').innerText = add(18,0);
+                document.getElementById('t-pieczenie').innerText = add(19,15);
+            }
         }
 
         function markFed(k, e) { e.stopPropagation(); saveToCloud(k, new Date().toLocaleDateString('pl-PL')); }
         
         function manualDate(k, e) {
             e.stopPropagation();
-            const current = document.getElementById('feed-'+k).innerText;
             const input = document.createElement('input');
             input.type = 'date';
             input.style.position = 'fixed';
@@ -485,9 +461,14 @@
         document.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('bakery_access') === 'granted') {
                 document.getElementById('lock-screen').style.display = 'none';
-                loadFromCloud(); fetchGallery(); updateIngredients(); sel('clint');
-                const saved = sessionStorage.getItem('lastTab');
-                if (saved) switchTab(saved);
+                try {
+                    loadFromCloud(); 
+                    fetchGallery(); 
+                    updateIngredients(); 
+                    sel('clint');
+                    const saved = sessionStorage.getItem('lastTab');
+                    if (saved) switchTab(saved);
+                } catch(e) { console.error("Błąd inicjalizacji:", e); }
             }
         });
     </script>
