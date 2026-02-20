@@ -480,21 +480,29 @@
     async function loadFromCloud() {
     try {
         const res = await fetch(SCRIPT_URL + "?action=get");
-        const txt = await res.text(); // Najpierw pobieramy surowy tekst
-        
-        // Sprawdzamy, czy to w ogóle jest JSON (czy nie zaczyna się od < html)
-        if (txt.trim().startsWith('<')) {
-            console.error("Skrypt Google zwrócił HTML zamiast danych. Sprawdź uprawnienia 'Anyone' w Apps Script.");
+        const txt = await res.text(); // Pobieramy najpierw surowy tekst
+
+        // BEZPIECZNIK: Sprawdź, czy odpowiedź nie jest kodem HTML (stroną logowania)
+        if (txt.trim().startsWith('<!DOCTYPE') || txt.trim().startsWith('<html')) {
+            console.error("Błąd: Skrypt Google zwrócił HTML zamiast danych. Prawdopodobnie brak uprawnień 'Anyone' we wdrożeniu skryptu.");
             return;
         }
 
         const data = JSON.parse(txt);
         if (data.status === 'success') {
-            // ... Twoja logika przypisywania danych do pól ...
-            console.log("Dane załadowane pomyślnie");
+            const cloudData = data.data;
+            // Aktualizacja dat w bazie lokalnej RECIPES
+            for (let k in cloudData) {
+                if (RECIPES[k]) {
+                    RECIPES[k].lastFed = cloudData[k];
+                    const fedEl = document.getElementById('fed-' + k);
+                    if (fedEl) fedEl.innerText = cloudData[k];
+                }
+            }
+            console.log("Dane o karmieniu zsynchronizowane.");
         }
     } catch (e) {
-        console.error("Błąd loadFromCloud:", e);
+        console.error("Błąd podczas zasysania danych z chmury:", e);
     }
 }
 
