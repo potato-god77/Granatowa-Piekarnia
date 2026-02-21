@@ -42,9 +42,12 @@
         .pass-input { background: white; border: 2px solid var(--sand); border-radius: 15px; padding: 15px; text-align: center; font-size: 1.5rem; letter-spacing: 0.5rem; width: 220px; outline: none; }
 
         main > section, main > div { max-width: 448px; margin-left: auto; margin-right: auto; width: 100%; }
-        
-        .logout-btn { position: absolute; top: 1.4rem; right: 1rem; color: #d1d5db; cursor: pointer; padding: 4px; transition: all 0.2s; border-radius: 8px; }
+        #gal-cont { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 16px; }
+
+        .logout-btn { position: absolute; top: 1.4rem; right: 1rem; color: #d1d5db; cursor: pointer; padding: 4px; transition: all 0.2s; border-radius: 8px; z-index: 10; }
         .logout-btn:active { background: #f3f4f6; color: var(--accent); transform: scale(0.9); }
+
+        #viewer-modal { z-index: 99999; background: rgba(0,0,0,0.95); }
     </style>
 </head>
 <body class="pb-24">
@@ -53,7 +56,7 @@
         <div class="glass-card p-8 flex flex-col items-center">
             <p class="text-[10px] uppercase font-black tracking-widest text-stone-400 mb-4">Hasło dostępu</p>
             <input type="password" id="pass-field" class="pass-input" placeholder="••••" autofocus onkeydown="if(event.key==='Enter') checkPass()">
-            <button onclick="checkPass()" class="mt-6 w-full brown-gradient text-white px-8 py-3 rounded-xl font-bold">Otwórz</button>
+            <button onclick="checkPass()" class="mt-6 w-full brown-gradient text-white px-8 py-3 rounded-xl font-bold bg-stone-800">Otwórz</button>
         </div>
     </div>
 
@@ -84,7 +87,7 @@
 
     <main class="mx-auto p-4 space-y-6">
         <section id="zakwasy-section" class="tab-content active space-y-4">
-            <div id="card-clint" onclick="sel('clint')" class="starter-card glass-card p-5 flex flex-col gap-3">
+            <div id="card-clint" onclick="sel('clint')" class="starter-card glass-card p-5 flex flex-col gap-3 border-2">
                 <div class="flex justify-between items-center">
                     <div><h4 class="font-bold text-xl starter-title">Clint Yeastwood</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Żytni<br><br>• typ 2000</p></div>
                     <span class="text-3xl">🤠</span>
@@ -94,7 +97,7 @@
                     <button onclick="markFed('clint', event)" class="btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
                 </div>
             </div>
-            <div id="card-sylvester" onclick="sel('sylvester')" class="starter-card glass-card p-5 flex flex-col gap-3">
+            <div id="card-sylvester" onclick="sel('sylvester')" class="starter-card glass-card p-5 flex flex-col gap-3 border-2">
                 <div class="flex justify-between items-center">
                     <div><h4 class="font-bold text-xl starter-title">Sylvester Graham</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Pszenny Pełnoziarnisty<br><br>• typ 1850</p></div>
                     <span class="text-3xl">👨‍🌾</span>
@@ -104,7 +107,7 @@
                     <button onclick="markFed('sylvester', event)" class="btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
                 </div>
             </div>
-            <div id="card-hildegarda" onclick="sel('hildegarda')" class="starter-card glass-card p-5 flex flex-col gap-3">
+            <div id="card-hildegarda" onclick="sel('hildegarda')" class="starter-card glass-card p-5 flex flex-col gap-3 border-2">
                 <div class="flex justify-between items-center">
                     <div><h4 class="font-bold text-xl starter-title">Hildegarda z Bingen</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Orkiszowy<br><br>• typ 2000</p></div>
                     <span class="text-3xl">⛪</span>
@@ -221,7 +224,7 @@
                     </div>
                     <div class="recipe-step">
                         <p class="font-bold italic text-stone-700">Etap 3: Święta Porcja (Słoik 2)</p>
-                        <p>Wymieszaj starą bazę ze zrzutem. Wymierz z tego 20g ("Święta Porcja") i zostaw w słoiku nr 2. Resztę do słoika nr 3.</p>
+                        <p>Wymieszaj starą bazę ze zrzutem. Wymierz z tego 20g ("Święta Porcja") i zostaw w słoiku nr 2. Resztę do słoika nr 3 (zlewki).</p>
                     </div>
                     <div class="recipe-step">
                         <p class="font-bold italic text-stone-700">Etap 4: Regeneracja Matki</p>
@@ -229,6 +232,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
                     <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Żurek na zlewkach</h3>
@@ -237,11 +241,15 @@
                 <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
                     <div class="recipe-step text-stone-600">
                         <p class="font-bold italic text-stone-800">Krok 1: Wywar Mięsny</p>
-                        <p>Do garnka włóż żeberka, boczek, warzywa i przyprawy. Zalej zimną wodą. Gotuj pod przykryciem na minimalnym ogniu przez ok. 2 godziny.</p>
+                        <p>Do garnka włóż 400g wędzonych żeberek, 200g boczku wędzonego, 2 liście laurowe, 4 ziarna ziela angielskiego i 1 litr wody. Gotuj pod przykryciem na minimalnym ogniu przez ok. 2 godziny, aż mięso będzie odchodzić od kości.</p>
                     </div>
                     <div class="recipe-step text-stone-600">
                         <p class="font-bold italic text-stone-800">Krok 2: Zakwaszanie (Zlewki)</p>
-                        <p>Wymieszaj szklankę wywaru z 400g zlewek. Wlej do garnka, zagotuj.</p>
+                        <p>Wyjmij mięso, pokrój je w kostkę i wrzuć z powrotem. Wymieszaj szklankę wywaru z 400g zlewek ze słoika nr 3. Wlej zawiesinę do garnka, zagotuj ciągle mieszając (zlewki zagęszczają zupę). Dodaj 2 ząbki czosnku przeciśnięte przez praskę i 1 łyżkę majeranku.</p>
+                    </div>
+                    <div class="recipe-step text-stone-600">
+                        <p class="font-bold italic text-stone-800">Krok 3: Wykończenie</p>
+                        <p>Na koniec dodaj 100ml śmietanki 30% i dopraw solą oraz dużą ilością pieprzu. Podawaj z jajkiem na twardo i białą kiełbasą.</p>
                     </div>
                 </div>
             </div>
@@ -254,7 +262,18 @@
                 <button onclick="if(confirm('Reset?')) saveToCloud('zlewki', 0)" class="mt-4 text-[10px] uppercase font-bold text-stone-300">Resetuj zlewki</button>
             </div>
         </section>
+
+        <section id="galeria-section" class="tab-content">
+            <div id="gal-cont" class="min-h-[200px] flex items-center justify-center">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-stone-800"></div>
+            </div>
+        </section>
     </main>
+
+    <div id="viewer-modal" class="hidden fixed inset-0 flex flex-col items-center justify-center p-4">
+        <button onclick="closeViewer()" class="absolute top-8 right-8 text-white text-4xl font-light">&times;</button>
+        <img id="carousel-img" src="" class="max-w-full max-h-[85vh] object-contain shadow-2xl">
+    </div>
 
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxDTlTcVOKuNua9ZL29lL-HBS1BJpptJtZ5ee9m5JkDPMU1M6bMWVs7fHwi9ccyxhE/exec';
@@ -306,6 +325,7 @@
             document.getElementById(tabId + '-section').classList.add('active');
             document.getElementById('btn-' + tabId).classList.add('active');
             sessionStorage.setItem('lastTab', tabId);
+            if(tabId === 'galeria') loadGallery();
         }
 
         async function saveToCloud(key, value) {
@@ -326,6 +346,27 @@
             script.src = `${SCRIPT_URL}?action=get&callback=handleCloudData&t=${Date.now()}`;
             document.body.appendChild(script);
         }
+
+        async function loadGallery() {
+            const cont = document.getElementById('gal-cont');
+            try {
+                const r = await fetch(`${SCRIPT_URL}?action=getImages`);
+                const images = await r.json();
+                cont.innerHTML = images.map(img => `
+                    <div class="glass-card overflow-hidden" onclick="openViewer('${img.url}')">
+                        <img src="${img.url}" class="w-full h-40 object-cover">
+                        <div class="p-2 text-[8px] font-bold text-stone-400 uppercase text-center">${img.name}</div>
+                    </div>
+                `).join('');
+            } catch(e) { cont.innerHTML = '<p class="text-stone-400 col-span-2 text-center">Błąd galerii</p>'; }
+        }
+
+        function openViewer(url) {
+            document.getElementById('carousel-img').src = url;
+            document.getElementById('viewer-modal').classList.remove('hidden');
+        }
+
+        function closeViewer() { document.getElementById('viewer-modal').classList.add('hidden'); }
 
         function sel(n) {
             currentStarterKey = n.toLowerCase();
@@ -378,9 +419,8 @@
 
         function markFed(k, e) { 
             e.stopPropagation(); 
-            const btn = e.currentTarget;
-            btn.classList.add('fed-success');
-            btn.innerText = "Nakarmiono";
+            e.currentTarget.classList.add('fed-success');
+            e.currentTarget.innerText = "Nakarmiono";
             saveToCloud(k, new Date().toLocaleDateString('pl-PL')); 
         }
 
@@ -388,14 +428,12 @@
             e.stopPropagation();
             const input = document.createElement('input');
             input.type = 'date';
-            input.style.position = 'fixed';
-            input.style.opacity = '0';
-            document.body.appendChild(input);
-            input.showPicker();
             input.onchange = () => {
                 saveToCloud(k, new Date(input.value).toLocaleDateString('pl-PL'));
                 document.body.removeChild(input);
             };
+            document.body.appendChild(input);
+            input.showPicker();
         }
 
         function toggleAccordion(btn) { btn.parentElement.classList.toggle('active'); }
