@@ -42,7 +42,10 @@
         .pass-input { background: white; border: 2px solid var(--sand); border-radius: 15px; padding: 15px; text-align: center; font-size: 1.5rem; letter-spacing: 0.5rem; width: 220px; outline: none; }
 
         main > section, main > div { max-width: 448px; margin-left: auto; margin-right: auto; width: 100%; }
-        #gal-cont { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 16px; }
+        
+        /* Twoja stylizacja galerii */
+        #gal-cont { padding: 16px; }
+        .album-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
 
         .logout-btn { position: absolute; top: 1.4rem; right: 1rem; color: #d1d5db; cursor: pointer; padding: 4px; transition: all 0.2s; border-radius: 8px; z-index: 10; }
         .logout-btn:active { background: #f3f4f6; color: var(--accent); transform: scale(0.9); }
@@ -134,7 +137,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
                     <h3 class="serif text-lg font-bold italic">Składniki</h3>
@@ -147,7 +149,6 @@
                     <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Sól</span><b id="slv" class="text-2xl">---</b></div>
                 </div>
             </div>
-
             <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
                     <h3 class="serif text-lg font-bold italic">Przepis</h3>
@@ -168,7 +169,6 @@
                     </div> 
                 </div>
             </div>
-
             <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
                     <h3 class="serif text-lg font-bold italic">Wskazówki</h3>
@@ -176,27 +176,6 @@
                 </button>
                 <div class="accordion-content p-6 pt-0 border-t text-sm text-stone-600">
                     <p id="recipe-tips" class="italic leading-relaxed"></p>
-                </div>
-            </div>
-
-            <div class="accordion-item glass-card">
-                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
-                    <h3 class="serif text-lg font-bold italic">Kalkulator czasu</h3>
-                    <span class="plus-icon text-xl">+</span>
-                </button>
-                <div class="accordion-content p-5 pt-0 bg-[#f9f5f1]">
-                    <div class="flex justify-between items-center mb-5">
-                        <p class="text-[9px] uppercase font-bold text-stone-500">Mieszanie:</p>
-                        <input type="time" id="start-time" value="22:00" onchange="calcTime()" class="bg-white border rounded-lg px-3 py-1 text-sm font-semibold">
-                    </div>
-                    <div class="space-y-4 relative border-l ml-4 pl-6">
-                        <div><p class="text-[9px] uppercase font-medium text-stone-400">Do lodówki</p><p id="t-lodowka" class="text-xl font-bold">05:30</p></div>
-                        <div><p class="text-[9px] uppercase font-medium text-stone-400">Formowanie</p><p id="t-formowanie" class="text-xl font-bold">16:00</p></div>
-                        <div class="bg-white p-4 rounded-xl border text-center -ml-1">
-                            <p class="text-[9px] uppercase font-bold text-stone-500">Pieczenie (235°C)</p>
-                            <p id="t-pieczenie" class="text-3xl font-black text-[#4a3728]">17:15</p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -252,8 +231,8 @@
         </section>
 
         <section id="galeria-section" class="tab-content">
-            <div id="gal-cont">
-                <div class="col-span-2 text-center py-10 text-stone-400">Ładowanie zdjęć...</div>
+            <div id="gal-cont" class="space-y-8">
+                <div class="text-center py-10 text-stone-400">Ładowanie albumów...</div>
             </div>
         </section>
     </main>
@@ -306,21 +285,36 @@
             document.body.appendChild(script);
         }
 
-        function loadGallery() {
-            window.handleGallery = function(data) {
-                const cont = document.getElementById('gal-cont');
+        // TWOJA ORYGINALNA FUNKCJA GALERII I ALBUMÓW
+        async function loadGallery() {
+            const cont = document.getElementById('gal-cont');
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=getImages`);
+                const data = await response.json();
+                
                 if (data.status === 'success') {
-                    cont.innerHTML = data.images.map(img => `
-                        <div class="glass-card overflow-hidden" onclick="openViewer('${img.url}')">
-                            <img src="${img.url}" class="w-full h-40 object-cover">
-                            <div class="p-2 text-[8px] font-bold text-stone-400 uppercase text-center">${img.name}</div>
-                        </div>
-                    `).join('');
+                    let html = '';
+                    for (const albumName in data.albums) {
+                        html += `
+                            <div class="space-y-4">
+                                <h3 class="serif text-xl italic font-bold border-b border-sand pb-2 ml-1">${albumName}</h3>
+                                <div class="album-grid">
+                                    ${data.albums[albumName].map(img => `
+                                        <div class="glass-card overflow-hidden" onclick="openViewer('${img.url}')">
+                                            <img src="${img.url}" class="w-full h-40 object-cover bg-stone-100" loading="lazy">
+                                            <div class="p-2 text-[8px] font-bold text-stone-400 uppercase text-center">${img.name}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }
+                    cont.innerHTML = html || '<p class="text-center text-stone-400">Brak zdjęć w albumach</p>';
                 }
-            };
-            const script = document.createElement('script');
-            script.src = `${SCRIPT_URL}?action=getImages&callback=handleGallery&t=${Date.now()}`;
-            document.body.appendChild(script);
+            } catch (e) {
+                console.error('Błąd galerii:', e);
+                cont.innerHTML = '<p class="text-stone-400 text-center py-10">Błąd połączenia z galerią</p>';
+            }
         }
 
         function openViewer(url) { document.getElementById('carousel-img').src = url; document.getElementById('viewer-modal').classList.remove('hidden'); }
