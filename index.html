@@ -51,6 +51,10 @@
 
         #viewer-modal { z-index: 999999 !important; }
         .date-clickable { cursor: pointer; border: 1px solid #e5e7eb; padding: 2px 8px; border-radius: 6px; background: white; display: inline-block; }
+        
+        /* Styl ikonki wylogowania */
+        .logout-btn { position: absolute; top: 1.25rem; right: 1.25rem; color: #a89284; cursor: pointer; padding: 5px; transition: color 0.2s; }
+        .logout-btn:hover { color: var(--accent); }
     </style>
 </head>
 <body class="pb-24">
@@ -64,14 +68,17 @@
     </div>
 
     <header style="position: sticky; top: 0; z-index: 1000; background-color: var(--bg); border-bottom: 1px solid #efe3d8;">
-        <div class="max-w-md mx-auto py-4 text-center">
+        <div class="max-w-md mx-auto py-4 text-center relative">
             <h1 class="serif text-3xl italic" style="margin: 0;">Granatowa Piekarnia</h1>
+            <div onclick="logout()" class="logout-btn" title="Wyloguj">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            </div>
         </div>
         <nav class="flex justify-around bg-white/80 backdrop-blur-md py-2 border-t border-b border-sand no-scrollbar" style="overflow-x: auto; white-space: nowrap;">
             <div id="btn-zakwasy" class="nav-btn px-4 py-2 text-sm font-bold active" onclick="switchTab('zakwasy')">ZAKWASY</div>
             <div id="btn-pieczenie" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('pieczenie')">PIECZENIE</div>
             <div id="btn-wiedza" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('wiedza')">WIEDZA</div>
-            <div id="btn-magazyn" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('magazyn')">MAGAZYN</div>
+            <div id="btn-archiwum" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('archiwum')">ARCHIWUM</div>
             <div id="btn-galeria" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('galeria')">GALERIA</div>
         </nav>
     </header>
@@ -262,13 +269,12 @@
             </div>
         </section>
 
-        <section id="magazyn-section" class="tab-content space-y-5">
+        <section id="archiwum-section" class="tab-content space-y-5">
             <div class="glass-card p-6 text-center">
                 <h4 class="serif text-xl mb-4">Słoik 3: Zlewki 🥣</h4>
                 <input type="number" id="zw" value="0" onblur="saveToCloud('zlewki', this.value)" class="w-full bg-stone-50 border-2 rounded-3xl p-6 font-black text-4xl text-center outline-none">
                 <button onclick="if(confirm('Reset?')) saveToCloud('zlewki', 0)" class="mt-4 text-[10px] uppercase font-bold text-stone-300">Resetuj zlewki</button>
             </div>
-            <button onclick="if(confirm('Wylogować?')) {localStorage.removeItem('bakery_access'); location.reload();}" class="w-full text-[9px] font-bold text-stone-300 uppercase">Wyloguj urządzenie</button>
         </section>
 
         <section id="galeria-section" class="tab-content pt-4">
@@ -327,6 +333,13 @@
                 localStorage.setItem('bakery_access', 'granted');
                 location.reload();
             } else { alert("Błędne hasło"); }
+        }
+
+        function logout() {
+            if(confirm('Wylogować urządzenie?')) {
+                localStorage.removeItem('bakery_access');
+                location.reload();
+            }
         }
 
         function switchTab(tabId) {
@@ -397,9 +410,6 @@
                 }
             });
 
-            const tips = document.getElementById('recipe-tips');
-            if(tips) tips.innerHTML = r.secret;
-            
             const sec = document.getElementById('p-secret');
             if(sec) sec.innerHTML = `<b>Wskazówka:</b><br>${r.secret}`;
 
@@ -539,7 +549,11 @@
                     fetchGallery(); 
                     sel('clint');
                     const saved = sessionStorage.getItem('lastTab');
-                    if (saved) switchTab(saved);
+                    if (saved) {
+                        // Obsługa zmiany nazwy Magazyn -> Archiwum przy ładowaniu starego tabu
+                        const tabToLoad = saved === 'magazyn' ? 'archiwum' : saved;
+                        switchTab(tabToLoad);
+                    }
                 } catch(e) { console.error("Inicjalizacja:", e); }
             }
         });
