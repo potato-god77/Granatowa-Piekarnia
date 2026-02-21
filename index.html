@@ -37,8 +37,7 @@
         .recipe-step { position: relative; padding-left: 1.2rem; margin-bottom: 0.8rem; border-left: 2px solid var(--accent); margin-left: 0.4rem; font-size: 0.9rem; line-height: 1.5; color: #57534e; }
 
         #w-sv, #w-regMF, #w-regWF, #p-wv, #p-sv, #p-fv, #p-slv { color: var(--amber-gold) !important; font-weight: 800; }
-        #p-secret { color: var(--accent) !important; font-style: italic; font-weight: 600; }
-
+        
         #lock-screen { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .pass-input { background: white; border: 2px solid var(--sand); border-radius: 15px; padding: 15px; text-align: center; font-size: 1.5rem; letter-spacing: 0.5rem; width: 220px; outline: none; }
 
@@ -52,7 +51,6 @@
         #viewer-modal { z-index: 999999 !important; }
         .date-clickable { cursor: pointer; border: 1px solid #e5e7eb; padding: 2px 8px; border-radius: 6px; background: white; display: inline-block; }
         
-        /* Styl ikonki wylogowania */
         .logout-btn { position: absolute; top: 1.25rem; right: 1.25rem; color: #a89284; cursor: pointer; padding: 5px; transition: color 0.2s; }
         .logout-btn:hover { color: var(--accent); }
     </style>
@@ -169,7 +167,6 @@
                     <div class="recipe-step"> 
                         <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p> 
                         <p>Zrób zawiesinę: woda <span id="p-wv" class="font-bold text-stone-800"></span> (30°C) + aktywny zakwas <span id="p-sv" class="font-bold text-stone-800"></span>. Do tego dodaj <span id="p-fv" class="font-bold text-stone-800"></span> mąki i <span id="p-slv" class="font-bold text-stone-800"></span> soli. Wymieszaj, przykryj miskę i zostaw na noc na blacie w temperaturze pokojowej.</p> 
-                        <div id="p-secret" class="mt-2 text-xs italic font-medium"></div>
                     </div> 
                     <div class="recipe-step"> 
                         <p class="font-bold text-stone-800 italic">Rano (05:30 - 06:00)</p> 
@@ -179,6 +176,16 @@
                         <p class="font-bold text-stone-800 italic">Pieczenie (od 16:00)</p> 
                         <p>Nagrzej piec z garnkiem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę" by stało się spięte, po czym natnij ostrym nożem lub żyletką. Gdy piekarnik się już nagrzeje, piecz 30 min pod przykryciem, a następnie zdejmij pokrywkę i piecz kolejne 15 min bez niej.</p> 
                     </div> 
+                </div>
+            </div>
+
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+                    <h3 class="serif text-lg font-bold italic">Wskazówki</h3>
+                    <span class="plus-icon text-xl">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t text-sm text-stone-600">
+                    <p id="recipe-tips" class="italic leading-relaxed"></p>
                 </div>
             </div>
 
@@ -235,35 +242,19 @@
                     </div>
                 </div>
             </div>
-
             <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
                     <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Żurek na zlewkach</h3>
                     <span class="plus-icon text-2xl">+</span>
                 </button>
                 <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
-                    <div class="recipe-step">
-                        <p class="font-bold italic">Składniki (2-2.5L):</p>
-                        <ul class="list-disc ml-4 space-y-1 text-stone-600">
-                            <li>250-300g wędzonych żeberek</li>
-                            <li>150g wędzonego boczku</li>
-                            <li>2 marchewki, 1 pietruszka, kawałek selera</li>
-                            <li>1 cebula (opalona nad ogniem)</li>
-                            <li>3 liście laurowe, 5 ziaren ziela angielskiego</li>
-                            <li>2 litry zimnej wody</li>
-                        </ul>
-                    </div>
                     <div class="recipe-step text-stone-600">
                         <p class="font-bold italic text-stone-800">Krok 1: Wywar Mięsny</p>
-                        <p>Do garnka włóż żeberka, boczek, warzywa i przyprawy. Zalej zimną wodą. Gotuj pod przykryciem na minimalnym ogniu przez ok. 2 godziny, aż mięso będzie bardzo miękkie.</p>
+                        <p>Do garnka włóż żeberka, boczek, warzywa i przyprawy. Zalej zimną wodą. Gotuj pod przykryciem na minimalnym ogniu przez ok. 2 godziny.</p>
                     </div>
                     <div class="recipe-step text-stone-600">
                         <p class="font-bold italic text-stone-800">Krok 2: Zakwaszanie (Zlewki)</p>
-                        <p>Odlej szklankę gorącego wywaru i wymieszaj ją dokładnie z 400g zlewek ze słoika nr 3. Wlej zawiesinę do garnka, cały czas mieszając. Zagotuj.</p>
-                    </div>
-                    <div class="recipe-step text-stone-600">
-                        <p class="font-bold italic text-stone-800">Krok 3: Wykończenie</p>
-                        <p>Dodaj 2-3 ząbki przeciśniętego czosnku i 2 łyżki majeranku. Dopraw solą i pieprzem. Na koniec zabiel 100ml śmietanki 30%.</p>
+                        <p>Wymieszaj szklankę wywaru z 400g zlewek. Wlej do garnka, zagotuj.</p>
                     </div>
                 </div>
             </div>
@@ -286,13 +277,9 @@
 
     <div id="viewer-modal" class="hidden fixed inset-0 bg-black flex flex-col items-center justify-center">
         <button onclick="closeViewer()" class="absolute top-6 right-6 w-14 h-14 bg-black/50 rounded-full text-white text-5xl flex items-center justify-center z-[9999999] leading-none transition-all active:scale-90">&times;</button>
-        <span id="carousel-info" class="absolute top-8 left-6 text-white text-[9px] font-black opacity-60 z-[999999] pointer-events-none uppercase tracking-widest bg-black/40 px-3 py-1.5 rounded leading-relaxed text-left"></span>
-        <div id="img-container" class="relative w-full flex-1 flex items-center justify-center cursor-pointer p-4" onclick="if(event.target === this) closeViewer()">
-            <img id="carousel-img" src="" class="max-w-full max-h-[70vh] object-contain transition-opacity duration-200 cursor-default" onclick="event.stopPropagation()">
-            <button onclick="moveCarousel(-1); event.stopPropagation()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 p-5 rounded-full text-white text-3xl z-[999999]">❮</button>
-            <button onclick="moveCarousel(1); event.stopPropagation()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 p-5 rounded-full text-white text-3xl z-[999999]">❯</button>
+        <div id="img-container" class="relative w-full flex-1 flex items-center justify-center p-4">
+            <img id="carousel-img" src="" class="max-w-full max-h-[70vh] object-contain">
         </div>
-        <div id="thumb-strip" class="no-scrollbar flex gap-2 overflow-x-auto p-6 w-full bg-black border-t border-stone-900 z-[999999]"></div>
     </div>
 
     <script>
@@ -301,28 +288,26 @@
         let currentStarterKey = 'clint';
         let currentQty = 1;
         let allGalleryData = [];
-        let currentAlbumPhotos = [];
-        let currentImgIndex = 0;
         let isGalleryLoaded = false;
 
         const RECIPES = {
             clint: { 
                 name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, 
-                secret: 'Ciasto jest jak mokra glina.<br>Nie wyrabiamy go, tylko dokładnie mieszamy.<br>Garnek wybacza mu wszystko, bo żyto nie "płynie" tak mocno na boki. ',
+                secret: 'Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy. Garnek wybacza mu wszystko, bo żyto nie "płynie" tak mocno na boki.',
                 target: 'Stabilność i mocny, octowy profil.', ratio: '1:2:2',
                 desc: 'Żyto kocha gęstą konsystencję. Taka dawka wody sprawia, że Clint jest jak plastelina.',
                 regMF: 40, regWF: 40,
             },
             sylvester: { 
                 name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, 
-                secret: 'Przy 1850 otręby tną gluten. Jeśli dasz 340g wody (jak u Clinta), ciasto po nocy będzie zbyt luźne na garnek. 325g pozwoli utrzymać kształt kuli.<br><br>Wymaga przynajmniej 2-3 "składań" (stretch & fold) w ciągu pierwszej godziny od wymieszania.',
+                secret: 'Przy 1850 otręby tną gluten. Wymaga przynajmniej 2-3 "składań" (stretch & fold) w ciągu pierwszej godziny od wymieszania.',
                 target: 'Szybka fermentacja i mleczno-orzechowy zapach.', ratio: '1:2:1.75',
                 desc: 'Pszenica przy 1:1 staje się rzadka. Dając mniej wody, zmuszasz bakterie do wolniejszej pracy.',
                 regMF: 40, regWF: 35,
             },
             hildegarda: { 
                 name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, 
-                secret: 'Orkisz 2000 pije wodę szybko, ale równie szybko "puchnie" i traci napięcie powierzchniowe. Niższa hydratacja (310g) to Twój bezpiecznik, dzięki któremu bochenek w garnku wystrzeli w górę, a nie rozleje się na boki.<br><br>Hildegarda nie lubi agresywnego wyrabiania. Tylko delikatne mieszanie do połączenia składników.',
+                secret: 'Orkisz 2000 pije wodę szybko, ale równie szybko "puchnie". Hildegarda nie lubi agresywnego wyrabiania.',
                 target: 'Delikatność i ochrona przed przekwaszeniem.', ratio: '1:2.25:2.25',
                 regMF: 45, regWF: 45,
             }
@@ -351,7 +336,6 @@
             if(btn) btn.classList.add('active');
             if (tabId === 'galeria') renderAlbums();
             sessionStorage.setItem('lastTab', tabId);
-            window.scrollTo(0,0);
         }
 
         async function saveToCloud(key, value) {
@@ -364,10 +348,7 @@
                     for (let k in data.data) {
                         const el = document.getElementById('feed-' + k);
                         if (el) el.innerText = data.data[k] || "---";
-                        if (k === 'zlewki') {
-                            const zwInput = document.getElementById('zw');
-                            if(zwInput) zwInput.value = data.data[k];
-                        }
+                        if (k === 'zlewki') { document.getElementById('zw').value = data.data[k]; }
                     }
                 }
             };
@@ -381,38 +362,28 @@
             document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
             const card = document.getElementById('card-' + currentStarterKey);
             if(card) card.classList.add('selected');
-            const select = document.getElementById('quick-select');
-            if(select) select.value = currentStarterKey;
-            const title = document.getElementById('curr-name');
-            if(title) title.innerText = RECIPES[currentStarterKey].name;
+            document.getElementById('quick-select').value = currentStarterKey;
+            document.getElementById('curr-name').innerText = RECIPES[currentStarterKey].name;
             updateIngredients();
-            if (isGalleryLoaded) renderAlbums();
         }
 
         function changeQty(delta) {
             currentQty = Math.max(1, currentQty + delta);
-            const qtyDisp = document.getElementById('display-qty');
-            if(qtyDisp) qtyDisp.innerText = currentQty;
+            document.getElementById('display-qty').innerText = currentQty;
             updateIngredients();
         }
 
         function updateIngredients() {
             const r = RECIPES[currentStarterKey];
             const q = currentQty;
-            if(!r) return;
-
-            const ids = ['sv', 'wv', 'fv', 'slv', 'w-sv', 'p-wv', 'p-sv', 'p-fv', 'p-slv'];
-            ids.forEach(id => {
+            ['sv', 'wv', 'fv', 'slv', 'w-sv', 'p-wv', 'p-sv', 'p-fv', 'p-slv'].forEach(id => {
                 const el = document.getElementById(id);
                 if(el) {
                     const key = id.includes('-') ? id.split('-')[1] : id;
                     el.innerText = (r[key] * q) + 'g';
                 }
             });
-
-            const sec = document.getElementById('p-secret');
-            if(sec) sec.innerHTML = `<b>Wskazówka:</b><br>${r.secret}`;
-
+            document.getElementById('recipe-tips').innerText = r.secret;
             if(document.getElementById('w-name')) {
                 document.getElementById('w-name').innerText = r.name;
                 document.getElementById('w-target').innerText = r.target;
@@ -431,11 +402,9 @@
                 let t = h*60+m + hrs*60+mns;
                 return `${String(Math.floor(t/60)%24).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;
             };
-            if(document.getElementById('t-lodowka')) {
-                document.getElementById('t-lodowka').innerText = add(7,30);
-                document.getElementById('t-formowanie').innerText = add(18,0);
-                document.getElementById('t-pieczenie').innerText = add(19,15);
-            }
+            document.getElementById('t-lodowka').innerText = add(7,30);
+            document.getElementById('t-formowanie').innerText = add(18,0);
+            document.getElementById('t-pieczenie').innerText = add(19,15);
         }
 
         function markFed(k, e) { 
@@ -445,7 +414,7 @@
             btn.innerText = "Nakarmiono";
             saveToCloud(k, new Date().toLocaleDateString('pl-PL')); 
         }
-        
+
         function manualDate(k, e) {
             e.stopPropagation();
             const input = document.createElement('input');
@@ -455,106 +424,20 @@
             document.body.appendChild(input);
             input.showPicker();
             input.onchange = () => {
-                const val = input.value ? new Date(input.value).toLocaleDateString('pl-PL') : "---";
-                saveToCloud(k, val);
+                saveToCloud(k, new Date(input.value).toLocaleDateString('pl-PL'));
                 document.body.removeChild(input);
             };
-            input.onblur = () => { if(document.body.contains(input)) document.body.removeChild(input); };
         }
 
         function toggleAccordion(btn) { btn.parentElement.classList.toggle('active'); }
 
-        function fetchGallery() {
-            window.handleGalleryData = function(res) {
-                if (res.status === 'success') { allGalleryData = res.data; isGalleryLoaded = true; renderAlbums(); }
-            };
-            const script = document.createElement('script');
-            script.src = `${SCRIPT_URL}?action=getGallery&callback=handleGalleryData&t=${Date.now()}`;
-            document.body.appendChild(script);
-        }
-
-        function renderAlbums() {
-            const cont = document.getElementById('gal-cont');
-            if (!cont || !isGalleryLoaded) return;
-            const sn = RECIPES[currentStarterKey].name.split(' ')[0].toLowerCase();
-            const f = allGalleryData.filter(a => a.starter && a.starter.toLowerCase().includes(sn));
-            if (f.length === 0) {
-                cont.style.display = 'block';
-                cont.innerHTML = `<p class="p-10 text-stone-400 italic text-center">Brak zdjęć dla: ${sn}</p>`;
-                return;
-            }
-            cont.style.display = 'grid';
-            cont.style.gridTemplateColumns = 'repeat(2, 1fr)';
-            cont.style.gap = '16px';
-            cont.innerHTML = f.map((a, i) => `
-                <div onclick="openAlbumFiltered(${i}, '${sn}')" class="relative aspect-[3/4] rounded-xl overflow-hidden shadow-lg bg-stone-800">
-                    <img src="${a.cover}" class="w-full h-full object-cover">
-                    <div class="absolute bottom-0 inset-x-0 p-3 bg-black/60 backdrop-blur-sm text-white text-[10px]">
-                        <b>${a.date}</b><br>${a.starter}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function openAlbumFiltered(idx, name) {
-            const filtered = allGalleryData.filter(a => a.starter && a.starter.toLowerCase().includes(name));
-            const album = filtered[idx];
-            if (!album) return;
-            currentAlbumPhotos = album.photos;
-            currentImgIndex = 0;
-            const thumbStrip = document.getElementById('thumb-strip');
-            thumbStrip.innerHTML = currentAlbumPhotos.map((url, i) => `
-                <img src="${url}" onclick="jumpToImage(${i}); event.stopPropagation()" class="h-16 w-12 object-cover rounded cursor-pointer flex-shrink-0 border-2 border-transparent opacity-50 transition-all">
-            `).join('');
-            document.getElementById('carousel-info').innerHTML = `${album.date}<br>${album.starter}`;
-            document.getElementById('viewer-modal').classList.remove('hidden');
-            document.getElementById('viewer-modal').classList.add('flex');
-            updateCarouselUI();
-        }
-
-        function moveCarousel(dir) {
-            currentImgIndex = (currentImgIndex + dir + currentAlbumPhotos.length) % currentAlbumPhotos.length;
-            updateCarouselUI();
-        }
-
-        function jumpToImage(i) { currentImgIndex = i; updateCarouselUI(); }
-
-        function updateCarouselUI() {
-            const img = document.getElementById('carousel-img');
-            img.style.opacity = '0';
-            setTimeout(() => {
-                img.src = currentAlbumPhotos[currentImgIndex];
-                img.style.opacity = '1';
-            }, 100);
-            const thumbs = document.querySelectorAll('#thumb-strip img');
-            thumbs.forEach((t, i) => {
-                if(i === currentImgIndex) {
-                    t.classList.add('border-amber-500', 'opacity-100');
-                    t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                } else { t.classList.remove('border-amber-500', 'opacity-100'); }
-            });
-        }
-
-        function closeViewer() {
-            const modal = document.getElementById('viewer-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('bakery_access') === 'granted') {
                 document.getElementById('lock-screen').style.display = 'none';
-                try {
-                    loadFromCloud(); 
-                    fetchGallery(); 
-                    sel('clint');
-                    const saved = sessionStorage.getItem('lastTab');
-                    if (saved) {
-                        // Obsługa zmiany nazwy Magazyn -> Archiwum przy ładowaniu starego tabu
-                        const tabToLoad = saved === 'magazyn' ? 'archiwum' : saved;
-                        switchTab(tabToLoad);
-                    }
-                } catch(e) { console.error("Inicjalizacja:", e); }
+                loadFromCloud(); 
+                sel('clint');
+                const saved = sessionStorage.getItem('lastTab');
+                if (saved) switchTab(saved === 'magazyn' ? 'archiwum' : saved);
             }
         });
     </script>
