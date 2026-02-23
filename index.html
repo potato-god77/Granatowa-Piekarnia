@@ -51,7 +51,7 @@
 
         #viewer-modal { z-index: 999999 !important; }
         .date-clickable { cursor: pointer; border: 1px solid #e5e7eb; padding: 2px 8px; border-radius: 6px; background: white; display: inline-block; }
-        .logout-icon { cursor: pointer; opacity: 0.4; transition: opacity 0.2s; }
+        .logout-icon { cursor: pointer; opacity: 0.4; transition: opacity 0.2s; flex-shrink: 0; }
         .logout-icon:hover { opacity: 1; }
     </style>
 </head>
@@ -66,10 +66,11 @@
     </div>
 
     <header style="position: sticky; top: 0; z-index: 1000; background-color: var(--bg); border-bottom: 1px solid #efe3d8;">
-        <div class="max-w-md mx-auto py-4 px-6 flex justify-between items-center">
-            <div class="w-6"></div> <h1 class="serif text-3xl italic">Granatowa Piekarnia</h1>
-            <div class="logout-icon" onclick="if(confirm('Wylogować?')) {localStorage.removeItem('bakery_access'); location.reload();}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        <div class="max-w-md mx-auto py-4 px-4 flex justify-between items-center flex-nowrap">
+            <div class="w-8"></div> 
+            <h1 class="serif text-2xl italic whitespace-nowrap overflow-hidden">Granatowa Piekarnia</h1>
+            <div class="logout-icon ml-2" onclick="if(confirm('Wylogować?')) {localStorage.removeItem('bakery_access'); location.reload();}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
             </div>
         </div>
         <nav class="flex justify-around bg-white/80 backdrop-blur-md py-2 border-t border-b border-sand no-scrollbar" style="overflow-x: auto; white-space: nowrap;">
@@ -283,15 +284,15 @@
                 <button onclick="if(confirm('Reset?')) saveToCloud('zlewki', 0)" class="mt-4 text-[10px] uppercase font-bold text-stone-300">Resetuj zlewki</button>
             </div>
             <div class="glass-card p-6 bg-stone-50 border-stone-200">
-                <p class="text-xs text-stone-600 italic leading-relaxed text-justify">
+                <p class="text-xs italic leading-relaxed text-justify" style="color: #4a3728;">
                     Słoik Wernyhora to unikalna mieszanka, której fundamentem historycznym były wyłącznie odrzuty z zakwasu Clint Yeastwood, prowadzonego na mące żytniej 2000. To właśnie z tej bazy zrodziły się kolejne linie – pszenny pełnoziarnisty Sylvester Graham (mąka 1850) oraz orkiszowa Hildegarda z Bingen (mąka 2000). Z czasem, gdy oba te zakwasy dojrzały, ich własne odrzuty również zaczęły dołączać do wspólnej kompozycji. Połączenie pozostałości z tych trzech różnych kultur sprawia, że wewnątrz dochodzi do nieustannego przenikania się różnorodnych mikroorganizmów, co z połączenia odrzutów żytnich, pszennych i orkiszowych tworzy niezwykle bogaty profil. Jest to doskonała baza na przyszły żurek, który dzięki takiemu zestawieniu zyska unikalną strukturę smakową. Ciekawy charakter potrawy będzie wynikał z faktu, że każda z mąk wnosi inną słodycz i rodzaj kwasowości, tworząc razem całość znacznie bardziej interesującą niż wywar oparty na tylko jednym rodzaju zboża.
                 </p>
             </div>
         </section>
 
         <section id="galeria-section" class="tab-content pt-4">
-            <div id="gal-cont" class="flex justify-center items-center py-20">
-                <div class="w-8 h-8 border-4 border-stone-200 border-t-amber-600 rounded-full animate-spin"></div>
+            <div id="gal-cont" class="flex justify-center items-center py-20 text-center">
+                <div class="w-8 h-8 border-4 border-stone-200 border-t-amber-600 rounded-full animate-spin mx-auto"></div>
             </div>
         </section>
     </main>
@@ -427,7 +428,6 @@
                 document.getElementById('w-regMF').innerText = r.regMF + 'g';
                 document.getElementById('w-regWF').innerText = r.regWF + 'g';
                 
-                // Aktualizacja nazw słoików
                 const s1 = "Słoiku Roboczym";
                 const s1_nom = "Słoik Roboczy";
                 const s2 = "Słoika " + r.name;
@@ -505,7 +505,7 @@
             const f = allGalleryData.filter(a => a.starter && a.starter.toLowerCase().includes(sn));
             if (f.length === 0) {
                 cont.style.display = 'block';
-                cont.innerHTML = `<p class="p-10 text-stone-400 italic text-center">Brak zdjęć chleba z zakwasu: ${r.name}</p>`;
+                cont.innerHTML = `<p class="p-10 text-stone-400 italic text-center mx-auto">Brak zdjęć chleba z zakwasu: ${r.name}</p>`;
                 return;
             }
             cont.style.display = 'grid';
