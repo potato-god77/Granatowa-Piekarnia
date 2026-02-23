@@ -217,6 +217,46 @@
         <section id="wiedza-section" class="tab-content space-y-6">
             <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
+                    <h3 class="serif text-xl font-bold italic text-stone-800">Postacie</h3>
+                    <span class="plus-icon text-2xl">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4 bg-stone-50">
+                    <p class="text-[10px] uppercase font-black text-stone-400 tracking-widest my-4">Historie i charakterystyka</p>
+                    
+                    <div class="accordion-item border border-stone-200 rounded-xl bg-white mb-3">
+                        <button onclick="toggleAccordion(this)" class="w-full p-4 flex justify-between items-center text-left">
+                            <span class="font-bold text-stone-700">Clint Yeastwood</span>
+                            <span class="plus-icon text-sm">+</span>
+                        </button>
+                        <div class="accordion-content p-4 pt-0 text-xs text-stone-600 leading-relaxed">
+                            Surowy, żytni rewolwerowiec. Nie wybacza błędów w hydratacji, ale odwdzięcza się najgłębszym aromatem. Fundament Piekarni.
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border border-stone-200 rounded-xl bg-white mb-3">
+                        <button onclick="toggleAccordion(this)" class="w-full p-4 flex justify-between items-center text-left">
+                            <span class="font-bold text-stone-700">Sylvester Graham</span>
+                            <span class="plus-icon text-sm">+</span>
+                        </button>
+                        <div class="accordion-content p-4 pt-0 text-xs text-stone-600 leading-relaxed">
+                            Pszenny siłacz o gołębim sercu. Pełnoziarnisty profil 1850 nadaje mu charakterystyczną słodycz i delikatnie orzechowy posmak.
+                        </div>
+                    </div>
+
+                    <div class="accordion-item border border-stone-200 rounded-xl bg-white">
+                        <button onclick="toggleAccordion(this)" class="w-full p-4 flex justify-between items-center text-left">
+                            <span class="font-bold text-stone-700">Hildegarda z Bingen</span>
+                            <span class="plus-icon text-sm">+</span>
+                        </button>
+                        <div class="accordion-content p-4 pt-0 text-xs text-stone-600 leading-relaxed">
+                            Szlachetna mistyczka orkiszu. Najbardziej delikatna i kapryśna, wymaga czułości przy mieszaniu, ale oferuje lekkość niedostępną innym.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
                     <h3 class="serif text-xl font-bold italic text-stone-800">Logistyka Słoików</h3>
                     <span class="plus-icon text-2xl">+</span>
                 </button>
@@ -515,7 +555,6 @@
             const sn = r.name.split(' ')[0].toLowerCase();
             const f = allGalleryData.filter(a => a.starter && a.starter.toLowerCase().includes(sn));
             if (f.length === 0) {
-                /* Poprawka: Dodanie grid-column i usunięcie grid-template-columns przy braku danych */
                 cont.style.display = 'block';
                 cont.innerHTML = `<p class="p-10 text-stone-400 italic text-center w-full">Brak zdjęć chleba z zakwasu: ${r.name}</p>`;
                 return;
