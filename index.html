@@ -37,7 +37,7 @@
         .recipe-step { position: relative; padding-left: 1.2rem; margin-bottom: 0.8rem; border-left: 2px solid var(--accent); margin-left: 0.4rem; font-size: 0.9rem; line-height: 1.5; color: #57534e; }
 
         #w-sv, #w-regMF, #w-regWF, #p-wv, #p-sv, #p-fv, #p-slv { color: var(--amber-gold) !important; font-weight: 800; }
-        #p-secret { color: var(--accent) !important; font-style: italic; font-weight: 600; }
+        #p-secret, #p-secret-standalone { color: var(--accent) !important; font-style: italic; font-weight: 600; }
 
         #lock-screen { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .pass-input { background: white; border: 2px solid var(--sand); border-radius: 15px; padding: 15px; text-align: center; font-size: 1.5rem; letter-spacing: 0.5rem; width: 220px; outline: none; }
@@ -51,6 +51,8 @@
 
         #viewer-modal { z-index: 999999 !important; }
         .date-clickable { cursor: pointer; border: 1px solid #e5e7eb; padding: 2px 8px; border-radius: 6px; background: white; display: inline-block; }
+        .logout-icon { cursor: pointer; opacity: 0.4; transition: opacity 0.2s; }
+        .logout-icon:hover { opacity: 1; }
     </style>
 </head>
 <body class="pb-24">
@@ -64,8 +66,11 @@
     </div>
 
     <header style="position: sticky; top: 0; z-index: 1000; background-color: var(--bg); border-bottom: 1px solid #efe3d8;">
-        <div class="max-w-md mx-auto py-4 text-center">
-            <h1 class="serif text-3xl italic" style="margin: 0;">Granatowa Piekarnia</h1>
+        <div class="max-w-md mx-auto py-4 px-6 flex justify-between items-center">
+            <div class="w-6"></div> <h1 class="serif text-3xl italic">Granatowa Piekarnia</h1>
+            <div class="logout-icon" onclick="if(confirm('Wylogować?')) {localStorage.removeItem('bakery_access'); location.reload();}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            </div>
         </div>
         <nav class="flex justify-around bg-white/80 backdrop-blur-md py-2 border-t border-b border-sand no-scrollbar" style="overflow-x: auto; white-space: nowrap;">
             <div id="btn-zakwasy" class="nav-btn px-4 py-2 text-sm font-bold active" onclick="switchTab('zakwasy')">ZAKWASY</div>
@@ -90,7 +95,7 @@
             <div id="card-clint" onclick="sel('clint')" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
                     <div><h4 class="font-bold text-xl starter-title">Clint Yeastwood</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Żytni<br><br>• typ 2000</p></div>
-                    <span class="text-3xl">🤠</span>
+                    <img src="cowboy.png" class="w-10 h-10 object-contain">
                 </div>
                 <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
                     <p class="text-[11px] font-bold">Ostatnio: <span id="feed-clint" class="date-clickable" onclick="manualDate('clint', event)">---</span></p>
@@ -100,7 +105,7 @@
             <div id="card-sylvester" onclick="sel('sylvester')" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
                     <div><h4 class="font-bold text-xl starter-title">Sylvester Graham</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Pszenny Pełnoziarnisty<br><br>• typ 1850</p></div>
-                    <span class="text-3xl">👨‍🌾</span>
+                    <img src="farmer.png" class="w-10 h-10 object-contain">
                 </div>
                 <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
                     <p class="text-[11px] font-bold">Ostatnio: <span id="feed-sylvester" class="date-clickable" onclick="manualDate('sylvester', event)">---</span></p>
@@ -110,7 +115,7 @@
             <div id="card-hildegarda" onclick="sel('hildegarda')" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
                     <div><h4 class="font-bold text-xl starter-title">Hildegarda z Bingen</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Orkiszowy<br><br>• typ 2000</p></div>
-                    <span class="text-3xl">⛪</span>
+                    <img src="nun.png" class="w-10 h-10 object-contain">
                 </div>
                 <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
                     <p class="text-[11px] font-bold">Ostatnio: <span id="feed-hildegarda" class="date-clickable" onclick="manualDate('hildegarda', event)">---</span></p>
@@ -162,7 +167,6 @@
                     <div class="recipe-step"> 
                         <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p> 
                         <p>Zrób zawiesinę: woda <span id="p-wv" class="font-bold text-stone-800"></span> (30°C) + aktywny zakwas <span id="p-sv" class="font-bold text-stone-800"></span>. Do tego dodaj <span id="p-fv" class="font-bold text-stone-800"></span> mąki i <span id="p-slv" class="font-bold text-stone-800"></span> soli. Wymieszaj, przykryj miskę i zostaw na noc na blacie w temperaturze pokojowej.</p> 
-                        <div id="p-secret" class="mt-2 text-xs italic font-medium"></div>
                     </div> 
                     <div class="recipe-step"> 
                         <p class="font-bold text-stone-800 italic">Rano (05:30 - 06:00)</p> 
@@ -172,6 +176,16 @@
                         <p class="font-bold text-stone-800 italic">Pieczenie (od 16:00)</p> 
                         <p>Nagrzej piec z garnkiem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę" by stało się spięte, po czym natnij ostrym nożem lub żyletką. Gdy piekarnik się już nagrzeje, piecz 30 min pod przykryciem, a następnie zdejmij pokrywkę i piecz kolejne 15 min bez niej.</p> 
                     </div> 
+                </div>
+            </div>
+
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+                    <h3 class="serif text-lg font-bold italic">Wskazówki</h3>
+                    <span class="plus-icon text-xl">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t text-sm text-stone-600">
+                    <div id="p-secret-standalone" class="italic font-medium"></div>
                 </div>
             </div>
 
@@ -203,7 +217,7 @@
                     <h3 class="serif text-xl font-bold italic text-stone-800">Logistyka Słoików</h3>
                     <span class="plus-icon text-2xl">+</span>
                 </button>
-                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
+                <div id="logistyka-content" class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
                     <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 mb-4">
                         <p id="w-name" class="serif text-lg font-bold text-stone-800 mb-2"></p>
                         <p class="text-xs text-stone-600"><strong>Cel:</strong> <span id="w-target"></span></p>
@@ -212,19 +226,19 @@
                     </div>
                     <div class="recipe-step">
                         <p class="font-bold italic text-stone-700">Etap 1: Aktywacja (ok. 16:00)</p>
-                        <p>Pobierz 30g bazy ze słoika nr 2. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj w słoiku nr 1 i zostaw na blacie na 4-6 godzin.</p>
+                        <p>Pobierz 30g bazy ze <strong id="sl-2-a"></strong>. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj w <strong id="sl-1-a"></strong> i zostaw na blacie na 4-6 godzin.</p>
                     </div>
                     <div class="recipe-step">
                         <p class="font-bold italic text-stone-700">Etap 2: Pobranie (ok. 22:00)</p>
-                        <p>1. Pobierz <span class="font-bold" id="w-sv"></span> aktywnego zakwasu ze słoika nr 1 do miski.<br>2. Całą pozostałość przełóż do słoika nr 2.</p>
+                        <p>1. Pobierz <span class="font-bold" id="w-sv"></span> aktywnego zakwasu ze <strong id="sl-1-b"></strong> do miski.<br>2. Całą pozostałość przełóż do <strong id="sl-2-b"></strong>.</p>
                     </div>
                     <div class="recipe-step">
-                        <p class="font-bold italic text-stone-700">Etap 3: Święta Porcja (Słoik 2)</p>
-                        <p>Wymieszaj starą bazę ze zrzutem. Wymierz z tego 20g ("Święta Porcja") i zostaw w słoiku nr 2. Resztę do słoika nr 3.</p>
+                        <p class="font-bold italic text-stone-700">Etap 3: Święta Porcja (<span id="sl-2-c-title"></span>)</p>
+                        <p>Wymieszaj starą bazę ze zrzutem. Wymierz z tego 20g ("Święta Porcja") i zostaw w <strong id="sl-2-c"></strong>. Resztę do <strong id="sl-3-a"></strong>.</p>
                     </div>
                     <div class="recipe-step">
                         <p class="font-bold italic text-stone-700">Etap 4: Regeneracja Matki</p>
-                        <p>1. Do 20g porcji w słoiku nr 2 dodaj <span id="w-regMF" class="font-bold"></span> mąki i <span id="w-regWF" class="font-bold"></span> wody (38°C).<br>2. Zostaw na 1h na blacie, potem schowaj do lodówki.</p>
+                        <p>1. Do 20g porcji w <strong id="sl-2-d"></strong> dodaj <span id="w-regMF" class="font-bold"></span> mąki i <span id="w-regWF" class="font-bold"></span> wody (38°C).<br>2. Zostaw na 1h na blacie, potem schowaj do lodówki.</p>
                     </div>
                 </div>
             </div>
@@ -252,7 +266,7 @@
                     </div>
                     <div class="recipe-step text-stone-600">
                         <p class="font-bold italic text-stone-800">Krok 2: Zakwaszanie (Zlewki)</p>
-                        <p>Odlej szklankę gorącego wywaru i wymieszaj ją dokładnie z 400g zlewek ze słoika nr 3. Wlej zawiesinę do garnka, cały czas mieszając. Zagotuj.</p>
+                        <p>Odlej szklankę gorącego wywaru i wymieszaj ją dokładnie z 400g zlewek ze <strong id="sl-3-b"></strong>. Wlej zawiesinę do garnka, cały czas mieszając. Zagotuj.</p>
                     </div>
                     <div class="recipe-step text-stone-600">
                         <p class="font-bold italic text-stone-800">Krok 3: Wykończenie</p>
@@ -264,11 +278,15 @@
 
         <section id="magazyn-section" class="tab-content space-y-5">
             <div class="glass-card p-6 text-center">
-                <h4 class="serif text-xl mb-4">Słoik 3: Zlewki 🥣</h4>
+                <h4 class="serif text-xl mb-4">Słoik Wernyhora 🥣</h4>
                 <input type="number" id="zw" value="0" onblur="saveToCloud('zlewki', this.value)" class="w-full bg-stone-50 border-2 rounded-3xl p-6 font-black text-4xl text-center outline-none">
                 <button onclick="if(confirm('Reset?')) saveToCloud('zlewki', 0)" class="mt-4 text-[10px] uppercase font-bold text-stone-300">Resetuj zlewki</button>
             </div>
-            <button onclick="if(confirm('Wylogować?')) {localStorage.removeItem('bakery_access'); location.reload();}" class="w-full text-[9px] font-bold text-stone-300 uppercase">Wyloguj urządzenie</button>
+            <div class="glass-card p-6 bg-stone-50 border-stone-200">
+                <p class="text-xs text-stone-600 italic leading-relaxed text-justify">
+                    Słoik Wernyhora to unikalna mieszanka, której fundamentem historycznym były wyłącznie odrzuty z zakwasu Clint Yeastwood, prowadzonego na mące żytniej 2000. To właśnie z tej bazy zrodziły się kolejne linie – pszenny pełnoziarnisty Sylvester Graham (mąka 1850) oraz orkiszowa Hildegarda z Bingen (mąka 2000). Z czasem, gdy oba te zakwasy dojrzały, ich własne odrzuty również zaczęły dołączać do wspólnej kompozycji. Połączenie pozostałości z tych trzech różnych kultur sprawia, że wewnątrz dochodzi do nieustannego przenikania się różnorodnych mikroorganizmów, co z połączenia odrzutów żytnich, pszennych i orkiszowych tworzy niezwykle bogaty profil. Jest to doskonała baza na przyszły żurek, który dzięki takiemu zestawieniu zyska unikalną strukturę smakową. Ciekawy charakter potrawy będzie wynikał z faktu, że każda z mąk wnosi inną słodycz i rodzaj kwasowości, tworząc razem całość znacznie bardziej interesującą niż wywar oparty na tylko jednym rodzaju zboża.
+                </p>
+            </div>
         </section>
 
         <section id="galeria-section" class="tab-content pt-4">
@@ -318,6 +336,7 @@
                 name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, 
                 secret: 'Orkisz 2000 pije wodę szybko, ale równie szybko "puchnie" i traci napięcie powierzchniowe. Niższa hydratacja (310g) to Twój bezpiecznik, dzięki któremu bochenek w garnku wystrzeli w górę, a nie rozleje się na boki.<br><br>Hildegarda nie lubi agresywnego wyrabiania. Tylko delikatne mieszanie do połączenia składników.',
                 target: 'Delikatność i ochrona przed przekwaszeniem.', ratio: '1:2.25:2.25',
+                desc: 'Orkisz kocha stabilność. Nadmierne mieszanie osłabia strukturę glutenową tego szlachetnego zboża.',
                 regMF: 45, regWF: 45,
             }
         };
@@ -397,11 +416,8 @@
                 }
             });
 
-            const tips = document.getElementById('recipe-tips');
-            if(tips) tips.innerHTML = r.secret;
-            
-            const sec = document.getElementById('p-secret');
-            if(sec) sec.innerHTML = `<b>Wskazówka:</b><br>${r.secret}`;
+            const secStandalone = document.getElementById('p-secret-standalone');
+            if(secStandalone) secStandalone.innerHTML = r.secret;
 
             if(document.getElementById('w-name')) {
                 document.getElementById('w-name').innerText = r.name;
@@ -410,6 +426,24 @@
                 document.getElementById('w-desc').innerText = r.desc;
                 document.getElementById('w-regMF').innerText = r.regMF + 'g';
                 document.getElementById('w-regWF').innerText = r.regWF + 'g';
+                
+                // Aktualizacja nazw słoików
+                const s1 = "Słoiku Roboczym";
+                const s1_nom = "Słoik Roboczy";
+                const s2 = "Słoika " + r.name;
+                const s2_nom = "Słoiku " + r.name;
+                const s3 = "Słoika Wernyhora";
+                const s3_nom = "Słoik Wernyhora";
+
+                document.getElementById('sl-1-a').innerText = s1_nom;
+                document.getElementById('sl-1-b').innerText = s1;
+                document.getElementById('sl-2-a').innerText = s2;
+                document.getElementById('sl-2-b').innerText = s2_nom;
+                document.getElementById('sl-2-c-title').innerText = s2_nom;
+                document.getElementById('sl-2-c').innerText = s2_nom;
+                document.getElementById('sl-2-d').innerText = s2_nom;
+                document.getElementById('sl-3-a').innerText = s3;
+                document.getElementById('sl-3-b').innerText = s3_nom;
             }
             calcTime();
         }
@@ -435,7 +469,7 @@
             btn.innerText = "Nakarmiono";
             saveToCloud(k, new Date().toLocaleDateString('pl-PL')); 
         }
-        
+
         function manualDate(k, e) {
             e.stopPropagation();
             const input = document.createElement('input');
@@ -466,11 +500,12 @@
         function renderAlbums() {
             const cont = document.getElementById('gal-cont');
             if (!cont || !isGalleryLoaded) return;
-            const sn = RECIPES[currentStarterKey].name.split(' ')[0].toLowerCase();
+            const r = RECIPES[currentStarterKey];
+            const sn = r.name.split(' ')[0].toLowerCase();
             const f = allGalleryData.filter(a => a.starter && a.starter.toLowerCase().includes(sn));
             if (f.length === 0) {
                 cont.style.display = 'block';
-                cont.innerHTML = `<p class="p-10 text-stone-400 italic text-center">Brak zdjęć dla: ${sn}</p>`;
+                cont.innerHTML = `<p class="p-10 text-stone-400 italic text-center">Brak zdjęć chleba z zakwasu: ${r.name}</p>`;
                 return;
             }
             cont.style.display = 'grid';
