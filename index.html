@@ -54,7 +54,6 @@
         .logout-icon { cursor: pointer; opacity: 0.4; transition: opacity 0.2s; flex-shrink: 0; }
         .logout-icon:hover { opacity: 1; }
         
-        /* Styl dla linku żurek */
         .zurek-link { text-decoration: underline; font-weight: bold; cursor: pointer; color: inherit; }
     </style>
 </head>
@@ -364,7 +363,6 @@
             window.scrollTo(0,0);
         }
 
-        /* Funkcja nawigująca do przepisu na żurek */
         function goToZurek() {
             switchTab('wiedza');
             const zurekBox = document.getElementById('zurek-recipe-box');
@@ -517,8 +515,9 @@
             const sn = r.name.split(' ')[0].toLowerCase();
             const f = allGalleryData.filter(a => a.starter && a.starter.toLowerCase().includes(sn));
             if (f.length === 0) {
+                /* Poprawka: Dodanie grid-column i usunięcie grid-template-columns przy braku danych */
                 cont.style.display = 'block';
-                cont.innerHTML = `<p class="p-10 text-stone-400 italic text-center mx-auto">Brak zdjęć chleba z zakwasu: ${r.name}</p>`;
+                cont.innerHTML = `<p class="p-10 text-stone-400 italic text-center w-full">Brak zdjęć chleba z zakwasu: ${r.name}</p>`;
                 return;
             }
             cont.style.display = 'grid';
