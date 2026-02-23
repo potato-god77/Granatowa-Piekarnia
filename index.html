@@ -53,6 +53,9 @@
         .date-clickable { cursor: pointer; border: 1px solid #e5e7eb; padding: 2px 8px; border-radius: 6px; background: white; display: inline-block; }
         .logout-icon { cursor: pointer; opacity: 0.4; transition: opacity 0.2s; flex-shrink: 0; }
         .logout-icon:hover { opacity: 1; }
+        
+        /* Styl dla linku żurek */
+        .zurek-link { text-decoration: underline; font-weight: bold; cursor: pointer; color: inherit; }
     </style>
 </head>
 <body class="pb-24">
@@ -244,7 +247,7 @@
                 </div>
             </div>
 
-            <div class="accordion-item glass-card">
+            <div id="zurek-recipe-box" class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
                     <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Żurek na zlewkach</h3>
                     <span class="plus-icon text-2xl">+</span>
@@ -285,7 +288,7 @@
             </div>
             <div class="glass-card p-6 bg-stone-50 border-stone-200">
                 <p class="text-xs italic leading-relaxed text-justify" style="color: #4a3728;">
-                    Słoik Wernyhora to unikalna mieszanka, której fundamentem historycznym były wyłącznie odrzuty z zakwasu Clint Yeastwood, prowadzonego na mące żytniej 2000. To właśnie z tej bazy zrodziły się kolejne linie – pszenny pełnoziarnisty Sylvester Graham (mąka 1850) oraz orkiszowa Hildegarda z Bingen (mąka 2000). Z czasem, gdy oba te zakwasy dojrzały, ich własne odrzuty również zaczęły dołączać do wspólnej kompozycji. Połączenie pozostałości z tych trzech różnych kultur sprawia, że wewnątrz dochodzi do nieustannego przenikania się różnorodnych mikroorganizmów, co z połączenia odrzutów żytnich, pszennych i orkiszowych tworzy niezwykle bogaty profil. Jest to doskonała baza na przyszły żurek, który dzięki takiemu zestawieniu zyska unikalną strukturę smakową. Ciekawy charakter potrawy będzie wynikał z faktu, że każda z mąk wnosi inną słodycz i rodzaj kwasowości, tworząc razem całość znacznie bardziej interesującą niż wywar oparty na tylko jednym rodzaju zboża.
+                    Słoik Wernyhora to unikalna mieszanka, której fundamentem historycznym były wyłącznie odrzuty z zakwasu Clint Yeastwood, prowadzonego na mące żytniej 2000. To właśnie z tej bazy zrodziły się kolejne linie – pszenny pełnoziarnisty Sylvester Graham (mąka 1850) oraz orkiszowa Hildegarda z Bingen (mąka 2000). Z czasem, gdy oba te zakwasy dojrzały, ich własne odrzuty również zaczęły dołączać do wspólnej kompozycji. Połączenie pozostałości z tych trzech różnych kultur sprawia, że wewnątrz dochodzi do nieustannego przenikania się różnorodnych mikroorganizmów, co z połączenia odrzutów żytnich, pszennych i orkiszowych tworzy niezwykle bogaty profil. Jest to doskonała baza na przyszły <span class="zurek-link" onclick="goToZurek()">żurek</span>, który dzięki takiemu zestawieniu zyska unikalną strukturę smakową. Ciekawy charakter potrawy będzie wynikał z faktu, że każda z mąk wnosi inną słodycz i rodzaj kwasowości, tworząc razem całość znacznie bardziej interesującą niż wywar oparty na tylko jednym rodzaju zboża.
                 </p>
             </div>
         </section>
@@ -359,6 +362,16 @@
             if (tabId === 'galeria') renderAlbums();
             sessionStorage.setItem('lastTab', tabId);
             window.scrollTo(0,0);
+        }
+
+        /* Funkcja nawigująca do przepisu na żurek */
+        function goToZurek() {
+            switchTab('wiedza');
+            const zurekBox = document.getElementById('zurek-recipe-box');
+            if(zurekBox && !zurekBox.classList.contains('active')) {
+                toggleAccordion(zurekBox.querySelector('button'));
+            }
+            zurekBox.scrollIntoView({ behavior: 'smooth' });
         }
 
         async function saveToCloud(key, value) {
