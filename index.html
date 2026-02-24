@@ -654,22 +654,29 @@
                 document.getElementById('sl-3-a').innerText = s3;
                 document.getElementById('sl-3-b').innerText = s3_nom;
             }
-            calcTime();
-        }
+            function calcTime() {
+    const start = document.getElementById('start-time').value;
+    if (!start) return;
 
-        function calcTime() {
-            const timeInput = document.getElementById('start-time');
-            const [h,m] = (timeInput ? timeInput.value : "22:00").split(':').map(Number);
-            const add = (hrs, mns) => {
-                let t = h*60+m + hrs*60+mns;
-                return `${String(Math.floor(t/60)%24).padStart(2,'0')}:${String(t%60).padStart(2,'0')}`;
-            };
-            if(document.getElementById('t-lodowka')) {
-                document.getElementById('t-lodowka').innerText = add(7,30);
-                document.getElementById('t-formowanie').innerText = add(18,0);
-                document.getElementById('t-pieczenie').innerText = add(19,15);
-            }
-        }
+    const [h, m] = start.split(':').map(Number);
+    const baseDate = new Date();
+    baseDate.setHours(h, m, 0);
+
+    // Pomocnicza funkcja do formatowania godziny HH:mm
+    const format = (date, addMinutes) => {
+        const d = new Date(date.getTime() + addMinutes * 60000);
+        return d.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
+    };
+
+    // 1. Lodówka: 05:30 (7h 30min po 22:00) -> +450 minut
+    document.getElementById('t-lodowka').innerText = format(baseDate, 450);
+
+    // 2. Formowanie: 16:00 (18h po 22:00) -> +1080 minut
+    document.getElementById('t-formowanie').innerText = format(baseDate, 1080);
+
+    // 3. Pieczenie: 16:45 (18h 45min po 22:00) -> +1125 minut
+    document.getElementById('t-pieczenie').innerText = format(baseDate, 1125);
+}
 
         function markFed(k, e) { 
             e.stopPropagation(); 
