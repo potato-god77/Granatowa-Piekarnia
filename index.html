@@ -165,101 +165,93 @@
 </section>
        <section id="pieczenie-section" class="tab-content active space-y-5">
     
-   <div class="accordion-item glass-card">
+  <div class="accordion-item glass-card">
         <button onclick="toggleAccordion(this)" class="w-full p-4 flex justify-between items-center text-left">
             <h3 class="serif text-lg font-bold italic text-stone-800">Harmonogram</h3>
             <span class="plus-icon text-xl">+</span>
         </button>
         <div class="accordion-content p-2 pt-4 border-t space-y-2 bg-white">
             
-            <div class="flex items-center justify-between p-2 border border-stone-200 rounded-xl bg-amber-50/30 shadow-sm">
+            <div class="flex items-center justify-between p-3 border border-stone-200 rounded-xl bg-amber-50/30 shadow-sm">
                 <div class="text-left pr-3">
-                    <span class="font-black text-stone-800 text-sm block uppercase tracking-tight">Wybudzenie:</span>
-                    <p class="text-[10px] text-stone-600 leading-tight italic">Aktywuj wybrany zakwas według instrukcji.</p>
+                    <span class="font-bold italic text-stone-800 text-base block">Wybudzenie:</span>
+                    <p class="text-sm text-stone-600 leading-tight">Aktywuj wybrany zakwas według instrukcji.</p>
                 </div>
-                <div class="flex items-center bg-white border border-stone-200 rounded-lg p-1 min-w-[85px] justify-between shadow-inner">
+                <div class="flex items-center bg-white border border-stone-200 rounded-lg p-1 min-w-[80px] justify-between shadow-inner">
                     <input type="text" id="t-wybudzenie-input" value="16:00" readonly 
-                           class="w-11 font-medium text-base text-center outline-none bg-transparent text-stone-800">
+                           class="w-10 font-bold text-sm text-center outline-none bg-transparent text-stone-800">
                     <div class="flex flex-col border-l border-stone-100 pl-1 ml-1">
-                        <button onclick="stepTime('t-wybudzenie-input', 15, 'wybudzenie')" class="text-[9px] hover:text-amber-600 px-1">▲</button>
-                        <button onclick="stepTime('t-wybudzenie-input', -15, 'wybudzenie')" class="text-[9px] hover:text-amber-600 px-1">▼</button>
+                        <button onclick="stepTime('t-wybudzenie-input', 15, 'wybudzenie')" class="text-[8px] hover:text-amber-600 px-1">▲</button>
+                        <button onclick="stepTime('t-wybudzenie-input', -15, 'wybudzenie')" class="text-[8px] hover:text-amber-600 px-1">▼</button>
                     </div>
                 </div>
             </div>
 
-            <div class="flex items-center justify-between p-2 border border-stone-200 rounded-xl bg-stone-50/30 shadow-sm">
+            <div class="flex items-center justify-between p-3 border border-stone-200 rounded-xl bg-stone-50/30 shadow-sm">
                 <div class="text-left pr-3">
-                    <span class="font-black text-stone-800 text-sm block uppercase tracking-tight">Mieszanie:</span>
-                    <p class="text-[10px] text-stone-600 leading-tight italic">Stwórz ciasto według przepisu i zostaw w misce pod przykryciem na blacie.</p>
+                    <span class="font-bold italic text-stone-800 text-base block">Mieszanie:</span>
+                    <p class="text-sm text-stone-600 leading-tight">Stwórz ciasto według przepisu i zostaw w misce pod przykryciem.</p>
                 </div>
-                <div class="flex items-center bg-white border border-stone-200 rounded-lg p-1 min-w-[85px] justify-between shadow-inner">
+                <div class="flex items-center bg-white border border-stone-200 rounded-lg p-1 min-w-[80px] justify-between shadow-inner">
                     <input type="text" id="start-time" value="22:00" readonly 
-                           class="w-11 font-medium text-base text-center outline-none bg-transparent text-stone-800">
+                           class="w-10 font-bold text-sm text-center outline-none bg-transparent text-stone-800">
                     <div class="flex flex-col border-l border-stone-100 pl-1 ml-1">
-                        <button onclick="stepTime('start-time', 15, 'mieszanie')" class="text-[9px] hover:text-stone-600 px-1">▲</button>
-                        <button onclick="stepTime('start-time', -15, 'mieszanie')" class="text-[9px] hover:text-stone-600 px-1">▼</button>
+                        <button onclick="stepTime('start-time', 15, 'mieszanie')" class="text-[8px] hover:text-stone-600 px-1">▲</button>
+                        <button onclick="stepTime('start-time', -15, 'mieszanie')" class="text-[8px] hover:text-stone-600 px-1">▼</button>
                     </div>
                 </div>
             </div>
 
-            <div class="flex items-center justify-between p-2 px-3 border border-stone-100 rounded-xl bg-stone-50/10">
+            <div class="flex items-center justify-between p-3 px-4 border border-stone-100 rounded-xl bg-stone-50/10">
                 <div class="text-left pr-3">
-                    <span class="font-black text-stone-800 text-sm block uppercase tracking-tight">Dojrzewanie:</span>
-                    <p class="text-[10px] text-stone-600 leading-tight italic">Koniec gwałtownej fermentacji na blacie, czas na spokojne dojrzewanie w lodówce.</p>
+                    <span class="font-bold italic text-stone-800 text-base block">Dojrzewanie:</span>
+                    <p class="text-sm text-stone-600 leading-tight">Czas na spokojne dojrzewanie ciasta w lodówce.</p>
                 </div>
-                <div class="text-base font-medium text-stone-800 min-w-[50px] text-center" id="t-lodowka">05:30</div>
+                <div class="text-sm font-bold text-stone-800 min-w-[45px] text-center" id="t-lodowka">05:30</div>
             </div>
 
-           <div class="flex items-center justify-between p-2 px-3 border border-stone-100 rounded-xl bg-stone-50/10">
+            <div class="flex items-center justify-between p-3 px-4 border border-stone-100 rounded-xl bg-stone-50/10">
                 <div class="text-left pr-3">
-                    <span class="font-black text-stone-800 text-sm block uppercase tracking-tight">Formowanie:</span>
-                    <p class="text-[10px] text-stone-600 leading-tight italic">Czas wyjąć ciasto z lodówki, włączyć piekarnik, uformować przyszły chleb i poczekać na odpowiednią temperaturę.</p>
+                    <span class="font-bold italic text-stone-800 text-base block">Formowanie:</span>
+                    <p class="text-sm text-stone-600 leading-tight">Czas wyjąć ciasto z lodówki, włączyć piekarnik i uformować chleb.</p>
                 </div>
-                <div class="text-base font-medium text-stone-800 min-w-[50px] text-center" id="t-formowanie">16:00</div>
+                <div class="text-sm font-bold text-stone-800 min-w-[45px] text-center" id="t-formowanie">16:00</div>
             </div>
 
-            <div class="flex items-center justify-between p-2 border border-stone-200 rounded-xl bg-stone-50/30 shadow-sm">
+            <div class="flex items-center justify-between p-3 border border-stone-200 rounded-xl bg-stone-50/30 shadow-sm">
                 <div class="text-left pr-3">
-                    <span class="font-black text-stone-800 text-sm block uppercase tracking-tight">Pieczenia:</span>
-                    <p class="text-[10px] text-stone-600 leading-tight italic">Gorący garnek z chlebem (pod pokrywką) wkładamy do piekarnika.</p>
+                    <span class="font-bold italic text-stone-800 text-base block">Pieczenie:</span>
+                    <p class="text-sm text-stone-600 leading-tight">Gorący garnek z chlebem wkładamy do piekarnika.</p>
                 </div>
-                <div class="flex items-center bg-white border border-stone-200 rounded-lg p-1 min-w-[85px] justify-between shadow-inner">
+                <div class="flex items-center bg-white border border-stone-200 rounded-lg p-1 min-w-[80px] justify-between shadow-inner">
                     <input type="text" id="t-pieczenie-input" value="16:45" readonly 
-                           class="w-11 font-medium text-base text-center outline-none bg-transparent text-stone-800">
+                           class="w-10 font-bold text-sm text-center outline-none bg-transparent text-stone-800">
                     <div class="flex flex-col border-l border-stone-100 pl-1 ml-1">
-                        <button onclick="stepTime('t-pieczenie-input', 15, 'pieczenie')" class="text-[9px] hover:text-stone-600 px-1">▲</button>
-                        <button onclick="stepTime('t-pieczenie-input', -15, 'pieczenie')" class="text-[9px] hover:text-stone-600 px-1">▼</button>
+                        <button onclick="stepTime('t-pieczenie-input', 15, 'pieczenie')" class="text-[8px] hover:text-stone-600 px-1">▲</button>
+                        <button onclick="stepTime('t-pieczenie-input', -15, 'pieczenie')" class="text-[8px] hover:text-stone-600 px-1">▼</button>
                     </div>
                 </div>
             </div>
 
-            <div class="flex items-center justify-between p-2 px-3 border border-stone-100 rounded-xl bg-stone-50/10">
+            <div class="flex items-center justify-between p-3 px-4 border border-stone-100 rounded-xl bg-stone-50/10">
                 <div class="text-left pr-3">
-                    <span class="font-black text-stone-800 text-sm block uppercase tracking-tight">Rumienienie:</span>
-                    <p class="text-[10px] text-stone-600 leading-tight italic">Zdejmujemy z garnka pokrywkę (ostrożnie, za pomocą rękawicy lub ścierki).</p>
+                    <span class="font-bold italic text-stone-800 text-base block">Gotowość:</span>
+                    <p class="text-sm text-stone-600 leading-tight">Chleb jest rumiany i wydaje pusty dźwięk. Wyjmij go!</p>
                 </div>
-                <div class="text-base font-medium text-stone-800 min-w-[50px] text-center" id="t-rumienienie">17:15</div>
+                <div class="text-sm font-bold text-stone-800 min-w-[45px] text-center" id="t-upieczenie">17:30</div>
             </div>
 
-            <div class="flex items-center justify-between p-2 px-3 border border-stone-100 rounded-xl bg-stone-50/10">
+            <div class="flex items-center justify-between p-3 border border-stone-200 rounded-xl bg-stone-50/30 shadow-sm">
                 <div class="text-left pr-3">
-                    <span class="font-black text-stone-800 text-sm block uppercase tracking-tight">Upieczenie:</span>
-                    <p class="text-[10px] text-stone-600 leading-tight italic">Chleb powinien być już rumiany i po stuknięciu w dno wydawać pusty dźwięk. Jest gotowy! Przełóż na kratkę.</p>
+                    <span class="font-bold italic text-stone-800 text-base block">Jedzenie:</span>
+                    <p class="text-sm text-stone-600 leading-tight">Smacznego! Chleb ostygł i jest gotowy do krojenia.</p>
                 </div>
-                <div class="text-base font-medium text-stone-800 min-w-[50px] text-center" id="t-upieczenie">17:30</div>
-            </div>
-
-            <div class="flex items-center justify-between p-2 border border-stone-200 rounded-xl bg-stone-50/30 shadow-sm">
-                <div class="text-left pr-3">
-                    <span class="font-black text-stone-800 text-sm block uppercase tracking-tight">Jedzenie:</span>
-                    <p class="text-[10px] text-stone-600 leading-tight italic">Smacznego! Chleb już ostygł i bochenek jest gotowy do jedzenia!</p>
-                </div>
-                <div class="flex items-center bg-white border border-stone-200 rounded-lg p-1 min-w-[85px] justify-between shadow-inner">
+                <div class="flex items-center bg-white border border-stone-200 rounded-lg p-1 min-w-[80px] justify-between shadow-inner">
                     <input type="text" id="t-jedzenie-input" value="18:30" readonly 
-                           class="w-11 font-medium text-base text-center outline-none bg-transparent text-stone-800">
+                           class="w-10 font-bold text-sm text-center outline-none bg-transparent text-stone-800">
                     <div class="flex flex-col border-l border-stone-100 pl-1 ml-1">
-                        <button onclick="stepTime('t-jedzenie-input', 15, 'jedzenie')" class="text-[9px] hover:text-stone-600 px-1">▲</button>
-                        <button onclick="stepTime('t-jedzenie-input', -15, 'jedzenie')" class="text-[9px] hover:text-stone-600 px-1">▼</button>
+                        <button onclick="stepTime('t-jedzenie-input', 15, 'jedzenie')" class="text-[8px] hover:text-stone-600 px-1">▲</button>
+                        <button onclick="stepTime('t-jedzenie-input', -15, 'jedzenie')" class="text-[8px] hover:text-stone-600 px-1">▼</button>
                     </div>
                 </div>
             </div>
@@ -611,602 +603,471 @@
 </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxDTlTcVOKuNua9ZL29lL-HBS1BJpptJtZ5ee9m5JkDPMU1M6bMWVs7fHwi9ccyxhE/exec';
-        const BREAD_PASS = 'feelgood7';
-        let currentStarterKey = 'clint';
-        let currentQty = 1;
-        let allGalleryData = [];
-        let currentAlbumPhotos = [];
-        let currentImgIndex = 0;
-        let isGalleryLoaded = false;
-        let allAlbumsData = []; // Tu będziemy trzymać kopię wszystkich albumów
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxDTlTcVOKuNua9ZL29lL-HBS1BJpptJtZ5ee9m5JkDPMU1M6bMWVs7fHwi9ccyxhE/exec';
+    const BREAD_PASS = 'feelgood7';
+    let currentStarterKey = 'clint';
+    let currentQty = 1;
+    let allGalleryData = [];
+    let currentAlbumPhotos = [];
+    let currentImgIndex = 0;
+    let isGalleryLoaded = false;
+    let allAlbumsData = []; 
 
-        const RECIPES = {
-    clint: { 
-        name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, 
-        secret: 'Ciasto jest jak mokra glina.<br>Nie wyrabiamy go, tylko dokładnie mieszamy.<br>Garnek wybacza mu wszystko, bo żyto nie "płynie" tak mocno na boki. ',
-        target: 'Stabilność i mocny, octowy profil.', ratio: '1:2:2',
-        desc: 'Żyto kocha gęstą konsystencję. Taka dawka wody sprawia, że Clint jest jak plastelina.',
-        regMF: 40, regWF: 40,
-        // Dane do Karmienia:
-        kType: 'żytniej',
-        kTemp: 'ok. 35-40°C'
-    },
-    sylvester: { 
-        name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, 
-        secret: 'Przy 1850 otręby tną gluten. Jeśli dasz 340g wody (jak u Clinta), ciasto po nocy będzie zbyt luźne na garnek. 325g pozwoli utrzymać kształt kuli.<br><br>Wymaga przynajmniej 2-3 "składań" (stretch & fold) w ciągu pierwszej godziny od wymieszania.',
-        target: 'Szybka fermentacja i mleczno-orzechowy zapach.', ratio: '1:2:1.75',
-        desc: 'Pszenica przy 1:1 staje się rzadka. Dając mniej wody, zmuszasz bakterie do wolniejszej pracy.',
-        regMF: 40, regWF: 35,
-        // Dane do Karmienia:
-        kType: 'pszennej pełnoziarnistej',
-        kTemp: 'ok. 30-32°C'
-    },
-    hildegarda: { 
-        name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, 
-        secret: 'Orkisz 2000 pije wodę szybko, ale równie szybko "puchnie" i traci napięcie powierzchniowe. Niższa hydratacja (310g) to Twój bezpiecznik, dzięki któremu bochenek w garnku wystrzeli w górę, a nie rozleje się na boki.<br><br>Hildegarda nie lubi agresywnego wyrabiania. Tylko delikatne mieszanie do połączenia składników.',
-        target: 'Delikatność i ochrona przed przekwaszeniem.', ratio: '1:2.25:2.25',
-        desc: 'Orkisz kocha stabilność. Nadmierne mieszanie osłabia strukturę glutenową tego szlachetnego zboża.',
-        regMF: 45, regWF: 45,
-        // Dane do Karmienia:
-        kType: 'orkiszowej',
-        kTemp: 'ok. 30-35°C'
+    const RECIPES = {
+        clint: { 
+            name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, 
+            secret: 'Ciasto jest jak mokra glina.<br>Nie wyrabiamy go, tylko dokładnie mieszamy.<br>Garnek wybacza mu wszystko, bo żyto nie "płynie" tak mocno na boki. ',
+            target: 'Stabilność i mocny, octowy profil.', ratio: '1:2:2',
+            desc: 'Żyto kocha gęstą konsystencję. Taka dawka wody sprawia, że Clint jest jak plastelina.',
+            regMF: 40, regWF: 40,
+            kType: 'żytniej',
+            kTemp: 'ok. 35-40°C'
+        },
+        sylvester: { 
+            name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, 
+            secret: 'Przy 1850 otręby tną gluten. Jeśli dasz 340g wody (jak u Clinta), ciasto po nocy będzie zbyt luźne na garnek. 325g pozwoli utrzymać kształt kuli.<br><br>Wymaga przynajmniej 2-3 "składań" (stretch & fold) w ciągu pierwszej godziny od wymieszania.',
+            target: 'Szybka fermentacja i mleczno-orzechowy zapach.', ratio: '1:2:1.75',
+            desc: 'Pszenica przy 1:1 staje się rzadka. Dając mniej wody, zmuszasz bakterie do wolniejszej pracy.',
+            regMF: 40, regWF: 35,
+            kType: 'pszennej pełnoziarnistej',
+            kTemp: 'ok. 30-32°C'
+        },
+        hildegarda: { 
+            name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, 
+            secret: 'Orkisz 2000 pije wodę szybko, ale równie szybko "puchnie" i traci napięcie powierzchniowe. Niższa hydratacja (310g) to Twój bezpiecznik, dzięki któremu bochenek w garnku wystrzeli w górę, a nie rozleje się na boki.<br><br>Hildegarda nie lubi agresywnego wyrabiania. Tylko delikatne mieszanie do połączenia składników.',
+            target: 'Delikatność i ochrona przed przekwaszeniem.', ratio: '1:2.25:2.25',
+            desc: 'Orkisz kocha stabilność. Nadmierne mieszanie osłabia strukturę glutenową tego szlachetnego zboża.',
+            regMF: 45, regWF: 45,
+            kType: 'orkiszowej',
+            kTemp: 'ok. 30-35°C'
+        }
+    };
+
+    function checkPass() {
+        if (document.getElementById('pass-field').value === BREAD_PASS) {
+            localStorage.setItem('bakery_access', 'granted');
+            location.reload();
+        } else { alert("Błędne hasło"); }
     }
-};
 
-        function checkPass() {
-            if (document.getElementById('pass-field').value === BREAD_PASS) {
-                localStorage.setItem('bakery_access', 'granted');
-                location.reload();
-            } else { alert("Błędne hasło"); }
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        const section = document.getElementById(tabId + '-section');
+        const btn = document.getElementById('btn-' + tabId);
+        if(section) section.classList.add('active');
+        if(btn) btn.classList.add('active');
+        if (tabId === 'galeria') renderAlbums();
+        sessionStorage.setItem('lastTab', tabId);
+        window.scrollTo(0,0);
+    }
+
+    function goToZurek() {
+        switchTab('wiedza');
+        const zurekBox = document.getElementById('zurek-recipe-box');
+        if(zurekBox && !zurekBox.classList.contains('active')) {
+            toggleAccordion(zurekBox.querySelector('button'));
         }
+        zurekBox.scrollIntoView({ behavior: 'smooth' });
+    }
 
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            const section = document.getElementById(tabId + '-section');
-            const btn = document.getElementById('btn-' + tabId);
-            if(section) section.classList.add('active');
-            if(btn) btn.classList.add('active');
-            if (tabId === 'galeria') renderAlbums();
-            sessionStorage.setItem('lastTab', tabId);
-            window.scrollTo(0,0);
-        }
+    async function saveToCloud(key, value) {
+        try { await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({key, value})}); setTimeout(loadFromCloud, 1000); } catch(e){ console.error(e); }
+    }
 
-        function goToZurek() {
-            switchTab('wiedza');
-            const zurekBox = document.getElementById('zurek-recipe-box');
-            if(zurekBox && !zurekBox.classList.contains('active')) {
-                toggleAccordion(zurekBox.querySelector('button'));
-            }
-            zurekBox.scrollIntoView({ behavior: 'smooth' });
-        }
-
-        async function saveToCloud(key, value) {
-            try { await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({key, value})}); setTimeout(loadFromCloud, 1000); } catch(e){ console.error(e); }
-        }
-
-        function loadFromCloud() {
-            window.handleCloudData = function(data) {
-                if (data.status === 'success') {
-                    for (let k in data.data) {
-                        const el = document.getElementById('feed-' + k);
-                        if (el) el.innerText = data.data[k] || "---";
-                        if (k === 'zlewki') {
-                            const zwInput = document.getElementById('zw');
-                            if(zwInput) zwInput.value = data.data[k];
-                        }
+    function loadFromCloud() {
+        window.handleCloudData = function(data) {
+            if (data.status === 'success') {
+                for (let k in data.data) {
+                    const el = document.getElementById('feed-' + k);
+                    if (el) el.innerText = data.data[k] || "---";
+                    if (k === 'zlewki') {
+                        const zwInput = document.getElementById('zw');
+                        if(zwInput) zwInput.value = data.data[k];
                     }
                 }
-            };
-            const script = document.createElement('script');
-            script.src = `${SCRIPT_URL}?action=get&callback=handleCloudData&t=${Date.now()}`;
-            document.body.appendChild(script);
-        }
+            }
+        };
+        const script = document.createElement('script');
+        script.src = `${SCRIPT_URL}?action=get&callback=handleCloudData&t=${Date.now()}`;
+        document.body.appendChild(script);
+    }
 
-        function sel(n) {
-            currentStarterKey = n.toLowerCase();
-            document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
-            const card = document.getElementById('card-' + currentStarterKey);
-            if(card) card.classList.add('selected');
-            const select = document.getElementById('quick-select');
-            if(select) select.value = currentStarterKey;
-            const title = document.getElementById('curr-name');
-            if(title) title.innerText = RECIPES[currentStarterKey].name;
-            updateIngredients();
-            if (isGalleryLoaded) renderAlbums();
-        }
+    function sel(n) {
+        currentStarterKey = n.toLowerCase();
+        document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
+        const card = document.getElementById('card-' + currentStarterKey);
+        if(card) card.classList.add('selected');
+        const select = document.getElementById('quick-select');
+        if(select) select.value = currentStarterKey;
+        const title = document.getElementById('curr-name');
+        if(title) title.innerText = RECIPES[currentStarterKey].name;
+        updateIngredients();
+        if (isGalleryLoaded) renderAlbums();
+    }
 
-        function changeQty(delta) {
-            currentQty = Math.max(1, currentQty + delta);
-            const qtyDisp = document.getElementById('display-qty');
-            if(qtyDisp) qtyDisp.innerText = currentQty;
-            updateIngredients();
-        }
+    function changeQty(delta) {
+        currentQty = Math.max(1, currentQty + delta);
+        const qtyDisp = document.getElementById('display-qty');
+        if(qtyDisp) qtyDisp.innerText = currentQty;
+        updateIngredients();
+    }
 
-      function updateIngredients() {
-    const r = RECIPES[currentStarterKey];
-    const q = currentQty;
-    if(!r) return;
+    function updateIngredients() {
+        const r = RECIPES[currentStarterKey];
+        const q = currentQty;
+        if(!r) return;
 
-    // 1. Sekcja PIECZENIE: Przeliczanie gramatur względem liczby bochenków (q)
-    const ids = ['sv', 'wv', 'fv', 'slv', 'w-sv', 'p-wv', 'p-sv', 'p-fv', 'p-slv'];
-    ids.forEach(id => {
-        const el = document.getElementById(id);
-        if(el) {
-            const key = id.includes('-') ? id.split('-')[1] : id;
-            // Tutaj wynik zależy od suwaka (r[key] * q)
-            el.innerText = (r[key] * q) + 'g';
-        }
-    });
-
-    // 2. Sekcja KARMIENIE: Wartości stałe i tekstowe (niezależne od suwaka)
-    
-    // Nazwa zakwasu w instrukcji karmienia
-    const kn = document.getElementById('k-name');
-    if(kn) kn.innerText = r.name;
-
-    // Rodzaj mąki i temperatura (pobierane z obiektu RECIPES)
-    const kt = document.getElementById('k-type');
-    if(kt) kt.innerText = r.kType;
-    
-    const ktemp = document.getElementById('k-temp');
-    if(ktemp) ktemp.innerText = r.kTemp;
-
-    // Stałe gramatury dla karmienia - ZAWSZE 65g (ignorujemy suwak bochenków)
-    const kfv = document.getElementById('k-fv');
-    if(kfv) kfv.innerText = '65g';
-    
-    const kwv = document.getElementById('k-wv');
-    if(kwv) kwv.innerText = '65g';
-}
-
-    const secStandalone = document.getElementById('p-secret-standalone');
-    if(secStandalone) secStandalone.innerHTML = r.secret;
-
-    if(document.getElementById('w-name')) {
-        document.getElementById('w-name').innerText = r.name;
-        document.getElementById('w-target').innerText = r.target;
-        document.getElementById('w-ratio').innerText = r.ratio;
-        document.getElementById('w-desc').innerText = r.desc;
-        
-        // Zabezpieczenie przed błędem, jeśli elementu nie ma w DOM
-        const setSafeText = (id, text) => {
+        // 1. Sekcja PIECZENIE
+        const ids = ['sv', 'wv', 'fv', 'slv', 'w-sv', 'p-wv', 'p-sv', 'p-fv', 'p-slv'];
+        ids.forEach(id => {
             const el = document.getElementById(id);
-            if(el) el.innerText = text;
+            if(el) {
+                const key = id.includes('-') ? id.split('-')[1] : id;
+                el.innerText = (r[key] * q) + 'g';
+            }
+        });
+
+        // 2. Sekcja KARMIENIE
+        const kn = document.getElementById('k-name');
+        if(kn) kn.innerText = r.name;
+
+        const kt = document.getElementById('k-type');
+        if(kt) kt.innerText = r.kType;
+        
+        const ktemp = document.getElementById('k-temp');
+        if(ktemp) ktemp.innerText = r.kTemp;
+
+        const kfv = document.getElementById('k-fv');
+        if(kfv) kfv.innerText = '65g';
+        
+        const kwv = document.getElementById('k-wv');
+        if(kwv) kwv.innerText = '65g';
+
+        // 3. Sekrety i Logistyka Zakwasu
+        const secStandalone = document.getElementById('p-secret-standalone');
+        if(secStandalone) secStandalone.innerHTML = r.secret;
+
+        if(document.getElementById('w-name')) {
+            document.getElementById('w-name').innerText = r.name;
+            document.getElementById('w-target').innerText = r.target;
+            document.getElementById('w-ratio').innerText = r.ratio;
+            document.getElementById('w-desc').innerText = r.desc;
+            
+            const setSafeText = (id, text) => {
+                const el = document.getElementById(id);
+                if(el) el.innerText = text;
+            };
+
+            setSafeText('w-regMF', r.regMF + 'g');
+            setSafeText('w-regWF', r.regWF + 'g');
+            
+            const s1 = "Słoiku Roboczym";
+            const s1_nom = "Słoik Roboczy";
+            const s2 = "Słoika " + r.name;
+            const s2_nom = "Słoiku " + r.name;
+            const s3 = "Słoika Wernyhora";
+
+            setSafeText('sl-1-a', s1_nom);
+            setSafeText('sl-1-b', s1);
+            setSafeText('sl-2-a', s2);
+            setSafeText('sl-2-b', s2_nom);
+            setSafeText('sl-2-c-title', s2_nom);
+            setSafeText('sl-2-c', s2_nom);
+            setSafeText('sl-2-d', s2_nom);
+            setSafeText('sl-3-a', s3);
+        }
+    }
+
+    function updateSchedule(source) {
+        let inputVal;
+        if (source === 'wybudzenie') inputVal = document.getElementById('t-wybudzenie-input').value;
+        else if (source === 'mieszanie') inputVal = document.getElementById('start-time').value;
+        else if (source === 'pieczenie') inputVal = document.getElementById('t-pieczenie-input').value;
+        else if (source === 'jedzenie') inputVal = document.getElementById('t-jedzenie-input').value;
+
+        if (!inputVal) return;
+
+        const [h, m] = inputVal.split(':').map(Number);
+        let referenceDate = new Date(2026, 0, 1, h, m, 0, 0);
+
+        let mieszanieDate = new Date(referenceDate);
+        if (source === 'wybudzenie') mieszanieDate.setMinutes(mieszanieDate.getMinutes() + 360); 
+        if (source === 'pieczenie') mieszanieDate.setMinutes(mieszanieDate.getMinutes() - 1125); 
+        if (source === 'jedzenie') mieszanieDate.setMinutes(mieszanieDate.getMinutes() - 1230); 
+
+        const formatTime = (date, addMin) => {
+            const d = new Date(mieszanieDate.getTime() + addMin * 60000);
+            let minutes = d.getMinutes();
+            const roundedMinutes = Math.round(minutes / 15) * 15;
+            d.setMinutes(roundedMinutes);
+            return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
         };
 
-        setSafeText('w-regMF', r.regMF + 'g');
-        setSafeText('w-regWF', r.regWF + 'g');
-        
-        const s1 = "Słoiku Roboczym";
-        const s1_nom = "Słoik Roboczy";
-        const s2 = "Słoika " + r.name;
-        const s2_nom = "Słoiku " + r.name;
-        const s3 = "Słoika Wernyhora";
-        const s3_nom = "Słoik Wernyhora";
+        document.getElementById('t-wybudzenie-input').value = formatTime(mieszanieDate, -360);
+        document.getElementById('start-time').value = formatTime(mieszanieDate, 0);
+        document.getElementById('t-pieczenie-input').value = formatTime(mieszanieDate, 1125);
+        document.getElementById('t-jedzenie-input').value = formatTime(mieszanieDate, 1230);
 
-        setSafeText('sl-1-a', s1_nom);
-        setSafeText('sl-1-b', s1);
-        setSafeText('sl-2-a', s2);
-        setSafeText('sl-2-b', s2_nom);
-        setSafeText('sl-2-c-title', s2_nom);
-        setSafeText('sl-2-c', s2_nom);
-        setSafeText('sl-2-d', s2_nom);
-        setSafeText('sl-3-a', s3);
-        setSafeText('sl-3-b', s3_nom);
+        document.getElementById('t-lodowka').innerText = formatTime(mieszanieDate, 450);
+        document.getElementById('t-formowanie').innerText = formatTime(mieszanieDate, 1080);
+        document.getElementById('t-rumienienie').innerText = formatTime(mieszanieDate, 1155);
+        document.getElementById('t-upieczenie').innerText = formatTime(mieszanieDate, 1170);
     }
-}
 
-        function updateSchedule(source) {
-            let inputVal;
-            
-            if (source === 'wybudzenie') inputVal = document.getElementById('t-wybudzenie-input').value;
-            else if (source === 'mieszanie') inputVal = document.getElementById('start-time').value;
-            else if (source === 'pieczenie') inputVal = document.getElementById('t-pieczenie-input').value;
-            else if (source === 'jedzenie') inputVal = document.getElementById('t-jedzenie-input').value;
+    function markFed(k, e) { 
+        e.stopPropagation(); 
+        const btn = e.currentTarget;
+        btn.classList.add('fed-success');
+        btn.innerText = "Nakarmiono";
+        saveToCloud(k, new Date().toLocaleDateString('pl-PL')); 
+    }
 
-            if (!inputVal) return;
+    function manualDate(k, e) {
+        e.stopPropagation();
+        const input = document.createElement('input');
+        input.type = 'date';
+        input.style.position = 'fixed';
+        input.style.opacity = '0';
+        document.body.appendChild(input);
+        input.showPicker();
+        input.onchange = () => {
+            const val = input.value ? new Date(input.value).toLocaleDateString('pl-PL') : "---";
+            saveToCloud(k, val);
+            document.body.removeChild(input);
+        };
+        input.onblur = () => { if(document.body.contains(input)) document.body.removeChild(input); };
+    }
 
-            const [h, m] = inputVal.split(':').map(Number);
-            let referenceDate = new Date();
-            referenceDate.setHours(h, m, 0, 0);
+    function toggleAccordion(btn) { btn.parentElement.classList.toggle('active'); }
 
-            let mieszanieDate = new Date(referenceDate);
-            if (source === 'wybudzenie') mieszanieDate.setMinutes(mieszanieDate.getMinutes() + 360); 
-            if (source === 'pieczenie') mieszanieDate.setMinutes(mieszanieDate.getMinutes() - 1125); 
-            if (source === 'jedzenie') mieszanieDate.setMinutes(mieszanieDate.getMinutes() - 1230); 
+    function parsePolishDate(dateStr) {
+        if (!dateStr) return new Date(0);
+        const parts = dateStr.split('.');
+        if (parts.length !== 3) return new Date(dateStr);
+        return new Date(parts[2], parts[1] - 1, parts[0]);
+    }
 
-            const formatTime = (date, addMin) => {
-                const d = new Date(mieszanieDate.getTime() + addMin * 60000);
-                const hours = String(d.getHours()).padStart(2, '0');
-                const minutes = String(d.getMinutes()).padStart(2, '0');
-                return `${hours}:${minutes}`;
-            };
+    function populateYearFilter(albums) {
+        const yearSelect = document.getElementById('filter-year');
+        const years = [...new Set(albums.map(a => parsePolishDate(a.date).getFullYear()))]
+                      .filter(y => !isNaN(y))
+                      .sort((a, b) => b - a);
+        yearSelect.innerHTML = '<option value="">Wszystkie lata</option>';
+        years.forEach(y => { yearSelect.innerHTML += `<option value="${y}">${y}</option>`; });
+    }
 
-            document.getElementById('t-wybudzenie-input').value = formatTime(mieszanieDate, -360);
-            document.getElementById('start-time').value = formatTime(mieszanieDate, 0);
-            document.getElementById('t-pieczenie-input').value = formatTime(mieszanieDate, 1125);
-            document.getElementById('t-jedzenie-input').value = formatTime(mieszanieDate, 1230);
-
-            document.getElementById('t-lodowka').innerText = formatTime(mieszanieDate, 450);
-            document.getElementById('t-formowanie').innerText = formatTime(mieszanieDate, 1080);
-            document.getElementById('t-rumienienie').innerText = formatTime(mieszanieDate, 1155);
-            document.getElementById('t-upieczenie').innerText = formatTime(mieszanieDate, 1170);
+    function updateMonthFilter() {
+        const year = document.getElementById('filter-year').value;
+        const monthSelect = document.getElementById('filter-month');
+        if (!year) {
+            monthSelect.value = "";
+            monthSelect.disabled = true;
+            monthSelect.classList.add('opacity-50');
+            applyFilters();
+            return;
         }
-
-            
-            function updateSchedule(source) {
-    let inputVal;
-    
-    // Pobieramy wartość z odpowiedniego pola
-    if (source === 'wybudzenie') inputVal = document.getElementById('t-wybudzenie-input').value;
-    else if (source === 'mieszanie') inputVal = document.getElementById('start-time').value;
-    else if (source === 'pieczenie') inputVal = document.getElementById('t-pieczenie-input').value;
-    else if (source === 'jedzenie') inputVal = document.getElementById('t-jedzenie-input').value;
-
-    if (!inputVal) return;
-
-    const [h, m] = inputVal.split(':').map(Number);
-    
-    // Tworzymy datę bazową (używamy stałej daty, by uniknąć problemów z przejściem czasu)
-    let referenceDate = new Date(2026, 0, 1, h, m, 0, 0);
-
-    // Obliczamy punkt zero (godzinę mieszania)
-    let mieszanieDate = new Date(referenceDate);
-    if (source === 'wybudzenie') mieszanieDate.setMinutes(mieszanieDate.getMinutes() + 360); 
-    if (source === 'pieczenie') mieszanieDate.setMinutes(mieszanieDate.getMinutes() - 1125); 
-    if (source === 'jedzenie') mieszanieDate.setMinutes(mieszanieDate.getMinutes() - 1230); 
-
-    // Funkcja formatująca z wymuszeniem skoku co 15 minut (dla estetyki)
-    const formatTime = (date, addMin) => {
-        const d = new Date(mieszanieDate.getTime() + addMin * 60000);
-        
-        // Opcjonalne: wymuszenie zaokrąglenia do 15 min, gdyby coś "pływało"
-        let minutes = d.getMinutes();
-        const roundedMinutes = Math.round(minutes / 15) * 15;
-        d.setMinutes(roundedMinutes);
-
-        const hoursStr = String(d.getHours()).padStart(2, '0');
-        const minutesStr = String(d.getMinutes()).padStart(2, '0');
-        return `${hoursStr}:${minutesStr}`;
-    };
-
-    // AKTUALIZACJA PÓL INTERAKTYWNYCH (Twoje nowe inputy tekstowe)
-    // Zmieniamy .value, bo stepTime czyta wartości z pól tekstowych
-    document.getElementById('t-wybudzenie-input').value = formatTime(mieszanieDate, -360);
-    document.getElementById('start-time').value = formatTime(mieszanieDate, 0);
-    document.getElementById('t-pieczenie-input').value = formatTime(mieszanieDate, 1125);
-    document.getElementById('t-jedzenie-input').value = formatTime(mieszanieDate, 1230);
-
-    // AKTUALIZACJA PÓL TEKSTOWYCH (innerText)
-    // Wszystkie ID i interwały zachowane zgodnie z Twoim kodem
-    document.getElementById('t-lodowka').innerText = formatTime(mieszanieDate, 450);
-    document.getElementById('t-formowanie').innerText = formatTime(mieszanieDate, 1080);
-    document.getElementById('t-rumienienie').innerText = formatTime(mieszanieDate, 1155);
-    document.getElementById('t-upieczenie').innerText = formatTime(mieszanieDate, 1170);
-}
-
-        function markFed(k, e) { 
-            e.stopPropagation(); 
-            const btn = e.currentTarget;
-            btn.classList.add('fed-success');
-            btn.innerText = "Nakarmiono";
-            saveToCloud(k, new Date().toLocaleDateString('pl-PL')); 
-        }
-
-        function manualDate(k, e) {
-            e.stopPropagation();
-            const input = document.createElement('input');
-            input.type = 'date';
-            input.style.position = 'fixed';
-            input.style.opacity = '0';
-            document.body.appendChild(input);
-            input.showPicker();
-            input.onchange = () => {
-                const val = input.value ? new Date(input.value).toLocaleDateString('pl-PL') : "---";
-                saveToCloud(k, val);
-                document.body.removeChild(input);
-            };
-            input.onblur = () => { if(document.body.contains(input)) document.body.removeChild(input); };
-        }
-
-        function toggleAccordion(btn) { btn.parentElement.classList.toggle('active'); }
-
-        function parsePolishDate(dateStr) {
-    if (!dateStr) return new Date(0);
-    const parts = dateStr.split('.');
-    if (parts.length !== 3) return new Date(dateStr); // fallback
-    // Tworzy datę: rok, miesiąc (0-11), dzień
-    return new Date(parts[2], parts[1] - 1, parts[0]);
-}
-
-function populateYearFilter(albums) {
-    const yearSelect = document.getElementById('filter-year');
-    // Używamy parsePolishDate zamiast new Date
-    const years = [...new Set(albums.map(a => parsePolishDate(a.date).getFullYear()))]
-                  .filter(y => !isNaN(y))
-                  .sort((a, b) => b - a);
-    
-    yearSelect.innerHTML = '<option value="">Wszystkie lata</option>';
-    years.forEach(y => {
-        yearSelect.innerHTML += `<option value="${y}">${y}</option>`;
-    });
-}
-
-function updateMonthFilter() {
-    const year = document.getElementById('filter-year').value;
-    const monthSelect = document.getElementById('filter-month');
-    
-    if (!year) {
-        monthSelect.value = "";
-        monthSelect.disabled = true;
-        monthSelect.classList.add('opacity-50');
+        monthSelect.disabled = false;
+        monthSelect.classList.remove('opacity-50');
+        const filteredByYear = allAlbumsData.filter(a => parsePolishDate(a.date).getFullYear() == year);
+        const months = [...new Set(filteredByYear.map(a => parsePolishDate(a.date).getMonth() + 1))].sort((a, b) => a - b);
+        const monthNames = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
+        monthSelect.innerHTML = '<option value="">Wszystkie m-ce</option>';
+        months.forEach(m => { monthSelect.innerHTML += `<option value="${m}">${monthNames[m-1]}</option>`; });
         applyFilters();
-        return;
+    }
+    
+    function applyFilters() {
+        const year = document.getElementById('filter-year').value;
+        const month = document.getElementById('filter-month').value;
+        let filtered = allAlbumsData;
+        if (year) filtered = filtered.filter(a => parsePolishDate(a.date).getFullYear() == year);
+        if (month) filtered = filtered.filter(a => (parsePolishDate(a.date).getMonth() + 1) == month);
+        renderAlbums(filtered);
     }
 
-    monthSelect.disabled = false;
-    monthSelect.classList.remove('opacity-50');
-    
-    const filteredByYear = allAlbumsData.filter(a => parsePolishDate(a.date).getFullYear() == year);
-    const months = [...new Set(filteredByYear.map(a => parsePolishDate(a.date).getMonth() + 1))].sort((a, b) => a - b);
-    
-    const monthNames = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
-    
-    monthSelect.innerHTML = '<option value="">Wszystkie m-ce</option>';
-    months.forEach(m => {
-        monthSelect.innerHTML += `<option value="${m}">${monthNames[m-1]}</option>`;
-    });
-    
-    applyFilters();
-}
-    
-function applyFilters() {
-    const year = document.getElementById('filter-year').value;
-    const month = document.getElementById('filter-month').value;
-    
-    let filtered = allAlbumsData;
-    
-    if (year) {
-        filtered = filtered.filter(a => parsePolishDate(a.date).getFullYear() == year);
+    function fetchGallery() {
+        window.handleGalleryData = function(res) {
+            if (res.status === 'success') { 
+                allGalleryData = res.data; 
+                allAlbumsData = res.data; 
+                isGalleryLoaded = true; 
+                populateYearFilter(res.data);
+                renderAlbums(res.data); 
+            }
+        };
+        const script = document.createElement('script');
+        script.src = `${SCRIPT_URL}?action=getGallery&callback=handleGalleryData&t=${Date.now()}`;
+        document.body.appendChild(script);
     }
-    if (month) {
-        filtered = filtered.filter(a => (parsePolishDate(a.date).getMonth() + 1) == month);
-    }
-    
-    renderAlbums(filtered);
-}
 
-       function fetchGallery() {
-    window.handleGalleryData = function(res) {
-        if (res.status === 'success') { 
-            allGalleryData = res.data; 
-            allAlbumsData = res.data; 
-            isGalleryLoaded = true; 
-            populateYearFilter(res.data);
-            renderAlbums(res.data); 
+    function renderAlbums() {
+        const cont = document.getElementById('gal-cont');
+        if (!cont || !isGalleryLoaded) return;
+        const r = RECIPES[currentStarterKey];
+        const sn = r.name.split(' ')[0].toLowerCase();
+        const year = document.getElementById('filter-year').value;
+        const month = document.getElementById('filter-month').value;
+
+        const f = allGalleryData.filter(a => {
+            const matchStarter = a.starter && a.starter.toLowerCase().includes(sn);
+            const albumDate = parsePolishDate(a.date);
+            const matchYear = !year || albumDate.getFullYear() == year;
+            const matchMonth = !month || (albumDate.getMonth() + 1) == month;
+            return matchStarter && matchYear && matchMonth;
+        });
+
+        if (f.length === 0) {
+            cont.style.display = 'flex';
+            cont.style.justifyContent = 'center';
+            cont.style.alignItems = 'center';
+            cont.style.minHeight = '200px';
+            cont.innerHTML = `<p class="text-stone-400 italic text-center w-full px-4">Brak zdjęć dla wybranych filtrów.</p>`;
+            return;
         }
-    };
-    const script = document.createElement('script');
-    script.src = `${SCRIPT_URL}?action=getGallery&callback=handleGalleryData&t=${Date.now()}`;
-    document.body.appendChild(script);
-}
 
-       function renderAlbums() {
-    const cont = document.getElementById('gal-cont');
-    if (!cont || !isGalleryLoaded) return;
-
-    const r = RECIPES[currentStarterKey];
-    const sn = r.name.split(' ')[0].toLowerCase();
-    
-    const year = document.getElementById('filter-year').value;
-    const month = document.getElementById('filter-month').value;
-
-    const f = allGalleryData.filter(a => {
-        const matchStarter = a.starter && a.starter.toLowerCase().includes(sn);
-        const albumDate = parsePolishDate(a.date);
-        const matchYear = !year || albumDate.getFullYear() == year;
-        const matchMonth = !month || (albumDate.getMonth() + 1) == month;
-        return matchStarter && matchYear && matchMonth;
-    });
-
-    // REAKCJA NA BRAK ZDJĘĆ - WERSJA Z WYMUSZONYM ŚRODKIEM
-    if (f.length === 0) {
-        cont.style.display = 'flex'; // Zmieniamy na flex, aby łatwiej centrować w pionie i poziomie
-        cont.style.justifyContent = 'center';
-        cont.style.alignItems = 'center';
-        cont.style.minHeight = '200px'; // Rezerwujemy miejsce, żeby tekst nie był "przyklejony" do góry
-        cont.style.width = '100%';
-        
-        cont.innerHTML = `<p class="text-stone-400 italic text-center w-full px-4">Brak zdjęć dla wybranych filtrów.</p>`;
-        return;
+        cont.style.display = 'grid';
+        cont.style.gridTemplateColumns = 'repeat(2, 1fr)';
+        cont.style.gap = '16px';
+        cont.innerHTML = f.map((a, i) => `
+            <div onclick="openAlbumFiltered(${i}, '${sn}')" class="relative aspect-[3/4] rounded-xl overflow-hidden shadow-lg bg-stone-800">
+                <img src="${a.cover}" class="w-full h-full object-cover">
+                <div class="absolute bottom-0 inset-x-0 p-3 bg-black/60 backdrop-blur-sm text-white text-[10px]">
+                    <b>${a.date}</b><br>${a.starter}
+                </div>
+            </div>
+        `).join('');
     }
 
-    // RENDEROWANIE ALBUMÓW - PRZYWRACAMY TWOJE ORYGINALNE USTAWIENIA
-    cont.style.display = 'grid';
-    cont.style.gridTemplateColumns = 'repeat(2, 1fr)';
-    cont.style.justifyContent = 'stretch';
-    cont.style.alignItems = 'stretch';
-    cont.style.minHeight = '0';
-    cont.style.gap = '16px';
-    
-    cont.innerHTML = f.map((a, i) => `
-        <div onclick="openAlbumFiltered(${i}, '${sn}')" class="relative aspect-[3/4] rounded-xl overflow-hidden shadow-lg bg-stone-800">
-            <img src="${a.cover}" class="w-full h-full object-cover">
-            <div class="absolute bottom-0 inset-x-0 p-3 bg-black/60 backdrop-blur-sm text-white text-[10px]">
-                <b>${a.date}</b><br>${a.starter}
-            </div>
-        </div>
-    `).join('');
-}
-
-        function openAlbumFiltered(idx, name) {
-            const filtered = allGalleryData.filter(a => a.starter && a.starter.toLowerCase().includes(name));
-            const album = filtered[idx];
-            if (!album) return;
-            currentAlbumPhotos = album.photos;
-            currentImgIndex = 0;
-            const thumbStrip = document.getElementById('thumb-strip');
+    function openAlbumFiltered(idx, name) {
+        const filtered = allGalleryData.filter(a => a.starter && a.starter.toLowerCase().includes(name));
+        const album = filtered[idx];
+        if (!album) return;
+        currentAlbumPhotos = album.photos;
+        currentImgIndex = 0;
+        const thumbStrip = document.getElementById('thumb-strip');
+        if(thumbStrip) {
             thumbStrip.innerHTML = currentAlbumPhotos.map((url, i) => `
                 <img src="${url}" onclick="jumpToImage(${i}); event.stopPropagation()" class="h-16 w-12 object-cover rounded cursor-pointer flex-shrink-0 border-2 border-transparent opacity-50 transition-all">
             `).join('');
-            document.getElementById('carousel-info').innerHTML = `${album.date}<br>${album.starter}`;
-            document.getElementById('viewer-modal').classList.remove('hidden');
-            document.getElementById('viewer-modal').classList.add('flex');
-            updateCarouselUI();
         }
+        document.getElementById('carousel-info').innerHTML = `${album.date}<br>${album.starter}`;
+        document.getElementById('viewer-modal').classList.remove('hidden');
+        document.getElementById('viewer-modal').classList.add('flex');
+        updateCarouselUI();
+    }
 
-        function moveCarousel(dir) {
-    // Resetujemy zoom przed zmianą zdjęcia
-    document.getElementById('carousel-img').classList.remove('zoomed');
-    currentImgIndex = (currentImgIndex + dir + currentAlbumPhotos.length) % currentAlbumPhotos.length;
-    updateCarouselUI();
-}
+    function moveCarousel(dir) {
+        document.getElementById('carousel-img').classList.remove('zoomed');
+        currentImgIndex = (currentImgIndex + dir + currentAlbumPhotos.length) % currentAlbumPhotos.length;
+        updateCarouselUI();
+    }
 
-        function jumpToImage(i) { currentImgIndex = i; updateCarouselUI(); }
+    function jumpToImage(i) { currentImgIndex = i; updateCarouselUI(); }
 
-        function updateCarouselUI() {
-            const img = document.getElementById('carousel-img');
-            img.style.opacity = '0';
-            setTimeout(() => {
-                img.src = currentAlbumPhotos[currentImgIndex];
-                img.style.opacity = '1';
-            }, 100);
-            const thumbs = document.querySelectorAll('#thumb-strip img');
-            thumbs.forEach((t, i) => {
-                if(i === currentImgIndex) {
-                    t.classList.add('border-amber-500', 'opacity-100');
-                    t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                } else { t.classList.remove('border-amber-500', 'opacity-100'); }
-            });
+    function updateCarouselUI() {
+        const img = document.getElementById('carousel-img');
+        img.style.opacity = '0';
+        setTimeout(() => {
+            img.src = currentAlbumPhotos[currentImgIndex];
+            img.style.opacity = '1';
+        }, 100);
+        const thumbs = document.querySelectorAll('#thumb-strip img');
+        thumbs.forEach((t, i) => {
+            if(i === currentImgIndex) {
+                t.classList.add('border-amber-500', 'opacity-100');
+                t.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            } else { t.classList.remove('border-amber-500', 'opacity-100'); }
+        });
+    }
+    
+    function toggleZoom(img) {
+        img.classList.toggle('zoomed');
+        if (!img.classList.contains('zoomed')) {
+            const container = document.getElementById('img-container');
+            if(container) container.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
         }
-        
-        function toggleZoom(img) {
-    img.classList.toggle('zoomed');
-    
-    // Jeśli wyłączamy zoom, resetujemy przewijanie kontenera na środek
-    if (!img.classList.contains('zoomed')) {
-        const container = document.getElementById('img-container');
-        container.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
     }
-}
 
-        function closeViewer() {
-    const modal = document.getElementById('viewer-modal');
-    const img = document.getElementById('carousel-img');
-    const thumbStrip = document.getElementById('thumb-strip');
-    
-    img.classList.remove('zoomed');
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-    if(thumbStrip) thumbStrip.style.display = 'flex'; // Przywróć pasek
-}
-
-        document.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('bakery_access') === 'granted') {
-        document.getElementById('lock-screen').style.display = 'none';
-        try {
-            loadFromCloud(); 
-            fetchGallery(); 
-            sel('clint');
-            const saved = sessionStorage.getItem('lastTab');
-            if (saved) switchTab(saved);       
-            if(document.getElementById('start-time')) updateSchedule('mieszanie');
-
-        } catch(e) { console.error("Inicjalizacja:", e); }
-    }
-});
-
-        // Obsługa klawisza Escape do zamykania galerii
-document.addEventListener('keydown', function(event) {
-    if (event.key === "Escape") {
+    function closeViewer() {
         const modal = document.getElementById('viewer-modal');
-        // Sprawdzamy czy modal jest widoczny, żeby nie wywoływać funkcji niepotrzebnie
-        if (modal && !modal.classList.contains('hidden')) {
-            closeViewer();
+        const img = document.getElementById('carousel-img');
+        const thumbStrip = document.getElementById('thumb-strip');
+        if(img) img.classList.remove('zoomed');
+        if(modal) {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+        if(thumbStrip) thumbStrip.style.display = 'flex';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (localStorage.getItem('bakery_access') === 'granted') {
+            document.getElementById('lock-screen').style.display = 'none';
+            try {
+                loadFromCloud(); 
+                fetchGallery(); 
+                sel('clint');
+                const saved = sessionStorage.getItem('lastTab');
+                if (saved) switchTab(saved);        
+                if(document.getElementById('start-time')) updateSchedule('mieszanie');
+            } catch(e) { console.error("Inicjalizacja:", e); }
+        }
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Escape") {
+            const modal = document.getElementById('viewer-modal');
+            if (modal && !modal.classList.contains('hidden')) closeViewer();
+        }
+    });
+    
+    function openSingleView(src) {
+        const modal = document.getElementById('viewer-modal');
+        const img = document.getElementById('carousel-img');
+        const thumbStrip = document.getElementById('thumb-strip');
+        if(thumbStrip) thumbStrip.style.display = 'none';
+        currentImgIndex = 0;
+        currentAlbumPhotos = [src]; 
+        if(img) img.src = src;
+        if(modal) {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         }
     }
-});
-        
-    function openSingleView(src) {
-    const modal = document.getElementById('viewer-modal');
-    const img = document.getElementById('carousel-img');
-    const thumbStrip = document.getElementById('thumb-strip');
-    
-    // Ukrywamy miniatury z dołu, bo to podgląd pojedynczy
-    if(thumbStrip) thumbStrip.style.display = 'none';
-    
-    currentImgIndex = 0;
-    currentAlbumPhotos = [src]; // Tworzymy "sztuczny" album z jednym zdjęciem
-    
-    img.src = src;
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-}
 
-        function goToProfile(starterId) {
-    // 1. Przełączamy na odpowiednią zakładkę
-    switchTab('sylwetki');
-
-    setTimeout(() => {
-        const map = {
-            'clint': 0,
-            'sylvester': 1,
-            'hildegarda': 2
-        };
-
-        const index = map[starterId];
-        const container = document.getElementById('sylwetki-section');
-        if (!container) return;
-
-        const accordionItems = container.querySelectorAll('.accordion-item');
-        const targetItem = accordionItems[index];
-        
-        if (targetItem) {
-            const btn = targetItem.querySelector('button');
-            const content = targetItem.querySelector('.accordion-content');
-            
-            // 2. Otwieramy akordeon, jeśli jest zamknięty
-            if (!content.style.maxHeight || content.style.maxHeight === "0px") {
-                toggleAccordion(btn);
+    function goToProfile(starterId) {
+        switchTab('sylwetki');
+        setTimeout(() => {
+            const map = { 'clint': 0, 'sylvester': 1, 'hildegarda': 2 };
+            const index = map[starterId];
+            const container = document.getElementById('sylwetki-section');
+            if (!container) return;
+            const accordionItems = container.querySelectorAll('.accordion-item');
+            const targetItem = accordionItems[index];
+            if (targetItem) {
+                const btn = targetItem.querySelector('button');
+                const content = targetItem.querySelector('.accordion-content');
+                if (!content.style.maxHeight || content.style.maxHeight === "0px") toggleAccordion(btn);
+                setTimeout(() => {
+                    const nav = document.querySelector('nav');
+                    const navHeight = nav ? nav.offsetHeight : 0;
+                    const elementPosition = targetItem.getBoundingClientRect().top + window.pageYOffset;
+                    window.scrollTo({ top: elementPosition - navHeight - 10, behavior: 'smooth' });
+                }, 350);
             }
+        }, 100);
+    }
 
-            // 3. Przewijanie wykonujemy z lekkim opóźnieniem, 
-            // aby ramka zdążyła się rozwinąć i ustabilizować swoją wysokość
-            setTimeout(() => {
-                const nav = document.querySelector('nav');
-                const navHeight = nav ? nav.offsetHeight : 0;
-                
-                // Obliczamy pozycję elementu względem całej strony
-                const elementPosition = targetItem.getBoundingClientRect().top + window.pageYOffset;
-                
-                // Celujemy dokładnie pod nawigację (z małym marginesem 10px dla estetyki)
-                const offsetPosition = elementPosition - navHeight - 10;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-            }, 350); // To opóźnienie jest kluczowe dla zsynchronizowania z animacją CSS
-        }
-    }, 100);
-}
-       function stepTime(id, delta, source) {
-    const el = document.getElementById(id);
-    let [h, m] = el.value.split(':').map(Number);
-    
-    let totalMinutes = h * 60 + m + delta;
-    if (totalMinutes < 0) totalMinutes += 1440;
-    if (totalMinutes >= 1440) totalMinutes -= 1440;
-    
-    const newH = String(Math.floor(totalMinutes / 60)).padStart(2, '0');
-    const newM = String(totalMinutes % 60).padStart(2, '0');
-    
-    el.value = `${newH}:${newM}`;
-    updateSchedule(source);
-} 
-        
-    </script>
+    function stepTime(id, delta, source) {
+        const el = document.getElementById(id);
+        let [h, m] = el.value.split(':').map(Number);
+        let totalMinutes = h * 60 + m + delta;
+        if (totalMinutes < 0) totalMinutes += 1440;
+        if (totalMinutes >= 1440) totalMinutes -= 1440;
+        el.value = `${String(Math.floor(totalMinutes / 60)).padStart(2, '0')}:${String(totalMinutes % 60).padStart(2, '0')}`;
+        updateSchedule(source);
+    } 
+</script>
 </body>
 </html>
