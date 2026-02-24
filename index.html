@@ -380,7 +380,7 @@
     <div id="img-container" class="relative flex-1 w-full" onclick="if(event.target === this) closeViewer()">
         <button onclick="moveCarousel(-1); event.stopPropagation()" class="absolute left-2 top-1/2 -translate-y-1/2 w-12 h-24 bg-black/20 text-white text-3xl z-[1000001] flex items-center justify-center rounded-r-lg">❮</button>
         
-        <img id="carousel-img" src="" class="cursor-default" onclick="event.stopPropagation()">
+        <img id="carousel-img" src="" class="cursor-default" onclick="event.stopPropagation()" ondblclick="toggleZoom(this)">
         
         <button onclick="moveCarousel(1); event.stopPropagation()" class="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-24 bg-black/20 text-white text-3xl z-[1000001] flex items-center justify-center rounded-l-lg">❯</button>
     </div>
@@ -627,9 +627,10 @@
         }
 
         function moveCarousel(dir) {
-            currentImgIndex = (currentImgIndex + dir + currentAlbumPhotos.length) % currentAlbumPhotos.length;
-            updateCarouselUI();
-        }
+    document.getElementById('carousel-img').classList.remove('zoomed'); // Dodaj to
+    currentImgIndex = (currentImgIndex + dir + currentAlbumPhotos.length) % currentAlbumPhotos.length;
+    updateCarouselUI();
+}
 
         function jumpToImage(i) { currentImgIndex = i; updateCarouselUI(); }
 
@@ -648,12 +649,23 @@
                 } else { t.classList.remove('border-amber-500', 'opacity-100'); }
             });
         }
+        
+        function toggleZoom(img) {
+    img.classList.toggle('zoomed');
+    
+    // Jeśli wyłączamy zoom, resetujemy przewijanie kontenera na środek
+    if (!img.classList.contains('zoomed')) {
+        const container = document.getElementById('img-container');
+        container.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+    }
+}
 
         function closeViewer() {
-            const modal = document.getElementById('viewer-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
+    const modal = document.getElementById('viewer-modal');
+    document.getElementById('carousel-img').classList.remove('zoomed'); // Dodaj to
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
 
         document.addEventListener('DOMContentLoaded', () => {
             if (localStorage.getItem('bakery_access') === 'granted') {
@@ -667,6 +679,17 @@
                 } catch(e) { console.error("Inicjalizacja:", e); }
             }
         });
+
+        // Obsługa klawisza Escape do zamykania galerii
+document.addEventListener('keydown', function(event) {
+    if (event.key === "Escape") {
+        const modal = document.getElementById('viewer-modal');
+        // Sprawdzamy czy modal jest widoczny, żeby nie wywoływać funkcji niepotrzebnie
+        if (modal && !modal.classList.contains('hidden')) {
+            closeViewer();
+        }
+    }
+});
     </script>
 </body>
 </html>
