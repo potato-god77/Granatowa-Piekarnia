@@ -327,11 +327,22 @@
             </div>
         </section>
 
-        <section id="galeria-section" class="tab-content pt-4">
-            <div id="gal-cont" class="flex justify-center items-center py-20 text-center">
-                <div class="w-8 h-8 border-4 border-stone-200 border-t-amber-600 rounded-full animate-spin mx-auto"></div>
-            </div>
-        </section>
+       <section id="galeria-section" class="tab-content pt-4">
+    <h2 class="serif text-2xl font-bold text-center mb-6 text-stone-800">Archiwum wypieków</h2>
+
+    <div class="flex gap-2 mb-6 px-4 justify-center">
+        <select id="filter-year" onchange="updateMonthFilter()" class="bg-white border border-stone-200 rounded-lg px-3 py-2 text-sm text-stone-700 outline-none focus:border-amber-500 transition-colors w-1/2 max-w-[150px]">
+            <option value="">Wszystkie lata</option>
+        </select>
+        <select id="filter-month" onchange="applyFilters()" disabled class="bg-white border border-stone-200 rounded-lg px-3 py-2 text-sm text-stone-700 outline-none focus:border-amber-500 transition-colors w-1/2 max-w-[150px] opacity-50">
+            <option value="">Wszystkie m-ce</option>
+        </select>
+    </div>
+
+    <div id="gal-cont" class="flex justify-center items-center py-20 text-center">
+        <div class="w-8 h-8 border-4 border-stone-200 border-t-amber-600 rounded-full animate-spin mx-auto"></div>
+    </div>
+</section>
 
         <section id="sylwetki-section" class="tab-content space-y-6">
     <div class="accordion-item glass-card">
@@ -435,6 +446,7 @@
         let currentAlbumPhotos = [];
         let currentImgIndex = 0;
         let isGalleryLoaded = false;
+        let allAlbumsData = []; // Tu będziemy trzymać kopię wszystkich albumów
 
         const RECIPES = {
             clint: { 
@@ -615,14 +627,84 @@
 
         function toggleAccordion(btn) { btn.parentElement.classList.toggle('active'); }
 
-        function fetchGallery() {
-            window.handleGalleryData = function(res) {
-                if (res.status === 'success') { allGalleryData = res.data; isGalleryLoaded = true; renderAlbums(); }
-            };
-            const script = document.createElement('script');
-            script.src = `${SCRIPT_URL}?action=getGallery&callback=handleGalleryData&t=${Date.now()}`;
-            document.body.appendChild(script);
+        
+
+function populateYearFilter(albums) {
+    const yearSelect = document.getElementById('filter-year');
+    const years = [...new Set(albums.map(a => new Date(a.date).getFullYear()))].sort((a, b) => b - a);
+    
+    yearSelect.innerHTML = '<option value="">Wszystkie lata</option>';
+    years.forEach(y => {
+        yearSelect.innerHTML += `<option value="${y}">${y}</option>`;
+    });
+}
+
+function updateMonthFilter() {
+    const year = document.getElementById('filter-year').value;
+    const monthSelect = document.getElementById('filter-month');
+    
+    if (!year) {
+        monthSelect.value = "";
+        monthSelect.disabled = true;
+        monthSelect.classList.add('opacity-50');
+        applyFilters();
+        return;
+    }
+
+    monthSelect.disabled = false;
+    monthSelect.classList.remove('opacity-50');
+    
+    const filteredByYear = allAlbumsData.filter(a => new Date(a.date).getFullYear() == year);
+    const months = [...new Set(filteredByYear.map(a => new Date(a.date).getMonth() + 1))].sort((a, b) => a - b);
+    
+    const monthNames = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
+    
+    monthSelect.innerHTML = '<option value="">Wszystkie m-ce</option>';
+    months.forEach(m => {
+        monthSelect.innerHTML += `<option value="${m}">${monthNames[m-1]}</option>`;
+    });
+    
+    applyFilters();
+}
+
+function applyFilters() {
+    const year = document.getElementById('filter-year').value;
+    const month = document.getElementById('filter-month').value;
+    
+    let filtered = allAlbumsData;
+    
+    if (year) {
+        filtered = filtered.filter(a => new Date(a.date).getFullYear() == year);
+    }
+    if (month) {
+        filtered = filtered.filter(a => (new Date(a.date).getMonth() + 1) == month);
+    }
+    
+    renderAlbums(filtered);
+}
+
+       function fetchGallery() {
+    window.handleGalleryData = function(res) {
+        if (res.status === 'success') { 
+            // 1. Zapisujemy dane do głównej zmiennej galerii
+            allGalleryData = res.data; 
+            
+            // 2. Kopiujemy dane do zmiennej filtrów (allAlbumsData)
+            allAlbumsData = res.data; 
+            
+            isGalleryLoaded = true; 
+            
+            // 3. Budujemy listę lat w rozwijanym menu
+            populateYearFilter(res.data);
+            
+            // 4. Renderujemy albumy
+            renderAlbums(res.data); 
         }
+    };
+    const script = document.createElement('script');
+    script.src = `${SCRIPT_URL}?action=getGallery&callback=handleGalleryData&t=${Date.now()}`;
+    document.body.appendChild(script);
+}
 
         function renderAlbums() {
             const cont = document.getElementById('gal-cont');
