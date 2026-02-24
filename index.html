@@ -164,103 +164,7 @@
     </div>
 </section>
        <section id="pieczenie-section" class="tab-content active space-y-5">
-    
-    <div class="accordion-item glass-card">
-        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
-            <h3 class="serif text-lg font-bold italic text-stone-800">Składniki</h3>
-            <span class="plus-icon text-xl">+</span>
-        </button>
-        <div class="accordion-content p-6 pt-6 border-t">
-            <div class="mb-6 p-3 border border-stone-200 rounded-xl bg-stone-50/50 flex items-center justify-between">
-                <span class="text-[10px] uppercase font-black text-stone-400 tracking-widest">Ilość bochenków:</span>
-                <div class="flex items-center gap-4">
-                    <button onclick="changeQty(-1)" class="w-8 h-8 flex items-center justify-center bg-white border border-stone-200 rounded-full shadow-sm active:scale-90 transition-transform">
-                        <span class="text-stone-600 font-bold">−</span>
-                    </button>
-                    <span id="display-qty" class="text-xl font-black text-stone-800 min-w-[20px] text-center">1</span>
-                    <button onclick="changeQty(1)" class="w-8 h-8 flex items-center justify-center bg-white border border-stone-200 rounded-full shadow-sm active:scale-90 transition-transform">
-                        <span class="text-stone-600 font-bold">+</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-                <div class="bg-stone-50 p-4 rounded-xl border-b-2 border-stone-200 text-center">
-                    <p class="text-[10px] uppercase font-bold text-stone-400">Zakwas</p>
-                    <p id="sv" class="text-2xl font-black text-stone-800"></p>
-                </div>
-                <div class="bg-stone-50 p-4 rounded-xl border-b-2 border-stone-200 text-center">
-                    <p class="text-[10px] uppercase font-bold text-stone-400">Woda (38°C)</p>
-                    <p id="wv" class="text-2xl font-black text-stone-800"></p>
-                </div>
-                <div class="bg-stone-50 p-4 rounded-xl border-b-2 border-stone-200 text-center">
-                    <p class="text-[10px] uppercase font-bold text-stone-400">Mąka</p>
-                    <p id="fv" class="text-2xl font-black text-stone-800"></p>
-                </div>
-                <div class="bg-stone-50 p-4 rounded-xl border-b-2 border-stone-200 text-center">
-                    <p class="text-[10px] uppercase font-bold text-stone-400">Sól</p>
-                    <p id="slv" class="text-2xl font-black text-stone-800"></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="accordion-item glass-card">
-        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
-            <h3 class="serif text-lg font-bold italic text-stone-800">Zakwas</h3>
-            <span class="plus-icon text-xl">+</span>
-        </button>
-        <div id="logistyka-content" class="accordion-content p-6 pt-6 border-t text-sm space-y-4">
-            <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 mb-4">
-                <p id="w-name" class="serif text-lg font-bold text-stone-800 mb-2"></p>
-                <p class="text-xs text-stone-600"><strong>Cel:</strong> <span id="w-target"></span></p>
-                <p class="text-xs text-stone-600"><strong>Stosunek:</strong> <span id="w-ratio"></span></p>
-                <p class="text-xs italic text-stone-500 mt-2" id="w-desc"></p>
-            </div>
-            <div class="recipe-step text-stone-600 leading-relaxed">
-                <p class="font-bold italic text-stone-800">Etap 1: Aktywacja (ok. 16:00)</p>
-                <p>Pobierz 30g bazy ze <strong id="sl-2-a"></strong>. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj w <strong id="sl-1-a"></strong> i zostaw na blacie na 4-6 godzin.</p>
-            </div>
-            <div class="recipe-step text-stone-600 leading-relaxed">
-                <p class="font-bold italic text-stone-800">Etap 2: Pobranie (ok. 22:00)</p>
-                <p>1. Pobierz <span class="font-bold" id="w-sv"></span> aktywnego zakwasu ze <strong id="sl-1-b"></strong> do miski.<br>2. Całą pozostałość przełóż do <strong id="sl-2-b"></strong>.</p>
-            </div>
-            <div class="recipe-step text-stone-600 leading-relaxed">
-                <p class="font-bold italic text-stone-800">Etap 3: Święta Porcja (<span id="sl-2-c-title"></span>)</p>
-                <p>Wymieszaj starą bazę ze zrzutem. Wymierz z tego 20g ("Święta Porcja") i zostaw w <strong id="sl-2-c"></strong>. Resztę do <strong id="sl-3-a"></strong>.</p>
-            </div>
-            <div class="recipe-step text-stone-600 leading-relaxed">
-                <p class="font-bold italic text-stone-800">Etap 4: Regeneracja Matki</p>
-                <p>1. Do 20g porcji w <strong id="sl-2-d"></strong> dodaj <span id="w-regMF" class="font-bold"></span> mąki i <span id="w-regWF" class="font-bold"></span> wody (38°C).<br>2. Zostaw na 1h na blacie, potem schowaj do lodówki.</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="accordion-item glass-card">
-        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
-            <h3 class="serif text-lg font-bold italic text-stone-800">Przepis</h3>
-            <span class="plus-icon text-xl">+</span>
-        </button>
-        <div class="accordion-content p-6 pt-6 border-t text-sm space-y-4">
-            <div class="recipe-step text-stone-600 leading-relaxed">
-                <p class="font-bold italic text-stone-800 underline mb-1">Mieszanie (godz. 22:00):</p>
-                <p>Wymieszaj w misce zakwas z wodą, aż powstanie "mleczko". Dodaj mąkę oraz sól i wymieszaj dokładnie, by nie było suchych grudek. Odstaw pod przykryciem na blacie.</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="accordion-item glass-card">
-        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
-            <h3 class="serif text-lg font-bold italic text-stone-800">Wskazówki</h3>
-            <span class="plus-icon text-xl">+</span>
-        </button>
-        <div class="accordion-content p-6 pt-6 border-t">
-            <div id="p-secret-standalone" class="relative py-4 px-6 border-l-4 border-stone-300 italic text-stone-700 leading-relaxed bg-stone-50/50 rounded-r-xl">
-                </div>
-        </div>
-    </div>
-
-    <div class="accordion-item glass-card">
+            <div class="accordion-item glass-card">
         <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
             <h3 class="serif text-lg font-bold italic text-stone-800">Harmonogram</h3>
             <span class="plus-icon text-xl">+</span>
@@ -360,7 +264,102 @@
                     </div>
                 </div>
             </div>
-        </section>
+    
+    <div class="accordion-item glass-card">
+        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+            <h3 class="serif text-lg font-bold italic text-stone-800">Składniki</h3>
+            <span class="plus-icon text-xl">+</span>
+        </button>
+        <div class="accordion-content p-6 pt-6 border-t">
+            <div class="mb-6 p-3 border border-stone-200 rounded-xl bg-stone-50/50 flex items-center justify-between">
+                <span class="text-[10px] uppercase font-black text-stone-400 tracking-widest">Ilość bochenków:</span>
+                <div class="flex items-center gap-4">
+                    <button onclick="changeQty(-1)" class="w-8 h-8 flex items-center justify-center bg-white border border-stone-200 rounded-full shadow-sm active:scale-90 transition-transform">
+                        <span class="text-stone-600 font-bold">−</span>
+                    </button>
+                    <span id="display-qty" class="text-xl font-black text-stone-800 min-w-[20px] text-center">1</span>
+                    <button onclick="changeQty(1)" class="w-8 h-8 flex items-center justify-center bg-white border border-stone-200 rounded-full shadow-sm active:scale-90 transition-transform">
+                        <span class="text-stone-600 font-bold">+</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-stone-50 p-4 rounded-xl border-b-2 border-stone-200 text-center">
+                    <p class="text-[10px] uppercase font-bold text-stone-400">Zakwas</p>
+                    <p id="sv" class="text-2xl font-black text-stone-800"></p>
+                </div>
+                <div class="bg-stone-50 p-4 rounded-xl border-b-2 border-stone-200 text-center">
+                    <p class="text-[10px] uppercase font-bold text-stone-400">Woda (38°C)</p>
+                    <p id="wv" class="text-2xl font-black text-stone-800"></p>
+                </div>
+                <div class="bg-stone-50 p-4 rounded-xl border-b-2 border-stone-200 text-center">
+                    <p class="text-[10px] uppercase font-bold text-stone-400">Mąka</p>
+                    <p id="fv" class="text-2xl font-black text-stone-800"></p>
+                </div>
+                <div class="bg-stone-50 p-4 rounded-xl border-b-2 border-stone-200 text-center">
+                    <p class="text-[10px] uppercase font-bold text-stone-400">Sól</p>
+                    <p id="slv" class="text-2xl font-black text-stone-800"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item glass-card">
+        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+            <h3 class="serif text-lg font-bold italic text-stone-800">Zakwas</h3>
+            <span class="plus-icon text-xl">+</span>
+        </button>
+        <div id="logistyka-content" class="accordion-content p-6 pt-6 border-t text-sm space-y-4">
+            <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 mb-4">
+                <p id="w-name" class="serif text-lg font-bold text-stone-800 mb-2"></p>
+                <p class="text-xs text-stone-600"><strong>Cel:</strong> <span id="w-target"></span></p>
+                <p class="text-xs text-stone-600"><strong>Stosunek:</strong> <span id="w-ratio"></span></p>
+                <p class="text-xs italic text-stone-500 mt-2" id="w-desc"></p>
+            </div>
+            <div class="recipe-step text-stone-600 leading-relaxed">
+                <p class="font-bold italic text-stone-800">Etap 1: Aktywacja (ok. 16:00)</p>
+                <p>Pobierz 30g bazy ze <strong id="sl-2-a"></strong>. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj w <strong id="sl-1-a"></strong> i zostaw na blacie na 4-6 godzin.</p>
+            </div>
+            <div class="recipe-step text-stone-600 leading-relaxed">
+                <p class="font-bold italic text-stone-800">Etap 2: Pobranie (ok. 22:00)</p>
+                <p>1. Pobierz <span class="font-bold" id="w-sv"></span> aktywnego zakwasu ze <strong id="sl-1-b"></strong> do miski.<br>2. Całą pozostałość przełóż do <strong id="sl-2-b"></strong>.</p>
+            </div>
+            <div class="recipe-step text-stone-600 leading-relaxed">
+                <p class="font-bold italic text-stone-800">Etap 3: Święta Porcja (<span id="sl-2-c-title"></span>)</p>
+                <p>Wymieszaj starą bazę ze zrzutem. Wymierz z tego 20g ("Święta Porcja") i zostaw w <strong id="sl-2-c"></strong>. Resztę do <strong id="sl-3-a"></strong>.</p>
+            </div>
+            <div class="recipe-step text-stone-600 leading-relaxed">
+                <p class="font-bold italic text-stone-800">Etap 4: Regeneracja Matki</p>
+                <p>1. Do 20g porcji w <strong id="sl-2-d"></strong> dodaj <span id="w-regMF" class="font-bold"></span> mąki i <span id="w-regWF" class="font-bold"></span> wody (38°C).<br>2. Zostaw na 1h na blacie, potem schowaj do lodówki.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item glass-card">
+        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+            <h3 class="serif text-lg font-bold italic text-stone-800">Przepis</h3>
+            <span class="plus-icon text-xl">+</span>
+        </button>
+        <div class="accordion-content p-6 pt-6 border-t text-sm space-y-4">
+            <div class="recipe-step text-stone-600 leading-relaxed">
+                <p class="font-bold italic text-stone-800 underline mb-1">Mieszanie (godz. 22:00):</p>
+                <p>Wymieszaj w misce zakwas z wodą, aż powstanie "mleczko". Dodaj mąkę oraz sól i wymieszaj dokładnie, by nie było suchych grudek. Odstaw pod przykryciem na blacie.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item glass-card">
+        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+            <h3 class="serif text-lg font-bold italic text-stone-800">Wskazówki</h3>
+            <span class="plus-icon text-xl">+</span>
+        </button>
+        <div class="accordion-content p-6 pt-6 border-t">
+            <div id="p-secret-standalone" class="relative py-4 px-6 border-l-4 border-stone-300 italic text-stone-700 leading-relaxed bg-stone-50/50 rounded-r-xl">
+                </div>
+        </div>
+    </div>
+       </section>
 
       <section id="magazyn-section" class="tab-content space-y-5">
            <div class="accordion-item glass-card">
