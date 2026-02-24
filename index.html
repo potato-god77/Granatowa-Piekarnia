@@ -163,75 +163,76 @@
         </div>
     </div>
 </section>
-       <section id="pieczenie-section" class="tab-content active space-y-5">
-            <div class="accordion-item glass-card">
-        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+       <section id="pieczenie-section" class="tab-content active space-y-4">
+    <div class="accordion-item glass-card">
+        <button onclick="toggleAccordion(this)" class="w-full p-3 flex justify-between items-center text-left">
             <h3 class="serif text-lg font-bold italic text-stone-800">Harmonogram</h3>
             <span class="plus-icon text-xl">+</span>
         </button>
-        <div class="accordion-content p-6 pt-6 border-t space-y-3">
+        <div class="accordion-content p-3 pt-4 border-t space-y-2">
             
-            <div class="p-4 border border-stone-200 rounded-xl bg-amber-50/30 text-center">
+            <div class="p-2 border border-stone-200 rounded-xl bg-amber-50/30 text-center">
                 <input type="time" id="t-wybudzenie-input" value="16:00" onchange="updateSchedule('wybudzenie')" 
-                       class="w-32 bg-white border-2 border-amber-200 rounded-lg p-2 font-black text-xl text-center outline-none mb-1 text-stone-800">
-                <div class="text-xs text-stone-600 leading-relaxed">
+                       class="w-24 bg-white border-2 border-amber-200 rounded-lg p-1 font-black text-lg text-center outline-none text-stone-800">
+                <div class="text-[10px] text-stone-600 leading-tight mt-1">
                     <span class="font-bold text-stone-800">Wybudzenie:</span> Aktywuj wybrany zakwas według instrukcji.
                 </div>
             </div>
 
-            <div class="p-4 border border-stone-200 rounded-xl bg-stone-50/30 text-center">
+            <div class="p-2 border border-stone-200 rounded-xl bg-stone-50/30 text-center">
                 <input type="time" id="start-time" value="22:00" onchange="updateSchedule('mieszanie')" 
-                       class="w-32 bg-white border-2 rounded-lg p-2 font-black text-xl text-center outline-none mb-1 text-stone-800">
-                <div class="text-xs text-stone-600 leading-relaxed">
+                       class="w-24 bg-white border-2 rounded-lg p-1 font-black text-lg text-center outline-none text-stone-800">
+                <div class="text-[10px] text-stone-600 leading-tight mt-1">
                     <span class="font-bold text-stone-800">Mieszanie:</span> Stwórz ciasto według przepisu i zostaw w misce pod przykryciem na blacie.
                 </div>
             </div>
 
-            <div class="p-4 border border-stone-100 rounded-xl bg-white shadow-sm text-center opacity-80">
-                <div class="text-xl font-black text-stone-400 mb-1" id="t-lodowka">05:30</div>
-                <div class="text-xs text-stone-600 leading-relaxed">
+            <div class="p-2 border border-stone-100 rounded-xl bg-white shadow-sm text-center opacity-80">
+                <div class="text-lg font-black text-stone-400" id="t-lodowka">05:30</div>
+                <div class="text-[10px] text-stone-600 leading-tight">
                     <span class="font-bold text-stone-800">Dojrzewanie:</span> Koniec gwałtownej fermentacji na blacie, czas na spokojne dojrzewanie w lodówce.
                 </div>
             </div>
 
-            <div class="p-4 border border-stone-100 rounded-xl bg-white shadow-sm text-center opacity-80">
-                <div class="text-xl font-black text-stone-400 mb-1" id="t-formowanie">16:00</div>
-                <div class="text-xs text-stone-600 leading-relaxed">
+            <div class="p-2 border border-stone-100 rounded-xl bg-white shadow-sm text-center opacity-80">
+                <div class="text-lg font-black text-stone-400" id="t-formowanie">16:00</div>
+                <div class="text-[10px] text-stone-600 leading-tight">
                     <span class="font-bold text-stone-800">Formowanie:</span> Czas włączyć piekarnik, uformować przyszły chleb i poczekać na odpowiednią temperaturę.
                 </div>
             </div>
 
-            <div class="p-4 border border-stone-200 rounded-xl bg-stone-50/30 text-center">
+            <div class="p-2 border border-stone-200 rounded-xl bg-stone-50/30 text-center">
                 <input type="time" id="t-pieczenie-input" value="16:45" onchange="updateSchedule('pieczenie')" 
-                       class="w-32 bg-white border-2 rounded-lg p-2 font-black text-xl text-center outline-none mb-1 text-stone-800">
-                <div class="text-xs text-stone-600 leading-relaxed">
+                       class="w-24 bg-white border-2 rounded-lg p-1 font-black text-lg text-center outline-none text-stone-800">
+                <div class="text-[10px] text-stone-600 leading-tight mt-1">
                     <span class="font-bold text-stone-800">Pieczenia:</span> Koniec czekania, gorący garnek z chlebem (pod przykrywką) wkładamy do piekarnika.
                 </div>
             </div>
 
-            <div class="p-4 border border-stone-100 rounded-xl bg-white shadow-sm text-center opacity-80">
-                <div class="text-xl font-black text-stone-400 mb-1" id="t-rumienienie">17:15</div>
-                <div class="text-xs text-stone-600 leading-relaxed">
+            <div class="p-2 border border-stone-100 rounded-xl bg-white shadow-sm text-center opacity-80">
+                <div class="text-lg font-black text-stone-400" id="t-rumienienie">17:15</div>
+                <div class="text-[10px] text-stone-600 leading-tight">
                     <span class="font-bold text-stone-800">Rumienienie:</span> Zdejmujemy z garnka pokrywkę (ostrożnie za pomocą rękawicy lub ścierki). Już ostatnia prosta.
                 </div>
             </div>
 
-            <div class="p-4 border border-stone-100 rounded-xl bg-white shadow-sm text-center opacity-80">
-                <div class="text-xl font-black text-stone-400 mb-1" id="t-upieczenie">17:30</div>
-                <div class="text-xs text-stone-600 leading-relaxed">
+            <div class="p-2 border border-stone-100 rounded-xl bg-white shadow-sm text-center opacity-80">
+                <div class="text-lg font-black text-stone-400" id="t-upieczenie">17:30</div>
+                <div class="text-[10px] text-stone-600 leading-tight">
                     <span class="font-bold text-stone-800">Upieczenie:</span> Chleb już powinien być ładnie rumiany i gdy się stuknie w jego dno wydawać pusty dźwięk. Jest już gotowy! Przełóż na kratkę.
                 </div>
             </div>
 
-            <div class="p-4 border border-stone-200 rounded-xl bg-stone-50/30 text-center">
+            <div class="p-2 border border-stone-200 rounded-xl bg-stone-50/30 text-center">
                 <input type="time" id="t-jedzenie-input" value="18:30" onchange="updateSchedule('jedzenie')" 
-                       class="w-32 bg-white border-2 rounded-lg p-2 font-black text-xl text-center outline-none mb-1 text-stone-800">
-                <div class="text-xs text-stone-600 leading-relaxed">
+                       class="w-24 bg-white border-2 rounded-lg p-1 font-black text-lg text-center outline-none text-stone-800">
+                <div class="text-[10px] text-stone-600 leading-tight mt-1">
                     <span class="font-bold text-stone-800">Jedzenie:</span> Smacznego! Chleb już ostygł i wilgoć w jego wnętrzu już się "uspokoiła". Bochenek jest gotowy do jedzenia! Pierwsze kilka kromek najlepiej z samym masłem...
                 </div>
             </div>
         </div>
     </div>
+</section>
     <div class="accordion-item glass-card">
         <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
             <h3 class="serif text-lg font-bold italic text-stone-800">Składniki</h3>
