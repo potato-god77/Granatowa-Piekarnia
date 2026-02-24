@@ -115,6 +115,7 @@
             <div id="btn-wiedza" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('wiedza')">WIEDZA</div>
             <div id="btn-magazyn" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('magazyn')">MAGAZYN</div>
             <div id="btn-galeria" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('galeria')">GALERIA</div>
+            <div id="btn-sylwetki" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('sylwetki')">SYLWETKI</div>
         </nav>
     </header>
 
@@ -249,47 +250,7 @@
         </section>
 
         <section id="wiedza-section" class="tab-content space-y-6">
-            <div class="accordion-item glass-card">
-                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
-                    <h3 class="serif text-xl font-bold italic text-stone-800">Postacie</h3>
-                    <span class="plus-icon text-2xl">+</span>
-                </button>
-                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4 bg-stone-50">
-                    <p class="text-[10px] uppercase font-black text-stone-400 tracking-widest my-4">Historie i charakterystyka</p>
-                    
-                    <div class="accordion-item border border-stone-200 rounded-xl bg-white mb-3">
-                        <button onclick="toggleAccordion(this)" class="w-full p-4 flex justify-between items-center text-left">
-                            <span class="font-bold text-stone-700">Clint Yeastwood</span>
-                            <span class="plus-icon text-sm">+</span>
-                        </button>
-                        <div class="accordion-content p-4 pt-0 text-xs text-stone-600 leading-relaxed">
-                            Surowy, żytni rewolwerowiec. Nie wybacza błędów w hydratacji, ale odwdzięcza się najgłębszym aromatem. Fundament Piekarni.
-                        </div>
-                    </div>
-
-                    <div class="accordion-item border border-stone-200 rounded-xl bg-white mb-3">
-                        <button onclick="toggleAccordion(this)" class="w-full p-4 flex justify-between items-center text-left">
-                            <span class="font-bold text-stone-700">Sylvester Graham</span>
-                            <span class="plus-icon text-sm">+</span>
-                        </button>
-                        <div class="accordion-content p-4 pt-0 text-xs text-stone-600 leading-relaxed">
-                            Pszenny siłacz o gołębim sercu. Pełnoziarnisty profil 1850 nadaje mu charakterystyczną słodycz i delikatnie orzechowy posmak.
-                        </div>
-                    </div>
-
-                    <div class="accordion-item border border-stone-200 rounded-xl bg-white">
-                        <button onclick="toggleAccordion(this)" class="w-full p-4 flex justify-between items-center text-left">
-                            <span class="font-bold text-stone-700">Hildegarda z Bingen</span>
-                            <span class="plus-icon text-sm">+</span>
-                        </button>
-                        <div class="accordion-content p-4 pt-0 text-xs text-stone-600 leading-relaxed">
-                            Szlachetna mistyczka orkiszu. Najbardziej delikatna i kapryśna, wymaga czułości przy mieszaniu, ale oferuje lekkość niedostępną innym.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item glass-card">
+                <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
                     <h3 class="serif text-xl font-bold italic text-stone-800">Logistyka Słoików</h3>
                     <span class="plus-icon text-2xl">+</span>
@@ -371,6 +332,81 @@
                 <div class="w-8 h-8 border-4 border-stone-200 border-t-amber-600 rounded-full animate-spin mx-auto"></div>
             </div>
         </section>
+
+        <section id="sylwetki-section" class="tab-content space-y-6">
+    <div class="accordion-item glass-card">
+        <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
+            <h3 class="serif text-xl font-bold italic text-stone-800">Clint Yeastwood</h3>
+            <span class="plus-icon text-2xl">+</span>
+        </button>
+        <div class="accordion-content p-6 pt-0 border-t bg-stone-50">
+            <img src="https://raw.githubusercontent.com/potato-god77/Granatowa-Piekarnia/chleb/clint.png" class="mx-auto rounded-xl shadow-lg my-4 max-w-full h-auto border border-stone-200" alt="Clint Yeastwood">
+        </div>
+    </div>
+
+    <div class="accordion-item glass-card">
+        <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
+            <h3 class="serif text-xl font-bold italic text-stone-800">Sylvester Graham</h3>
+            <span class="plus-icon text-2xl">+</span>
+        </button>
+        <div class="accordion-content p-6 pt-0 border-t bg-stone-50 text-sm text-stone-700 leading-relaxed overflow-hidden">
+            <img src="https://raw.githubusercontent.com/potato-god77/Granatowa-Piekarnia/chleb/sylv.png" class="float-right ml-4 mb-2 w-32 h-32 object-cover rounded-lg border-2 border-white shadow-md cursor-pointer hover:scale-105 transition-transform" 
+                 onclick="openSingleView('sylv.png')">
+            
+            <p><b>Sylvester Graham</b> (1794–1851) był amerykańskim prezbiteriańskim kaznodzieją i ojcem reformy dietetycznej w XIX wieku. Choć dziś kojarzymy go głównie z herbatnikami „Graham crackers”, w swoich czasach był żarliwym reformatorem, który wierzył, że zbawienie duszy zaczyna się od... układu pokarmowego.</p>
+            <p class="mt-2">Graham stał się symbolem walki z uprzemysłowioną produkcją żywności, a jego centralnym narzędziem była <b>mąka pełnoziarnista</b>.</p>
+            
+            <p class="mt-4 font-bold text-stone-900">Sylvester Graham i krucjata przeciwko „białej śmierci”</p>
+            <p class="mt-1">W czasach Grahama rewolucja przemysłowa zaczęła masowo produkować białą, rafinowaną mąkę, którą wybielano toksycznymi substancjami (np. ałunem czy chlorem). Graham uznał to za grzech przeciwko naturze.</p>
+            
+            <ul class="mt-2 space-y-2">
+                <li class="flex items-start"><span class="mr-2">•</span> <span><b>Boski zamysł ziarna:</b> Twierdził, że Bóg stworzył ziarno pszenicy jako całość. Odrzucanie otrębów i zarodków (czyli tego, co Graham nazywał „zewnętrzną powłoką”) było dla niego aktem pychy niszczącym zdrowie.</span></li>
+                <li class="flex items-start"><span class="mr-2">•</span> <span><b>Mąka Grahama:</b> Opracował własny typ mąki – grubo mielonej, nierafinowanej i całkowicie naturalnej. To właśnie ona stała się fundamentem tzw. „diety Grahamitów”.</span></li>
+            </ul>
+
+            <p class="mt-4 font-bold text-stone-900">Chleb jako lekarstwo na popędy</p>
+            <p class="mt-1">Dla Grahama mąka pełnoziarnista miała niemal mistyczne właściwości regulujące ludzką naturę:</p>
+            <ul class="mt-2 space-y-2">
+                <li class="flex items-start"><span class="mr-2">•</span> <span><b>Poskromienie temperamentu:</b> Graham wierzył, że biała mąka i mięso nadmiernie pobudzają organizm, prowadząc do agresji i „nieczystych myśli”. Chleb pełnoziarnisty miał koić zmysły i pomagać w zachowaniu wstrzemięźliwości.</span></li>
+                <li class="flex items-start"><span class="mr-2">•</span> <span><b>Zdrowie jelit:</b> Był jednym z pierwszych propagatorów błonnika. Uważał, że zaparcia są źródłem większości chorób cywilizacyjnych, a gruboziarnista mąka jest naturalnym „mechanizmem czyszczącym”.</span></li>
+                <li class="flex items-start"><span class="mr-2">•</span> <span><b>Domowy wypiek:</b> Graham kładł ogromny nacisk na to, by chleb był pieczony w domu przez „cnotliwe matki i żony”, a nie w komercyjnych piekarniach, które oskarżał o chciwość i psucie jakości chleba.</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="accordion-item glass-card">
+        <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
+            <h3 class="serif text-xl font-bold italic text-stone-800">Hildegarda z Bingen</h3>
+            <span class="plus-icon text-2xl">+</span>
+        </button>
+        <div class="accordion-content p-6 pt-0 border-t bg-stone-50 text-sm text-stone-700 leading-relaxed overflow-hidden">
+            <img src="https://raw.githubusercontent.com/potato-god77/Granatowa-Piekarnia/chleb/hildy.png" class="float-right ml-4 mb-2 w-32 h-32 object-cover rounded-lg border-2 border-white shadow-md cursor-pointer hover:scale-105 transition-transform" 
+                 onclick="openSingleView('hildy.png')">
+            
+            <p><b>Hildegarda z Bingen</b> (1098–1179) to jedna z najbardziej fascynujących postaci średniowiecza – wizjonerka, kompozytorka, przyrodniczka i pierwsza w historii kobieta lekarz. Jako przeorysza klasztoru w Rupertsbergu stworzyła holistyczny system medyczny, który do dziś ma swoich zwolenników.</p>
+            <p class="mt-2">W jej filozofii zdrowia centralne miejsce zajmuje <b>orkisz</b> (Triticum spelta). Hildegarda uważała go za ziarno doskonałe, przewyższające wszystkie inne zboża pod względem wartości odżywczych i energetycznych.</p>
+            
+            <p class="mt-4 font-bold text-stone-900">Hildegarda i orkisz: „Najlepsze ze zbóż”</p>
+            <p class="mt-1">Dla św. Hildegardy orkisz nie był po prostu składnikiem diety, ale uniwersalnym lekiem. W swoim dziele Physica pisała o nim w samych superlatywach:</p>
+            
+            <ul class="mt-2 space-y-2">
+                <li class="flex items-start"><span class="mr-2">•</span> <span><b>Właściwości rozgrzewające:</b> Według niej orkisz jest „ciepły, tłusty i pełen siły”, co miało zapewniać organizmowi optymalną energię.</span></li>
+                <li class="flex items-start"><span class="mr-2">•</span> <span><b>Budowanie „dobrej krwi”:</b> Hildegarda twierdziła, że spożywanie orkiszu sprawia, iż ciało staje się silne, a krew czysta.</span></li>
+                <li class="flex items-start"><span class="mr-2">•</span> <span><b>Wpływ na psychikę:</b> Wierzyła, że dieta oparta na tym zbożu przynosi „pogodny umysł i radosne usposobienie”.</span></li>
+            </ul>
+
+            <p class="mt-4 font-bold text-stone-900">Chleb orkiszowy jako fundament życia</p>
+            <p class="mt-1">Chleb orkiszowy był dla niej podstawą każdego posiłku. Według zaleceń mniszki, powinien on być wypiekany z pełnego ziarna, bez zbędnych dodatków, aby zachować swoją „siłę życiową” (którą nazywała viriditas – siłą zazielenienia).</p>
+            
+            <p class="mt-2">W systemie hildegardiańskim chleb ten:</p>
+            <ul class="mt-2 space-y-2">
+                <li class="flex items-start"><span class="mr-2">•</span> <span><b>Jest lekkostrawny:</b> W przeciwieństwie do pszenicy, orkisz miał być łatwo przyswajalny nawet przez osoby o bardzo słabych żołądkach.</span></li>
+                <li class="flex items-start"><span class="mr-2">•</span> <span><b>Regeneruje organizm:</b> Hildegarda zalecała go chorym jako środek na wzmocnienie mięśni i regenerację tkanek po przebytych infekcjach.</span></li>
+            </ul>
+        </div>
+    </div>
+</section>
+        
     </main>
 
     <div id="viewer-modal" class="hidden fixed inset-0 bg-black flex flex-col items-center justify-between">
@@ -663,12 +699,15 @@
     }
 }
 
-        function closeViewer() {
+        ffunction closeViewer() {
     const modal = document.getElementById('viewer-modal');
-    // Resetujemy zoom przy zamykaniu
-    document.getElementById('carousel-img').classList.remove('zoomed');
+    const img = document.getElementById('carousel-img');
+    const thumbStrip = document.getElementById('thumb-strip');
+    
+    img.classList.remove('zoomed');
     modal.classList.add('hidden');
     modal.classList.remove('flex');
+    if(thumbStrip) thumbStrip.style.display = 'flex'; // Przywróć pasek
 }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -694,6 +733,22 @@ document.addEventListener('keydown', function(event) {
         }
     }
 });
+        
+    function openSingleView(src) {
+    const modal = document.getElementById('viewer-modal');
+    const img = document.getElementById('carousel-img');
+    const thumbStrip = document.getElementById('thumb-strip');
+    
+    // Ukrywamy miniatury z dołu, bo to podgląd pojedynczy
+    if(thumbStrip) thumbStrip.style.display = 'none';
+    
+    currentImgIndex = 0;
+    currentAlbumPhotos = [src]; // Tworzymy "sztuczny" album z jednym zdjęciem
+    
+    img.src = src;
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
     </script>
 </body>
 </html>
