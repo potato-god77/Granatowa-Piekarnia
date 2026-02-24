@@ -88,7 +88,7 @@
     background: black;
 }
         
-        .zurek-link { text-decoration: underline; font-weight: bold; cursor: pointer; color: inherit; }
+        
     </style>
 </head>
 <body class="pb-24">
@@ -112,7 +112,7 @@
         <nav class="flex justify-around bg-white/80 backdrop-blur-md py-2 border-t border-b border-sand no-scrollbar" style="overflow-x: auto; white-space: nowrap;">
             <div id="btn-zakwasy" class="nav-btn px-4 py-2 text-sm font-bold active" onclick="switchTab('zakwasy')">ZAKWASY</div>
             <div id="btn-pieczenie" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('pieczenie')">PIECZENIE</div>
-            <div id="btn-wiedza" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('wiedza')">WIEDZA</div>
+            <div id="btn-karmienie" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('karmienie')">KARMIENIE</div>
             <div id="btn-magazyn" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('magazyn')">MAGAZYN</div>
             <div id="btn-galeria" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('galeria')">GALERIA</div>
             <div id="btn-sylwetki" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('sylwetki')">SYLWETKI</div>
@@ -361,22 +361,21 @@
     </div>
 
 </section>
-        <section id="wiedza-section" class="tab-content space-y-5">
+        <section id="karmienie-section" class="tab-content space-y-5">
 
-    <div class="accordion-item glass-card">
-        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
-            <h3 class="serif text-lg font-bold italic text-stone-800">Instrukcja</h3>
-            <span class="plus-icon text-xl">+</span>
-        </button>
-        <div class="accordion-content p-6 pt-6 border-t text-sm text-stone-600 space-y-4">
-            <div class="recipe-step leading-relaxed">
-                <p>1. Odważasz 20g zakwasu ze słoika <strong id="k-name" class="text-stone-800"></strong> (reszta do Wernyhory lub utylizacji).</p>
-                <p>2. Dodajesz <span id="k-fv" class="font-bold text-stone-800"></span> świeżej mąki <span id="k-type" class="font-bold text-stone-800"></span> i <span id="k-wv" class="font-bold text-stone-800"></span> wody o temperaturze <span id="k-temp" class="font-bold text-stone-800"></span>.</p>
-                <p>3. Mieszasz do całkowitego połączenia (konsystencja gęstej pasty).</p>
-                <p>4. <span class="text-stone-800 font-bold">Kluczowy moment:</span> Zostawiasz na blacie na ok. 2-3 godziny (aż ruszy), po czym chowasz do lodówki.</p>
-            </div>
-        </div>
-    </div>
+  <div id="karmienie-section" class="tab-content">
+    <h2 class="text-xl font-bold mb-4">Instrukcja Karmienia</h2>
+    <ul class="space-y-4">
+        <li class="flex items-start gap-3">
+            <span class="bg-amber-500 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-1">1</span>
+            <p>Wyjmij ze słoika <span id="k-sv"><b>20g</b></span> zakwasu <span id="k-name">...</span></p>
+        </li>
+        <li class="flex items-start gap-3">
+            <span class="bg-amber-500 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-1">2</span>
+            <p>Dodaj 65g mąki <span id="k-type">...</span> oraz 65g wody o temperaturze <span id="k-temp">...</span></p>
+        </li>
+    </ul>
+</div>
 
     <div class="accordion-item glass-card">
         <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
@@ -662,15 +661,7 @@
         window.scrollTo(0,0);
     }
 
-    function goToZurek() {
-        switchTab('wiedza');
-        const zurekBox = document.getElementById('zurek-recipe-box');
-        if(zurekBox && !zurekBox.classList.contains('active')) {
-            toggleAccordion(zurekBox.querySelector('button'));
-        }
-        zurekBox.scrollIntoView({ behavior: 'smooth' });
-    }
-
+    
     async function saveToCloud(key, value) {
         try { await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({key, value})}); setTimeout(loadFromCloud, 1000); } catch(e){ console.error(e); }
     }
@@ -728,22 +719,28 @@
             }
         });
 
-        // 2. Sekcja KARMIENIE
+        // 2. Sekcja KARMIENIE (dawniej Wiedza)
+        // Nazwa zakwasu w instrukcji
         const kn = document.getElementById('k-name');
-        if(kn) kn.innerText = r.name;
+        if(kn) kn.innerHTML = `<span class="text-amber-500 font-bold">${r.name}</span>`;
 
+        // Rodzaj mąki i temperatura
         const kt = document.getElementById('k-type');
-        if(kt) kt.innerText = r.kType;
-        
+        if(kt) kt.innerHTML = `<span class="text-amber-500">${r.kType}</span>`;
+
         const ktemp = document.getElementById('k-temp');
-        if(ktemp) ktemp.innerText = r.kTemp;
+        if(ktemp) ktemp.innerHTML = `<span class="text-amber-500">${r.kTemp}</span>`;
+
+        // Stałe gramatury (zgodnie z instrukcją: 20g pogrubione, reszta 65g)
+        const ksv = document.getElementById('k-sv'); // punkt o pobieraniu starego zakwasu
+        if(ksv) ksv.innerHTML = `<b>20g</b>`;
 
         const kfv = document.getElementById('k-fv');
         if(kfv) kfv.innerText = '65g';
-        
+
         const kwv = document.getElementById('k-wv');
         if(kwv) kwv.innerText = '65g';
-
+        
         // 3. Sekrety i Logistyka Zakwasu
         const secStandalone = document.getElementById('p-secret-standalone');
         if(secStandalone) secStandalone.innerHTML = r.secret;
