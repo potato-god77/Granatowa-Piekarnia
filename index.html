@@ -110,7 +110,7 @@
         </div>
     </div>
     
-    <nav class="flex justify-around bg-white/80 backdrop-blur-md py-2 border-t border-b border-sand no-scrollbar" style="overflow-x: auto; white-space: nowrap;">
+    <nav class="flex justify-around bg-white/60 backdrop-blur-md py-2 border-t border-sand no-scrollbar" style="overflow-x: auto; white-space: nowrap;">
         <div id="btn-zakwasy" class="nav-btn px-4 py-2 text-sm font-bold active" onclick="switchTab('zakwasy')">ZAKWASY</div>
         <div id="btn-pieczenie" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('pieczenie')">PIECZENIE</div>
         <div id="btn-karmienie" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('karmienie')">KARMIENIE</div>
@@ -119,9 +119,9 @@
         <div id="btn-sylwetki" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('sylwetki')">SYLWETKI</div>
     </nav>
 
-    <div class="bg-white px-6 py-3 flex justify-center items-center gap-3 border-b">
-        <label for="quick-select" class="text-[10px] uppercase font-black text-stone-400 tracking-widest">Zakwas:</label>
-        <select id="quick-select" onchange="sel(this.value)" class="bg-stone-100 border-none rounded-lg px-3 py-1.5 text-sm font-bold text-stone-800 outline-none">
+    <div class="bg-white/80 backdrop-blur-md px-6 py-3 flex justify-center items-center gap-3 border-t border-sand/50">
+        <label for="quick-select" class="text-[10px] uppercase font-black text-stone-400 tracking-widest">Aktywny profil:</label>
+        <select id="quick-select" onchange="sel(this.value)" class="bg-stone-100/50 border-none rounded-lg px-3 py-1.5 text-sm font-bold text-stone-800 outline-none focus:ring-1 focus:ring-amber-500/20">
             <option value="clint">Clint Yeastwood</option>
             <option value="sylvester">Sylvester Graham</option>
             <option value="hildegarda">Hildegarda z Bingen</option>
