@@ -711,76 +711,69 @@
     }
 
     function updateIngredients() {
-        const r = RECIPES[currentStarterKey];
-        const q = currentQty;
-        if(!r) return;
+    const r = RECIPES[currentStarterKey];
+    const q = currentQty;
+    if(!r) return;
 
-        // 1. Sekcja PIECZENIE
-        const ids = ['sv', 'wv', 'fv', 'slv', 'w-sv', 'p-wv', 'p-sv', 'p-fv', 'p-slv'];
-        ids.forEach(id => {
-            const el = document.getElementById(id);
-            if(el) {
-                const key = id.includes('-') ? id.split('-')[1] : id;
-                el.innerText = (r[key] * q) + 'g';
-            }
-        });
-
-        // 2. Sekcja KARMIENIE (dawniej Wiedza)
-        // Nazwa zakwasu w instrukcji
-        const kn = document.getElementById('k-name');
-        if(kn) kn.innerHTML = `<span class="text-amber-500 font-bold">${r.name}</span>`;
-
-        // Rodzaj mąki i temperatura
-        const kt = document.getElementById('k-type');
-        if(kt) kt.innerHTML = `<span class="text-amber-500">${r.kType}</span>`;
-
-        const ktemp = document.getElementById('k-temp');
-        if(ktemp) ktemp.innerHTML = `<span class="text-amber-500">${r.kTemp}</span>`;
-
-        // Stałe gramatury (zgodnie z instrukcją: 20g pogrubione, reszta 65g)
-        const ksv = document.getElementById('k-sv'); // punkt o pobieraniu starego zakwasu
-        if(ksv) ksv.innerHTML = `<b>20g</b>`;
-
-        const kfv = document.getElementById('k-fv');
-        if(kfv) kfv.innerText = '65g';
-
-        const kwv = document.getElementById('k-wv');
-        if(kwv) kwv.innerText = '65g';
-        
-        // 3. Sekrety i Logistyka Zakwasu
-        const secStandalone = document.getElementById('p-secret-standalone');
-        if(secStandalone) secStandalone.innerHTML = r.secret;
-
-        if(document.getElementById('w-name')) {
-            document.getElementById('w-name').innerText = r.name;
-            document.getElementById('w-target').innerText = r.target;
-            document.getElementById('w-ratio').innerText = r.ratio;
-            document.getElementById('w-desc').innerText = r.desc;
-            
-            const setSafeText = (id, text) => {
-                const el = document.getElementById(id);
-                if(el) el.innerText = text;
-            };
-
-            setSafeText('w-regMF', r.regMF + 'g');
-            setSafeText('w-regWF', r.regWF + 'g');
-            
-            const s1 = "Słoiku Roboczym";
-            const s1_nom = "Słoik Roboczy";
-            const s2 = "Słoika " + r.name;
-            const s2_nom = "Słoiku " + r.name;
-            const s3 = "Słoika Wernyhora";
-
-            setSafeText('sl-1-a', s1_nom);
-            setSafeText('sl-1-b', s1);
-            setSafeText('sl-2-a', s2);
-            setSafeText('sl-2-b', s2_nom);
-            setSafeText('sl-2-c-title', s2_nom);
-            setSafeText('sl-2-c', s2_nom);
-            setSafeText('sl-2-d', s2_nom);
-            setSafeText('sl-3-a', s3);
+    // 1. Sekcja PIECZENIE (zostaje bez zmian, bo tu ID są unikalne)
+    const ids = ['sv', 'wv', 'fv', 'slv', 'w-sv', 'p-wv', 'p-sv', 'p-fv', 'p-slv'];
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) {
+            const key = id.includes('-') ? id.split('-')[1] : id;
+            el.innerText = (r[key] * q) + 'g';
         }
+    });
+
+    // 2. Sekcja KARMIENIE
+    // Podmieniamy tylko tekst (innerText), nie ruszając tagów <span> i ich stylów
+    const kn = document.getElementById('k-name');
+    if(kn) kn.innerText = r.name; // Zmieniamy innerText, kolor zostanie z CSS/HTML
+
+    const kt = document.getElementById('k-type');
+    if(kt) kt.innerText = r.kType;
+
+    const ktemp = document.getElementById('k-temp');
+    if(ktemp) ktemp.innerText = r.kTemp;
+
+    // Stałe gramatury (jeśli chcesz je jednak sterować z JS, upewnij się że ID są w HTML)
+    const ksv = document.getElementById('k-sv');
+    if(ksv) ksv.innerText = '20g';
+
+    // 3. Sekrety i Logistyka Zakwasu (zostaje jak było)
+    const secStandalone = document.getElementById('p-secret-standalone');
+    if(secStandalone) secStandalone.innerHTML = r.secret;
+
+    if(document.getElementById('w-name')) {
+        document.getElementById('w-name').innerText = r.name;
+        document.getElementById('w-target').innerText = r.target;
+        document.getElementById('w-ratio').innerText = r.ratio;
+        document.getElementById('w-desc').innerText = r.desc;
+        
+        const setSafeText = (id, text) => {
+            const el = document.getElementById(id);
+            if(el) el.innerText = text;
+        };
+
+        setSafeText('w-regMF', r.regMF + 'g');
+        setSafeText('w-regWF', r.regWF + 'g');
+        
+        const s1 = "Słoiku Roboczym";
+        const s1_nom = "Słoik Roboczy";
+        const s2 = "Słoika " + r.name;
+        const s2_nom = "Słoiku " + r.name;
+        const s3 = "Słoika Wernyhora";
+
+        setSafeText('sl-1-a', s1_nom);
+        setSafeText('sl-1-b', s1);
+        setSafeText('sl-2-a', s2);
+        setSafeText('sl-2-b', s2_nom);
+        setSafeText('sl-2-c-title', s2_nom);
+        setSafeText('sl-2-c', s2_nom);
+        setSafeText('sl-2-d', s2_nom);
+        setSafeText('sl-3-a', s3);
     }
+}
 
     function updateSchedule(source) {
         let inputVal;
