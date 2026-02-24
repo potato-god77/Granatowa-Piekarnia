@@ -361,21 +361,37 @@
     </div>
 
 </section>
-        <section id="karmienie-section" class="tab-content space-y-5">
+        
+<section id="karmienie-section" class="tab-content space-y-5">
 
-  <div id="karmienie-section" class="tab-content">
-    <h2 class="text-xl font-bold mb-4">Instrukcja Karmienia</h2>
-    <ul class="space-y-4">
-        <li class="flex items-start gap-3">
-            <span class="bg-amber-500 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-1">1</span>
-            <p>Wyjmij ze słoika <span id="k-sv"><b>20g</b></span> zakwasu <span id="k-name">...</span></p>
-        </li>
-        <li class="flex items-start gap-3">
-            <span class="bg-amber-500 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-1">2</span>
-            <p>Dodaj 65g mąki <span id="k-type">...</span> oraz 65g wody o temperaturze <span id="k-temp">...</span></p>
-        </li>
-    </ul>
-</div>
+    <div class="accordion-item glass-card">
+        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+            <h3 class="serif text-lg font-bold italic text-stone-800">Instrukcja Karmienia</h3>
+            <span class="plus-icon text-xl">+</span>
+        </button>
+        <div class="accordion-content p-6 pt-2 border-t text-sm text-stone-600">
+            <ul class="space-y-4 pt-4">
+                <li class="flex items-start gap-3">
+                    <span class="bg-amber-500 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-1 text-[10px] font-bold">1</span>
+                    <p class="leading-relaxed">
+                        Wyjmij ze słoika <span id="k-sv"><b>20g</b></span> zakwasu <span id="k-name" class="text-amber-600 font-bold">...</span>
+                    </p>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="bg-amber-500 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-1 text-[10px] font-bold">2</span>
+                    <p class="leading-relaxed">
+                        Dodaj <span class="text-amber-600 font-bold">65g</span> mąki <span id="k-type" class="text-amber-600 font-bold">...</span> oraz <span class="text-amber-600 font-bold">65g</span> wody o temperaturze <span id="k-temp" class="text-amber-600 font-bold">...</span>
+                    </p>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="bg-amber-500 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-1 text-[10px] font-bold">3</span>
+                    <p class="leading-relaxed">
+                        Wymieszaj dokładnie, zakręć lekko słoik i odstaw w ciepłe miejsce na kilka godzin przed wstawieniem do lodówki.
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
 
     <div class="accordion-item glass-card">
         <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
@@ -383,13 +399,13 @@
             <span class="plus-icon text-xl">+</span>
         </button>
         <div class="accordion-content p-6 pt-6 border-t text-sm text-stone-600 space-y-4">
-            <p>Choć karmimy co tydzień, mąki pełnoziarniste dają nam "bufor bezpieczeństwa" w razie podróży lub innego przestoju:</p>
+            <p>Choć karmimy co tydzień, mąki pełnoziarniste dają nam "bufor bezpieczeństwa" w razie podróży:</p>
             <ul class="space-y-3">
                 <li class="leading-relaxed">
-                    <b class="text-stone-800">Clint (Żyto 2000)</b>: Wytrzyma do 14 dni - może pojawić się ciemny płyn ("hooch") na górze – to naturalne, należy go odlać.
+                    <b class="text-stone-800">Clint (Żyto 2000)</b>: Wytrzyma do 14 dni - może pojawić się ciemny płyn ("hooch") na górze – to naturalne.
                 </li>
                 <li class="leading-relaxed">
-                    <b class="text-stone-800">Sylvester (Pszenica Pełne Ziarno 1850)</b>: Wytrzyma do 10 dni.
+                    <b class="text-stone-800">Sylvester (Pszenica 1850)</b>: Wytrzyma do 10 dni.
                 </li>
                 <li class="leading-relaxed">
                     <b class="text-stone-800">Hildegarda (Orkisz 2000)</b>: Wytrzyma do 10 dni.
@@ -404,20 +420,17 @@
             <span class="plus-icon text-xl">+</span>
         </button>
         <div class="accordion-content p-6 pt-6 border-t text-sm text-stone-600 space-y-4">
-            <p>Temperatura wody pozwala sterować tempem fermentacji i balansem smaku:</p>
+            <p>Temperatura wody pozwala sterować tempem fermentacji:</p>
             <ul class="space-y-3">
                 <li class="leading-relaxed">
-                    <b class="text-stone-800">Woda letnia (25-30°C)</b>: Bezpieczna dla delikatniejszych mąk. Sprzyja produkcji kwasu mlekowego (łagodniejszy profil).
+                    <b class="text-stone-800">Woda letnia (25-30°C)</b>: Sprzyja produkcji kwasu mlekowego (łagodniejszy profil).
                 </li>
                 <li class="leading-relaxed">
-                    <b class="text-stone-800">Woda ciepła (35-40°C)</b>: Idealna dla mąk pełnoziarnistych (Typ 2000) i żytnich. Szybciej aktywuje uśpione w lodówce drożdże i bakterie.
-                </li>
-                <li class="leading-relaxed">
-                    <b class="text-stone-800">Woda zimna (z kranu)</b>: Stosuj tylko, jeśli w kuchni panuje upał lub gdy musisz schować zakwas do lodówki natychmiast po karmieniu.
+                    <b class="text-stone-800">Woda ciepła (35-40°C)</b>: Idealna dla mąk pełnoziarnistych. Szybciej aktywuje uśpione drożdże.
                 </li>
             </ul>
             <p class="italic border-l-4 border-amber-200 pl-4 py-1 bg-amber-50/30">
-                <span class="text-stone-800 font-bold uppercase text-[10px]">Uwaga:</span> Nigdy nie używaj wody o temperaturze powyżej 45°C, ponieważ zaczniesz zabijać kulturę bakterii i drożdży.
+                <span class="text-stone-800 font-bold uppercase text-[10px]">Uwaga:</span> Nigdy nie używaj wody powyżej 45°C.
             </p>
         </div>
     </div>
