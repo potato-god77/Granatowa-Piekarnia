@@ -8,6 +8,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Granatowa Piekarnia</title>
+    <link rel="manifest" href="manifest.json">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 
@@ -30,22 +31,36 @@
         .btn-feed:active { transform: scale(0.95); box-shadow: inset 0 3px 5px rgba(0,0,0,0.1); }
         .btn-feed.fed-success { background-color: #e2e8f0 !important; color: #64748b !important; border-color: #cbd5e1 !important; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); pointer-events: none; }
 
+        .accordion-content { display: none; }
+        .accordion-item.active .accordion-content { display: block; animation: slideDown 0.2s ease-out; }
+        .accordion-item.active .plus-icon { transform: rotate(45deg); }
         .recipe-step { position: relative; padding-left: 1.2rem; margin-bottom: 0.8rem; border-left: 2px solid var(--accent); margin-left: 0.4rem; font-size: 0.9rem; line-height: 1.5; color: #57534e; }
-        
-        #w-sv-p, #w-regMF-p, #w-regWF-p, #p-wv, #p-sv, #p-fv, #p-slv, #sv, #wv, #fv, #slv { color: var(--amber-gold) !important; font-weight: 800; }
-        #p-secret-standalone { color: var(--accent) !important; font-style: italic; font-weight: 600; }
+
+        #w-sv, #w-regMF, #w-regWF, #p-wv, #p-sv, #p-fv, #p-slv { color: var(--amber-gold) !important; font-weight: 800; }
+        #p-secret, #p-secret-standalone { color: var(--accent) !important; font-style: italic; font-weight: 600; }
 
         #lock-screen { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .pass-input { background: white; border: 2px solid var(--sand); border-radius: 15px; padding: 15px; text-align: center; font-size: 1.5rem; letter-spacing: 0.5rem; width: 220px; outline: none; }
 
-        main > section { max-width: 448px; margin-left: auto; margin-right: auto; width: 100%; }
+        main > section, main > div { max-width: 448px; margin-left: auto; margin-right: auto; width: 100%; }
+        main #gal-cont { max-width: 1100px !important; width: 100% !important; display: grid !important; margin: 40px auto !important; padding: 0 16px; }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .brown-gradient { background: linear-gradient(135deg, #6d4c41 0%, #4a3728 100%); }
+
+        #viewer-modal { z-index: 999999 !important; }
+        .date-clickable { cursor: pointer; border: 1px solid #e5e7eb; padding: 2px 8px; border-radius: 6px; background: white; display: inline-block; }
+        .logout-icon { cursor: pointer; opacity: 0.4; transition: opacity 0.2s; flex-shrink: 0; }
+        .logout-icon:hover { opacity: 1; }
+
+        #carousel-img { max-width: 95vw; max-height: 75vh; width: auto; height: auto; object-fit: contain; transition: width 0.3s ease-in-out, max-width 0.3s ease-in-out, max-height 0.3s ease-in-out; box-shadow: 0 0 30px rgba(0,0,0,0.5); user-select: none; -webkit-user-drag: none; cursor: zoom-in; display: block; margin: auto; }
+        #carousel-img.zoomed { max-width: 200vw; max-height: none; width: 180%; cursor: zoom-out; }
+        #img-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto; position: relative; background: black; }
+        .zurek-link { text-decoration: underline; font-weight: bold; cursor: pointer; color: inherit; }
     </style>
 </head>
 <body class="pb-24">
-
     <div id="lock-screen">
         <h1 class="serif text-3xl italic mb-8 text-stone-800">Granatowa Piekarnia</h1>
         <div class="glass-card p-8 flex flex-col items-center">
@@ -56,29 +71,38 @@
     </div>
 
     <header style="position: sticky; top: 0; z-index: 1000; background-color: var(--bg); border-bottom: 1px solid #efe3d8;">
-        <div class="max-w-md mx-auto py-4 px-4 flex justify-between items-center">
-            <div class="w-8"></div>
-            <h1 class="serif text-2xl italic">Granatowa Piekarnia</h1>
-            <div class="logout-icon opacity-30" onclick="if(confirm('Wylogować?')) {localStorage.removeItem('bakery_access'); location.reload();}">
+        <div class="max-w-md mx-auto py-4 px-4 flex justify-between items-center flex-nowrap">
+            <div class="w-8"></div> 
+            <h1 class="serif text-2xl italic whitespace-nowrap overflow-hidden">Granatowa Piekarnia</h1>
+            <div class="logout-icon ml-2" onclick="if(confirm('Wylogować?')) {localStorage.removeItem('bakery_access'); location.reload();}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
             </div>
         </div>
-        <nav class="flex justify-around bg-white/80 backdrop-blur-md py-2 border-t border-b border-sand no-scrollbar overflow-x-auto">
+        <nav class="flex justify-around bg-white/80 backdrop-blur-md py-2 border-t border-b border-sand no-scrollbar" style="overflow-x: auto; white-space: nowrap;">
             <div id="btn-zakwasy" class="nav-btn px-4 py-2 text-sm font-bold active" onclick="switchTab('zakwasy')">ZAKWASY</div>
             <div id="btn-pieczenie" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('pieczenie')">PIECZENIE</div>
-            <div id="btn-karmienie" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('karmienie')">KARMIENIE</div>
+            <div id="btn-wiedza" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('wiedza')">KARMIENIE</div>
             <div id="btn-magazyn" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('magazyn')">MAGAZYN</div>
             <div id="btn-galeria" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('galeria')">GALERIA</div>
             <div id="btn-sylwetki" class="nav-btn px-4 py-2 text-sm font-bold" onclick="switchTab('sylwetki')">SYLWETKI</div>
         </nav>
     </header>
 
+    <div class="bg-white border-b px-6 py-3 flex justify-center items-center gap-3">
+        <label for="quick-select" class="text-[10px] uppercase font-black text-stone-400 tracking-widest">Zakwas:</label>
+        <select id="quick-select" onchange="sel(this.value)" class="bg-stone-100 border-none rounded-lg px-3 py-1.5 text-sm font-bold text-stone-800 outline-none">
+            <option value="clint">Clint Yeastwood</option>
+            <option value="sylvester">Sylvester Graham</option>
+            <option value="hildegarda">Hildegarda z Bingen</option>
+        </select>
+    </div>
+
     <main class="mx-auto p-4 space-y-6">
         <section id="zakwasy-section" class="tab-content active space-y-4">
             <div id="card-clint" onclick="sel('clint')" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
-                    <div><h4 class="font-bold text-xl starter-title">Clint Yeastwood</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Żytni • typ 2000</p></div>
-                    <img src="https://raw.githubusercontent.com/potato-god77/Granatowa-Piekarnia/chleb/cowboy.png" class="w-10 h-10 object-contain">
+                    <div><h4 class="font-bold text-xl starter-title">Clint Yeastwood</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Żytni<br><br>• typ 2000</p></div>
+                    <img src="cowboy.png" onclick="event.stopPropagation(); goToProfile('clint')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
                 </div>
                 <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
                     <p class="text-[11px] font-bold">Ostatnio: <span id="feed-clint" class="date-clickable" onclick="manualDate('clint', event)">---</span></p>
@@ -87,8 +111,8 @@
             </div>
             <div id="card-sylvester" onclick="sel('sylvester')" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
-                    <div><h4 class="font-bold text-xl starter-title">Sylvester Graham</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Pszenny Pełne Ziarno • typ 1850</p></div>
-                    <img src="https://raw.githubusercontent.com/potato-god77/Granatowa-Piekarnia/chleb/farmer.png" class="w-10 h-10 object-contain">
+                    <div><h4 class="font-bold text-xl starter-title">Sylvester Graham</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Pszenny Pełnoziarnisty<br><br>• typ 1850</p></div>
+                    <img src="farmer.png" onclick="event.stopPropagation(); goToProfile('sylvester')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
                 </div>
                 <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
                     <p class="text-[11px] font-bold">Ostatnio: <span id="feed-sylvester" class="date-clickable" onclick="manualDate('sylvester', event)">---</span></p>
@@ -97,8 +121,8 @@
             </div>
             <div id="card-hildegarda" onclick="sel('hildegarda')" class="starter-card glass-card p-5 flex flex-col gap-3">
                 <div class="flex justify-between items-center">
-                    <div><h4 class="font-bold text-xl starter-title">Hildegarda z Bingen</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Orkiszowy • typ 2000</p></div>
-                    <img src="https://raw.githubusercontent.com/potato-god77/Granatowa-Piekarnia/chleb/nun.png" class="w-10 h-10 object-contain">
+                    <div><h4 class="font-bold text-xl starter-title">Hildegarda z Bingen</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Orkiszowy<br><br>• typ 2000</p></div>
+                    <img src="nun.png" onclick="event.stopPropagation(); goToProfile('hildegarda')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
                 </div>
                 <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
                     <p class="text-[11px] font-bold">Ostatnio: <span id="feed-hildegarda" class="date-clickable" onclick="manualDate('hildegarda', event)">---</span></p>
@@ -108,45 +132,54 @@
         </section>
 
         <section id="pieczenie-section" class="tab-content space-y-4">
-            <div class="glass-card p-6">
-                <h3 class="serif text-xl font-bold italic mb-4">Logistyka Słoików</h3>
-                <div id="logistyka-content-p" class="text-sm space-y-4">
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
+                    <h3 class="serif text-xl font-bold italic text-stone-800">Zakwas</h3>
+                    <span class="plus-icon text-2xl">+</span>
+                </button>
+                <div id="logistyka-content" class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
                     <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 mb-4">
-                        <p id="w-name-p" class="serif text-lg font-bold text-stone-800 mb-2"></p>
-                        <p class="text-xs text-stone-600"><strong>Cel:</strong> <span id="w-target-p"></span></p>
-                        <p class="text-xs text-stone-600"><strong>Stosunek:</strong> <span id="w-ratio-p"></span></p>
-                        <p class="text-xs italic text-stone-500 mt-2" id="w-desc-p"></p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold italic text-stone-700">Etap 1: Aktywacja (ok. 16:00)</p>
-                        <p>Pobierz 30g bazy ze <strong id="sl-2-a-p"></strong>. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj w <strong id="sl-1-a-p"></strong> i zostaw na blacie na 4-6 godzin.</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold italic text-stone-700">Etap 2: Pobranie (ok. 22:00)</p>
-                        <p>1. Pobierz <span id="w-sv-p"></span> aktywnego zakwasu ze <strong id="sl-1-b-p"></strong> do miski.<br>2. Całą pozostałość przełóż do <strong id="sl-2-b-p"></strong>.</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold italic text-stone-700">Etap 3: Święta Porcja (<span id="sl-2-c-title-p"></span>)</p>
-                        <p>Wymieszaj starą bazę ze zrzutem. Wymierz z tego 20g ("Święta Porcja") i zostaw w <strong id="sl-2-c-p"></strong>. Resztę do <strong id="sl-3-a-p"></strong>.</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold italic text-stone-700">Etap 4: Regeneracja Matki</p>
-                        <p>1. Do 20g porcji w <strong id="sl-2-d-p"></strong> dodaj <span id="w-regMF-p"></span> mąki i <span id="w-regWF-p"></span> wody (38°C).<br>2. Zostaw na 1h na blacie, potem schowaj do lodówki.</p>
-                    </div>
+                        <p id="w-name" class="serif text-lg font-bold text-stone-800 mb-2"></p> 
+                        <p class="text-xs text-stone-600"><strong>Cel:</strong> <span id="w-target"></span></p> 
+                        <p class="text-xs text-stone-600"><strong>Stosunek:</strong> <span id="w-ratio"></span></p> 
+                        <p class="text-xs italic text-stone-500 mt-2" id="w-desc"></p> 
+                    </div> 
+                    <div class="recipe-step"> 
+                        <p class="font-bold italic text-stone-700">Etap 1: Aktywacja (ok. 16:00)</p> 
+                        <p>Pobierz 30g bazy ze <strong id="sl-2-a"></strong>. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj w <strong id="sl-1-a"></strong> i zostaw na blacie na 4-6 godzin.</p> 
+                    </div> 
+                    <div class="recipe-step"> 
+                        <p class="font-bold italic text-stone-700">Etap 2: Pobranie (ok. 22:00)</p> 
+                        <p>1. Pobierz <span class="font-bold" id="w-sv"></span> aktywnego zakwasu ze <strong id="sl-1-b"></strong> do miski.<br>2. Całą pozostałość przełóż do <strong id="sl-2-b"></strong>.</p> 
+                    </div> 
+                    <div class="recipe-step"> 
+                        <p class="font-bold italic text-stone-700">Etap 3: Święta Porcja (<span id="sl-2-c-title"></span>)</p> 
+                        <p>Wymieszaj starą bazę ze zrzutem. Wymierz z tego 20g ("Święta Porcja") i zostaw w <strong id="sl-2-c"></strong>. Resztę do <strong id="sl-3-a"></strong>.</p> 
+                    </div> 
+                    <div class="recipe-step"> 
+                        <p class="font-bold italic text-stone-700">Etap 4: Regeneracja Matki</p> 
+                        <p>1. Do 20g porcji w <strong id="sl-2-d"></strong> dodaj <span id="w-regMF" class="font-bold"></span> mąki i <span id="w-regWF" class="font-bold"></span> wody (38°C).<br>2. Zostaw na 1h na blacie, potem schowaj do lodówki.</p> 
+                    </div> 
                 </div>
             </div>
 
-            <div class="glass-card p-6">
-                <h3 class="serif text-xl font-bold italic mb-4">Składniki Chleba</h3>
-                <div class="flex items-center justify-center gap-4 bg-white p-3 rounded-2xl border border-stone-200 mb-6">
-                    <button onclick="changeQty(-1)" class="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center text-xl font-bold text-stone-600 active:scale-95 transition-all">-</button>
-                    <div class="flex flex-col items-center px-4 py-1 border border-stone-200 rounded-xl">
-                        <span id="display-qty" class="text-2xl font-black text-stone-800">1</span>
-                        <span class="text-[8px] uppercase font-bold text-stone-400">chleb</span>
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+                    <h3 class="serif text-lg font-bold italic">Składniki</h3>
+                    <span class="plus-icon text-xl">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 space-y-4">
+                    <div class="text-center mb-6">
+                        <h2 id="curr-name" class="serif text-xl font-bold text-stone-800 mb-4 italic">Clint Yeastwood</h2>
+                        <div class="flex items-center justify-center gap-4 bg-white p-3 rounded-2xl border border-stone-200">
+                            <button onclick="changeQty(-1)" class="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center text-xl font-bold text-stone-600 active:scale-95 transition-all">-</button>
+                            <div class="flex flex-col">
+                                <span id="display-qty" class="text-2xl font-black text-stone-800">1</span>
+                                <span class="text-[8px] uppercase font-bold text-stone-400">chleb</span>
+                            </div>
+                            <button onclick="changeQty(1)" class="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center text-xl font-bold text-stone-600 active:scale-95 transition-all">+</button>
+                        </div>
                     </div>
-                    <button onclick="changeQty(1)" class="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center text-xl font-bold text-stone-600 active:scale-95 transition-all">+</button>
-                </div>
-                <div class="space-y-4">
                     <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Zakwas</span><b id="sv" class="text-2xl">---</b></div>
                     <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Woda</span><b id="wv" class="text-2xl">---</b></div>
                     <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Mąka</span><b id="fv" class="text-2xl">---</b></div>
@@ -154,47 +187,116 @@
                 </div>
             </div>
 
-            <div class="glass-card p-6">
-                <h3 class="serif text-xl font-bold italic mb-4">Przepis</h3>
-                <div class="text-sm space-y-4 text-stone-600 text-justify">
-                    <div class="recipe-step"><p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p><p>Zrób zawiesinę: woda <span id="p-wv"></span> (30°C) + aktywny zakwas <span id="p-sv"></span>. Do tego dodaj <span id="p-fv"></span> mąki i <span id="p-slv"></span> soli. Wymieszaj, przykryj miskę i zostaw na noc na blacie.</p></div>
-                    <div class="recipe-step"><p class="font-bold text-stone-800 italic">Rano (05:30 - 06:00)</p><p>Włóż ciasto do lodówki (pod przykryciem).</p></div>
-                    <div class="recipe-step"><p class="font-bold text-stone-800 italic">Pieczenie (od 16:00)</p><p>Nagrzej piec z garnkiem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę", nacinaj. Piecz 30 min pod przykryciem, następnie 15 min bez.</p></div>
-                    <div id="p-secret-standalone" class="mt-4 p-4 bg-[#f9f5f1] rounded-xl text-center italic text-sm"></div>
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+                    <h3 class="serif text-lg font-bold italic">Przepis</h3>
+                    <span class="plus-icon text-xl">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4 text-stone-600"> 
+                    <div class="recipe-step"> 
+                        <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p> 
+                        <p>Zrób zawiesinę: woda <span id="p-wv" class="font-bold text-stone-800"></span> (30°C) + aktywny zakwas <span id="p-sv" class="font-bold text-stone-800"></span>. Do tego dodaj <span id="p-fv" class="font-bold text-stone-800"></span> mąki i <span id="p-slv" class="font-bold text-stone-800"></span> soli. Wymieszaj, przykryj miskę i zostaw na noc na blacie w temperaturze pokojowej.</p> 
+                    </div> 
+                    <div class="recipe-step"> 
+                        <p class="font-bold text-stone-800 italic">Rano (05:30 - 06:00)</p> 
+                        <p>Włóż ciasto do lodówki (pod przykryciem).</p> 
+                    </div> 
+                    <div class="recipe-step"> 
+                        <p class="font-bold text-stone-800 italic">Pieczenie (od 16:00)</p> 
+                        <p>Nagrzej piec z naczyniem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę" by stało się spięte, po czym natnij ostrym nożem lub żyletką. Gdy piekarnik się już nagrzeje, piecz 30 min pod przykryciem, a następnie zdejmij pokrywkę i piecz kolejne 15 min bez niej.</p> 
+                    </div> 
                 </div>
             </div>
-        </section>
-
-        <section id="karmienie-section" class="tab-content space-y-6">
-            <div class="glass-card p-6">
-                <h3 class="serif text-xl font-bold italic mb-4">Instrukcja Karmienia</h3>
-                <div id="instrukcja-dynamiczna" class="text-sm space-y-4 text-stone-600"></div>
+        <section id="wiedza-section" class="tab-content space-y-6">
+            <h2 class="serif text-2xl font-bold italic px-2 text-stone-800">Karmienie</h2>
+            
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+                    <h3 class="serif text-lg font-bold italic">Instrukcja</h3>
+                    <span class="plus-icon text-xl">+</span>
+                </button>
+                <div id="instrukcja-dynamiczna" class="accordion-content p-6 pt-0 border-t text-sm space-y-4 text-stone-600">
+                    </div>
             </div>
-            <div class="glass-card p-6 text-sm text-stone-600 leading-relaxed text-justify">
-                <h3 class="serif text-xl font-bold italic mb-4">Wytrzymałość</h3>
-                Choć karmimy co tydzień, mąki pełnoziarniste dają nam „bufor bezpieczeństwa”:<br><br>
-                - <b>Clint:</b> do 14 dni. <br>- <b>Sylvester/Hildegarda:</b> do 10 dni.
+
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+                    <h3 class="serif text-lg font-bold italic">Wytrzymałość</h3>
+                    <span class="plus-icon text-xl">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4 text-stone-600">
+                    <p>Choć karmimy co tydzień, mąki pełnoziarniste dają nam "bufor bezpieczeństwa" w razie podróży lub innego przestoju:</p>
+                    <ul class="space-y-3">
+                        <li>- <b>Clint (Żyto 2000)</b>: Wytrzyma do 14 dni - może pojawić się ciemny płyn ("hooch") na górze – to naturalne, należy go odlać.</li>
+                        <li>- <b>Sylvester (Pszenica Pełne Ziarno 1850):</b> Wytrzyma do 10 dni.</li>
+                        <li>- <b>Hildegarda (Orkisz 2000)</b>: Wytrzyma do 10 dni.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+                    <h3 class="serif text-lg font-bold italic">Woda</h3>
+                    <span class="plus-icon text-xl">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4 text-stone-600">
+                    <p>Temperatura wody pozwala sterować tempem fermentacji i balansem smaku:</p>
+                    <ul class="space-y-3">
+                        <li>- <b>Woda letnia (25-30°C)</b>: Bezpieczna dla delikatniejszych mąk. Sprzyja produkcji kwasu mlekowego (łagodniejszy profil).</li>
+                        <li>- <b>Woda ciepła (35-40°C)</b>: Idealna dla mąk pełnoziarnistych (Typ 2000) i żytnich. Szybciej aktywuje uśpione w lodówce drożdże i bakterie.</li>
+                        <li>- <b>Woda zimna (z kranu)</b>: Stosuj tylko, jeśli w kuchni panuje upał lub gdy musisz schować zakwas do lodówki natychmiast po karmieniu.</li>
+                    </ul>
+                    <p class="italic text-xs border-t pt-2">UWAGA: Nigdy nie używaj wody o temperaturze powyżej 45°C, ponieważ zaczniesz zabijać kulturę bakterii i drożdży.</p>
+                </div>
             </div>
         </section>
 
         <section id="magazyn-section" class="tab-content space-y-5">
-            <div class="glass-card p-6 text-center">
-                <h4 class="serif text-xl mb-4">Słoik Wernyhora 🥣</h4>
-                <div class="flex flex-col items-center">
-                    <input type="number" id="zw" value="0" onblur="saveToCloud('zlewki', this.value)" class="w-32 bg-stone-50 border-2 border-stone-200 rounded-2xl p-4 font-black text-3xl text-center outline-none mb-2">
-                    <p class="text-[10px] text-stone-400 uppercase font-bold mb-4">Gramów w słoiku</p>
-                    <button onclick="if(confirm('Reset?')) { document.getElementById('zw').value=0; saveToCloud('zlewki', 0); }" class="text-[10px] uppercase font-bold text-stone-300">Resetuj zlewki</button>
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+                    <h3 class="serif text-lg font-bold italic text-center w-full">Słoik: Wernyhora 🥣</h3>
+                    <span class="plus-icon text-xl">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t">
+                    <div class="flex flex-col items-center">
+                        <input type="number" id="zw" value="0" onblur="saveToCloud('zlewki', this.value)" class="w-24 bg-stone-50 border border-stone-200 rounded-xl p-2 font-black text-xl text-center outline-none mb-2">
+                        <p class="text-[9px] text-stone-400 uppercase font-bold mb-4 tracking-widest">Gramów w słoiku</p>
+                        <button onclick="if(confirm('Reset?')) { document.getElementById('zw').value=0; saveToCloud('zlewki', 0); }" class="text-[10px] uppercase font-bold text-stone-400 border border-stone-200 px-4 py-1 rounded-lg hover:bg-stone-50">RESETUJ</button>
+                    </div>
                 </div>
-                <p class="mt-6 text-xs text-stone-500 italic text-justify">
-                    Wernyhora to unikalna mieszanka odrzutów żytnich, pszennych i orkiszowych. Idealna baza do żurku (ok. 400g zlewek na 2L wywaru).
-                </p>
+            </div>
+
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+                    <h3 class="serif text-lg font-bold italic">Przepis: Żurek</h3>
+                    <span class="plus-icon text-xl">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4 text-stone-600">
+                    <p>Aby zrobić bazę na żurek z odrzutów (zlewek):</p>
+                    <ol class="space-y-3">
+                        <li>1. Przelej zlewki do większego słoika.</li>
+                        <li>2. Dodaj letnią wodę w proporcji 1:2.</li>
+                        <li>3. Dodaj 2 ząbki czosnku, liść laurowy i ziele angielskie.</li>
+                        <li>4. Zostaw na blacie na 2 dni (pod przykryciem z gazy), a potem użyj do gotowania lub schowaj do lodówki.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="accordion-item glass-card">
+                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+                    <h3 class="serif text-lg font-bold italic">Opis</h3>
+                    <span class="plus-icon text-xl">+</span>
+                </button>
+                <div class="accordion-content p-6 pt-0 border-t text-sm text-stone-500 italic text-justify leading-relaxed">
+                    Wernyhora to unikalna mieszanka odrzutów żytnich, pszennych i orkiszowych. Idealna baza do żurku (ok. 400g zlewek na 2L wywaru). Nie wyrzucaj zakwasu – daj mu drugie życie jako fundament pod tradycyjną zupę.
+                </div>
             </div>
         </section>
+
         <section id="galeria-section" class="tab-content">
-            <div id="gal-cont" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div id="gal-cont">
                 </div>
         </section>
-
         <section id="sylwetki-section" class="tab-content space-y-6">
             <div class="glass-card p-6">
                 <div class="overflow-hidden">
@@ -210,12 +312,7 @@
                     <h3 class="serif text-xl font-bold italic mb-4">Sylvester Graham</h3>
                     <p class="text-sm text-stone-700 leading-relaxed text-justify"><b>Sylvester Graham</b> (1794–1851) był amerykańskim prezbiteriańskim kaznodzieją i ojcem reformy dietetycznej. Graham stał się symbolem walki z uprzemysłowioną produkcją żywności, a jego centralnym narzędziem była <b>mąka pełnoziarnista</b>.</p>
                     <p class="mt-4 font-bold text-stone-900 text-sm">Sylvester Graham i krucjata przeciwko „białej śmierci”</p>
-                    <p class="mt-1 text-sm text-stone-700 text-justify">W czasach Grahama rewolucja przemysłowa zaczęła masowo produkować białą, rafinowaną mąkę, którą wybielano toksycznymi substancjami. Graham uznał to za grzech przeciwko naturze.</p>
-                    <ul class="mt-2 space-y-2 text-sm text-stone-700">
-                        <li>• <b>Boski zamysł ziarna:</b> Bóg stworzył ziarno pszenicy jako całość. Odrzucanie otrębów i zarodków było aktem pychy.</li>
-                        <li>• <b>Mąka Grahama:</b> Opracował własny typ mąki – grubo mielonej i nierafinowanej.</li>
-                        <li>• <b>Moralność a dieta:</b> Graham wierzył, że ciężka, tłusta dieta i białe pieczywo prowadzą do nieczystych myśli i agresji. Jego chleb miał koić duszę i ciało.</li>
-                    </ul>
+                    <p class="mt-1 text-sm text-stone-700 text-justify">W czasach Grahama rewolucja przemysłowa zaczęła masowo produkować białą, rafinowaną mąkę, którą wybielano toksycznymi substancjami. Graham uznał to za grzech przeciwko naturze. Wierzył, że ziarno pszenicy jest darem Bożym w swojej nienaruszonej formie.</p>
                 </div>
             </div>
 
@@ -223,27 +320,20 @@
                 <div class="overflow-hidden">
                     <img src="https://raw.githubusercontent.com/potato-god77/Granatowa-Piekarnia/chleb/hildy.png" class="float-right ml-4 mb-2 w-32 h-auto object-contain rounded-lg">
                     <h3 class="serif text-xl font-bold italic mb-4">Hildegarda z Bingen</h3>
-                    <p class="text-sm text-stone-700 leading-relaxed text-justify"><b>Hildegarda z Bingen</b> (1098–1179) – wizjonerka, kompozytorka i pierwsza w historii kobieta lekarz. W jej filozofii zdrowia centralne miejsce zajmuje <b>orkisz</b> (Triticum spelta).</p>
-                    <p class="mt-4 font-bold text-stone-900 text-sm">Hildegarda i orkisz: „Najlepsze ze zbóż”</p>
-                    <p class="mt-1 text-sm text-stone-700 text-justify">Dla św. Hildegardy orkisz nie był po prostu składnikiem diety, ale uniwersalnym lekiem.</p>
-                    <ul class="mt-2 space-y-2 text-sm text-stone-700">
-                        <li>• <b>Viriditas (Zielona Siła):</b> Wierzyła w życiodajną energię natury, którą orkisz posiada w najwyższym stopniu.</li>
-                        <li>• <b>Zdrowie psychiczne:</b> „Stwarza on dobrą krew, daje pogodne usposobienie i radość umysłu”.</li>
-                        <li>• <b>Lekkostrawność:</b> Zalecała orkisz jako jedyne zboże, które jest dobrze tolerowane przez chorych, dając im siłę do regeneracji.</li>
-                    </ul>
+                    <p class="text-sm text-stone-700 leading-relaxed text-justify"><b>Hildegarda z Bingen</b> (1098–1179) – wizjonerka, kompozytorka i pierwsza w historii kobieta lekarz. W jej filozofii zdrowia centralne miejsce zajmuje <b>orkisz</b> (Triticum spelta). Dla św. Hildegardy orkisz nie był po prostu składnikiem diety, ale uniwersalnym lekiem: „Stwarza on dobrą krew, daje pogodne usposobienie i radość umysłu”.</p>
                 </div>
             </div>
         </section>
     </main>
 
-    <div id="viewer-modal" class="hidden fixed inset-0 bg-black flex flex-col items-center justify-between z-[999999]">
+    <div id="viewer-modal" class="hidden fixed inset-0 bg-black flex flex-col items-center justify-between">
         <div class="w-full p-4 flex justify-between items-center bg-black/80 backdrop-blur-md">
             <span id="carousel-info" class="text-white text-[10px] font-black uppercase tracking-widest opacity-80 leading-tight"></span>
             <button onclick="closeViewer()" class="w-10 h-10 flex items-center justify-center text-white text-4xl leading-none active:scale-90">&times;</button>
         </div>
-        <div id="img-container" class="relative flex-1 w-full flex items-center justify-center overflow-hidden" onclick="if(event.target === this) closeViewer()">
+        <div id="img-container" onclick="if(event.target === this) closeViewer()">
             <button onclick="moveCarousel(-1); event.stopPropagation()" class="absolute left-2 top-1/2 -translate-y-1/2 w-12 h-24 bg-black/20 text-white text-3xl z-[1000001] flex items-center justify-center rounded-r-lg">❮</button>
-            <img id="carousel-img" src="" alt="" class="max-w-[95vw] max-h-[75vh] object-contain transition-transform duration-300">
+            <img id="carousel-img" src="" alt="" onclick="toggleZoom(event)">
             <button onclick="moveCarousel(1); event.stopPropagation()" class="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-24 bg-black/20 text-white text-3xl z-[1000001] flex items-center justify-center rounded-l-lg">❯</button>
         </div>
         <div id="thumb-strip" class="h-24 w-full flex gap-2 overflow-x-auto p-2 no-scrollbar bg-black/50 backdrop-blur-md"></div>
@@ -259,21 +349,21 @@
         const RECIPES = {
             clint: {
                 name: "Clint Yeastwood", target: "Chleb Żytni Pełnoziarnisty", ratio: "1:2.5:2.5", desc: "Surowy, głęboki kwas.",
-                sv: 70, wv: 330, fv: 450, sl: 10, secret: "Pamiętaj o długim wyrastaniu.",
+                sv: 70, wv: 330, fv: 450, sl: 10, secret: "Żyto potrzebuje czasu i stałej temperatury.",
                 sl1: "Słoik 1A", sl2: "Słoik 1B (Baza)", sl3: "Słoik Wernyhora",
-                feed: { flourQty: "65g", flourType: "żytniej 2000", waterQty: "65g", temp: "38°C" }
+                feed: { flourQty: "65g", flourType: "żytniej", waterQty: "65g", temp: "ok. 35-40°C" }
             },
             sylvester: {
                 name: "Sylvester Graham", target: "Chleb Pszenny Pełne Ziarno", ratio: "1:3:3", desc: "Delikatny, orzechowy profil.",
-                sv: 70, wv: 350, fv: 500, sl: 11, secret: "Pszenica lubi ciepło przy startowaniu.",
+                sv: 70, wv: 350, fv: 500, sl: 11, secret: "Pszenica pełnoziarnista chłonie wodę powoli.",
                 sl1: "Słoik 2A", sl2: "Słoik 2B (Baza)", sl3: "Słoik Wernyhora",
-                feed: { flourQty: "65g", flourType: "pszennej 1850", waterQty: "65g", temp: "30-32°C" }
+                feed: { flourQty: "65g", flourType: "pszennej pełnoziarnistej", waterQty: "65g", temp: "ok. 30-32°C" }
             },
             hildegarda: {
                 name: "Hildegarda z Bingen", target: "Chleb Orkiszowy", ratio: "1:3:3", desc: "Szlachetny, starodawny smak.",
-                sv: 70, wv: 340, fv: 480, sl: 10, secret: "Orkisz nie lubi zbyt agresywnego wyrabiania.",
+                sv: 70, wv: 340, fv: 480, sl: 10, secret: "Orkisz jest wrażliwy na zbyt długie wyrastanie.",
                 sl1: "Słoik 3A", sl2: "Słoik 3B (Baza)", sl3: "Słoik Wernyhora",
-                feed: { flourQty: "65g", flourType: "orkiszowej 2000", waterQty: "65g", temp: "30-35°C" }
+                feed: { flourQty: "65g", flourType: "orkiszowej", waterQty: "65g", temp: "ok. 30-35°C" }
             }
         };
 
@@ -282,7 +372,7 @@
                 localStorage.setItem('bakery_access', 'granted');
                 document.getElementById('lock-screen').style.display = 'none';
                 initApp();
-            } else { alert('Błędne hasło'); }
+            } else { alert('Nieprawidłowe hasło'); }
         }
 
         function switchTab(tab) {
@@ -296,10 +386,17 @@
             }
         }
 
+        function toggleAccordion(btn) {
+            const item = btn.parentElement;
+            item.classList.toggle('active');
+        }
+
         function sel(key) {
             currentStarterKey = key;
             document.querySelectorAll('.starter-card').forEach(c => c.classList.remove('selected'));
-            if(document.getElementById('card-' + key)) document.getElementById('card-' + key).classList.add('selected');
+            const card = document.getElementById('card-' + key);
+            if(card) card.classList.add('selected');
+            document.getElementById('quick-select').value = key;
             updatePieczenie();
             updateKarmienie();
         }
@@ -308,25 +405,31 @@
             const r = RECIPES[currentStarterKey];
             const q = loafQty;
             const fields = {
-                'w-name-p': r.name, 'w-target-p': r.target, 'w-ratio-p': r.ratio, 'w-desc-p': r.desc,
-                'w-sv-p': (r.sv * q) + "g", 'sl-2-a-p': r.sl2, 'sl-1-a-p': r.sl1, 'sl-1-b-p': r.sl1,
-                'sl-2-b-p': r.sl2, 'sl-2-c-title-p': r.sl2, 'sl-2-c-p': r.sl2, 'sl-3-a-p': r.sl3,
-                'sl-2-d-p': r.sl2, 'w-regMF-p': (65 * q) + "g", 'w-regWF-p': (65 * q) + "g",
+                'curr-name': r.name, 'w-name': r.name, 'w-target': r.target, 'w-ratio': r.ratio, 'w-desc': r.desc,
+                'sl-2-a': r.sl2, 'sl-1-a': r.sl1, 'sl-1-b': r.sl1, 'sl-2-b': r.sl2, 'sl-2-c-title': r.sl2, 'sl-2-c': r.sl2, 'sl-3-a': r.sl3, 'sl-2-d': r.sl2,
+                'w-sv': (r.sv * q) + "g", 'w-regMF': (65 * q) + "g", 'w-regWF': (65 * q) + "g",
                 'sv': (r.sv * q) + "g", 'wv': (r.wv * q) + "g", 'fv': (r.fv * q) + "g", 'slv': (r.sl * q) + "g",
                 'p-wv': (r.wv * q) + "g", 'p-sv': (r.sv * q) + "g", 'p-fv': (r.fv * q) + "g", 'p-slv': (r.sl * q) + "g",
                 'p-secret-standalone': r.secret
             };
-            for (let id in fields) { if(document.getElementById(id)) document.getElementById(id).innerText = fields[id]; }
+            for (let id in fields) {
+                const el = document.getElementById(id);
+                if (el) el.innerText = fields[id];
+            }
         }
 
         function updateKarmienie() {
             const r = RECIPES[currentStarterKey];
             const f = r.feed;
-            document.getElementById('instrukcja-dynamiczna').innerHTML = `
-                <div class="recipe-step"><p>1. Odważasz 20g bazy bezpośrednio ze słoika <b>${r.name}</b>.</p></div>
-                <div class="recipe-step"><p>2. Dodajesz <b>${f.flourQty}</b> świeżej mąki <b>${f.flourType}</b> oraz <b>${f.waterQty}</b> wody o temperaturze <b>${f.temp}</b>.</p></div>
-                <div class="recipe-step"><p>3. Mieszasz dokładnie do połączenia składników. Zostawiasz słoik na blacie na 2-3h, po czym chowasz do lodówki.</p></div>
-            `;
+            const container = document.getElementById('instrukcja-dynamiczna');
+            if (container) {
+                container.innerHTML = `
+                    <div class="recipe-step"><p>1. Odważasz 20g zakwasu ze słoika <b>${r.name}</b> (reszta do Wernyhory lub utylizacji).</p></div>
+                    <div class="recipe-step"><p>2. Dodajesz <span id="w-regMF" class="font-bold text-stone-800">${f.flourQty}</span> świeżej mąki <b>${f.flourType}</b> i <span id="w-regWF" class="font-bold text-stone-800">${f.waterQty}</span> wody o temperaturze <span class="font-bold text-stone-800">${f.temp}</span>.</p></div>
+                    <div class="recipe-step"><p>3. Mieszasz do całkowitego połączenia (konsystencja gęstej pasty).</p></div>
+                    <div class="recipe-step"><p>4. Kluczowy moment: Zostawiasz na blacie na ok. 2-3 godziny (aż ruszy), po czym chowasz do lodówki.</p></div>
+                `;
+            }
         }
 
         function changeQty(delta) {
@@ -340,8 +443,9 @@
             const now = new Date().toLocaleDateString('pl-PL');
             document.getElementById('feed-' + key).innerText = now;
             saveToCloud('feed_' + key, now);
-            event.target.innerText = "Nakarmiony!";
-            event.target.classList.add('fed-success');
+            const btn = event.target;
+            btn.innerText = "NAKARMIONY!";
+            btn.classList.add('fed-success');
         }
 
         function manualDate(key, event) {
@@ -356,7 +460,7 @@
 
         async function saveToCloud(field, value) {
             try { await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ field, value }) }); } 
-            catch(e) { console.error("Cloud Save Error:", e); }
+            catch(e) { console.error("Cloud Error:", e); }
         }
 
         async function loadFromCloud() {
@@ -367,7 +471,7 @@
                 if (data.feed_clint) document.getElementById('feed-clint').innerText = data.feed_clint;
                 if (data.feed_sylvester) document.getElementById('feed-sylvester').innerText = data.feed_sylvester;
                 if (data.feed_hildegarda) document.getElementById('feed-hildegarda').innerText = data.feed_hildegarda;
-            } catch(e) { console.error("Cloud Load Error:", e); }
+            } catch(e) { console.error("Load Error:", e); }
         }
 
         async function fetchGallery() {
@@ -381,11 +485,14 @@
         }
 
         function renderGallery() {
-            document.getElementById('gal-cont').innerHTML = galleryData.map((img, idx) => `
-                <div class="aspect-square bg-stone-200 rounded-xl overflow-hidden shadow-sm active:scale-95 transition-transform" onclick="openViewer(${idx})">
-                    <img src="${img.download_url}" class="w-full h-full object-cover">
-                </div>
-            `).join('');
+            const cont = document.getElementById('gal-cont');
+            if (cont) {
+                cont.innerHTML = galleryData.map((img, idx) => `
+                    <div class="aspect-square bg-stone-200 rounded-xl overflow-hidden shadow-sm active:scale-95 transition-transform" onclick="openViewer(${idx})">
+                        <img src="${img.download_url}" class="w-full h-full object-cover" loading="lazy">
+                    </div>
+                `).join('');
+            }
         }
 
         function openViewer(index) {
@@ -394,21 +501,35 @@
             updateViewer();
         }
 
-        function closeViewer() { document.getElementById('viewer-modal').classList.add('hidden'); }
+        function closeViewer() {
+            document.getElementById('viewer-modal').classList.add('hidden');
+            document.getElementById('carousel-img').classList.remove('zoomed');
+        }
+
+        function toggleZoom(e) {
+            e.target.classList.toggle('zoomed');
+        }
 
         function updateViewer() {
             const img = galleryData[currentImgIndex];
-            document.getElementById('carousel-img').src = img.download_url;
+            const cImg = document.getElementById('carousel-img');
+            cImg.classList.remove('zoomed');
+            cImg.src = img.download_url;
             document.getElementById('carousel-info').innerText = img.name.split('.')[0];
             document.getElementById('thumb-strip').innerHTML = galleryData.map((t, idx) => `
                 <img src="${t.download_url}" onclick="currentImgIndex=${idx}; updateViewer();" 
-                     class="h-full aspect-square object-cover rounded-md ${idx === currentImgIndex ? 'border-4 border-amber-500' : 'opacity-50'}">
+                     class="h-full aspect-square object-cover rounded-md flex-shrink-0 ${idx === currentImgIndex ? 'border-4 border-amber-500' : 'opacity-50'}">
             `).join('');
         }
 
         function moveCarousel(delta) {
             currentImgIndex = (currentImgIndex + delta + galleryData.length) % galleryData.length;
             updateViewer();
+        }
+
+        function goToProfile(key) {
+            switchTab('sylwetki');
+            // Proste przewinięcie do odpowiedniego elementu można dodać tutaj
         }
 
         function initApp() {
