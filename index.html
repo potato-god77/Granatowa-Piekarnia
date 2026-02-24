@@ -627,11 +627,20 @@
 
         function toggleAccordion(btn) { btn.parentElement.classList.toggle('active'); }
 
-        
+        function parsePolishDate(dateStr) {
+    if (!dateStr) return new Date(0);
+    const parts = dateStr.split('.');
+    if (parts.length !== 3) return new Date(dateStr); // fallback
+    // Tworzy datę: rok, miesiąc (0-11), dzień
+    return new Date(parts[2], parts[1] - 1, parts[0]);
+}
 
 function populateYearFilter(albums) {
     const yearSelect = document.getElementById('filter-year');
-    const years = [...new Set(albums.map(a => new Date(a.date).getFullYear()))].sort((a, b) => b - a);
+    // Używamy parsePolishDate zamiast new Date
+    const years = [...new Set(albums.map(a => parsePolishDate(a.date).getFullYear()))]
+                  .filter(y => !isNaN(y))
+                  .sort((a, b) => b - a);
     
     yearSelect.innerHTML = '<option value="">Wszystkie lata</option>';
     years.forEach(y => {
@@ -654,8 +663,8 @@ function updateMonthFilter() {
     monthSelect.disabled = false;
     monthSelect.classList.remove('opacity-50');
     
-    const filteredByYear = allAlbumsData.filter(a => new Date(a.date).getFullYear() == year);
-    const months = [...new Set(filteredByYear.map(a => new Date(a.date).getMonth() + 1))].sort((a, b) => a - b);
+    const filteredByYear = allAlbumsData.filter(a => parsePolishDate(a.date).getFullYear() == year);
+    const months = [...new Set(filteredByYear.map(a => parsePolishDate(a.date).getMonth() + 1))].sort((a, b) => a - b);
     
     const monthNames = ["Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień"];
     
@@ -663,6 +672,9 @@ function updateMonthFilter() {
     months.forEach(m => {
         monthSelect.innerHTML += `<option value="${m}">${monthNames[m-1]}</option>`;
     });
+    
+    applyFilters();
+}
     
     applyFilters();
 }
@@ -674,10 +686,10 @@ function applyFilters() {
     let filtered = allAlbumsData;
     
     if (year) {
-        filtered = filtered.filter(a => new Date(a.date).getFullYear() == year);
+        filtered = filtered.filter(a => parsePolishDate(a.date).getFullYear() == year);
     }
     if (month) {
-        filtered = filtered.filter(a => (new Date(a.date).getMonth() + 1) == month);
+        filtered = filtered.filter(a => (parsePolishDate(a.date).getMonth() + 1) == month);
     }
     
     renderAlbums(filtered);
