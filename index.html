@@ -359,37 +359,31 @@
             </div>
         </div>
     </div>
-
 </section>
         
 <section id="karmienie-section" class="tab-content space-y-5">
-
     <div class="accordion-item glass-card">
         <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
             <h3 class="serif text-lg font-bold italic text-stone-800">Instrukcja Karmienia</h3>
             <span class="plus-icon text-xl">+</span>
         </button>
-        <div class="accordion-content p-6 pt-2 border-t text-sm text-stone-600">
-            <ul class="space-y-4 pt-4">
-                <li class="flex items-start gap-3">
-                    <span class="bg-amber-500 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-1 text-[10px] font-bold">1</span>
-                    <p class="leading-relaxed">
-                        Wyjmij ze słoika <span id="k-sv"><b>20g</b></span> zakwasu <span id="k-name" class="text-amber-600 font-bold">...</span>
-                    </p>
-                </li>
-                <li class="flex items-start gap-3">
-                    <span class="bg-amber-500 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-1 text-[10px] font-bold">2</span>
-                    <p class="leading-relaxed">
-                        Dodaj <span class="text-amber-600 font-bold">65g</span> mąki <span id="k-type" class="text-amber-600 font-bold">...</span> oraz <span class="text-amber-600 font-bold">65g</span> wody o temperaturze <span id="k-temp" class="text-amber-600 font-bold">...</span>
-                    </p>
-                </li>
-                <li class="flex items-start gap-3">
-                    <span class="bg-amber-500 text-white rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-1 text-[10px] font-bold">3</span>
-                    <p class="leading-relaxed">
-                        Wymieszaj dokładnie, zakręć lekko słoik i odstaw w ciepłe miejsce na kilka godzin przed wstawieniem do lodówki.
-                    </p>
-                </li>
-            </ul>
+        <div class="accordion-content p-6 pt-6 border-t text-sm space-y-4 text-stone-600"> 
+            
+            <div class="recipe-step"> 
+                <p class="font-bold text-stone-800 italic">Krok 1: Pobranie</p> 
+                <p>Wyjmij ze słoika <span id="k-sv" style="color: var(--amber-gold) !important; font-weight: 800;">20g</span> zakwasu <span id="k-name" style="color: var(--amber-gold) !important; font-weight: 800; text-transform: uppercase;">...</span></p> 
+            </div> 
+
+            <div class="recipe-step"> 
+                <p class="font-bold text-stone-800 italic">Krok 2: Karmienie</p> 
+                <p>Dodaj <span style="color: var(--amber-gold) !important; font-weight: 800;">65g</span> mąki <span id="k-type" style="color: var(--amber-gold) !important; font-weight: 800;">...</span> oraz <span style="color: var(--amber-gold) !important; font-weight: 800;">65g</span> wody o temperaturze <span id="k-temp" style="color: var(--amber-gold) !important; font-weight: 800;">...</span></p> 
+            </div> 
+
+            <div class="recipe-step"> 
+                <p class="font-bold text-stone-800 italic">Krok 3: Start</p> 
+                <p>Wymieszaj dokładnie, zakręć lekko słoik i odstaw w ciepłe miejsce na kilka godzin, aż zakwas "ruszy", zanim schowasz go do lodówki.</p> 
+            </div> 
+
         </div>
     </div>
 
@@ -434,7 +428,6 @@
             </p>
         </div>
     </div>
-
 </section>
 
       <section id="magazyn-section" class="tab-content space-y-5">
