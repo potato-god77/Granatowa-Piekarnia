@@ -716,28 +716,37 @@ function applyFilters() {
 }
 
         function renderAlbums() {
-            const cont = document.getElementById('gal-cont');
-            if (!cont || !isGalleryLoaded) return;
-            const r = RECIPES[currentStarterKey];
-            const sn = r.name.split(' ')[0].toLowerCase();
-            const f = allGalleryData.filter(a => a.starter && a.starter.toLowerCase().includes(sn));
-            if (f.length === 0) {
-                cont.style.display = 'block';
-                cont.innerHTML = `<p class="p-10 text-stone-400 italic text-center w-full">Brak zdjęć chleba z zakwasu: ${r.name}</p>`;
-                return;
-            }
-            cont.style.display = 'grid';
-            cont.style.gridTemplateColumns = 'repeat(2, 1fr)';
-            cont.style.gap = '16px';
-            cont.innerHTML = f.map((a, i) => `
-                <div onclick="openAlbumFiltered(${i}, '${sn}')" class="relative aspect-[3/4] rounded-xl overflow-hidden shadow-lg bg-stone-800">
-                    <img src="${a.cover}" class="w-full h-full object-cover">
-                    <div class="absolute bottom-0 inset-x-0 p-3 bg-black/60 backdrop-blur-sm text-white text-[10px]">
-                        <b>${a.date}</b><br>${a.starter}
-                    </div>
+    const container = document.getElementById('gal-cont');
+    const filteredData = allGalleryData.filter(a => a.starter === currentStarter);
+    
+    // 1. Sprawdzamy czy są dane
+    if (!filteredData || filteredData.length === 0) {
+        // Czyścimy klasy grida i ustawiamy pełną szerokość z wyśrodkowaniem
+        container.className = "py-20 w-full text-center";
+        container.innerHTML = '<p class="text-stone-500 italic text-lg">Brak zdjęć dla wybranego filtru.</p>';
+        return;
+    }
+
+    // 2. Jeśli są dane, przywracamy oryginalne klasy grida
+    container.className = "grid grid-cols-2 md:grid-cols-3 gap-4";
+    container.innerHTML = '';
+
+    filteredData.forEach((album, idx) => {
+        const div = document.createElement('div');
+        div.className = "album-card bg-white rounded-xl shadow-sm overflow-hidden border border-stone-100 cursor-pointer";
+        div.onclick = () => openViewer(filteredData, idx);
+        
+        div.innerHTML = `
+            <div class="relative aspect-square">
+                <img src="${album.images[0]}" class="w-full h-full object-cover" loading="lazy">
+                <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2">
+                    <p class="text-white text-xs font-bold">${album.date}</p>
                 </div>
-            `).join('');
-        }
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
 
         function openAlbumFiltered(idx, name) {
             const filtered = allGalleryData.filter(a => a.starter && a.starter.toLowerCase().includes(name));
