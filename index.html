@@ -170,16 +170,16 @@
             <h3 class="serif text-lg font-bold italic text-stone-800">Harmonogram</h3>
             <span class="plus-icon text-xl">+</span>
         </button>
-        <div class="accordion-content p-3 pt-4 border-t space-y-2 bg-white">
+        <div class="accordion-content p-2 pt-4 border-t space-y-2 bg-white">
             
             <div class="flex items-center justify-between p-3 border border-stone-200 rounded-xl bg-amber-50/30 shadow-sm">
                 <div class="text-left pr-4">
-                    <span class="font-bold text-stone-800 text-xs block mb-1">Wybudzenie:</span>
-                    <p class="text-[10px] text-stone-600 leading-tight">Aktywuj wybrany zakwas według instrukcji.</p>
+                    <span class="font-black text-stone-800 text-sm block uppercase tracking-tight">Wybudzenie:</span>
+                    <p class="text-[10px] text-stone-600 leading-tight italic">Aktywuj wybrany zakwas według instrukcji.</p>
                 </div>
-                <div class="flex items-center bg-white border border-stone-200 rounded-lg p-1 min-w-[90px] justify-between shadow-inner">
+                <div class="flex items-center bg-white border-2 border-stone-200 rounded-lg p-1 min-w-[90px] justify-between shadow-inner">
                     <input type="text" id="t-wybudzenie-input" value="16:00" readonly 
-                           class="w-12 font-black text-base text-center outline-none bg-transparent text-stone-800">
+                           class="w-12 font-black text-lg text-center outline-none bg-transparent text-stone-800">
                     <div class="flex flex-col border-l border-stone-200 pl-1 ml-1">
                         <button onclick="stepTime('t-wybudzenie-input', 15, 'wybudzenie')" class="text-[10px] hover:text-amber-600 px-1">▲</button>
                         <button onclick="stepTime('t-wybudzenie-input', -15, 'wybudzenie')" class="text-[10px] hover:text-amber-600 px-1">▼</button>
@@ -189,12 +189,12 @@
 
             <div class="flex items-center justify-between p-3 border border-stone-200 rounded-xl bg-stone-50/30 shadow-sm">
                 <div class="text-left pr-4">
-                    <span class="font-bold text-stone-800 text-xs block mb-1">Mieszanie:</span>
-                    <p class="text-[10px] text-stone-600 leading-tight">Stwórz ciasto według przepisu i zostaw w misce pod przykryciem na blacie.</p>
+                    <span class="font-black text-stone-800 text-sm block uppercase tracking-tight">Mieszanie:</span>
+                    <p class="text-[10px] text-stone-600 leading-tight italic">Stwórz ciasto według przepisu i zostaw w misce pod przykryciem na blacie.</p>
                 </div>
-                <div class="flex items-center bg-white border border-stone-200 rounded-lg p-1 min-w-[90px] justify-between shadow-inner">
+                <div class="flex items-center bg-white border-2 border-stone-200 rounded-lg p-1 min-w-[90px] justify-between shadow-inner">
                     <input type="text" id="start-time" value="22:00" readonly 
-                           class="w-12 font-black text-base text-center outline-none bg-transparent text-stone-800">
+                           class="w-12 font-black text-lg text-center outline-none bg-transparent text-stone-800">
                     <div class="flex flex-col border-l border-stone-200 pl-1 ml-1">
                         <button onclick="stepTime('start-time', 15, 'mieszanie')" class="text-[10px] hover:text-stone-600 px-1">▲</button>
                         <button onclick="stepTime('start-time', -15, 'mieszanie')" class="text-[10px] hover:text-stone-600 px-1">▼</button>
@@ -202,30 +202,30 @@
                 </div>
             </div>
 
-            <div class="flex items-center justify-between p-3 border border-stone-100 rounded-xl bg-white opacity-80 min-h-[50px]">
+            <div class="flex items-center justify-between p-3 border border-stone-100 rounded-xl bg-white opacity-90">
                 <div class="text-left pr-4">
-                    <span class="font-bold text-stone-800 text-xs block mb-1">Dojrzewanie:</span>
-                    <p class="text-[10px] text-stone-600 leading-tight">Koniec gwałtownej fermentacji na blacie, czas na spokojne dojrzewanie w lodówce.</p>
+                    <span class="font-black text-stone-400 text-sm block uppercase tracking-tight">Dojrzewanie:</span>
+                    <p class="text-[10px] text-stone-500 leading-tight italic">Koniec gwałtownej fermentacji na blacie, czas na spokojne dojrzewanie w lodówce.</p>
                 </div>
-                <div class="text-base font-black text-stone-400 min-w-[50px] text-center" id="t-lodowka">05:30</div>
+                <div class="text-xl font-black text-stone-400 min-w-[55px] text-center" id="t-lodowka">05:30</div>
             </div>
 
-            <div class="flex items-center justify-between p-3 border border-stone-100 rounded-xl bg-white opacity-80 min-h-[50px]">
+            <div class="flex items-center justify-between p-3 border border-stone-100 rounded-xl bg-white opacity-90">
                 <div class="text-left pr-4">
-                    <span class="font-bold text-stone-800 text-xs block mb-1">Formowanie:</span>
-                    <p class="text-[10px] text-stone-600 leading-tight">Czas włączyć piekarnik, uformować przyszły chleb i poczekać na odpowiednią temperaturę.</p>
+                    <span class="font-black text-stone-400 text-sm block uppercase tracking-tight">Formowanie:</span>
+                    <p class="text-[10px] text-stone-500 leading-tight italic">Czas włączyć piekarnik, uformować przyszły chleb i poczekać na odpowiednią temperaturę.</p>
                 </div>
-                <div class="text-base font-black text-stone-400 min-w-[50px] text-center" id="t-formowanie">16:00</div>
+                <div class="text-xl font-black text-stone-400 min-w-[55px] text-center" id="t-formowanie">16:00</div>
             </div>
 
             <div class="flex items-center justify-between p-3 border border-stone-200 rounded-xl bg-stone-50/30 shadow-sm">
                 <div class="text-left pr-4">
-                    <span class="font-bold text-stone-800 text-xs block mb-1">Pieczenia:</span>
-                    <p class="text-[10px] text-stone-600 leading-tight">Koniec czekania, gorący garnek z chlebem (pod przykrywką) wkładamy do piekarnika.</p>
+                    <span class="font-black text-stone-800 text-sm block uppercase tracking-tight">Pieczenia:</span>
+                    <p class="text-[10px] text-stone-600 leading-tight italic">Gorący garnek z chlebem (pod przykrywką) wkładamy do piekarnika.</p>
                 </div>
-                <div class="flex items-center bg-white border border-stone-200 rounded-lg p-1 min-w-[90px] justify-between shadow-inner">
+                <div class="flex items-center bg-white border-2 border-stone-200 rounded-lg p-1 min-w-[90px] justify-between shadow-inner">
                     <input type="text" id="t-pieczenie-input" value="16:45" readonly 
-                           class="w-12 font-black text-base text-center outline-none bg-transparent text-stone-800">
+                           class="w-12 font-black text-lg text-center outline-none bg-transparent text-stone-800">
                     <div class="flex flex-col border-l border-stone-200 pl-1 ml-1">
                         <button onclick="stepTime('t-pieczenie-input', 15, 'pieczenie')" class="text-[10px] hover:text-stone-600 px-1">▲</button>
                         <button onclick="stepTime('t-pieczenie-input', -15, 'pieczenie')" class="text-[10px] hover:text-stone-600 px-1">▼</button>
@@ -233,30 +233,30 @@
                 </div>
             </div>
 
-            <div class="flex items-center justify-between p-3 border border-stone-100 rounded-xl bg-white opacity-80 min-h-[50px]">
+            <div class="flex items-center justify-between p-3 border border-stone-100 rounded-xl bg-white opacity-90">
                 <div class="text-left pr-4">
-                    <span class="font-bold text-stone-800 text-xs block mb-1">Rumienienie:</span>
-                    <p class="text-[10px] text-stone-600 leading-tight">Zdejmujemy z garnka pokrywkę (ostrożnie za pomocą rękawicy lub ścierki). Już ostatnia prosta.</p>
+                    <span class="font-black text-stone-400 text-sm block uppercase tracking-tight">Rumienienie:</span>
+                    <p class="text-[10px] text-stone-500 leading-tight italic">Zdejmujemy z garnka pokrywkę (ostrożnie za pomocą rękawicy lub ścierki). Już ostatnia prosta.</p>
                 </div>
-                <div class="text-base font-black text-stone-400 min-w-[50px] text-center" id="t-rumienienie">17:15</div>
+                <div class="text-xl font-black text-stone-400 min-w-[55px] text-center" id="t-rumienienie">17:15</div>
             </div>
 
-            <div class="flex items-center justify-between p-3 border border-stone-100 rounded-xl bg-white opacity-80 min-h-[50px]">
+            <div class="flex items-center justify-between p-3 border border-stone-100 rounded-xl bg-white opacity-90">
                 <div class="text-left pr-4">
-                    <span class="font-bold text-stone-800 text-xs block mb-1">Upieczenie:</span>
-                    <p class="text-[10px] text-stone-600 leading-tight">Chleb już powinien być ładnie rumiany i gdy się stuknie w jego dno wydawać pusty dźwięk. Jest już gotowy! Przełóż na kratkę.</p>
+                    <span class="font-black text-stone-400 text-sm block uppercase tracking-tight">Upieczenie:</span>
+                    <p class="text-[10px] text-stone-500 leading-tight italic">Chleb już powinien być ładnie rumiany i gdy się stuknie w jego dno wydawać pusty dźwięk. Jest już gotowy!</p>
                 </div>
-                <div class="text-base font-black text-stone-400 min-w-[50px] text-center" id="t-upieczenie">17:30</div>
+                <div class="text-xl font-black text-stone-400 min-w-[55px] text-center" id="t-upieczenie">17:30</div>
             </div>
 
             <div class="flex items-center justify-between p-3 border border-stone-200 rounded-xl bg-stone-50/30 shadow-sm">
                 <div class="text-left pr-4">
-                    <span class="font-bold text-stone-800 text-xs block mb-1">Jedzenie:</span>
-                    <p class="text-[10px] text-stone-600 leading-tight">Smacznego! Chleb już ostygł i wilgoć w jego wnętrzu już się "uspokoiła". Bochenek jest gotowy do jedzenia! Pierwsze kilka kromek najlepiej z samym masłem...</p>
+                    <span class="font-black text-stone-800 text-sm block uppercase tracking-tight">Jedzenie:</span>
+                    <p class="text-[10px] text-stone-600 leading-tight italic">Smacznego! Chleb już ostygł i wilgoć w jego wnętrzu już się "uspokoiła".</p>
                 </div>
-                <div class="flex items-center bg-white border border-stone-200 rounded-lg p-1 min-w-[90px] justify-between shadow-inner">
+                <div class="flex items-center bg-white border-2 border-stone-200 rounded-lg p-1 min-w-[90px] justify-between shadow-inner">
                     <input type="text" id="t-jedzenie-input" value="18:30" readonly 
-                           class="w-12 font-black text-base text-center outline-none bg-transparent text-stone-800">
+                           class="w-12 font-black text-lg text-center outline-none bg-transparent text-stone-800">
                     <div class="flex flex-col border-l border-stone-200 pl-1 ml-1">
                         <button onclick="stepTime('t-jedzenie-input', 15, 'jedzenie')" class="text-[10px] hover:text-stone-600 px-1">▲</button>
                         <button onclick="stepTime('t-jedzenie-input', -15, 'jedzenie')" class="text-[10px] hover:text-stone-600 px-1">▼</button>
