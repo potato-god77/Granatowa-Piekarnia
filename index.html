@@ -276,26 +276,36 @@
                     </button>
                 </div>
             </div>
-            <div class="grid grid-cols-2 gap-4">
-                <div class="bg-stone-50 p-4 rounded-xl border-b-2 border-stone-200 text-center">
-                    <p class="text-[10px] uppercase font-bold text-stone-400">Zakwas</p>
-                    <p id="sv" class="text-2xl font-black text-stone-800"></p>
-                </div>
-                <div class="bg-stone-50 p-4 rounded-xl border-b-2 border-stone-200 text-center">
-                    <p class="text-[10px] uppercase font-bold text-stone-400">Woda (38°C)</p>
-                    <p id="wv" class="text-2xl font-black text-stone-800"></p>
-                </div>
-                <div class="bg-stone-50 p-4 rounded-xl border-b-2 border-stone-200 text-center">
-                    <p class="text-[10px] uppercase font-bold text-stone-400">Mąka</p>
-                    <p id="fv" class="text-2xl font-black text-stone-800"></p>
-                </div>
-                <div class="bg-stone-50 p-4 rounded-xl border-b-2 border-stone-200 text-center">
-                    <p class="text-[10px] uppercase font-bold text-stone-400">Sól</p>
-                    <p id="slv" class="text-2xl font-black text-stone-800"></p>
-                </div>
-            </div>
+            <div class="accordion-item glass-card">
+    <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+        <h3 class="serif text-lg font-bold italic text-stone-800">Logistyka Zakwasu</h3>
+        <span class="plus-icon text-xl">+</span>
+    </button>
+    <div id="logistyka-content" class="accordion-content p-6 pt-6 border-t text-sm space-y-4">
+        <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 mb-4">
+            <p id="w-name" class="serif text-lg font-bold text-stone-800 mb-2"></p>
+            <p class="text-xs text-stone-600"><strong>Cel:</strong> <span id="w-target"></span></p>
+            <p class="text-xs text-stone-600"><strong>Stosunek:</strong> <span id="w-ratio"></span></p>
+            <p class="text-xs italic text-stone-500 mt-2" id="w-desc"></p>
+        </div>
+        <div class="recipe-step text-stone-600 leading-relaxed">
+            <p class="font-bold italic text-stone-800">Etap 1: Aktywacja (ok. 16:00)</p>
+            <p>Pobierz 30g bazy <strong id="sl-2-a"></strong>. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj <strong id="sl-1-a"></strong> i zostaw na blacie na 4-6 godzin.</p>
+        </div>
+        <div class="recipe-step text-stone-600 leading-relaxed">
+            <p class="font-bold italic text-stone-800">Etap 2: Pobranie (ok. 22:00)</p>
+            <p>1. Pobierz <span class="font-bold" id="w-sv"></span> aktywnego zakwasu <strong id="sl-1-b"></strong> do miski.<br>2. Całą pozostałość przełóż <strong id="sl-2-b"></strong>.</p>
+        </div>
+        <div class="recipe-step text-stone-600 leading-relaxed">
+            <p class="font-bold italic text-stone-800">Etap 3: Święta Porcja (<span id="sl-2-c-title"></span>)</p>
+            <p>Wymieszaj resztę starej bazy z pozostałością świeżo aktywowanego zakwasu. Wymierz z tego 20g ("Święta Porcja") i zostaw <strong id="sl-2-c"></strong>. Resztę przelej <strong id="sl-3-a"></strong>.</p>
+        </div>
+        <div class="recipe-step text-stone-600 leading-relaxed">
+            <p class="font-bold italic text-stone-800">Etap 4: Regeneracja Matki</p>
+            <p>1. Do 20g porcji <strong id="sl-2-d"></strong> dodaj <span id="w-regMF" class="font-bold">65g</span> mąki i <span id="w-regWF" class="font-bold">65g</span> wody (<span id="k-temp-val" class="font-bold"></span>).<br>2. Zostaw na 1h na blacie, potem schowaj do lodówki.</p>
         </div>
     </div>
+</div>
 
     <div class="accordion-item glass-card">
         <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
@@ -626,7 +636,7 @@
             desc: 'Żyto kocha gęstą konsystencję. Taka dawka wody sprawia, że Clint jest jak plastelina.',
             regMF: 40, regWF: 40,
             kType: 'żytniej',
-            kTemp: 'ok. 35-40°C'
+            kTemp: 'ok. 35-38°C'
         },
         sylvester: { 
             name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, 
@@ -745,34 +755,45 @@
     if(secStandalone) secStandalone.innerHTML = r.secret;
 
     if(document.getElementById('w-name')) {
-        document.getElementById('w-name').innerText = r.name;
-        document.getElementById('w-target').innerText = r.target;
-        document.getElementById('w-ratio').innerText = r.ratio;
-        document.getElementById('w-desc').innerText = r.desc;
-        
-        const setSafeText = (id, text) => {
-            const el = document.getElementById(id);
-            if(el) el.innerText = text;
-        };
+    document.getElementById('w-name').innerText = r.name;
+    document.getElementById('w-target').innerText = r.target;
+    document.getElementById('w-ratio').innerText = r.ratio;
+    document.getElementById('w-desc').innerText = r.desc;
+    
+    const setSafeText = (id, text) => {
+        const el = document.getElementById(id);
+        if(el) el.innerText = text;
+    };
 
-        setSafeText('w-regMF', r.regMF + 'g');
-        setSafeText('w-regWF', r.regWF + 'g');
-        
-        const s1 = "Słoiku Roboczym";
-        const s1_nom = "Słoik Roboczy";
-        const s2 = "Słoika " + r.name;
-        const s2_nom = "Słoiku " + r.name;
-        const s3 = "Słoika Wernyhora";
+    // Ustawienie stałych 65g i dynamicznej temperatury dla etapu 4
+    setSafeText('w-regMF', '65g');
+    setSafeText('w-regWF', '65g');
+    setSafeText('k-temp-val', r.kTemp);
 
-        setSafeText('sl-1-a', s1_nom);
-        setSafeText('sl-1-b', s1);
-        setSafeText('sl-2-a', s2);
-        setSafeText('sl-2-b', s2_nom);
-        setSafeText('sl-2-c-title', s2_nom);
-        setSafeText('sl-2-c', s2_nom);
-        setSafeText('sl-2-d', s2_nom);
-        setSafeText('sl-3-a', s3);
-    }
+    // Odmiana przez przypadki
+    const s1_miejski = "w Słoiku Roboczym";
+    const s1_dopełniacz = "ze Słoika Roboczego";
+    
+    const s2_dopełniacz = "ze Słoika " + r.name;
+    const s2_biernik = "do Słoika " + r.name;
+    const s2_mianownik = "Słoik " + r.name;
+    const s2_miejski = "w Słoiku " + r.name;
+    
+    const s3_biernik = "do Słoika Wernyhora";
+
+    // Przypisanie do ID w HTML
+    setSafeText('sl-2-a', s2_dopełniacz); // "ze Słoika Clint..."
+    setSafeText('sl-1-a', s1_miejski);    // "w Słoiku Roboczym"
+    
+    setSafeText('sl-1-b', s1_dopełniacz); // "ze Słoika Roboczego"
+    setSafeText('sl-2-b', s2_biernik);    // "do Słoika Clint..."
+    
+    setSafeText('sl-2-c-title', s2_mianownik); // Tytuł: (Słoik Clint...)
+    setSafeText('sl-2-c', s2_miejski);    // "w Słoiku Clint..."
+    setSafeText('sl-3-a', s3_biernik);    // "do Słoika Wernyhora"
+    
+    setSafeText('sl-2-d', s2_miejski);    // "w Słoiku Clint..."
+}
 }
 
     function updateSchedule(source) {
