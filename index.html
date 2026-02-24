@@ -722,33 +722,35 @@ function applyFilters() {
     const r = RECIPES[currentStarterKey];
     const sn = r.name.split(' ')[0].toLowerCase();
     
-    // Pobieramy wartości z nowych filtrów (pamiętaj o dodaniu tych ID do selectów)
     const year = document.getElementById('filter-year').value;
     const month = document.getElementById('filter-month').value;
 
-    // FILTROWANIE: Zakwas + Rok + Miesiąc
     const f = allGalleryData.filter(a => {
-        // 1. Sprawdzanie zakwasu (Twoja oryginalna logika)
         const matchStarter = a.starter && a.starter.toLowerCase().includes(sn);
-        
-        // 2. Sprawdzanie daty (z użyciem parsePolishDate którą dodaliśmy wcześniej)
         const albumDate = parsePolishDate(a.date);
         const matchYear = !year || albumDate.getFullYear() == year;
         const matchMonth = !month || (albumDate.getMonth() + 1) == month;
-        
         return matchStarter && matchYear && matchMonth;
     });
 
-    // REAKCJA NA BRAK ZDJĘĆ (Wyśrodkowanie)
+    // REAKCJA NA BRAK ZDJĘĆ - WERSJA Z WYMUSZONYM ŚRODKIEM
     if (f.length === 0) {
-        cont.style.display = 'block'; // Zmieniamy na block, aby text-center zadziałał na całą szerokość
-        cont.innerHTML = `<p class="p-10 text-stone-400 italic text-center w-full">Brak zdjęć dla wybranych kryteriów.</p>`;
+        cont.style.display = 'flex'; // Zmieniamy na flex, aby łatwiej centrować w pionie i poziomie
+        cont.style.justifyContent = 'center';
+        cont.style.alignItems = 'center';
+        cont.style.minHeight = '200px'; // Rezerwujemy miejsce, żeby tekst nie był "przyklejony" do góry
+        cont.style.width = '100%';
+        
+        cont.innerHTML = `<p class="text-stone-400 italic text-center w-full px-4">Brak zdjęć dla wybranych filtrów.</p>`;
         return;
     }
 
-    // RENDEROWANIE ALBUMÓW (Twoja oryginalna struktura)
+    // RENDEROWANIE ALBUMÓW - PRZYWRACAMY TWOJE ORYGINALNE USTAWIENIA
     cont.style.display = 'grid';
     cont.style.gridTemplateColumns = 'repeat(2, 1fr)';
+    cont.style.justifyContent = 'stretch';
+    cont.style.alignItems = 'stretch';
+    cont.style.minHeight = '0';
     cont.style.gap = '16px';
     
     cont.innerHTML = f.map((a, i) => `
