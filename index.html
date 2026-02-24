@@ -53,6 +53,38 @@
         .date-clickable { cursor: pointer; border: 1px solid #e5e7eb; padding: 2px 8px; border-radius: 6px; background: white; display: inline-block; }
         .logout-icon { cursor: pointer; opacity: 0.4; transition: opacity 0.2s; flex-shrink: 0; }
         .logout-icon:hover { opacity: 1; }
+
+        #carousel-img { 
+    max-width: 95vw; 
+    max-height: 75vh; /* Zmniejszone, by zawsze widzieć paski nawigacji */
+    width: auto; 
+    height: auto; 
+    object-fit: contain; 
+    transition: transform 0.3s ease-in-out, opacity 0.2s ease; 
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    user-select: none;
+    -webkit-user-drag: none;
+    cursor: zoom-in; /* Kursor informujący o możliwości powiększenia */
+}
+
+/* Klasa aktywowana przez JS przy powiększeniu */
+#carousel-img.zoomed {
+    transform: scale(2); /* Powiększenie 2x */
+    cursor: zoom-out;
+    max-height: none; /* Pozwala zdjęciu "urosnąć" poza widok */
+    max-width: none;
+}
+
+#img-container { 
+    width: 100%; 
+    height: 100%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    overflow: auto; /* Pozwala przewijać zdjęcie, gdy jest powiększone */
+    position: relative;
+    background: black;
+}
         
         .zurek-link { text-decoration: underline; font-weight: bold; cursor: pointer; color: inherit; }
     </style>
@@ -339,16 +371,22 @@
         </section>
     </main>
 
-    <div id="viewer-modal" class="hidden fixed inset-0 bg-black flex flex-col items-center justify-center">
-        <button onclick="closeViewer()" class="absolute top-6 right-6 w-14 h-14 bg-black/50 rounded-full text-white text-5xl flex items-center justify-center z-[9999999] leading-none transition-all active:scale-90">&times;</button>
-        <span id="carousel-info" class="absolute top-8 left-6 text-white text-[9px] font-black opacity-60 z-[999999] pointer-events-none uppercase tracking-widest bg-black/40 px-3 py-1.5 rounded leading-relaxed text-left"></span>
-        <div id="img-container" class="relative w-full flex-1 flex items-center justify-center cursor-pointer p-4" onclick="if(event.target === this) closeViewer()">
-            <img id="carousel-img" src="" class="max-w-full max-h-[70vh] object-contain transition-opacity duration-200 cursor-default" onclick="event.stopPropagation()">
-            <button onclick="moveCarousel(-1); event.stopPropagation()" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 p-5 rounded-full text-white text-3xl z-[999999]">❮</button>
-            <button onclick="moveCarousel(1); event.stopPropagation()" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 p-5 rounded-full text-white text-3xl z-[999999]">❯</button>
-        </div>
-        <div id="thumb-strip" class="no-scrollbar flex gap-2 overflow-x-auto p-6 w-full bg-black border-t border-stone-900 z-[999999]"></div>
+    <div id="viewer-modal" class="hidden fixed inset-0 bg-black flex flex-col items-center justify-between">
+    <div class="w-full p-4 flex justify-between items-center bg-black/80 backdrop-blur-md z-[1000000]">
+        <span id="carousel-info" class="text-white text-[10px] font-black uppercase tracking-widest opacity-80 leading-tight"></span>
+        <button onclick="closeViewer()" class="w-10 h-10 flex items-center justify-center text-white text-4xl leading-none active:scale-90">&times;</button>
     </div>
+
+    <div id="img-container" class="relative flex-1 w-full" onclick="if(event.target === this) closeViewer()">
+        <button onclick="moveCarousel(-1); event.stopPropagation()" class="absolute left-2 top-1/2 -translate-y-1/2 w-12 h-24 bg-black/20 text-white text-3xl z-[1000001] flex items-center justify-center rounded-r-lg">❮</button>
+        
+        <img id="carousel-img" src="" class="cursor-default" onclick="event.stopPropagation()">
+        
+        <button onclick="moveCarousel(1); event.stopPropagation()" class="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-24 bg-black/20 text-white text-3xl z-[1000001] flex items-center justify-center rounded-l-lg">❯</button>
+    </div>
+
+    <div id="thumb-strip" class="no-scrollbar flex gap-2 overflow-x-auto p-4 w-full bg-black/90 border-t border-stone-900 z-[1000000]"></div>
+</div>
 
     <script>
         const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxDTlTcVOKuNua9ZL29lL-HBS1BJpptJtZ5ee9m5JkDPMU1M6bMWVs7fHwi9ccyxhE/exec';
