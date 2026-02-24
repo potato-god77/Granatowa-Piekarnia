@@ -893,8 +893,12 @@ document.addEventListener('keydown', function(event) {
                 toggleAccordion(btn);
             }
 
-            // 4. Płynne przewinięcie do wybranej sylwetki
-            accordionItems[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // 4. Płynne przewijanie do samej góry ramki
+targetItem.scrollIntoView({ 
+    behavior: 'smooth', 
+    block: 'start',   // To mówi: ustaw początek elementu na początku ekranu
+    inline: 'nearest'
+});
         }
     }, 100);
 }
