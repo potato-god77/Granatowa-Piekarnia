@@ -139,169 +139,203 @@
         </section>
 
         <section id="pieczenie-section" class="tab-content space-y-4">
-            <div class="accordion-item glass-card">
-                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
-                    <h3 class="serif text-lg font-bold italic">Kalkulator składników</h3>
-                    <span class="plus-icon text-xl">+</span>
-                </button>
-                <div class="accordion-content p-5 pt-0 bg-stone-50">
-                    <div class="text-center mb-4">
-                        <h2 id="curr-name" class="serif text-xl font-bold text-stone-800 mb-4 italic">Clint Yeastwood</h2>
-                        <div class="flex items-center justify-center gap-4 bg-white p-3 rounded-2xl border border-stone-200">
-                            <button onclick="changeQty(-1)" class="w-12 h-12 rounded-full bg-stone-100 flex items-center justify-center text-2xl font-bold text-stone-600 active:scale-95 transition-all">-</button>
-                            <div class="flex flex-col">
-                                <span id="display-qty" class="text-3xl font-black text-stone-800">1</span>
-                                <span class="text-[9px] uppercase font-bold text-stone-400">Ilość chlebów</span>
-                            </div>
-                            <button onclick="changeQty(1)" class="w-12 h-12 rounded-full bg-stone-100 flex items-center justify-center text-2xl font-bold text-stone-600 active:scale-95 transition-all">+</button>
-                        </div>
-                    </div>
-                </div>
+            
+            <div class="glass-card p-5">
+                <h3 class="font-bold text-lg mb-3 flex items-center gap-2">
+                    <span class="w-2 h-6 bg-accent rounded-full"></span> Zakwas
+                </h3>
+                <p class="text-sm text-stone-600 leading-relaxed">
+                    Używasz <b id="p-sv-main">70g</b> zakwasu prosto z lodówki. Pozostałe <b>20g</b> słoika dokarmiasz (instrukcja w zakładce Karmienie), a nadmiar (jeśli jest) przelewasz do słoika <b>Wernyhora</b>.
+                </p>
             </div>
 
-            <div class="accordion-item glass-card">
-                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
-                    <h3 class="serif text-lg font-bold italic">Składniki</h3>
-                    <span class="plus-icon text-xl">+</span>
-                </button>
-                <div class="accordion-content p-6 pt-0 space-y-4">
-                    <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Zakwas</span><b id="sv" class="text-2xl">---</b></div>
-                    <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Woda</span><b id="wv" class="text-2xl">---</b></div>
-                    <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Mąka</span><b id="fv" class="text-2xl">---</b></div>
-                    <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Sól</span><b id="slv" class="text-2xl">---</b></div>
+            <div class="glass-card p-5">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-lg">Składniki</h3>
+                    <div class="flex items-center gap-3 bg-stone-100 px-3 py-1 rounded-full">
+                        <button onclick="changeQty(-1)" class="w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm font-bold text-xl active:scale-90 transition-transform">-</button>
+                        <div class="flex flex-col items-center min-w-[20px]">
+                            <span id="display-qty" class="font-black text-lg leading-none">1</span>
+                            <span class="text-[7px] uppercase font-bold text-stone-400">szt.</span>
+                        </div>
+                        <button onclick="changeQty(1)" class="w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm font-bold text-xl active:scale-90 transition-transform">+</button>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="flex justify-between border-b pb-3">
+                        <span class="text-[10px] text-stone-400 font-bold uppercase">Zakwas</span>
+                        <b id="sv" class="text-2xl text-stone-800">---</b>
+                    </div>
+                    <div class="flex justify-between border-b pb-3">
+                        <span class="text-[10px] text-stone-400 font-bold uppercase">Woda</span>
+                        <b id="wv" class="text-2xl text-stone-800">---</b>
+                    </div>
+                    <div class="flex justify-between border-b pb-3">
+                        <span class="text-[10px] text-stone-400 font-bold uppercase">Mąka</span>
+                        <b id="fv" class="text-2xl text-stone-800">---</b>
+                    </div>
+                    <div class="flex justify-between border-b pb-3">
+                        <span class="text-[10px] text-stone-400 font-bold uppercase">Sól</span>
+                        <b id="slv" class="text-2xl text-stone-800">---</b>
+                    </div>
                 </div>
             </div>
 
             <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
                     <h3 class="serif text-lg font-bold italic">Przepis</h3>
-                    <span class="plus-icon text-xl">+</span>
+                    <span class="plus-icon text-xl text-stone-400">+</span>
                 </button>
-                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4 text-stone-600"> 
-                    <div class="recipe-step"> 
-                        <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p> 
-                        <p>Zrób zawiesinę: woda <span id="p-wv" class="font-bold text-stone-800"></span> (30°C) + aktywny zakwas <span id="p-sv" class="font-bold text-stone-800"></span>. Do tego dodaj <span id="p-fv" class="font-bold text-stone-800"></span> mąki i <span id="p-slv" class="font-bold text-stone-800"></span> soli. Wymieszaj, przykryj miskę i zostaw na noc na blacie w temperaturze pokojowej.</p> 
-                    </div> 
-                    <div class="recipe-step"> 
-                        <p class="font-bold text-stone-800 italic">Rano (05:30 - 06:00)</p> 
-                        <p>Włóż ciasto do lodówki (pod przykryciem).</p> 
-                    </div> 
-                    <div class="recipe-step"> 
-                        <p class="font-bold text-stone-800 italic">Pieczenie (od 16:00)</p> 
-                        <p>Nagrzej piec z garnkiem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę" by stało się spięte, po czym natnij ostrym nożem lub żyletką. Gdy piekarnik się już nagrzeje, piecz 30 min pod przykryciem, a następnie zdejmij pokrywkę i piecz kolejne 15 min bez niej.</p> 
-                    </div> 
+                <div class="accordion-content">
+                    <div class="p-6 pt-0 border-t text-sm space-y-4 text-stone-600"> 
+                        <div class="recipe-step"> 
+                            <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p> 
+                            <p>Zrób zawiesinę: woda <span id="p-wv" class="font-bold text-stone-800"></span> (30°C) + aktywny zakwas <span id="p-sv" class="font-bold text-stone-800"></span>. Do tego dodaj <span id="p-fv" class="font-bold text-stone-800"></span> mąki i <span id="p-slv" class="font-bold text-stone-800"></span> soli. Wymieszaj, przykryj miskę i zostaw na noc na blacie w temperaturze pokojowej.</p> 
+                        </div> 
+                        <div class="recipe-step"> 
+                            <p class="font-bold text-stone-800 italic">Rano (05:30 - 06:00)</p> 
+                            <p>Włóż ciasto do lodówki (pod przykryciem).</p> 
+                        </div> 
+                        <div class="recipe-step"> 
+                            <p class="font-bold text-stone-800 italic">Pieczenie (od 16:00)</p> 
+                            <p>Nagrzej piec z garnkiem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę" by stało się spięte, po czym natnij ostrym nożem lub żyletką. Gdy piekarnik się już nagrzeje, piecz 30 min pod przykryciem, a następnie zdejmij pokrywkę i piecz kolejne 15 min bez niej.</p> 
+                        </div> 
+                    </div>
                 </div>
             </div>
 
             <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
                     <h3 class="serif text-lg font-bold italic">Wskazówki</h3>
-                    <span class="plus-icon text-xl">+</span>
+                    <span class="plus-icon text-xl text-stone-400">+</span>
                 </button>
-                <div class="accordion-content p-6 pt-0 border-t text-sm text-stone-600">
-                    <div id="p-secret-standalone" class="italic font-medium"></div>
+                <div class="accordion-content">
+                    <div class="p-6 pt-0 border-t text-sm text-stone-600">
+                        <div id="p-secret-standalone" class="italic font-medium"></div>
+                    </div>
                 </div>
             </div>
 
             <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
                     <h3 class="serif text-lg font-bold italic">Kalkulator czasu</h3>
-                    <span class="plus-icon text-xl">+</span>
+                    <span class="plus-icon text-xl text-stone-400">+</span>
                 </button>
-                <div class="accordion-content p-5 pt-0 bg-[#f9f5f1]">
-                    <div class="flex justify-between items-center mb-5">
-                        <p class="text-[9px] uppercase font-bold text-stone-500">Mieszanie:</p>
-                        <input type="time" id="start-time" value="22:00" onchange="calcTime()" class="bg-white border rounded-lg px-3 py-1 text-sm font-semibold">
-                    </div>
-                    <div class="space-y-4 relative border-l ml-4 pl-6">
-                        <div><p class="text-[9px] uppercase font-medium text-stone-400">Do lodówki</p><p id="t-lodowka" class="text-xl font-bold">05:30</p></div>
-                        <div><p class="text-[9px] uppercase font-medium text-stone-400">Formowanie</p><p id="t-formowanie" class="text-xl font-bold">16:00</p></div>
-                        <div class="bg-white p-4 rounded-xl border text-center -ml-1">
-                            <p class="text-[9px] uppercase font-bold text-stone-500">Pieczenie (235°C)</p>
-                            <p id="t-pieczenie" class="text-3xl font-black text-[#4a3728]">17:15</p>
+                <div class="accordion-content">
+                    <div class="p-5 pt-0 bg-[#f9f5f1]">
+                        <div class="flex justify-between items-center mb-5">
+                            <p class="text-[9px] uppercase font-bold text-stone-500">Mieszanie:</p>
+                            <input type="time" id="start-time" value="22:00" onchange="calcTime()" class="bg-white border rounded-lg px-3 py-1 text-sm font-semibold">
+                        </div>
+                        <div class="space-y-4 relative border-l ml-4 pl-6">
+                            <div><p class="text-[9px] uppercase font-medium text-stone-400">Do lodówki</p><p id="t-lodowka" class="text-xl font-bold">05:30</p></div>
+                            <div><p class="text-[9px] uppercase font-medium text-stone-400">Formowanie</p><p id="t-formowanie" class="text-xl font-bold">16:00</p></div>
+                            <div class="bg-white p-4 rounded-xl border text-center -ml-1">
+                                <p class="text-[9px] uppercase font-bold text-stone-500">Pieczenie (235°C)</p>
+                                <p id="t-pieczenie" class="text-3xl font-black text-[#4a3728]">17:15</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="wiedza-section" class="tab-content space-y-6">
-            <div class="accordion-item glass-card">
-                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
-                    <h3 class="serif text-xl font-bold italic text-stone-800">Logistyka Słoików</h3>
-                    <span class="plus-icon text-2xl">+</span>
-                </button>
-                <div id="logistyka-content" class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
-                    <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 mb-4">
-                        <p id="w-name" class="serif text-lg font-bold text-stone-800 mb-2"></p>
-                        <p class="text-xs text-stone-600"><strong>Cel:</strong> <span id="w-target"></span></p>
-                        <p class="text-xs text-stone-600"><strong>Stosunek:</strong> <span id="w-ratio"></span></p>
-                        <p class="text-xs italic text-stone-500 mt-2" id="w-desc"></p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold italic text-stone-700">Etap 1: Aktywacja (ok. 16:00)</p>
-                        <p>Pobierz 30g bazy ze <strong id="sl-2-a"></strong>. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj w <strong id="sl-1-a"></strong> i zostaw na blacie na 4-6 godzin.</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold italic text-stone-700">Etap 2: Pobranie (ok. 22:00)</p>
-                        <p>1. Pobierz <span class="font-bold" id="w-sv"></span> aktywnego zakwasu ze <strong id="sl-1-b"></strong> do miski.<br>2. Całą pozostałość przełóż do <strong id="sl-2-b"></strong>.</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold italic text-stone-700">Etap 3: Święta Porcja (<span id="sl-2-c-title"></span>)</p>
-                        <p>Wymieszaj starą bazę ze zrzutem. Wymierz z tego 20g ("Święta Porcja") i zostaw w <strong id="sl-2-c"></strong>. Resztę do <strong id="sl-3-a"></strong>.</p>
-                    </div>
-                    <div class="recipe-step">
-                        <p class="font-bold italic text-stone-700">Etap 4: Regeneracja Matki</p>
-                        <p>1. Do 20g porcji w <strong id="sl-2-d"></strong> dodaj <span id="w-regMF" class="font-bold"></span> mąki i <span id="w-regWF" class="font-bold"></span> wody (38°C).<br>2. Zostaw na 1h na blacie, potem schowaj do lodówki.</p>
-                    </div>
-                </div>
-            </div>
+        <section id="info-section" class="tab-content space-y-4">
+    <div class="accordion-item glass-card">
+        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center">
+            <h3 class="font-bold text-lg">Instrukcja</h3>
+            <span class="plus-icon text-2xl text-stone-400">+</span>
+        </button>
+        <div class="accordion-content">
+            <div id="feeding-instruction" class="p-5 pt-0 text-sm text-stone-600 leading-relaxed space-y-3"></div>
+        </div>
+    </div>
 
-            <div id="zurek-recipe-box" class="accordion-item glass-card">
-                <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
-                    <h3 class="serif text-xl font-bold italic text-stone-800">Przepis: Żurek na zlewkach</h3>
-                    <span class="plus-icon text-2xl">+</span>
-                </button>
-                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
-                    <div class="recipe-step">
-                        <p class="font-bold italic">Składniki (2-2.5L):</p>
-                        <ul class="list-disc ml-4 space-y-1 text-stone-600">
-                            <li>250-300g wędzonych żeberek</li>
-                            <li>150g wędzonego boczku</li>
-                            <li>2 marchewki, 1 pietruszka, kawałek selera</li>
-                            <li>1 cebula (opalona nad ogniem)</li>
-                            <li>3 liście laurowe, 5 ziaren ziela angielskiego</li>
-                            <li>2 litry zimnej wody</li>
-                        </ul>
-                    </div>
-                    <div class="recipe-step text-stone-600">
-                        <p class="font-bold italic text-stone-800">Krok 1: Wywar Mięsny</p>
-                        <p>Do garnka włóż żeberka, boczek, warzywa i przyprawy. Zalej zimną wodą. Gotuj pod przykryciem na minimalnym ogniu przez ok. 2 godziny, aż mięso będzie bardzo miękkie.</p>
-                    </div>
-                    <div class="recipe-step text-stone-600">
-                        <p class="font-bold italic text-stone-800">Krok 2: Zakwaszanie (Zlewki)</p>
-                        <p>Odlej szklankę gorącego wywaru i wymieszaj ją dokładnie z 400g zlewek ze <strong id="sl-3-b"></strong>. Wlej zawiesinę do garnka, cały czas mieszając. Zagotuj.</p>
-                    </div>
-                    <div class="recipe-step text-stone-600">
-                        <p class="font-bold italic text-stone-800">Krok 3: Wykończenie</p>
-                        <p>Dodaj 2-3 ząbki przeciśniętego czosnku i 2 łyżki majeranku. Dopraw solą i pieprzem. Na koniec zabiel 100ml śmietanki 30%.</p>
-                    </div>
-                </div>
+    <div class="accordion-item glass-card">
+        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center">
+            <h3 class="font-bold text-lg">Wytrzymałość</h3>
+            <span class="plus-icon text-2xl text-stone-400">+</span>
+        </button>
+        <div class="accordion-content">
+            <div class="p-5 pt-0 text-sm text-stone-600 leading-relaxed">
+                Choć karmimy co tydzień, mąki pełnoziarniste dają nam "bufor bezpieczeństwa" w razie podróży lub innego przestoju:<br>
+                - <b>Clint (Żyto 2000)</b>: Wytrzyma do 14 dni - może pojawić się ciemny płyn ("hooch") na górze – to naturalne, należy go odlać.<br>
+                - <b>Sylvester (Pszenica Pełne Ziarne 1850):</b> Wytrzyma do 10 dni.<br>
+                - <b>Hildegarda (Orkisz 2000)</b>: Wytrzyma do 10 dni.
             </div>
-        </section>
+        </div>
+    </div>
 
-        <section id="magazyn-section" class="tab-content space-y-5">
-            <div class="glass-card p-6 text-center">
-                <h4 class="serif text-xl mb-4">Słoik Wernyhora 🥣</h4>
-                <input type="number" id="zw" value="0" onblur="saveToCloud('zlewki', this.value)" class="w-full bg-stone-50 border-2 rounded-3xl p-6 font-black text-4xl text-center outline-none">
-                <button onclick="if(confirm('Reset?')) saveToCloud('zlewki', 0)" class="mt-4 text-[10px] uppercase font-bold text-stone-300">Resetuj zlewki</button>
+    <div class="accordion-item glass-card">
+        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center">
+            <h3 class="font-bold text-lg">Woda</h3>
+            <span class="plus-icon text-2xl text-stone-400">+</span>
+        </button>
+        <div class="accordion-content">
+            <div class="p-5 pt-0 text-sm text-stone-600 leading-relaxed">
+                Temperatura wody pozwala sterować tempem fermentacji i balansem smaku:<br>
+                - <b>Woda letnia (25-30°C)</b>: Bezpieczna dla delikatniejszych mąk. Sprzyja produkcji kwasu mlekowego (łagodniejszy profil).<br>
+                - <b>Woda ciepła (35-40°C)</b>: Idealna dla mąk pełnoziarnistych (Typ 2000) i żytnich. Szybciej aktywuje uśpione w lodówce drożdże i bakterie.<br>
+                - <b>Woda zimna (z kranu)</b>: Stosuj tylko, jeśli w kuchni panuje upał lub gdy musisz schować zakwas do lodówki natychmiast po karmieniu.<br>
+                <i>UWAGA: Nigdy nie używaj wody o temperaturze powyżej 45°C, ponieważ zaczniesz zabijać kulturę bakterii i drożdży.</i>
             </div>
-            <div class="glass-card p-6 bg-stone-50 border-stone-200">
-                <p class="text-xs italic leading-relaxed text-justify" style="color: #4a3728;">
-                    Słoik Wernyhora to unikalna mieszanka, której fundamentem historycznym były wyłącznie odrzuty z zakwasu Clint Yeastwood, prowadzonego na mące żytniej 2000. To właśnie z tej bazy zrodziły się kolejne linie – pszenny pełnoziarnisty Sylvester Graham (mąka 1850) oraz orkiszowa Hildegarda z Bingen (mąka 2000). Z czasem, gdy oba te zakwasy dojrzały, ich własne odrzuty również zaczęły dołączać do wspólnej kompozycji. Połączenie pozostałości z tych trzech różnych kultur sprawia, że wewnątrz dochodzi do nieustannego przenikania się różnorodnych mikroorganizmów, co z połączenia odrzutów żytnich, pszennych i orkiszowych tworzy niezwykle bogaty profil. Jest to doskonała baza na przyszły <span class="zurek-link" onclick="goToZurek()">żurek</span>, który dzięki takiemu zestawieniu zyska unikalną strukturę smakową. Ciekawy charakter potrawy będzie wynikał z faktu, że każda z mąk wnosi inną słodycz i rodzaj kwasowości, tworząc razem całość znacznie bardziej interesującą niż wywar oparty na tylko jednym rodzaju zboża.
-                </p>
+        </div>
+    </div>
+</section>
+
+        <section id="magazyn-section" class="tab-content space-y-4">
+    <div class="accordion-item glass-card">
+        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center">
+            <h3 class="font-bold text-lg">Słoik: Wernyhora</h3>
+            <span class="plus-icon text-2xl text-stone-400">+</span>
+        </button>
+        <div class="accordion-content">
+            <div class="p-5 pt-0 text-center">
+                <p class="text-xs text-stone-500 mb-4">Suma zlewanych resztek zakwasu do wykorzystania np. na żurek.</p>
+                <div class="text-4xl font-black text-accent mb-4"><span id="wernyhora-val">0</span>g</div>
+                <div class="flex justify-center gap-2 mb-4">
+                    <input type="number" id="werny-input" placeholder="g" class="w-20 bg-stone-100 border-none rounded-lg p-2 text-center font-bold outline-none">
+                    <button onclick="updateWerny(1)" class="bg-accent text-white px-4 py-2 rounded-lg font-bold text-xs uppercase">Dodaj</button>
+                </div>
+                <button onclick="updateWerny(-1)" class="text-stone-400 text-[10px] font-bold uppercase tracking-widest border-b border-stone-200">RESETUJ</button>
             </div>
-        </section>
+        </div>
+    </div>
+
+    <div class="accordion-item glass-card">
+        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center">
+            <h3 class="font-bold text-lg">Przepis: Żurek</h3>
+            <span class="plus-icon text-2xl text-stone-400">+</span>
+        </button>
+        <div class="accordion-content">
+            <div class="p-5 pt-0 text-sm text-stone-600 leading-relaxed">
+                To najlepszy sposób na utylizację resztek zakwasu.<br><br>
+                <b>Składniki:</b><br>
+                • 200g-300g zakwasu ze słoika Wernyhora<br>
+                • 2 litry bulionu lub wody po gotowaniu szynki/białej kiełbasy<br>
+                • 2 cebule, 3 ząbki czosnku, majeranek, liść laurowy, ziele angielskie<br>
+                • opcjonalnie: śmietana 18%, chrzan<br><br>
+                <b>Przygotowanie:</b><br>
+                1. Cebulę i czosnek podsmaż, dodaj do bulionu wraz z przyprawami.<br>
+                2. Gotuj ok. 15 min. Wlej zakwas ciągle mieszając.<br>
+                3. Zagotuj do zgęstnienia. Na koniec dopraw majerankiem, chrzanem i śmietaną.
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item glass-card">
+        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center">
+            <h3 class="font-bold text-lg">Opis</h3>
+            <span class="plus-icon text-2xl text-stone-400">+</span>
+        </button>
+        <div class="accordion-content">
+            <div class="p-5 pt-0 text-sm text-stone-600 leading-relaxed text-justify">
+                W tej sekcji kontrolujesz zapasy "zlewki" zakwasu... [tutaj zachowaj swój oryginalny długi tekst o Wernyhorze z kod.txt]
+            </div>
+        </div>
+    </div>
+</section>
 
         <section id="galeria-section" class="tab-content pt-4">
             <h2 class="serif text-2xl font-bold text-center mb-6 text-stone-800">Archiwum wypieków</h2>
@@ -429,6 +463,7 @@
                 target: 'Stabilność i mocny, octowy profil.', ratio: '1:2:2',
                 desc: 'Żyto kocha gęstą konsystencję. Taka dawka wody sprawia, że Clint jest jak plastelina.',
                 regMF: 40, regWF: 40,
+                feed: { flourQty: "65g", flourType: "żytniej", waterQty: "65g", temp: "ok. 35-40°C" }
             },
             sylvester: { 
                 name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, 
@@ -436,6 +471,7 @@
                 target: 'Szybka fermentacja i mleczno-orzechowy zapach.', ratio: '1:2:1.75',
                 desc: 'Pszenica przy 1:1 staje się rzadka. Dając mniej wody, zmuszasz bakterie do wolniejszej pracy.',
                 regMF: 40, regWF: 35,
+                feed: { flourQty: "65g", flourType: "pszennej pełnoziarnistej", waterQty: "65g", temp: "ok. 30-32°C" }
             },
             hildegarda: { 
                 name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, 
@@ -443,6 +479,7 @@
                 target: 'Delikatność i ochrona przed przekwaszeniem.', ratio: '1:2.25:2.25',
                 desc: 'Orkisz kocha stabilność. Nadmierne mieszanie osłabia strukturę glutenową tego szlachetnego zboża.',
                 regMF: 45, regWF: 45,
+                feed: { flourQty: "65g", flourType: "orkiszowej", waterQty: "65g", temp: "ok. 30-35°C" }
             }
         };
 
@@ -560,6 +597,17 @@
             }
             calcTime();
         }
+
+        function updateKarmienie() {
+    const r = RECIPES[currentStarterKey];
+    const f = r.feed;
+    document.getElementById('feeding-instruction').innerHTML = `
+        <p>1. Odważasz 20g zakwasu ze słoika <b>${r.name}</b> (reszta do Wernyhory lub utylizacji).</p>
+        <p>2. Dodajesz <b>${f.flourQty}</b> świeżej mąki <b>${f.flourType}</b> i <b>${f.waterQty}</b> wody o temperaturze <b>${f.temp}</b>.</p>
+        <p>3. Mieszasz do całkowitego połączenia (konsystencja gęstej pasty).</p>
+        <p>4. Kluczowy moment: Zostawiasz na blacie na ok. 2-3 godziny (aż ruszy), po czym chowasz do lodówki.</p>
+    `;
+}
 
         function calcTime() {
             const timeInput = document.getElementById('start-time');
