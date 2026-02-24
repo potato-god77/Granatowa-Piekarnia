@@ -56,32 +56,34 @@
 
         #carousel-img { 
     max-width: 95vw; 
-    max-height: 75vh; /* Zmniejszone, by zawsze widzieć paski nawigacji */
+    max-height: 75vh; 
     width: auto; 
     height: auto; 
     object-fit: contain; 
-    transition: transform 0.3s ease-in-out, opacity 0.2s ease; 
+    transition: width 0.3s ease-in-out, max-width 0.3s ease-in-out, max-height 0.3s ease-in-out; 
     box-shadow: 0 0 30px rgba(0,0,0,0.5);
     user-select: none;
     -webkit-user-drag: none;
-    cursor: zoom-in; /* Kursor informujący o możliwości powiększenia */
+    cursor: zoom-in;
+    display: block; /* Ważne dla poprawnego obliczania scrolla */
+    margin: auto; /* Centrowanie przy powiększeniu */
 }
 
 /* Klasa aktywowana przez JS przy powiększeniu */
 #carousel-img.zoomed {
-    transform: scale(2); /* Powiększenie 2x */
+    max-width: 200vw; /* Pozwalamy na dużą szerokość */
+    max-height: none; /* Usuwamy limit wysokości, by zobaczyć całość */
+    width: 180%;      /* Realne powiększenie */
     cursor: zoom-out;
-    max-height: none; /* Pozwala zdjęciu "urosnąć" poza widok */
-    max-width: none;
 }
 
 #img-container { 
     width: 100%; 
     height: 100%; 
     display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    overflow: auto; /* Pozwala przewijać zdjęcie, gdy jest powiększone */
+    align-items: center; /* Centrowanie w pionie gdy małe */
+    justify-content: center; /* Centrowanie w poziomie gdy małe */
+    overflow: auto; /* To umożliwi przewijanie całego powiększonego zdjęcia */
     position: relative;
     background: black;
 }
@@ -627,7 +629,8 @@
         }
 
         function moveCarousel(dir) {
-    document.getElementById('carousel-img').classList.remove('zoomed'); // Dodaj to
+    // Resetujemy zoom przed zmianą zdjęcia
+    document.getElementById('carousel-img').classList.remove('zoomed');
     currentImgIndex = (currentImgIndex + dir + currentAlbumPhotos.length) % currentAlbumPhotos.length;
     updateCarouselUI();
 }
@@ -662,7 +665,8 @@
 
         function closeViewer() {
     const modal = document.getElementById('viewer-modal');
-    document.getElementById('carousel-img').classList.remove('zoomed'); // Dodaj to
+    // Resetujemy zoom przy zamykaniu
+    document.getElementById('carousel-img').classList.remove('zoomed');
     modal.classList.add('hidden');
     modal.classList.remove('flex');
 }
