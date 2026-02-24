@@ -163,93 +163,104 @@
         </div>
     </div>
 </section>
-        <section id="pieczenie-section" class="tab-content space-y-4">
-            <div class="accordion-item glass-card">
-                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
-                    <h3 class="serif text-lg font-bold italic">Kalkulator składników</h3>
-                    <span class="plus-icon text-xl">+</span>
+       <section id="pieczenie-section" class="tab-content active space-y-5">
+    <div class="glass-card p-6">
+        <h3 class="serif text-xl font-bold italic text-stone-800 mb-4 text-center">Składniki</h3>
+        
+        <div class="mb-6 p-3 border border-stone-200 rounded-xl bg-stone-50/50 flex items-center justify-between">
+            <span class="text-[10px] uppercase font-black text-stone-400 tracking-widest">Ilość bochenków:</span>
+            <div class="flex items-center gap-4">
+                <button onclick="changeQty(-1)" class="w-8 h-8 flex items-center justify-center bg-white border border-stone-200 rounded-full shadow-sm active:scale-90 transition-transform">
+                    <span class="text-stone-600 font-bold">−</span>
                 </button>
-                <div class="accordion-content p-5 pt-0 bg-stone-50">
-                    <div class="text-center mb-4">
-                        <h2 id="curr-name" class="serif text-xl font-bold text-stone-800 mb-4 italic">Clint Yeastwood</h2>
-                        <div class="flex items-center justify-center gap-4 bg-white p-3 rounded-2xl border border-stone-200">
-                            <button onclick="changeQty(-1)" class="w-12 h-12 rounded-full bg-stone-100 flex items-center justify-center text-2xl font-bold text-stone-600 active:scale-95 transition-all">-</button>
-                            <div class="flex flex-col">
-                                <span id="display-qty" class="text-3xl font-black text-stone-800">1</span>
-                                <span class="text-[9px] uppercase font-bold text-stone-400">Ilość chlebów</span>
-                            </div>
-                            <button onclick="changeQty(1)" class="w-12 h-12 rounded-full bg-stone-100 flex items-center justify-center text-2xl font-bold text-stone-600 active:scale-95 transition-all">+</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="accordion-item glass-card">
-                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
-                    <h3 class="serif text-lg font-bold italic">Składniki</h3>
-                    <span class="plus-icon text-xl">+</span>
+                <span id="display-qty" class="text-xl font-black text-stone-800 min-w-[20px] text-center">1</span>
+                <button onclick="changeQty(1)" class="w-8 h-8 flex items-center justify-center bg-white border border-stone-200 rounded-full shadow-sm active:scale-90 transition-transform">
+                    <span class="text-stone-600 font-bold">+</span>
                 </button>
-                <div class="accordion-content p-6 pt-0 space-y-4">
-                    <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Zakwas</span><b id="sv" class="text-2xl">---</b></div>
-                    <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Woda</span><b id="wv" class="text-2xl">---</b></div>
-                    <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Mąka</span><b id="fv" class="text-2xl">---</b></div>
-                    <div class="flex justify-between border-b pb-3"><span class="text-[10px] text-stone-400 font-bold uppercase">Sól</span><b id="slv" class="text-2xl">---</b></div>
-                </div>
             </div>
+        </div>
 
-            <div class="accordion-item glass-card">
-                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
-                    <h3 class="serif text-lg font-bold italic">Przepis</h3>
-                    <span class="plus-icon text-xl">+</span>
-                </button>
-                <div class="accordion-content p-6 pt-0 border-t text-sm space-y-4 text-stone-600"> 
-                    <div class="recipe-step"> 
-                        <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p> 
-                        <p>Zrób zawiesinę: woda <span id="p-wv" class="font-bold text-stone-800"></span> (30°C) + aktywny zakwas <span id="p-sv" class="font-bold text-stone-800"></span>. Do tego dodaj <span id="p-fv" class="font-bold text-stone-800"></span> mąki i <span id="p-slv" class="font-bold text-stone-800"></span> soli. Wymieszaj, przykryj miskę i zostaw na noc na blacie w temperaturze pokojowej.</p> 
-                    </div> 
-                    <div class="recipe-step"> 
-                        <p class="font-bold text-stone-800 italic">Rano (05:30 - 06:00)</p> 
-                        <p>Włóż ciasto do lodówki (pod przykryciem).</p> 
-                    </div> 
-                    <div class="recipe-step"> 
-                        <p class="font-bold text-stone-800 italic">Pieczenie (od 16:00)</p> 
-                        <p>Nagrzej piec z garnkiem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę" by stało się spięte, po czym natnij ostrym nożem lub żyletką. Gdy piekarnik się już nagrzeje, piecz 30 min pod przykryciem, a następnie zdejmij pokrywkę i piecz kolejne 15 min bez niej.</p> 
-                    </div> 
-                </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-stone-50 p-4 rounded-xl border-b-2 border-stone-200 text-center">
+                <p class="text-[10px] uppercase font-bold text-stone-400">Zakwas</p>
+                <p id="sv" class="text-2xl font-black text-stone-800"></p>
             </div>
-
-            <div class="accordion-item glass-card">
-                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
-                    <h3 class="serif text-lg font-bold italic">Wskazówki</h3>
-                    <span class="plus-icon text-xl">+</span>
-                </button>
-                <div class="accordion-content p-6 pt-0 border-t text-sm text-stone-600">
-                    <div id="p-secret-standalone" class="italic font-medium"></div>
-                </div>
+            <div class="bg-stone-50 p-4 rounded-xl border-b-2 border-stone-200 text-center">
+                <p class="text-[10px] uppercase font-bold text-stone-400">Woda (38°C)</p>
+                <p id="wv" class="text-2xl font-black text-stone-800"></p>
             </div>
-
-            <div class="accordion-item glass-card">
-                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
-                    <h3 class="serif text-lg font-bold italic">Kalkulator czasu</h3>
-                    <span class="plus-icon text-xl">+</span>
-                </button>
-                <div class="accordion-content p-5 pt-0 bg-[#f9f5f1]">
-                    <div class="flex justify-between items-center mb-5">
-                        <p class="text-[9px] uppercase font-bold text-stone-500">Mieszanie:</p>
-                        <input type="time" id="start-time" value="22:00" onchange="calcTime()" class="bg-white border rounded-lg px-3 py-1 text-sm font-semibold">
-                    </div>
-                    <div class="space-y-4 relative border-l ml-4 pl-6">
-                        <div><p class="text-[9px] uppercase font-medium text-stone-400">Do lodówki</p><p id="t-lodowka" class="text-xl font-bold">05:30</p></div>
-                        <div><p class="text-[9px] uppercase font-medium text-stone-400">Formowanie</p><p id="t-formowanie" class="text-xl font-bold">16:00</p></div>
-                        <div class="bg-white p-4 rounded-xl border text-center -ml-1">
-                            <p class="text-[9px] uppercase font-bold text-stone-500">Pieczenie (235°C)</p>
-                            <p id="t-pieczenie" class="text-3xl font-black text-[#4a3728]">17:15</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="bg-stone-50 p-4 rounded-xl border-b-2 border-stone-200 text-center">
+                <p class="text-[10px] uppercase font-bold text-stone-400">Mąka</p>
+                <p id="fv" class="text-2xl font-black text-stone-800"></p>
             </div>
-        </section>
+            <div class="bg-stone-50 p-4 rounded-xl border-b-2 border-stone-200 text-center">
+                <p class="text-[10px] uppercase font-bold text-stone-400">Sól</p>
+                <p id="slv" class="text-2xl font-black text-stone-800"></p>
+            </div>
+        </div>
+    </div>
 
+    <div class="accordion-item glass-card">
+        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+            <h3 class="serif text-lg font-bold italic text-stone-800">Zakwas</h3>
+            <span class="plus-icon text-xl">+</span>
+        </button>
+        <div id="logistyka-content" class="accordion-content p-6 pt-0 border-t text-sm space-y-4">
+            <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 my-4">
+                <p id="w-name" class="serif text-lg font-bold text-stone-800 mb-2"></p>
+                <p class="text-xs text-stone-600"><strong>Cel:</strong> <span id="w-target"></span></p>
+                <p class="text-xs text-stone-600"><strong>Stosunek:</strong> <span id="w-ratio"></span></p>
+                <p class="text-xs italic text-stone-500 mt-2" id="w-desc"></p>
+            </div>
+            <div class="recipe-step">
+                <p class="font-bold italic text-stone-700">Etap 1: Aktywacja (ok. 16:00)</p>
+                <p>Pobierz 30g bazy ze <strong id="sl-2-a"></strong>. Dodaj 50g mąki i 50g wody (38°C). Wymieszaj w <strong id="sl-1-a"></strong> i zostaw na blacie na 4-6 godzin.</p>
+            </div>
+            <div class="recipe-step">
+                <p class="font-bold italic text-stone-700">Etap 2: Pobranie (ok. 22:00)</p>
+                <p>1. Pobierz <span class="font-bold" id="w-sv"></span> aktywnego zakwasu ze <strong id="sl-1-b"></strong> do miski.<br>2. Całą pozostałość przełóż do <strong id="sl-2-b"></strong>.</p>
+            </div>
+            <div class="recipe-step">
+                <p class="font-bold italic text-stone-700">Etap 3: Święta Porcja (<span id="sl-2-c-title"></span>)</p>
+                <p>Wymieszaj starą bazę ze zrzutem. Wymierz z tego 20g ("Święta Porcja") i zostaw w <strong id="sl-2-c"></strong>. Resztę do <strong id="sl-3-a"></strong>.</p>
+            </div>
+            <div class="recipe-step">
+                <p class="font-bold italic text-stone-700">Etap 4: Regeneracja Matki</p>
+                <p>1. Do 20g porcji w <strong id="sl-2-d"></strong> dodaj <span id="w-regMF" class="font-bold"></span> mąki i <span id="w-regWF" class="font-bold"></span> wody (38°C).<br>2. Zostaw na 1h na blacie, potem schowaj do lodówki.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="accordion-item glass-card">
+        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+            <h3 class="serif text-lg font-bold italic text-stone-800">Wskazówki</h3>
+            <span class="plus-icon text-xl">+</span>
+        </button>
+        <div class="accordion-content p-6 pt-0 border-t">
+            <div id="p-secret-standalone" class="relative py-4 px-6 border-l-4 border-stone-300 italic text-stone-700 leading-relaxed bg-stone-50/50 rounded-r-xl my-4">
+                </div>
+        </div>
+    </div>
+
+    <div class="glass-card p-6">
+        <h3 class="serif text-xl font-bold italic text-stone-800 mb-4 text-center">Harmonogram</h3>
+        <input type="time" id="start-time" value="22:00" onchange="calcTime()" class="w-full bg-stone-50 border-2 rounded-xl p-3 mb-6 font-bold text-center outline-none">
+        <div class="space-y-4">
+            <div class="flex items-center gap-4">
+                <div class="w-16 text-right font-black text-stone-400 text-sm" id="t-lodowka">05:30</div>
+                <div class="flex-1 text-sm"><span class="font-bold text-stone-800">Lodówka:</span> Koniec fermentacji, czas na chłód.</div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="w-16 text-right font-black text-stone-400 text-sm" id="t-formowanie">16:00</div>
+                <div class="flex-1 text-sm"><span class="font-bold text-stone-800">Formowanie:</span> Wyjęcie, składanie i koszyczek.</div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="w-16 text-right font-black text-stone-400 text-sm" id="t-pieczenie">17:15</div>
+                <div class="flex-1 text-sm"><span class="font-bold text-stone-800">Pieczenie:</span> Rozgrzany garnek i start!</div>
+            </div>
+        </div>
+    </div>
+</section>
         <section id="wiedza-section" class="tab-content space-y-6">
                 <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-6 flex justify-between items-center text-left">
