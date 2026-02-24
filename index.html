@@ -418,8 +418,8 @@
                         <p>Do garnka włóż żeberka, boczek, warzywa i przyprawy. Zalej zimną wodą. Gotuj pod przykryciem na minimalnym ogniu przez ok. 2 godziny, aż mięso będzie bardzo miękkie.</p>
                     </div>
                     <div class="recipe-step text-stone-600">
-                        <p class="font-bold italic text-stone-800">Krok 2: Zakwaszanie (Zlewki)</p>
-                        <p>Odlej szklankę gorącego wywaru i wymieszaj ją dokładnie z 400g zlewek ze <strong>Słoika Wernyhora</strong>. Wlej zawiesinę do garnka, cały czas mieszając. Zagotuj.</p>
+                        <p class="font-bold italic text-stone-800">Krok 2: Zakwaszanie (Wernyhora)</p>
+                        <p>Odlej szklankę gorącego wywaru i wymieszaj ją dokładnie z 400g zlewek ze <strong id="sl-3-b">Słoika Wernyhora</strong>. Wlej zawiesinę do garnka, cały czas mieszając. Zagotuj.</p>
                     </div>
                     <div class="recipe-step text-stone-600">
                         <p class="font-bold italic text-stone-800">Krok 3: Wykończenie</p>
@@ -644,49 +644,56 @@
             updateIngredients();
         }
 
-       function updateIngredients() {
-            const r = RECIPES[currentStarterKey];
-            const q = currentQty;
-            if(!r) return;
+      function updateIngredients() {
+    const r = RECIPES[currentStarterKey];
+    const q = currentQty;
+    if(!r) return;
 
-            const ids = ['sv', 'wv', 'fv', 'slv', 'w-sv', 'p-wv', 'p-sv', 'p-fv', 'p-slv'];
-            ids.forEach(id => {
-                const el = document.getElementById(id);
-                if(el) {
-                    const key = id.includes('-') ? id.split('-')[1] : id;
-                    el.innerText = (r[key] * q) + 'g';
-                }
-            });
+    const ids = ['sv', 'wv', 'fv', 'slv', 'w-sv', 'p-wv', 'p-sv', 'p-fv', 'p-slv'];
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if(el) {
+            const key = id.includes('-') ? id.split('-')[1] : id;
+            el.innerText = (r[key] * q) + 'g';
+        }
+    });
 
-            const secStandalone = document.getElementById('p-secret-standalone');
-            if(secStandalone) secStandalone.innerHTML = r.secret;
+    const secStandalone = document.getElementById('p-secret-standalone');
+    if(secStandalone) secStandalone.innerHTML = r.secret;
 
-            if(document.getElementById('w-name')) {
-                document.getElementById('w-name').innerText = r.name;
-                document.getElementById('w-target').innerText = r.target;
-                document.getElementById('w-ratio').innerText = r.ratio;
-                document.getElementById('w-desc').innerText = r.desc;
-                document.getElementById('w-regMF').innerText = r.regMF + 'g';
-                document.getElementById('w-regWF').innerText = r.regWF + 'g';
-                
-                const s1 = "Słoiku Roboczym";
-                const s1_nom = "Słoik Roboczy";
-                const s2 = "Słoika " + r.name;
-                const s2_nom = "Słoiku " + r.name;
-                const s3 = "Słoika Wernyhora";
-                const s3_nom = "Słoik Wernyhora";
+    if(document.getElementById('w-name')) {
+        document.getElementById('w-name').innerText = r.name;
+        document.getElementById('w-target').innerText = r.target;
+        document.getElementById('w-ratio').innerText = r.ratio;
+        document.getElementById('w-desc').innerText = r.desc;
+        
+        // Zabezpieczenie przed błędem, jeśli elementu nie ma w DOM
+        const setSafeText = (id, text) => {
+            const el = document.getElementById(id);
+            if(el) el.innerText = text;
+        };
 
-                document.getElementById('sl-1-a').innerText = s1_nom;
-                document.getElementById('sl-1-b').innerText = s1;
-                document.getElementById('sl-2-a').innerText = s2;
-                document.getElementById('sl-2-b').innerText = s2_nom;
-                document.getElementById('sl-2-c-title').innerText = s2_nom;
-                document.getElementById('sl-2-c').innerText = s2_nom;
-                document.getElementById('sl-2-d').innerText = s2_nom;
-                document.getElementById('sl-3-a').innerText = s3;
-                document.getElementById('sl-3-b').innerText = s3_nom;
-            }
-        } // <--- TUTAJ BRAKOWAŁO TEGO DOMKNIĘCIA
+        setSafeText('w-regMF', r.regMF + 'g');
+        setSafeText('w-regWF', r.regWF + 'g');
+        
+        const s1 = "Słoiku Roboczym";
+        const s1_nom = "Słoik Roboczy";
+        const s2 = "Słoika " + r.name;
+        const s2_nom = "Słoiku " + r.name;
+        const s3 = "Słoika Wernyhora";
+        const s3_nom = "Słoik Wernyhora";
+
+        setSafeText('sl-1-a', s1_nom);
+        setSafeText('sl-1-b', s1);
+        setSafeText('sl-2-a', s2);
+        setSafeText('sl-2-b', s2_nom);
+        setSafeText('sl-2-c-title', s2_nom);
+        setSafeText('sl-2-c', s2_nom);
+        setSafeText('sl-2-d', s2_nom);
+        setSafeText('sl-3-a', s3);
+        setSafeText('sl-3-b', s3_nom);
+    }
+}
 
         function updateSchedule(source) {
             let inputVal;
@@ -863,18 +870,10 @@ function applyFilters() {
        function fetchGallery() {
     window.handleGalleryData = function(res) {
         if (res.status === 'success') { 
-            // 1. Zapisujemy dane do głównej zmiennej galerii
             allGalleryData = res.data; 
-            
-            // 2. Kopiujemy dane do zmiennej filtrów (allAlbumsData)
             allAlbumsData = res.data; 
-            
             isGalleryLoaded = true; 
-            
-            // 3. Budujemy listę lat w rozwijanym menu
             populateYearFilter(res.data);
-            
-            // 4. Renderujemy albumy
             renderAlbums(res.data); 
         }
     };
