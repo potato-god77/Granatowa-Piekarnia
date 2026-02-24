@@ -867,12 +867,10 @@ document.addEventListener('keydown', function(event) {
 }
 
         function goToProfile(starterId) {
-    // 1. Przełączamy na zakładkę SYLWETKI
+    // 1. Przełączamy na odpowiednią zakładkę
     switchTab('sylwetki');
 
-    // 2. Dajemy przeglądarce chwilę na wyrenderowanie sekcji
     setTimeout(() => {
-        // Mapa przypisująca id zakwasu do indeksu akordeonu w sekcji sylwetek
         const map = {
             'clint': 0,
             'sylvester': 1,
@@ -884,21 +882,34 @@ document.addEventListener('keydown', function(event) {
         if (!container) return;
 
         const accordionItems = container.querySelectorAll('.accordion-item');
+        const targetItem = accordionItems[index];
         
-        if (accordionItems[index]) {
-            const btn = accordionItems[index].querySelector('button');
+        if (targetItem) {
+            const btn = targetItem.querySelector('button');
+            const content = targetItem.querySelector('.accordion-content');
             
-            // 3. Otwieramy akordeon, jeśli nie jest jeszcze aktywny
-            if (!accordionItems[index].classList.contains('active')) {
+            // 2. Otwieramy akordeon, jeśli jest zamknięty
+            if (!content.style.maxHeight || content.style.maxHeight === "0px") {
                 toggleAccordion(btn);
             }
 
-            // 4. Płynne przewijanie do samej góry ramki
-targetItem.scrollIntoView({ 
-    behavior: 'smooth', 
-    block: 'start',   // To mówi: ustaw początek elementu na początku ekranu
-    inline: 'nearest'
-});
+            // 3. Przewijanie wykonujemy z lekkim opóźnieniem, 
+            // aby ramka zdążyła się rozwinąć i ustabilizować swoją wysokość
+            setTimeout(() => {
+                const nav = document.querySelector('nav');
+                const navHeight = nav ? nav.offsetHeight : 0;
+                
+                // Obliczamy pozycję elementu względem całej strony
+                const elementPosition = targetItem.getBoundingClientRect().top + window.pageYOffset;
+                
+                // Celujemy dokładnie pod nawigację (z małym marginesem 10px dla estetyki)
+                const offsetPosition = elementPosition - navHeight - 10;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }, 350); // To opóźnienie jest kluczowe dla zsynchronizowania z animacją CSS
         }
     }, 100);
 }
