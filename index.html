@@ -644,7 +644,7 @@
             updateIngredients();
         }
 
-        function updateIngredients() {
+       function updateIngredients() {
             const r = RECIPES[currentStarterKey];
             const q = currentQty;
             if(!r) return;
@@ -686,6 +686,46 @@
                 document.getElementById('sl-3-a').innerText = s3;
                 document.getElementById('sl-3-b').innerText = s3_nom;
             }
+        } // <--- TUTAJ BRAKOWAŁO TEGO DOMKNIĘCIA
+
+        function updateSchedule(source) {
+            let inputVal;
+            
+            if (source === 'wybudzenie') inputVal = document.getElementById('t-wybudzenie-input').value;
+            else if (source === 'mieszanie') inputVal = document.getElementById('start-time').value;
+            else if (source === 'pieczenie') inputVal = document.getElementById('t-pieczenie-input').value;
+            else if (source === 'jedzenie') inputVal = document.getElementById('t-jedzenie-input').value;
+
+            if (!inputVal) return;
+
+            const [h, m] = inputVal.split(':').map(Number);
+            let referenceDate = new Date();
+            referenceDate.setHours(h, m, 0, 0);
+
+            let mieszanieDate = new Date(referenceDate);
+            if (source === 'wybudzenie') mieszanieDate.setMinutes(mieszanieDate.getMinutes() + 360); 
+            if (source === 'pieczenie') mieszanieDate.setMinutes(mieszanieDate.getMinutes() - 1125); 
+            if (source === 'jedzenie') mieszanieDate.setMinutes(mieszanieDate.getMinutes() - 1230); 
+
+            const formatTime = (date, addMin) => {
+                const d = new Date(mieszanieDate.getTime() + addMin * 60000);
+                const hours = String(d.getHours()).padStart(2, '0');
+                const minutes = String(d.getMinutes()).padStart(2, '0');
+                return `${hours}:${minutes}`;
+            };
+
+            document.getElementById('t-wybudzenie-input').value = formatTime(mieszanieDate, -360);
+            document.getElementById('start-time').value = formatTime(mieszanieDate, 0);
+            document.getElementById('t-pieczenie-input').value = formatTime(mieszanieDate, 1125);
+            document.getElementById('t-jedzenie-input').value = formatTime(mieszanieDate, 1230);
+
+            document.getElementById('t-lodowka').innerText = formatTime(mieszanieDate, 450);
+            document.getElementById('t-formowanie').innerText = formatTime(mieszanieDate, 1080);
+            document.getElementById('t-rumienienie').innerText = formatTime(mieszanieDate, 1155);
+            document.getElementById('t-upieczenie').innerText = formatTime(mieszanieDate, 1170);
+        }
+
+            
             function updateSchedule(source) {
     let inputVal;
     
