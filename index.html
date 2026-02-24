@@ -129,39 +129,40 @@
     </div>
 
     <main class="mx-auto p-4 space-y-6">
-        <section id="zakwasy-section" class="tab-content active space-y-4">
-            <div id="card-clint" onclick="sel('clint')" class="starter-card glass-card p-5 flex flex-col gap-3">
-                <div class="flex justify-between items-center">
-                    <div><h4 class="font-bold text-xl starter-title">Clint Yeastwood</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Żytni<br><br>• typ 2000</p></div>
-                    <img src="cowboy.png" class="w-10 h-10 object-contain">
-                </div>
-                <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-                    <p class="text-[11px] font-bold">Ostatnio: <span id="feed-clint" class="date-clickable" onclick="manualDate('clint', event)">---</span></p>
-                    <button onclick="markFed('clint', event)" class="btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
-                </div>
-            </div>
-            <div id="card-sylvester" onclick="sel('sylvester')" class="starter-card glass-card p-5 flex flex-col gap-3">
-                <div class="flex justify-between items-center">
-                    <div><h4 class="font-bold text-xl starter-title">Sylvester Graham</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Pszenny Pełnoziarnisty<br><br>• typ 1850</p></div>
-                    <img src="farmer.png" class="w-10 h-10 object-contain">
-                </div>
-                <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-                    <p class="text-[11px] font-bold">Ostatnio: <span id="feed-sylvester" class="date-clickable" onclick="manualDate('sylvester', event)">---</span></p>
-                    <button onclick="markFed('sylvester', event)" class="btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
-                </div>
-            </div>
-            <div id="card-hildegarda" onclick="sel('hildegarda')" class="starter-card glass-card p-5 flex flex-col gap-3">
-                <div class="flex justify-between items-center">
-                    <div><h4 class="font-bold text-xl starter-title">Hildegarda z Bingen</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Orkiszowy<br><br>• typ 2000</p></div>
-                    <img src="nun.png" class="w-10 h-10 object-contain">
-                </div>
-                <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-                    <p class="text-[11px] font-bold">Ostatnio: <span id="feed-hildegarda" class="date-clickable" onclick="manualDate('hildegarda', event)">---</span></p>
-                    <button onclick="markFed('hildegarda', event)" class="btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
-                </div>
-            </div>
-        </section>
+<section id="zakwasy-section" class="tab-content active space-y-4">
+    <div id="card-clint" onclick="sel('clint')" class="starter-card glass-card p-5 flex flex-col gap-3">
+        <div class="flex justify-between items-center">
+            <div><h4 class="font-bold text-xl starter-title">Clint Yeastwood</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Żytni<br><br>• typ 2000</p></div>
+            <img src="cowboy.png" onclick="event.stopPropagation(); goToProfile('clint')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
+        </div>
+        <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
+            <p class="text-[11px] font-bold">Ostatnio: <span id="feed-clint" class="date-clickable" onclick="manualDate('clint', event)">---</span></p>
+            <button onclick="markFed('clint', event)" class="btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
+        </div>
+    </div>
 
+    <div id="card-sylvester" onclick="sel('sylvester')" class="starter-card glass-card p-5 flex flex-col gap-3">
+        <div class="flex justify-between items-center">
+            <div><h4 class="font-bold text-xl starter-title">Sylvester Graham</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Pszenny Pełnoziarnisty<br><br>• typ 1850</p></div>
+            <img src="farmer.png" onclick="event.stopPropagation(); goToProfile('sylvester')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
+        </div>
+        <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
+            <p class="text-[11px] font-bold">Ostatnio: <span id="feed-sylvester" class="date-clickable" onclick="manualDate('sylvester', event)">---</span></p>
+            <button onclick="markFed('sylvester', event)" class="btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
+        </div>
+    </div>
+
+    <div id="card-hildegarda" onclick="sel('hildegarda')" class="starter-card glass-card p-5 flex flex-col gap-3">
+        <div class="flex justify-between items-center">
+            <div><h4 class="font-bold text-xl starter-title">Hildegarda z Bingen</h4><p class="text-[9px] text-stone-400 uppercase font-bold">• Orkiszowy<br><br>• typ 2000</p></div>
+            <img src="nun.png" onclick="event.stopPropagation(); goToProfile('hildegarda')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
+        </div>
+        <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
+            <p class="text-[11px] font-bold">Ostatnio: <span id="feed-hildegarda" class="date-clickable" onclick="manualDate('hildegarda', event)">---</span></p>
+            <button onclick="markFed('hildegarda', event)" class="btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
+        </div>
+    </div>
+</section>
         <section id="pieczenie-section" class="tab-content space-y-4">
             <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
@@ -864,6 +865,40 @@ document.addEventListener('keydown', function(event) {
     modal.classList.remove('hidden');
     modal.classList.add('flex');
 }
+
+        function goToProfile(starterId) {
+    // 1. Przełączamy na zakładkę SYLWETKI
+    switchTab('sylwetki');
+
+    // 2. Dajemy przeglądarce chwilę na wyrenderowanie sekcji
+    setTimeout(() => {
+        // Mapa przypisująca id zakwasu do indeksu akordeonu w sekcji sylwetek
+        const map = {
+            'clint': 0,
+            'sylvester': 1,
+            'hildegarda': 2
+        };
+
+        const index = map[starterId];
+        const container = document.getElementById('sylwetki-section');
+        if (!container) return;
+
+        const accordionItems = container.querySelectorAll('.accordion-item');
+        
+        if (accordionItems[index]) {
+            const btn = accordionItems[index].querySelector('button');
+            
+            // 3. Otwieramy akordeon, jeśli nie jest jeszcze aktywny
+            if (!accordionItems[index].classList.contains('active')) {
+                toggleAccordion(btn);
+            }
+
+            // 4. Płynne przewinięcie do wybranej sylwetki
+            accordionItems[index].scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }, 100);
+}
+        
     </script>
 </body>
 </html>
