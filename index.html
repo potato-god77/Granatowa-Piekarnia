@@ -106,6 +106,10 @@
         style="padding: 12px; background: #4b3621; color: #f4ece2; border: 1px solid #3d2b1a; border-radius: 5px; cursor: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: background 0.3s;">
     ZALOGUJ
 </button>
+        <button onclick="loginAsGuest()" 
+        style="margin-top: 10px; padding: 12px; background: #c2b280; color: #4b3621; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; width: 100%;">
+    Wejdź jako Gość
+</button>
  </div>
     
     <p id="login-error" style="color: #ff6b6b; margin-top: 15px; font-size: 14px; display: none; background: rgba(255,255,255,0.1); padding: 5px 10px; border-radius: 4px;"></p>
@@ -773,6 +777,17 @@ function applyPermissions(user) {
     });
 
     console.log("Uprawnienia odświeżone. Widok admina: " + isAdmin);
+}
+
+        function loginAsGuest() {
+    const guestEmail = "guest@granatowapiekarnia.pl"; 
+    const guestPass = "puk_puk.jest_tam_kto?moge_zajrzec_bez_logowania?";
+
+    auth.signInWithEmailAndPassword(guestEmail, guestPass)
+        .catch((error) => {
+            console.error("Błąd wejścia gościa:", error.message);
+            alert("Tymczasowy problem z dostępem dla gości.");
+        });
 }
 
 
