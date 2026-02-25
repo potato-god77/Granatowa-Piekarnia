@@ -806,8 +806,20 @@ function applyPermissions(user) {
 
     
     async function saveToCloud(key, value) {
-        try { await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({key, value})}); setTimeout(loadFromCloud, 1000); } catch(e){ console.error(e); }
+    const user = auth.currentUser; // Pobieramy zalogowanego użytkownika
+    const uid = user ? user.uid : null; // Wyciągamy jego UID
+
+    try { 
+        await fetch(SCRIPT_URL, { 
+            method: 'POST', 
+            mode: 'no-cors', 
+            body: JSON.stringify({ key, value, uid }) // Dodaliśmy uid do body
+        }); 
+        setTimeout(loadFromCloud, 1000); 
+    } catch(e) { 
+        console.error(e); 
     }
+}
 
     function loadFromCloud() {
         window.handleCloudData = function(data) {
