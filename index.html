@@ -1049,15 +1049,17 @@ function applyPermissions(user) {
             return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
         };
 
-        document.getElementById('t-wybudzenie-input').value = formatTime(mieszanieDate, -360);
-        document.getElementById('start-time').value = formatTime(mieszanieDate, 0);
-        document.getElementById('t-pieczenie-input').value = formatTime(mieszanieDate, 1125);
-        document.getElementById('t-jedzenie-input').value = formatTime(mieszanieDate, 1230);
+        // Poprawka dla pól wejściowych (Inputy)
+document.getElementById('t-wybudzenie-input') && (document.getElementById('t-wybudzenie-input').value = formatTime(mieszanieDate, -360));
+document.getElementById('start-time') && (document.getElementById('start-time').value = formatTime(mieszanieDate, 0));
+document.getElementById('t-pieczenie-input') && (document.getElementById('t-pieczenie-input').value = formatTime(mieszanieDate, 1125));
+document.getElementById('t-jedzenie-input') && (document.getElementById('t-jedzenie-input').value = formatTime(mieszanieDate, 1230));
 
-        document.getElementById('t-lodowka').innerText = formatTime(mieszanieDate, 450);
-        document.getElementById('t-formowanie').innerText = formatTime(mieszanieDate, 1080);
-        document.getElementById('t-rumienienie').innerText = formatTime(mieszanieDate, 1155);
-        document.getElementById('t-upieczenie').innerText = formatTime(mieszanieDate, 1170);
+// Poprawka dla pól tekstowych (innerText)
+document.getElementById('t-lodowka') && (document.getElementById('t-lodowka').innerText = formatTime(mieszanieDate, 450));
+document.getElementById('t-formowanie') && (document.getElementById('t-formowanie').innerText = formatTime(mieszanieDate, 1080));
+document.getElementById('t-rumienienie') && (document.getElementById('t-rumienienie').innerText = formatTime(mieszanieDate, 1155));
+document.getElementById('t-upieczenie') && (document.getElementById('t-upieczenie').innerText = formatTime(mieszanieDate, 1170));
     }
 
     function markFed(k, e) { 
@@ -1255,7 +1257,11 @@ function applyPermissions(user) {
                 sel('clint');
                 const saved = sessionStorage.getItem('lastTab');
                 if (saved) switchTab(saved);        
-                if(document.getElementById('start-time')) updateSchedule('mieszanie');
+                const checkEl = document.getElementById('start-time');
+                if(checkEl && checkEl.value) {
+                // Dodajemy małe opóźnienie, aby DOM na pewno był gotowy
+                setTimeout(() => updateSchedule('mieszanie'), 50);
+}
             } catch(e) { console.error("Inicjalizacja:", e); }
         }
     });
@@ -1383,16 +1389,23 @@ async function startFullUpload() {
     };
 
     fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify(payload)
-    })
-    .then(res => res.json())
-    .then(data => {
-        alert('Album dodany pomyślnie!');
-        location.reload();
-    })
-    .catch(err => alert('Błąd wysyłki. Sprawdź konsolę.'));
-}
+    method: 'POST',
+    mode: 'no-cors', // To rozwiązuje problem CORS
+    headers: {
+        'Content-Type': 'text/plain;charset=utf-8',
+    },
+    body: JSON.stringify(payload)
+})
+.then(() => {
+    // W trybie no-cors nie otrzymamy JSON-a, więc od razu informujemy o sukcesie
+    alert('Zdjęcia zostały wysłane! Pojawią się w galerii po przetworzeniu.');
+    closeUploadModal();
+    setTimeout(fetchGallery, 3000); 
+})
+.catch(err => {
+    console.error('Błąd wysyłki:', err);
+    alert('Wystąpił błąd podczas wysyłania zdjęć.');
+});
 
       function openUploadModal() {
     const modal = document.getElementById('upload-modal');
