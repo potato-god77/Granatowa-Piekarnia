@@ -100,6 +100,31 @@ nav, .tab-content {
 .auth-ready .tab-content.active {
     display: block !important;
 } 
+
+    /* Styl bazowy dla przycisków karmienia */
+.btn-feed {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+/* Efekt najechania (desktop) */
+.btn-feed:hover {
+    background-color: #f5f5f4; /* stone-100 */
+    border-color: #78716c;     /* stone-500 */
+}
+
+/* Efekt kliknięcia (feedback wizualny) */
+.btn-feed:active {
+    transform: scale(0.92);
+}
+
+/* Klasa sukcesu (dodawana w JS przez Twoją funkcję markFed) */
+.btn-feed.fed-success {
+    background-color: #f5f5f4;
+    color: #a8a29e;
+    border-color: #e7e5e4;
+    pointer-events: none;
+}    
         
     </style>
 </head>
@@ -172,7 +197,7 @@ nav, .tab-content {
         </div>
         <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
             <p class="text-[11px] font-bold">Ostatnio: <span id="feed-clint" class="date-clickable" onclick="manualDate('clint', event)">---</span></p>
-            <button onclick="markFed('clint', event)" class="btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase admin-only">Nakarm</button>
+            <button onclick="markFed('clint', event)" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
         </div>
     </div>
 
@@ -182,8 +207,8 @@ nav, .tab-content {
             <img src="farmer.png" onclick="event.stopPropagation(); goToProfile('sylvester')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
         </div>
         <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-            <p class="text-[11px] font-bold">Ostatnio: <span id="feed-sylvester" class="date-clickable admin-only" onclick="manualDate('sylvester', event)">---</span></p>
-            <button onclick="markFed('sylvester', event)" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase admin-only">Nakarm</button>
+            <p class="text-[11px] font-bold">Ostatnio: <span id="feed-sylvester" class="date-clickable" onclick="manualDate('sylvester', event)">---</span></p>
+            <button onclick="markFed('sylvester', event)" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
         </div>
     </div>
 
@@ -193,8 +218,8 @@ nav, .tab-content {
             <img src="nun.png" onclick="event.stopPropagation(); goToProfile('hildegarda')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
         </div>
         <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-            <p class="text-[11px] font-bold">Ostatnio: <span id="feed-hildegarda" class="date-clickable admin-only" onclick="manualDate('hildegarda', event)">---</span></p>
-            <button onclick="markFed('hildegarda', event)" class="btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase admin-only">Nakarm</button>
+            <p class="text-[11px] font-bold">Ostatnio: <span id="feed-hildegarda" class="date-clickable" onclick="manualDate('hildegarda', event)">---</span></p>
+            <button onclick="markFed('hildegarda', event)" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
         </div>
     </div>
 </section>
