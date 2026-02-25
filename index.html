@@ -103,10 +103,10 @@
                style="padding: 12px; border-radius: 5px; border: none; color: black !important; background: white !important;">
         
         <button id="login-btn" onclick="handleLogin()" 
-                style="padding: 12px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;">
-            ZALOGUJ
-        </button>
-    </div>
+        style="padding: 12px; background: #4b3621; color: #f4ece2; border: 1px solid #3d2b1a; border-radius: 5px; cursor: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: background 0.3s;">
+    ZALOGUJ
+</button>
+ </div>
     
     <p id="login-error" style="color: #ff6b6b; margin-top: 15px; font-size: 14px; display: none; background: rgba(255,255,255,0.1); padding: 5px 10px; border-radius: 4px;"></p>
 </div>
@@ -119,10 +119,14 @@
     <div class="max-w-md mx-auto py-4 px-4 flex justify-between items-center flex-nowrap">
         <div class="w-8"></div> 
         <h1 class="serif text-2xl italic whitespace-nowrap overflow-hidden">Granatowa Piekarnia</h1>
-        <div class="logout-icon ml-2" onclick="if(confirm('Wylogować?')) {localStorage.removeItem('bakery_access'); location.reload();}">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-        </div>
-    </div>
+        <div id="logout-btn" class="logout-icon ml-2" style="display: none; cursor: pointer;" onclick="if(confirm('Wylogować?')) { logout(); }">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+        <polyline points="16 17 21 12 16 7"></polyline>
+        <line x1="21" y1="12" x2="9" y2="12"></line>
+    </svg>
+</div>
+  </div>
     
     <nav class="flex justify-around bg-white/60 backdrop-blur-md py-2 border-t border-sand no-scrollbar" style="overflow-x: auto; white-space: nowrap;">
         <div id="btn-zakwasy" class="nav-btn px-4 py-2 text-sm font-bold active" onclick="switchTab('zakwasy')">ZAKWASY</div>
@@ -713,18 +717,21 @@ function logout() {
 // Reakcja na stan zalogowania
 auth.onAuthStateChanged(user => {
     const lockScreen = document.getElementById('lock-screen');
+    const logoutBtn = document.getElementById('logout-btn'); 
+    
     if (user) {
         // Zalogowany
         if (lockScreen) lockScreen.style.display = 'none';
+        if (logoutBtn) logoutBtn.style.display = 'inline-block'; // Pokaż ikonę w nagłówku
         applyPermissions(user);
         
-        // Uruchom Twoje funkcje startowe
         if (typeof loadFromCloud === "function") loadFromCloud(); 
         if (typeof fetchGallery === "function") fetchGallery(); 
         if (typeof sel === "function") sel('clint');
     } else {
         // Niezalogowany
         if (lockScreen) lockScreen.style.display = 'flex';
+        if (logoutBtn) logoutBtn.style.display = 'none'; // Ukryj ikonę
     }
 });
 
