@@ -125,6 +125,42 @@ nav, .tab-content {
     border-color: #e7e5e4;
     pointer-events: none;
 }    
+
+        /* Kontener podglądu zdjęć */
+.preview-item {
+    position: relative;
+    aspect-ratio: 1/1;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.preview-item.is-cover {
+    border-color: #a8a29e; /* stone-400 */
+    box-shadow: 0 0 0 2px white, 0 0 0 4px #a8a29e;
+}
+
+.preview-item img {
+    width: 100%;
+    height: 100%;
+    object-cover: cover;
+}
+
+.preview-badge {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    font-size: 8px;
+    text-align: center;
+    padding: 2px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
         
     </style>
 </head>
@@ -558,28 +594,43 @@ nav, .tab-content {
         </section>
 
        <section id="galeria-section" class="tab-content pt-4">
-<div id="admin-upload-zone" class="admin-only glass-card p-6 my-6 border-2 border-dashed border-stone-300">
-    <h3 class="text-stone-600 font-bold uppercase text-xs mb-4">Nowy Album w Galerii</h3>
-    <div class="grid grid-cols-2 gap-4">
-        <select id="upload-starter" class="p-2 rounded bg-stone-100 text-xs border border-stone-200">
-            <option value="Clint Yeastwood">Clint Yeastwood</option>
-            <option value="Sylvester Graham">Sylvester Graham</option>
-            <option value="Hildegarda z Bingen">Hildegarda z Bingen</option>
-        </select>
-        <input type="date" id="upload-date" class="p-2 rounded bg-stone-100 text-xs border border-stone-200">
+<div id="admin-upload-zone" class="admin-only glass-card p-6 my-8 border border-stone-200 shadow-sm transition-all duration-300">
+    <div class="flex items-center gap-2 mb-6">
+        <div class="w-1.5 h-6 bg-stone-800 rounded-full"></div>
+        <h3 class="text-stone-800 font-bold uppercase text-[11px] tracking-widest">Nowy Wpis w Galerii</h3>
     </div>
 
-    <div class="mt-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="space-y-1">
+            <label class="block text-[9px] uppercase font-black text-stone-400 ml-1">Zakwas</label>
+            <select id="upload-starter" class="w-full p-3 rounded-xl bg-stone-50 border border-stone-200 text-stone-700 text-xs focus:ring-2 focus:ring-stone-200 outline-none transition-all">
+                <option value="Clint Yeastwood">Clint Yeastwood</option>
+                <option value="Sylvester Graham">Sylvester Graham</option>
+                <option value="Hildegarda z Bingen">Hildegarda z Bingen</option>
+            </select>
+        </div>
+        
+        <div class="space-y-1">
+            <label class="block text-[9px] uppercase font-black text-stone-400 ml-1">Data wypieku</label>
+            <input type="date" id="upload-date" class="w-full p-3 rounded-xl bg-stone-50 border border-stone-200 text-stone-700 text-xs focus:ring-2 focus:ring-stone-200 outline-none transition-all">
+        </div>
+    </div>
+
+    <div class="mt-6">
         <input type="file" id="upload-files" multiple accept="image/*" class="hidden" onchange="previewPhotos()">
-        <label for="upload-files" class="block p-4 bg-white border-2 border-dotted border-stone-300 rounded-lg text-center cursor-pointer hover:bg-stone-50 transition-colors">
-            <span class="text-stone-400 text-[10px] font-bold uppercase">Wybierz zdjęcia albumu</span>
+        <label for="upload-files" class="group block p-8 bg-stone-50/50 border-2 border-dashed border-stone-200 rounded-2xl text-center cursor-pointer hover:bg-white hover:border-stone-400 transition-all duration-300">
+            <div class="flex flex-col items-center gap-2">
+                <span class="text-2xl group-hover:scale-110 transition-transform">📸</span>
+                <span class="text-stone-500 text-[10px] font-bold uppercase tracking-tight">Wybierz lub przeciągnij zdjęcia</span>
+                <span class="text-stone-300 text-[9px]">Pierwsze zdjęcie zostanie Twoją okładką</span>
+            </div>
         </label>
     </div>
 
-    <div id="upload-preview" class="grid grid-cols-4 gap-2 mt-4"></div>
+    <div id="upload-preview" class="grid grid-cols-3 sm:grid-cols-5 gap-3 mt-6"></div>
 
-    <button onclick="startFullUpload()" id="upload-btn" class="w-full mt-4 py-3 bg-stone-800 text-white rounded-xl font-bold uppercase text-[10px] hidden">
-        Wyślij album do bazy
+    <button onclick="startFullUpload()" id="upload-btn" class="w-full mt-6 py-4 bg-stone-800 hover:bg-black text-stone-50 rounded-2xl font-black uppercase text-[11px] tracking-[0.2em] transition-all shadow-lg active:scale-[0.98] hidden">
+        Wypuść album w świat
     </button>
 </div>
            
@@ -705,6 +756,8 @@ nav, .tab-content {
     let currentImgIndex = 0;
     let isGalleryLoaded = false;
     let allAlbumsData = []; 
+    let selectedFiles = [];
+    let coverIndex = 0;
 
     const RECIPES = {
         clint: { 
@@ -1294,8 +1347,6 @@ function applyPermissions(user) {
         el.value = `${String(Math.floor(totalMinutes / 60)).padStart(2, '0')}:${String(totalMinutes % 60).padStart(2, '0')}`;
         updateSchedule(source);
     } 
-let selectedFiles = [];
-let coverIndex = 0;
 
 function previewPhotos() {
     const input = document.getElementById('upload-files');
@@ -1304,17 +1355,24 @@ function previewPhotos() {
     preview.innerHTML = '';
     selectedFiles = Array.from(input.files);
 
-    if (selectedFiles.length > 0) btn.classList.remove('hidden');
+    if (selectedFiles.length > 0) {
+        btn.classList.remove('hidden');
+        // Ustaw domyślnie datę na dzisiejszą, jeśli pusta
+        if(!document.getElementById('upload-date').value) {
+            document.getElementById('upload-date').valueAsDate = new Date();
+        }
+    }
 
     selectedFiles.forEach((file, index) => {
         const reader = new FileReader();
         reader.onload = (e) => {
             const div = document.createElement('div');
-            div.className = `relative aspect-square rounded-lg overflow-hidden border-2 ${index === 0 ? 'border-amber-500' : 'border-transparent'}`;
+            // Jeśli index to coverIndex, dodaj klasę is-cover
+            div.className = `preview-item ${index === coverIndex ? 'is-cover' : ''}`;
             div.onclick = () => setCover(index);
             div.innerHTML = `
-                <img src="${e.target.result}" class="w-full h-full object-cover">
-                ${index === coverIndex ? '<div class="absolute top-0 right-0 bg-amber-500 text-white text-[8px] p-1">Okładka</div>' : ''}
+                <img src="${e.target.result}">
+                ${index === coverIndex ? '<div class="preview-badge">Okładka</div>' : ''}
             `;
             preview.appendChild(div);
         };
