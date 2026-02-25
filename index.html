@@ -92,15 +92,16 @@
     </style>
 </head>
 <body class="pb-24">
-    <div id="lock-screen">
-    <h1 class="serif text-3xl italic mb-8 text-stone-800">Granatowa Piekarnia</h1>
-    <div class="glass-card p-8 flex flex-col items-center">
-        <p class="text-[10px] uppercase font-black tracking-widest text-stone-400 mb-6">Dostęp do Granatowej Piekarni</p>
-        <button onclick="loginWithGoogle()" class="flex items-center gap-3 bg-white border border-stone-200 px-6 py-3 rounded-xl font-bold shadow-sm hover:bg-stone-50 transition-all">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20">
-            Zaloguj przez Google
-        </button>
+    <div id="lock-screen" style="display: flex; flex-direction: column; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; color: white;">
+    <h2 style="margin-bottom: 20px;">Granatowa Piekarnia</h2>
+    
+    <div style="display: flex; flex-direction: column; gap: 10px; width: 280px;">
+        <input type="email" id="login-email" placeholder="E-mail" style="padding: 10px; border-radius: 5px; border: none;">
+        <input type="password" id="login-password" placeholder="Hasło" style="padding: 10px; border-radius: 5px; border: none;">
+        <button onclick="handleLogin()" style="padding: 10px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer;">Zaloguj</button>
     </div>
+    
+    <p id="login-error" style="color: #ff6b6b; margin-top: 10px; font-size: 14px; display: none;"></p>
 </div>
 
     <header style="position: sticky; top: 0; z-index: 1000; background-color: var(--bg); border-bottom: 1px solid #efe3d8;">
@@ -656,9 +657,8 @@
 
    // Konfiguracja Firebase (wklej tutaj to, co skopiowałeś z konsoli Firebase)
 const firebaseConfig = {
-
   apiKey: "AIzaSyDUBPC6XpjuN3RDd2_a2Rccw2alHXef4Qc",
-  authDomain: "authDomain: "granatowapiekarnia.pl",
+  authDomain: "granatowapiekarnia.pl", // Poprawione (było podwójne authDomain)
   projectId: "granatowa-piekarnia",
   storageBucket: "granatowa-piekarnia.firebasestorage.app",
   messagingSenderId: "410020922733",
@@ -670,18 +670,24 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
 // TWOJA ROLA
-const ADMIN_EMAIL = 'przemykaz@gmail.com'; 
+const ADMIN_EMAIL = 'granatowapiekarnia@gmail.com'; 
 
+// NOWA FUNKCJA LOGOWANIA (ZAMIAST GOOGLE)
 function loginWithGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithRedirect(provider)
+    const password = prompt("Podaj hasło administratora:");
+    if (password) {
+        auth.signInWithEmailAndPassword(ADMIN_EMAIL, password)
+            .catch(error => {
+                alert("Błąd logowania: " + error.message);
+            });
+    }
 }
 
 function logout() {
     auth.signOut().then(() => location.reload());
 }
 
-// Reakcja na stan zalogowania
+// Reakcja na stan zalogowania (BEZ ZMIAN)
 auth.onAuthStateChanged(user => {
     const lockScreen = document.getElementById('lock-screen');
     if (user) {
@@ -690,9 +696,9 @@ auth.onAuthStateChanged(user => {
         applyPermissions(user);
         
         // Uruchom Twoje funkcje startowe
-        loadFromCloud(); 
-        fetchGallery(); 
-        sel('clint');
+        if (typeof loadFromCloud === "function") loadFromCloud(); 
+        if (typeof fetchGallery === "function") fetchGallery(); 
+        if (typeof sel === "function") sel('clint');
     } else {
         // Niezalogowany
         lockScreen.style.display = 'flex';
@@ -714,7 +720,6 @@ function applyPermissions(user) {
         zwInput.title = isAdmin ? "" : "Tylko administrator może edytować";
     }
     
-    // 3. Dodaj informację o użytkowniku w nagłówku (opcjonalnie)
     console.log("Zalogowano jako: " + user.email + " | Admin: " + isAdmin);
 }
 
