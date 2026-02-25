@@ -672,15 +672,27 @@ const auth = firebase.auth();
 // TWOJA ROLA
 const ADMIN_EMAIL = 'granatowapiekarnia@gmail.com'; 
 
-// NOWA FUNKCJA LOGOWANIA (ZAMIAST GOOGLE)
-function loginWithGoogle() {
-    const password = prompt("Podaj hasło administratora:");
-    if (password) {
-        auth.signInWithEmailAndPassword(ADMIN_EMAIL, password)
-            .catch(error => {
-                alert("Błąd logowania: " + error.message);
-            });
+function handleLogin() {
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    const errorMsg = document.getElementById('login-error');
+
+    if (!email || !password) {
+        errorMsg.innerText = "Podaj e-mail i hasło";
+        errorMsg.style.display = "block";
+        return;
     }
+
+    auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+            errorMsg.style.display = "none";
+        })
+        .catch((error) => {
+            console.error("Błąd logowania:", error.code);
+            errorMsg.innerText = "Błędne dane logowania";
+            errorMsg.style.display = "block";
+        });
+}
 }
 
 function logout() {
