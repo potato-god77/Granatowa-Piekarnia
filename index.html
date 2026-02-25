@@ -93,13 +93,15 @@
 </head>
 <body class="pb-24">
     <div id="lock-screen">
-        <h1 class="serif text-3xl italic mb-8 text-stone-800">Granatowa Piekarnia</h1>
-        <div class="glass-card p-8 flex flex-col items-center">
-            <p class="text-[10px] uppercase font-black tracking-widest text-stone-400 mb-4">Hasło dostępu</p>
-            <input type="password" id="pass-field" class="pass-input" placeholder="••••" autofocus onkeydown="if(event.key==='Enter') checkPass()">
-            <button onclick="checkPass()" class="mt-6 w-full brown-gradient text-white px-8 py-3 rounded-xl font-bold">Otwórz</button>
-        </div>
+    <h1 class="serif text-3xl italic mb-8 text-stone-800">Granatowa Piekarnia</h1>
+    <div class="glass-card p-8 flex flex-col items-center">
+        <p class="text-[10px] uppercase font-black tracking-widest text-stone-400 mb-6">Dostęp do Granatowej Piekarni</p>
+        <button onclick="loginWithGoogle()" class="flex items-center gap-3 bg-white border border-stone-200 px-6 py-3 rounded-xl font-bold shadow-sm hover:bg-stone-50 transition-all">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20">
+            Zaloguj przez Google
+        </button>
     </div>
+</div>
 
     <header style="position: sticky; top: 0; z-index: 1000; background-color: var(--bg); border-bottom: 1px solid #efe3d8;">
     <div class="max-w-md mx-auto py-4 px-4 flex justify-between items-center flex-nowrap">
@@ -608,6 +610,9 @@
     <div id="thumb-strip" class="no-scrollbar flex gap-2 overflow-x-auto p-4 w-full bg-black/90 border-t border-stone-900 z-[1000000]"></div>
 </div>
 
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
     <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxDTlTcVOKuNua9ZL29lL-HBS1BJpptJtZ5ee9m5JkDPMU1M6bMWVs7fHwi9ccyxhE/exec';
     const BREAD_PASS = 'feelgood7';
@@ -649,12 +654,69 @@
         }
     };
 
-    function checkPass() {
-        if (document.getElementById('pass-field').value === BREAD_PASS) {
-            localStorage.setItem('bakery_access', 'granted');
-            location.reload();
-        } else { alert("Błędne hasło"); }
+   // Konfiguracja Firebase (wklej tutaj to, co skopiowałeś z konsoli Firebase)
+const firebaseConfig = {
+
+  apiKey: "AIzaSyDUBPC6XpjuN3RDd2_a2Rccw2alHXef4Qc",
+  authDomain: "granatowa-piekarnia.firebaseapp.com",
+  projectId: "granatowa-piekarnia",
+  storageBucket: "granatowa-piekarnia.firebasestorage.app",
+  messagingSenderId: "410020922733",
+  appId: "1:410020922733:web:86ae14c83e962997b04664"
+};
+
+// Inicjalizacja
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+
+// TWOJA ROLA
+const ADMIN_EMAIL = 'przemykaz@gmail.com'; 
+
+function loginWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider).catch(error => alert("Błąd logowania: " + error.message));
+}
+
+function logout() {
+    auth.signOut().then(() => location.reload());
+}
+
+// Reakcja na stan zalogowania
+auth.onAuthStateChanged(user => {
+    const lockScreen = document.getElementById('lock-screen');
+    if (user) {
+        // Zalogowany
+        lockScreen.style.display = 'none';
+        applyPermissions(user);
+        
+        // Uruchom Twoje funkcje startowe
+        loadFromCloud(); 
+        fetchGallery(); 
+        sel('clint');
+    } else {
+        // Niezalogowany
+        lockScreen.style.display = 'flex';
     }
+});
+
+function applyPermissions(user) {
+    const isAdmin = user.email === ADMIN_EMAIL;
+    
+    // 1. Ukryj/Pokaż przyciski karmienia
+    document.querySelectorAll('.btn-feed').forEach(btn => {
+        btn.style.visibility = isAdmin ? 'visible' : 'hidden';
+    });
+
+    // 2. Zablokuj edycję magazynu (pole zlewki)
+    const zwInput = document.getElementById('zw');
+    if (zwInput) {
+        zwInput.disabled = !isAdmin;
+        zwInput.title = isAdmin ? "" : "Tylko administrator może edytować";
+    }
+    
+    // 3. Dodaj informację o użytkowniku w nagłówku (opcjonalnie)
+    console.log("Zalogowano jako: " + user.email + " | Admin: " + isAdmin);
+}
 
     function switchTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
