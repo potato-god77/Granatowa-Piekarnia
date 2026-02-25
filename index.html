@@ -674,7 +674,7 @@ const ADMIN_EMAIL = 'przemykaz@gmail.com';
 
 function loginWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider).catch(error => alert("Błąd logowania: " + error.message));
+    auth.signInWithRedirect(provider)
 }
 
 function logout() {
