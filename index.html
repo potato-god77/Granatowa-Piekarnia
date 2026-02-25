@@ -697,6 +697,7 @@ function handleLogin() {
     auth.signInWithEmailAndPassword(email, password)
         .then(() => {
             errorMsg.style.display = "none";
+            console.log("Zalogowano pomyślnie!");
         })
         .catch((error) => {
             console.error("Błąd logowania:", error.code);
@@ -704,18 +705,17 @@ function handleLogin() {
             errorMsg.style.display = "block";
         });
 }
-}
 
 function logout() {
     auth.signOut().then(() => location.reload());
 }
 
-// Reakcja na stan zalogowania (BEZ ZMIAN)
+// Reakcja na stan zalogowania
 auth.onAuthStateChanged(user => {
     const lockScreen = document.getElementById('lock-screen');
     if (user) {
         // Zalogowany
-        lockScreen.style.display = 'none';
+        if (lockScreen) lockScreen.style.display = 'none';
         applyPermissions(user);
         
         // Uruchom Twoje funkcje startowe
@@ -724,7 +724,7 @@ auth.onAuthStateChanged(user => {
         if (typeof sel === "function") sel('clint');
     } else {
         // Niezalogowany
-        lockScreen.style.display = 'flex';
+        if (lockScreen) lockScreen.style.display = 'flex';
     }
 });
 
@@ -745,6 +745,7 @@ function applyPermissions(user) {
     
     console.log("Zalogowano jako: " + user.email + " | Admin: " + isAdmin);
 }
+
 
     function switchTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
