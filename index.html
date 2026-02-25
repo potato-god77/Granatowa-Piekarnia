@@ -155,8 +155,8 @@
             <img src="cowboy.png" onclick="event.stopPropagation(); goToProfile('clint')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
         </div>
         <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-            <p class="text-[11px] font-bold">Ostatnio: <span id="feed-clint" class="date-clickable" onclick="manualDate('clint', event)">---</span></p>
-            <button onclick="markFed('clint', event)" class="btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
+            <p class="text-[11px] font-bold">Ostatnio: <span id="feed-clint" class="date-clickable admin-only" onclick="manualDate('clint', event)">---</span></p>
+            <button onclick="markFed('clint', event)" class="btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase admin-only">Nakarm</button>
         </div>
     </div>
 
@@ -166,8 +166,8 @@
             <img src="farmer.png" onclick="event.stopPropagation(); goToProfile('sylvester')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
         </div>
         <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-            <p class="text-[11px] font-bold">Ostatnio: <span id="feed-sylvester" class="date-clickable" onclick="manualDate('sylvester', event)">---</span></p>
-            <button onclick="markFed('sylvester', event)" class="btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
+            <p class="text-[11px] font-bold">Ostatnio: <span id="feed-sylvester" class="date-clickable admin-only" onclick="manualDate('sylvester', event)">---</span></p>
+            <button onclick="markFed('sylvester', event)" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase admin-only">Nakarm</button>
         </div>
     </div>
 
@@ -177,8 +177,8 @@
             <img src="nun.png" onclick="event.stopPropagation(); goToProfile('hildegarda')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
         </div>
         <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-            <p class="text-[11px] font-bold">Ostatnio: <span id="feed-hildegarda" class="date-clickable" onclick="manualDate('hildegarda', event)">---</span></p>
-            <button onclick="markFed('hildegarda', event)" class="btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
+            <p class="text-[11px] font-bold">Ostatnio: <span id="feed-hildegarda" class="date-clickable admin-only" onclick="manualDate('hildegarda', event)">---</span></p>
+            <button onclick="markFed('hildegarda', event)" class="btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase admin-only">Nakarm</button>
         </div>
     </div>
 </section>
@@ -458,13 +458,13 @@
                 <div class="accordion-content p-6 pt-6 border-t text-center">
                     <p class="text-[11px] uppercase font-bold text-stone-400 mb-3">Wpisz aktualną ilość zakwasu Wernyhora.</p>
                     
-                    <div class="flex items-center justify-center gap-2">
+                    <div class="flex items-center justify-center gap-2 admin-only">
                         <input type="number" id="zw" value="0" onblur="saveToCloud('zlewki', this.value)" 
                                class="w-28 bg-stone-50 border-2 rounded-2xl p-3 font-black text-2xl text-center outline-none">
                         <span class="text-2xl font-black text-stone-800">g</span>
                     </div>
 
-                    <button onclick="if(confirm('Reset?')) saveToCloud('zlewki', 0)" 
+                    <button class="admin-only" onclick="if(confirm('Reset?')) saveToCloud('zlewki', 0)" 
                             class="mt-6 px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-500 text-[10px] uppercase font-bold rounded-lg transition-colors border border-stone-200">
                         Wyzeruj słoik
                     </button>
@@ -736,22 +736,39 @@ auth.onAuthStateChanged(user => {
 });
 
 function applyPermissions(user) {
-    const isAdmin = user.email === ADMIN_EMAIL;
+    const isAdmin = user && user.email === ADMIN_EMAIL;
     
-    // 1. Ukryj/Pokaż przyciski karmienia
-    document.querySelectorAll('.btn-feed').forEach(btn => {
-        btn.style.visibility = isAdmin ? 'visible' : 'hidden';
+    // 1. Przyciski (np. karmienie, zapisz)
+    // Szukamy wszystkich przycisków, które mają klasę 'admin-only' lub Twoje przyciski karmienia
+    document.querySelectorAll('.btn-feed, .admin-only').forEach(btn => {
+        btn.style.display = isAdmin ? 'inline-block' : 'none';
     });
 
-    // 2. Zablokuj edycję magazynu (pole zlewki)
-    const zwInput = document.getElementById('zw');
-    if (zwInput) {
-        zwInput.disabled = !isAdmin;
-        zwInput.title = isAdmin ? "" : "Tylko administrator może edytować";
-    }
-    
-    console.log("Zalogowano jako: " + user.email + " | Admin: " + isAdmin);
+    // 2. Pola wprowadzania danych (Inputy)
+    // Możesz dodać id konkretnych pól, które mają być zablokowane
+    const inputsToProtect = ['zw', 'qty-input', 'other-input-id']; // dodaj tu ID swoich pól
+    inputsToProtect.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.disabled = !isAdmin;
+            // Opcjonalnie: zmień styl, by wyglądały jak zwykły tekst
+            if (!isAdmin) {
+                el.style.background = 'transparent';
+                el.style.border = 'none';
+                el.style.color = 'inherit'; // przyjmie kolor tekstu strony
+                el.style.cursor = 'default';
+            } else {
+                // Przywróć styl dla admina
+                el.style.background = 'white';
+                el.style.border = '1px solid #ccc';
+                el.style.cursor = 'text';
+            }
+        }
+    });
+
+    console.log("Uprawnienia zastosowane. Admin: " + isAdmin);
 }
+
 
 
     function switchTab(tabId) {
