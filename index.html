@@ -1375,15 +1375,21 @@ function setCover(index) {
     previewPhotos(); // Odśwież widok, by zaznaczyć nową okładkę
 }
 async function startFullUpload() {
+    // Sprawdzenie czy użytkownik jest zalogowany
+    const user = auth.currentUser;
+    if (!user || user.uid !== MY_ADMIN_UID) {
+        alert("Brak uprawnień administratora!");
+        return;
+    }
+
     const btn = document.getElementById('upload-btn');
     btn.disabled = true;
-    btn.innerText = "Wysyłanie... Cierpliwości.";
+    btn.innerText = "Wysyłanie...";
 
     const starter = document.getElementById('upload-starter').value;
-    const rawDate = document.getElementById('upload-date').value; // rrrr-mm-dd
-    const formattedDate = rawDate.split('-').reverse().join('.'); // dd.mm.rrrr
+    const rawDate = document.getElementById('upload-date').value;
+    const formattedDate = rawDate.split('-').reverse().join('.');
 
-    // Zamiana wszystkich plików na Base64
     const filesPromises = selectedFiles.map(file => {
         return new Promise((resolve) => {
             const reader = new FileReader();
@@ -1399,7 +1405,7 @@ async function startFullUpload() {
 
     const payload = {
         action: 'createAlbum',
-        uid: auth.currentUser ? auth.currentUser.uid : 'guest',
+        uid: user.uid, // Wysyłamy UID zalogowanego użytkownika
         starter: starter,
         date: formattedDate,
         coverIndex: coverIndex,
@@ -1408,22 +1414,18 @@ async function startFullUpload() {
 
     fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors', // Kluczowe dla Google Apps Script
-        headers: {
-            'Content-Type': 'text/plain;charset=utf-8',
-        },
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
     })
     .then(() => {
-        // W trybie no-cors nie parsujemy res.json(), od razu informujemy o sukcesie
-        alert('Zdjęcia zostały wysłane! Album pojawi się po przetworzeniu.');
+        alert('Album dodany pomyślnie!');
         location.reload();
     })
     .catch(err => {
-        console.error('Błąd wysyłki:', err);
-        alert('Błąd wysyłki. Sprawdź konsolę.');
+        console.error('Błąd:', err);
+        alert('Wystąpił błąd wysyłki.');
         btn.disabled = false;
-        btn.innerText = "Zatwierdź i wyślij";
     });
 }
 
