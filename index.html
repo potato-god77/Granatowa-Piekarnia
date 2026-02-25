@@ -87,7 +87,19 @@
     position: relative;
     background: black;
 }
-        
+
+       /* Ukrycie elementów na czas sprawdzania sesji */
+nav, .tab-content {
+    display: none !important;
+}
+
+/* Wyświetlenie ich dopiero, gdy skrypt potwierdzi status użytkownika */
+.auth-ready nav {
+    display: flex !important;
+}
+.auth-ready .tab-content.active {
+    display: block !important;
+} 
         
     </style>
 </head>
@@ -726,7 +738,11 @@ auth.onAuthStateChanged(user => {
     if (user) {
         // Zalogowany
         if (lockScreen) lockScreen.style.display = 'none';
-        if (logoutBtn) logoutBtn.style.display = 'inline-block'; // Pokaż ikonę w nagłówku
+        
+        // DODAJ TĘ LINIĘ:
+        document.body.classList.add('auth-ready');
+
+        if (logoutBtn) logoutBtn.style.display = 'inline-block'; 
         applyPermissions(user);
         
         if (typeof loadFromCloud === "function") loadFromCloud(); 
@@ -734,8 +750,12 @@ auth.onAuthStateChanged(user => {
         if (typeof sel === "function") sel('clint');
     } else {
         // Niezalogowany
+        
+        // DODAJ TĘ LINIĘ:
+        document.body.classList.remove('auth-ready');
+
         if (lockScreen) lockScreen.style.display = 'flex';
-        if (logoutBtn) logoutBtn.style.display = 'none'; // Ukryj ikonę
+        if (logoutBtn) logoutBtn.style.display = 'none'; 
     }
 });
 
