@@ -1024,43 +1024,55 @@ function applyPermissions(user) {
 }
 }
 
-    function updateSchedule(source) {
-        let inputVal;
-        if (source === 'wybudzenie') inputVal = document.getElementById('t-wybudzenie-input').value;
-        else if (source === 'mieszanie') inputVal = document.getElementById('start-time').value;
-        else if (source === 'pieczenie') inputVal = document.getElementById('t-pieczenie-input').value;
-        else if (source === 'jedzenie') inputVal = document.getElementById('t-jedzenie-input').value;
+   function updateSchedule(source) {
+    let inputVal;
+    const tWybudzenieIn = document.getElementById('t-wybudzenie-input');
+    const startTimeIn = document.getElementById('start-time');
+    const tPieczenieIn = document.getElementById('t-pieczenie-input');
+    const tJedzenieIn = document.getElementById('t-jedzenie-input');
 
-        if (!inputVal) return;
+    if (source === 'wybudzenie') inputVal = tWybudzenieIn ? tWybudzenieIn.value : null;
+    else if (source === 'mieszanie') inputVal = startTimeIn ? startTimeIn.value : null;
+    else if (source === 'pieczenie') inputVal = tPieczenieIn ? tPieczenieIn.value : null;
+    else if (source === 'jedzenie') inputVal = tJedzenieIn ? tJedzenieIn.value : null;
 
-        const [h, m] = inputVal.split(':').map(Number);
-        let referenceDate = new Date(2026, 0, 1, h, m, 0, 0);
+    if (!inputVal) return;
 
-        let mieszanieDate = new Date(referenceDate);
-        if (source === 'wybudzenie') mieszanieDate.setMinutes(mieszanieDate.getMinutes() + 360); 
-        if (source === 'pieczenie') mieszanieDate.setMinutes(mieszanieDate.getMinutes() - 1125); 
-        if (source === 'jedzenie') mieszanieDate.setMinutes(mieszanieDate.getMinutes() - 1230); 
+    const [h, m] = inputVal.split(':').map(Number);
+    let referenceDate = new Date(2026, 0, 1, h, m, 0, 0);
 
-        const formatTime = (date, addMin) => {
-            const d = new Date(mieszanieDate.getTime() + addMin * 60000);
-            let minutes = d.getMinutes();
-            const roundedMinutes = Math.round(minutes / 15) * 15;
-            d.setMinutes(roundedMinutes);
-            return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-        };
+    let mieszanieDate = new Date(referenceDate);
+    if (source === 'wybudzenie') mieszanieDate.setMinutes(mieszanieDate.getMinutes() + 360); 
+    if (source === 'pieczenie') mieszanieDate.setMinutes(mieszanieDate.getMinutes() - 1125); 
+    if (source === 'jedzenie') mieszanieDate.setMinutes(mieszanieDate.getMinutes() - 1230); 
 
-        // Poprawka dla pól wejściowych (Inputy)
-document.getElementById('t-wybudzenie-input') && (document.getElementById('t-wybudzenie-input').value = formatTime(mieszanieDate, -360));
-document.getElementById('start-time') && (document.getElementById('start-time').value = formatTime(mieszanieDate, 0));
-document.getElementById('t-pieczenie-input') && (document.getElementById('t-pieczenie-input').value = formatTime(mieszanieDate, 1125));
-document.getElementById('t-jedzenie-input') && (document.getElementById('t-jedzenie-input').value = formatTime(mieszanieDate, 1230));
+    const formatTime = (date, addMin) => {
+        const d = new Date(mieszanieDate.getTime() + addMin * 60000);
+        let minutes = d.getMinutes();
+        const roundedMinutes = Math.round(minutes / 15) * 15;
+        d.setMinutes(roundedMinutes);
+        return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+    };
 
-// Poprawka dla pól tekstowych (innerText)
-document.getElementById('t-lodowka') && (document.getElementById('t-lodowka').innerText = formatTime(mieszanieDate, 450));
-document.getElementById('t-formowanie') && (document.getElementById('t-formowanie').innerText = formatTime(mieszanieDate, 1080));
-document.getElementById('t-rumienienie') && (document.getElementById('t-rumienienie').innerText = formatTime(mieszanieDate, 1155));
-document.getElementById('t-upieczenie') && (document.getElementById('t-upieczenie').innerText = formatTime(mieszanieDate, 1170));
-    }
+    // Bezpieczne przypisywanie wartości do pol input
+    if (tWybudzenieIn) tWybudzenieIn.value = formatTime(mieszanieDate, -360);
+    if (startTimeIn) startTimeIn.value = formatTime(mieszanieDate, 0);
+    if (tPieczenieIn) tPieczenieIn.value = formatTime(mieszanieDate, 1125);
+    if (tJedzenieIn) tJedzenieIn.value = formatTime(mieszanieDate, 1230);
+
+    // Bezpieczne przypisywanie tekstu do elementów wyświetlających (innerText)
+    const lodowka = document.getElementById('t-lodowka');
+    if (lodowka) lodowka.innerText = formatTime(mieszanieDate, 450);
+
+    const formowanie = document.getElementById('t-formowanie');
+    if (formowanie) formowanie.innerText = formatTime(mieszanieDate, 1080);
+
+    const rumienienie = document.getElementById('t-rumienienie');
+    if (rumienienie) rumienienie.innerText = formatTime(mieszanieDate, 1155);
+
+    const upieczenie = document.getElementById('t-upieczenie');
+    if (upieczenie) upieczenie.innerText = formatTime(mieszanieDate, 1170);
+}
 
     function markFed(k, e) { 
         e.stopPropagation(); 
@@ -1249,22 +1261,28 @@ document.getElementById('t-upieczenie') && (document.getElementById('t-upieczeni
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        if (localStorage.getItem('bakery_access') === 'granted') {
-            document.getElementById('lock-screen').style.display = 'none';
-            try {
-                loadFromCloud(); 
-                fetchGallery(); 
-                sel('clint');
-                const saved = sessionStorage.getItem('lastTab');
-                if (saved) switchTab(saved);        
-                const checkEl = document.getElementById('start-time');
-                if(checkEl && checkEl.value) {
-                // Dodajemy małe opóźnienie, aby DOM na pewno był gotowy
-                setTimeout(() => updateSchedule('mieszanie'), 50);
-}
-            } catch(e) { console.error("Inicjalizacja:", e); }
+    if (localStorage.getItem('bakery_access') === 'granted') {
+        const lockScreen = document.getElementById('lock-screen');
+        if (lockScreen) lockScreen.style.display = 'none';
+        
+        try {
+            loadFromCloud(); 
+            fetchGallery(); 
+            sel('clint');
+            
+            const saved = sessionStorage.getItem('lastTab');
+            if (saved) switchTab(saved);        
+            
+            // Poprawiony warunek inicjalizacji harmonogramu
+            const initialStart = document.getElementById('start-time');
+            if (initialStart && initialStart.value) {
+                updateSchedule('mieszanie');
+            }
+        } catch(e) { 
+            console.error("Inicjalizacja:", e); 
         }
-    });
+    }
+});
 
     document.addEventListener('keydown', function(event) {
         if (event.key === "Escape") {
@@ -1381,7 +1399,7 @@ async function startFullUpload() {
 
     const payload = {
         action: 'createAlbum',
-        uid: auth.currentUser.uid,
+        uid: auth.currentUser ? auth.currentUser.uid : 'guest',
         starter: starter,
         date: formattedDate,
         coverIndex: coverIndex,
@@ -1389,23 +1407,25 @@ async function startFullUpload() {
     };
 
     fetch(SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors', // To rozwiązuje problem CORS
-    headers: {
-        'Content-Type': 'text/plain;charset=utf-8',
-    },
-    body: JSON.stringify(payload)
-})
-.then(() => {
-    // W trybie no-cors nie otrzymamy JSON-a, więc od razu informujemy o sukcesie
-    alert('Zdjęcia zostały wysłane! Pojawią się w galerii po przetworzeniu.');
-    closeUploadModal();
-    setTimeout(fetchGallery, 3000); 
-})
-.catch(err => {
-    console.error('Błąd wysyłki:', err);
-    alert('Wystąpił błąd podczas wysyłania zdjęć.');
-});
+        method: 'POST',
+        mode: 'no-cors', // Kluczowe dla Google Apps Script
+        headers: {
+            'Content-Type': 'text/plain;charset=utf-8',
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(() => {
+        // W trybie no-cors nie parsujemy res.json(), od razu informujemy o sukcesie
+        alert('Zdjęcia zostały wysłane! Album pojawi się po przetworzeniu.');
+        location.reload();
+    })
+    .catch(err => {
+        console.error('Błąd wysyłki:', err);
+        alert('Błąd wysyłki. Sprawdź konsolę.');
+        btn.disabled = false;
+        btn.innerText = "Zatwierdź i wyślij";
+    });
+}
 
       function openUploadModal() {
     const modal = document.getElementById('upload-modal');
