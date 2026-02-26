@@ -1111,11 +1111,10 @@ function applyPermissions(user) {
     const btn = e.currentTarget;
     const dzis = new Date().toLocaleDateString('pl-PL');
     
-    // Wizualna zmiana przycisku (zostawiam Twoje nazewnictwo)
     btn.classList.add('fed-success');
     btn.innerText = "Nakarmiono";
 
-    // WYSYŁKA DO ARKUSZA
+    // Wysyłka do arkusza
     fetch(SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -1128,65 +1127,49 @@ function applyPermissions(user) {
         })
     });
 
-    // Zapis lokalny dla płynności interfejsu
+    // KLUCZOWE: Zapis do localStorage, aby loadFromCloud nie nadpisało daty starym stanem
     const data = JSON.parse(localStorage.getItem('bakery_data') || '{}');
     data[k] = dzis;
     localStorage.setItem('bakery_data', JSON.stringify(data));
     
-    // Aktualizacja daty na karcie
     const span = document.getElementById('feed-' + k);
     if (span) span.innerText = dzis;
 }
 
-    function manualDate(k, e) {
-    if (e) e.stopPropagation();
+   function manualDate(k, e) {
+    if (e) e.stopPropagation(); // Blokuje kliknięcie karty sel()
     if (!window.isAdmin) return;
 
-    // Tworzymy ukryty input typu date, aby wywołać kalendarz
     const input = document.createElement('input');
     input.type = 'date';
     input.style.position = 'fixed';
+    input.style.bottom = '0';
+    input.style.left = '0';
     input.style.opacity = '0';
     document.body.appendChild(input);
     
-    // Otwarcie kalendarza systemowego
-    input.showPicker();
+    // Kluczowe dla mobilnych:
+    if (input.showPicker) {
+        try { input.showPicker(); } catch (err) { input.click(); }
+    } else {
+        input.click();
+    }
 
     input.onchange = () => {
-        if (!input.value) {
-            document.body.removeChild(input);
-            return;
+        if (input.value) {
+            const [y, m, d] = input.value.split('-');
+            const wybranaData = `${d}.${m}.${y}`;
+            
+            // Wysyłka TWOIM mechanizmem
+            saveToCloud(k, wybranaData);
+            
+            const span = document.getElementById('feed-' + k);
+            if (span) span.innerText = wybranaData;
         }
-
-        const wybranaData = new Date(input.value).toLocaleDateString('pl-PL');
-        
-        // WYSYŁKA DO ARKUSZA
-        fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                action: 'update',
-                key: k,
-                value: wybranaData,
-                uid: window.adminUID
-            })
-        });
-
-        // Aktualizacja lokalna
-        const data = JSON.parse(localStorage.getItem('bakery_data') || '{}');
-        data[k] = wybranaData;
-        localStorage.setItem('bakery_data', JSON.stringify(data));
-        
-        const span = document.getElementById('feed-' + k);
-        if (span) span.innerText = wybranaData;
-
         document.body.removeChild(input);
     };
-
-    input.onblur = () => {
-        if (document.body.contains(input)) document.body.removeChild(input);
-    };
+    
+    input.onblur = () => { if(document.body.contains(input)) document.body.removeChild(input); };
 }
 
     function toggleAccordion(btn) { btn.parentElement.classList.toggle('active'); }
