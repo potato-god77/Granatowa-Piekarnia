@@ -161,6 +161,17 @@ nav, .tab-content {
     text-transform: uppercase;
     font-weight: bold;
 }
+
+        /* Kursor pointer tylko dla admina */
+#feed-clint, #feed-sylvester, #feed-hildegarda {
+    cursor: default;
+}
+
+body.is-admin #feed-clint, 
+body.is-admin #feed-sylvester, 
+body.is-admin #feed-hildegarda {
+    cursor: pointer;
+}
         
     </style>
 </head>
@@ -1142,8 +1153,14 @@ function applyPermissions(user) {
     });
 }
 
-  function manualDate(k, e) {
+    function manualDate(k, e) {
     if (e) e.stopPropagation();
+    
+    // KLUCZOWE ZABEZPIECZENIE:
+    if (!window.isAdmin) {
+        console.log("Brak uprawnień do zmiany daty.");
+        return; // Zwykły użytkownik klika i nic się nie dzieje
+    }
     
     // Tworzymy ukryty input daty, aby wywołać kalendarz systemowy
     const input = document.createElement('input');
