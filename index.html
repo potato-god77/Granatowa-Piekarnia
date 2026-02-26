@@ -1111,10 +1111,11 @@ function applyPermissions(user) {
     const btn = e.currentTarget;
     const dzis = new Date().toLocaleDateString('pl-PL');
     
+    // Wizualna zmiana przycisku (zostawiam Twoje nazewnictwo)
     btn.classList.add('fed-success');
     btn.innerText = "Nakarmiono";
 
-    // Bezpośrednia wysyłka akcji 'update' do arkusza
+    // WYSYŁKA DO ARKUSZA
     fetch(SCRIPT_URL, {
         method: 'POST',
         mode: 'no-cors',
@@ -1127,27 +1128,39 @@ function applyPermissions(user) {
         })
     });
 
-    // Dodatkowo zapisujemy lokalnie, żeby saveToCloud nie nadpisało tego starymi danymi
-    const localData = JSON.parse(localStorage.getItem('bakery_data') || '{}');
-    localData[k] = dzis;
-    localStorage.setItem('bakery_data', JSON.stringify(localData));
+    // Zapis lokalny dla płynności interfejsu
+    const data = JSON.parse(localStorage.getItem('bakery_data') || '{}');
+    data[k] = dzis;
+    localStorage.setItem('bakery_data', JSON.stringify(data));
+    
+    // Aktualizacja daty na karcie
+    const span = document.getElementById('feed-' + k);
+    if (span) span.innerText = dzis;
 }
 
     function manualDate(k, e) {
     if (e) e.stopPropagation();
     if (!window.isAdmin) return;
 
+    // Tworzymy ukryty input typu date, aby wywołać kalendarz
     const input = document.createElement('input');
     input.type = 'date';
     input.style.position = 'fixed';
     input.style.opacity = '0';
     document.body.appendChild(input);
+    
+    // Otwarcie kalendarza systemowego
     input.showPicker();
 
     input.onchange = () => {
-        const val = input.value ? new Date(input.value).toLocaleDateString('pl-PL') : "----";
+        if (!input.value) {
+            document.body.removeChild(input);
+            return;
+        }
+
+        const wybranaData = new Date(input.value).toLocaleDateString('pl-PL');
         
-        // Wysyłka do arkusza
+        // WYSYŁKA DO ARKUSZA
         fetch(SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
@@ -1155,22 +1168,25 @@ function applyPermissions(user) {
             body: JSON.stringify({
                 action: 'update',
                 key: k,
-                value: val,
+                value: wybranaData,
                 uid: window.adminUID
             })
         });
 
-        // Zapis lokalny
+        // Aktualizacja lokalna
         const data = JSON.parse(localStorage.getItem('bakery_data') || '{}');
-        data[k] = val;
+        data[k] = wybranaData;
         localStorage.setItem('bakery_data', JSON.stringify(data));
         
         const span = document.getElementById('feed-' + k);
-        if (span) span.innerText = val;
+        if (span) span.innerText = wybranaData;
 
         document.body.removeChild(input);
     };
-    input.onblur = () => { if(document.body.contains(input)) document.body.removeChild(input); };
+
+    input.onblur = () => {
+        if (document.body.contains(input)) document.body.removeChild(input);
+    };
 }
 
     function toggleAccordion(btn) { btn.parentElement.classList.toggle('active'); }
