@@ -1075,12 +1075,39 @@ function applyPermissions(user) {
 }
 
     function markFed(k, e) { 
-        e.stopPropagation(); 
-        const btn = e.currentTarget;
-        btn.classList.add('fed-success');
-        btn.innerText = "Nakarmiono";
-        saveToCloud(k, new Date().toLocaleDateString('pl-PL')); 
-    }
+    if (e) e.stopPropagation(); 
+    const btn = e.currentTarget;
+    const originalText = btn.innerText;
+    
+    // 1. Efekt wizualny natychmiastowy
+    btn.classList.add('fed-success');
+    btn.innerText = "KARMIĘ...";
+    btn.disabled = true;
+
+    // 2. Wysyłka do Arkusza Google
+    // Zakładamy, że SCRIPT_URL jest już zdefiniowany w Twoim kodzie
+    fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+            "action": "feed",
+            "starter": k, // k to 'clint', 'sylvester' lub 'hildegarda'
+            "uid": window.adminUID // Twoje zabezpieczenie UID
+        })
+    })
+    .then(() => {
+        btn.innerText = "NAKARMIONO!";
+        // Tutaj opcjonalnie wywołujemy odświeżenie danych stanu, 
+        // żeby strona od razu pobrała nową datę z arkusza
+        setTimeout(loadStanData, 2000); 
+    })
+    .catch(err => {
+        console.error("Błąd zapisu:", err);
+        btn.innerText = "BŁĄD!";
+        btn.disabled = false;
+    });
+}
 
     function manualDate(k, e) {
         e.stopPropagation();
