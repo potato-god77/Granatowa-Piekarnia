@@ -1106,118 +1106,71 @@ function applyPermissions(user) {
     if (upieczenie) upieczenie.innerText = formatTime(mieszanieDate, 1170);
 }
 
-    function markFed(k, e) { 
+   function markFed(k, e) { 
     if (e) e.stopPropagation(); 
     const btn = e.currentTarget;
-    
-    // Blokada, żeby nie klikać kilka razy podczas zapisu
-    if (btn.disabled) return;
-    
-    const originalText = btn.innerText;
-    btn.innerText = "TRWA KARMIENIE...";
-    btn.disabled = true;
-
     const dzis = new Date().toLocaleDateString('pl-PL');
+    
+    btn.classList.add('fed-success');
+    btn.innerText = "Nakarmiono";
 
-    // WYSYŁKA DO ARKUSZA GOOGLE
+    // Bezpośrednia wysyłka akcji 'update' do arkusza
     fetch(SCRIPT_URL, {
         method: 'POST',
-        mode: 'no-cors', // Standard dla Google Apps Script
-        cache: 'no-cache',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             action: 'update',
-            key: k,          // np. 'clint'
-            value: dzis,     // np. '26.02.2026'
+            key: k,
+            value: dzis,
             uid: window.adminUID
         })
-    })
-    .then(() => {
-        // Sukces - aktualizacja wyglądu na stronie
-        btn.classList.add('fed-success');
-        btn.innerText = "NAKARMIONO";
-        
-        // Aktualizacja daty pod ikonką bez odświeżania strony
-        const dateDisplay = document.getElementById('feed-' + k);
-        if (dateDisplay) dateDisplay.innerText = dzis;
-        
-        // Zapisujemy też lokalnie jako backup (opcjonalnie)
-        localStorage.setItem('lastFed_' + k, dzis);
-        
-        console.log("Zapisano karmienie dla: " + k);
-    })
-    .catch(err => {
-        console.error("Błąd zapisu w arkuszu:", err);
-        btn.innerText = "BŁĄD!";
-        btn.disabled = false;
     });
+
+    // Dodatkowo zapisujemy lokalnie, żeby saveToCloud nie nadpisało tego starymi danymi
+    const localData = JSON.parse(localStorage.getItem('bakery_data') || '{}');
+    localData[k] = dzis;
+    localStorage.setItem('bakery_data', JSON.stringify(localData));
 }
 
     function manualDate(k, e) {
     if (e) e.stopPropagation();
-    
-    // KLUCZOWE ZABEZPIECZENIE:
-    if (!window.isAdmin) {
-        console.log("Brak uprawnień do zmiany daty.");
-        return; // Zwykły użytkownik klika i nic się nie dzieje
-    }
-    
-    // Tworzymy ukryty input daty, aby wywołać kalendarz systemowy
+    if (!window.isAdmin) return;
+
     const input = document.createElement('input');
     input.type = 'date';
     input.style.position = 'fixed';
     input.style.opacity = '0';
     document.body.appendChild(input);
-    
-    // Wyświetla kalendarz
-    if (typeof input.showPicker === 'function') {
-        input.showPicker();
-    } else {
-        input.click(); // fallback dla starszych przeglądarek
-    }
+    input.showPicker();
 
     input.onchange = () => {
-        if (!input.value) {
-            document.body.removeChild(input);
-            return;
-        }
-
-        const nowaData = new Date(input.value).toLocaleDateString('pl-PL');
-        const span = document.getElementById('feed-' + k);
-        const staraData = span ? span.innerText : "---";
-
-        if (span) span.innerText = "ZAPIS...";
-
-        // WYSYŁKA DO ARKUSZA (identycznie jak w markFed)
+        const val = input.value ? new Date(input.value).toLocaleDateString('pl-PL') : "----";
+        
+        // Wysyłka do arkusza
         fetch(SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
-            cache: 'no-cache',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 action: 'update',
                 key: k,
-                value: nowaData,
+                value: val,
                 uid: window.adminUID
             })
-        })
-        .then(() => {
-            if (span) span.innerText = nowaData;
-            console.log("Ręcznie zmieniono datę dla " + k + " na: " + nowaData);
-            document.body.removeChild(input);
-        })
-        .catch(err => {
-            console.error("Błąd zapisu:", err);
-            if (span) span.innerText = staraData;
-            document.body.removeChild(input);
         });
-    };
 
-    input.onblur = () => { 
-        setTimeout(() => {
-            if(document.body.contains(input)) document.body.removeChild(input); 
-        }, 500);
+        // Zapis lokalny
+        const data = JSON.parse(localStorage.getItem('bakery_data') || '{}');
+        data[k] = val;
+        localStorage.setItem('bakery_data', JSON.stringify(data));
+        
+        const span = document.getElementById('feed-' + k);
+        if (span) span.innerText = val;
+
+        document.body.removeChild(input);
     };
+    input.onblur = () => { if(document.body.contains(input)) document.body.removeChild(input); };
 }
 
     function toggleAccordion(btn) { btn.parentElement.classList.toggle('active'); }
