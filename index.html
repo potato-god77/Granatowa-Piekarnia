@@ -1075,39 +1075,51 @@ function applyPermissions(user) {
 }
 
     function markFed(k, e) { 
-    if (e) e.stopPropagation(); 
-    const btn = e.currentTarget;
-    const originalText = btn.innerText;
-    
-    // 1. Efekt wizualny natychmiastowy
-    btn.classList.add('fed-success');
-    btn.innerText = "KARMIĘ...";
-    btn.disabled = true;
+        if (e) e.stopPropagation(); 
+        const btn = e.currentTarget;
+        const originalText = btn.innerText;
+        
+        // Zabezpieczenie przed wielokrotnym kliknięciem
+        if (btn.disabled) return;
+        
+        btn.innerText = "TRWA KARMIENIE...";
+        btn.disabled = true;
 
-    // 2. Wysyłka do Arkusza Google
-    // Zakładamy, że SCRIPT_URL jest już zdefiniowany w Twoim kodzie
-    fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-            "action": "feed",
-            "starter": k, // k to 'clint', 'sylvester' lub 'hildegarda'
-            "uid": window.adminUID // Twoje zabezpieczenie UID
+        const dzis = new Date().toLocaleDateString('pl-PL');
+
+        // WYSYŁKA DO ARKUSZA
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors', // Ważne dla Apps Script
+            cache: 'no-cache',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                action: 'update',
+                key: k,          // np. 'clint'
+                value: dzis,     // np. '26.02.2026'
+                uid: window.adminUID
+            })
         })
-    })
-    .then(() => {
-        btn.innerText = "NAKARMIONO!";
-        // Tutaj opcjonalnie wywołujemy odświeżenie danych stanu, 
-        // żeby strona od razu pobrała nową datę z arkusza
-        setTimeout(loadStanData, 2000); 
-    })
-    .catch(err => {
-        console.error("Błąd zapisu:", err);
-        btn.innerText = "BŁĄD!";
-        btn.disabled = false;
-    });
-}
+        .then(() => {
+            btn.classList.add('fed-success');
+            btn.innerText = "NAKARMIONO";
+            // Aktualizujemy datę widoczną na karcie
+            const dateDisplay = document.getElementById('feed-' + k);
+            if (dateDisplay) dateDisplay.innerText = dzis;
+            
+            // Po 3 sekundach przywracamy przycisk (opcjonalnie)
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.classList.remove('fed-success');
+                btn.innerText = "NAKARM";
+            }, 3000);
+        })
+        .catch(err => {
+            console.error("Błąd:", err);
+            btn.innerText = "BŁĄD";
+            btn.disabled = false;
+        });
+    }
 
     function manualDate(k, e) {
         e.stopPropagation();
