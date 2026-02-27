@@ -960,7 +960,6 @@ function applyPermissions(user) {
     const uid = window.adminUID || (auth.currentUser ? auth.currentUser.uid : null);
 
     try { 
-        // 1. Wysyłamy nową datę do Arkusza
         await fetch(SCRIPT_URL, { 
             method: 'POST', 
             mode: 'no-cors', 
@@ -973,10 +972,16 @@ function applyPermissions(user) {
             })
         }); 
 
-                
+        // Po udanym wysłaniu czekamy 1 sekundę i odświeżamy dane z chmury.
+        // loadFromCloud pobierze nowe daty i nową liczbę dni z kolumny D,
+        // co automatycznie zaktualizuje powiadomienia (dzwonek).
         setTimeout(() => {
-            loadFromCloud(); 
-        }, 1000); // 1 sekunda wystarczy, by Arkusz Google przeliczył kolumnę D
+            if (typeof loadFromCloud === 'function') {
+                loadFromCloud();
+            } else if (typeof mCloud === 'function') {
+                mCloud();
+            }
+        }, 1200); 
 
     } catch(e) { 
         console.error("Błąd zapisu:", e); 
@@ -1219,7 +1224,6 @@ document.addEventListener('click', () => {
     input.style.opacity = '0';
     document.body.appendChild(input);
     
-    // Otwarcie kalendarza
     if (input.showPicker) {
         try { input.showPicker(); } catch (err) { input.click(); }
     } else {
@@ -1227,18 +1231,20 @@ document.addEventListener('click', () => {
     }
 
     input.onchange = () => {
-    if (input.value) {
-        const [y, m, d] = input.value.split('-');
-        // Zmieniamy kropki na ukośniki, aby pasowało do Twojego nowego formatu w arkuszu
-        const wybranaData = `${d}/${m}/${y}`; 
-        
-        saveToCloud(k, wybranaData);
-        
-        const span = document.getElementById('feed-' + k);
-        if (span) span.innerText = wybranaData;
-    }
-    document.body.removeChild(input);
-};
+        if (input.value) {
+            const [y, m, d] = input.value.split('-');
+            const wybranaData = `${d}/${m}/${y}`; 
+            
+            // 1. Wysyłamy do chmury
+            saveToCloud(k, wybranaData);
+            
+            // 2. Od razu zmieniamy tekst na stronie (wizualnie), 
+            // ale dzwonek zaktualizuje się za chwilę w saveToCloud
+            const span = document.getElementById('feed-' + k);
+            if (span) span.innerText = wybranaData;
+        }
+        document.body.removeChild(input);
+    };
 
     input.onblur = () => {
         setTimeout(() => { if (document.body.contains(input)) document.body.removeChild(input); }, 500);
