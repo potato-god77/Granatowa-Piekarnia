@@ -232,6 +232,20 @@ body.is-admin .admin-only {
 </div>
 
     <header style="position: sticky; top: 0; z-index: 1000; background-color: var(--bg); border-bottom: 1px solid #efe3d8;">
+        <div class="relative inline-block mr-auto">
+    <div id="notif-icon" onclick="toggleNotifs(event)" class="hidden cursor-pointer p-2 text-xl" style="line-height: 1;">
+        🔔<span id="notif-count" class="absolute top-0 right-0 bg-red-600 text-white text-[9px] font-black rounded-full w-4 h-4 flex items-center justify-center border border-white">0</span>
+    </div>
+    
+    <div id="notif-list" class="hidden absolute left-0 mt-2 w-64 glass-card shadow-2xl z-[9999] border-2 border-amber-200">
+        <div class="p-3 border-b flex justify-between items-center bg-stone-50">
+            <span class="text-[10px] font-black uppercase text-stone-500">Powiadomienia</span>
+            <span onclick="toggleNotifs(event)" class="cursor-pointer text-stone-400 hover:text-stone-800">✕</span>
+        </div>
+        <div id="notif-items" class="p-2 space-y-2 max-h-60 overflow-y-auto">
+            </div>
+    </div>
+</div>
     <div class="max-w-md mx-auto py-4 px-4 flex justify-between items-center flex-nowrap">
         <div class="w-8"></div> 
         <h1 class="serif text-2xl italic whitespace-nowrap overflow-hidden">Granatowa Piekarnia</h1>
@@ -875,7 +889,7 @@ auth.onAuthStateChanged(user => {
         if (logoutBtn) logoutBtn.style.display = 'inline-block'; 
         applyPermissions(user);
         
-        if (typeof loadFromCloud === "function") loadFromCloud(); 
+        if (typeof mCloud === "function") mCloud(); 
         if (typeof fetchGallery === "function") fetchGallery(); 
         if (typeof sel === "function") sel('clint');
     } else {
@@ -959,29 +973,81 @@ function applyPermissions(user) {
             })
         }); 
         // Krótkie opóźnienie przed odświeżeniem, by Arkusz zdążył przetworzyć dane
-        setTimeout(loadFromCloud, 1500); 
+        setTimeout(mCloud, 1500); 
     } catch(e) { 
         console.error("Błąd zapisu:", e); 
     }
 }
 
     function loadFromCloud() {
-        window.handleCloudData = function(data) {
-            if (data.status === 'success') {
-                for (let k in data.data) {
-                    const el = document.getElementById('feed-' + k);
-                    if (el) el.innerText = data.data[k] || "---";
-                    if (k === 'zlewki') {
-                        const zwInput = document.getElementById('zw');
-                        if(zwInput) zwInput.value = data.data[k];
-                    }
+    window.handleCloudData = function(data) {
+        if (data.status === 'success') {
+            for (let k in data.data) {
+                const el = document.getElementById('feed-' + k);
+                if (el) el.innerText = data.data[k] || "----";
+                
+                if (k === 'zlewki') {
+                    const zwInput = document.getElementById('zw');
+                    if(zwInput) zwInput.value = data.data[k];
                 }
             }
-        };
-        const script = document.createElement('script');
-        script.src = `${SCRIPT_URL}?action=get&callback=handleCloudData&t=${Date.now()}`;
-        document.body.appendChild(script);
+                        checkSourdoughHealth(data.data);
+        }
+    };
+    
+    const script = document.createElement('script');
+    script.src = `${SCRIPT_URL}?action=get&callback=handleCloudData&t=${Date.now()}`;
+    document.body.appendChild(script);
+}
+        function checkSourdoughHealth(data) {
+    const notifIcon = document.getElementById('notif-icon');
+    const notifItems = document.getElementById('notif-items');
+    const notifCount = document.getElementById('notif-count');
+    const dzis = new Date();
+    let alertCount = 0;
+    
+    notifItems.innerHTML = ''; // Czyścimy starą listę
+
+    // Mapa nazw dla czytelnych komunikatów
+    const names = { 'clint': 'Clint Yeastwood', 'sylvester': 'Sylvester Graham', 'hildegarda': 'Hildegarda z Bingen' };
+
+    for (let k in names) {
+        if (data[k] && data[k] !== '----') {
+            const [d, m, y] = data[k].split('.');
+            const dataKarmienia = new Date(y, m - 1, d);
+            const roznicaDni = Math.floor((dzis - dataKarmienia) / (1000 * 60 * 60 * 24));
+
+            if (roznicaDni > 7) {
+                alertCount++;
+                const item = document.createElement('div');
+                item.className = "p-2 bg-red-50 border-l-4 border-red-500 rounded-r-lg text-[11px] text-red-900 font-medium";
+                item.innerHTML = `<strong>${names[k]}</strong> nie jadł od ${roznicaDni} dni!`;
+                notifItems.appendChild(item);
+            }
+        }
     }
+
+    // Pokazujemy lub ukrywamy dzwonek
+    if (alertCount > 0) {
+        notifIcon.style.display = 'block';
+        notifCount.innerText = alertCount;
+    } else {
+        notifIcon.style.display = 'none';
+        document.getElementById('notif-list').style.display = 'none';
+    }
+}
+
+function toggleNotifs(e) {
+    if (e) e.stopPropagation();
+    const list = document.getElementById('notif-list');
+    list.style.display = (list.style.display === 'block') ? 'none' : 'block';
+}
+
+// Zamknij listę, jeśli klikniesz gdziekolwiek indziej na stronie
+document.addEventListener('click', () => {
+    const list = document.getElementById('notif-list');
+    if (list) list.style.display = 'none';
+});
 
     function sel(n) {
         currentStarterKey = n.toLowerCase();
