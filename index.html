@@ -554,18 +554,18 @@ body.is-admin #feed-hildegarda {
         
         <div class="flex items-center justify-center gap-2">
             <input type="number" id="zw" value="0" readonly
-                   class="w-28 bg-stone-50 border-2 rounded-2xl p-3 font-black text-2xl text-center outline-none">
+                   class="w-28 bg-transparent border-none p-3 font-black text-2xl text-center outline-none cursor-default">
             <span class="text-2xl font-black text-stone-800">g</span>
         </div>
 
         <div class="flex flex-col gap-2 mt-6 items-center">
             <button id="save-zw-btn" onclick="saveWernyhora(this)" 
-                    class="admin-only w-full max-w-[150px] py-3 bg-stone-800 text-white text-[10px] uppercase font-bold rounded-xl transition-all active:scale-95">
+                    class="admin-only hidden w-full max-w-[150px] py-3 bg-stone-800 text-white text-[10px] uppercase font-bold rounded-xl transition-all active:scale-95">
                 Zapisz
             </button>
 
             <button onclick="if(confirm('Reset?')) { document.getElementById('zw').value = 0; saveToCloud('zlewki', 0); }" 
-                    class="admin-only px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-500 text-[10px] uppercase font-bold rounded-lg transition-colors border border-stone-200">
+                    class="admin-only hidden px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-500 text-[10px] uppercase font-bold rounded-lg transition-colors border border-stone-200">
                 Wyzeruj słoik
             </button>
         </div>
@@ -853,32 +853,39 @@ auth.onAuthStateChanged(user => {
 });
 
 function applyPermissions(user) {
-    const isAdmin = user && user.email === ADMIN_EMAIL;
-    window.isAdmin = isAdmin; // Ustawienie globalnej zmiennej
-    
-    // 1. Ukrywanie elementów admin-only
+    // Weryfikacja po UID lub Emailu (używamy Twojej stałej MY_ADMIN_UID)
+    const isAdmin = user && (user.uid === MY_ADMIN_UID || user.email === ADMIN_EMAIL);
+    window.isAdmin = isAdmin; 
+
+    // 1. Pokaż/Ukryj przyciski
     document.querySelectorAll('.admin-only').forEach(el => {
-        el.style.display = isAdmin ? '' : 'none';
+        if (isAdmin) {
+            el.classList.remove('hidden'); // Jeśli używasz Tailwind 'hidden'
+            el.style.display = (el.tagName === 'DIV' ? 'flex' : 'inline-block');
+        } else {
+            el.style.display = 'none';
+        }
     });
 
-    // 2. Blokowanie edycji pola Wernyhora (zlewki)
+    // 2. Obsługa pola 'zw' (Wernyhora)
     const zwInput = document.getElementById('zw');
     if (zwInput) {
-        zwInput.readOnly = !isAdmin;
-        if (!isAdmin) {
+        if (isAdmin) {
+            zwInput.readOnly = false;
+            zwInput.style.background = '#f9f8f6';
+            zwInput.style.border = '2px solid #e7e5e4';
+            zwInput.style.borderRadius = '1rem';
+            zwInput.style.cursor = 'text';
+        } else {
+            zwInput.readOnly = true;
             zwInput.style.background = 'transparent';
             zwInput.style.border = 'none';
             zwInput.style.cursor = 'default';
-        } else {
-            zwInput.style.background = '#f9f8f6';
-            zwInput.style.border = '2px solid #e7e5e4';
-            zwInput.style.cursor = 'text';
         }
     }
 
-    console.log("Uprawnienia zaktualizowane. Admin:", isAdmin);
+    console.log("Uprawnienia odświeżone. Widok admina: " + isAdmin);
 }
-
         function loginAsGuest() {
     const guestEmail = "guest@granatowapiekarnia.pl"; 
     const guestPass = "puk_puk.jest_tam_kto?moge_zajrzec_bez_logowania?";
@@ -1489,16 +1496,16 @@ window.onclick = function(event) {
     const val = document.getElementById('zw').value;
     const originalText = btn.innerText;
 
-    // Wywołujemy standardowy zapis do chmury
+    // Wysyłka do chmury (Apps Script)
     await saveToCloud('zlewki', val);
 
-    // Efekt wizualny na przycisku
+    // Efekt wizualny: Zapisano
     btn.innerText = "Zapisano ✓";
-    btn.style.backgroundColor = "#2c5364"; // Zmiana koloru na chwilę (opcjonalnie)
+    btn.style.backgroundColor = "#2c5364"; 
     
     setTimeout(() => {
         btn.innerText = originalText;
-        btn.style.backgroundColor = ""; // Powrót do oryginału
+        btn.style.backgroundColor = ""; 
     }, 2000);
 }
         
