@@ -955,12 +955,12 @@ function applyPermissions(user) {
         sessionStorage.setItem('lastTab', tabId);
         window.scrollTo(0,0);
     }
-
     
-    async function saveToCloud(key, value) {
+   async function saveToCloud(key, value) {
     const uid = window.adminUID || (auth.currentUser ? auth.currentUser.uid : null);
 
     try { 
+        // 1. Wysyłamy nową datę do Arkusza
         await fetch(SCRIPT_URL, { 
             method: 'POST', 
             mode: 'no-cors', 
@@ -972,8 +972,12 @@ function applyPermissions(user) {
                 uid: uid 
             })
         }); 
-        // Krótkie opóźnienie przed odświeżeniem, by Arkusz zdążył przetworzyć dane
-        setTimeout(mCloud, 1500); 
+
+                
+        setTimeout(() => {
+            loadFromCloud(); 
+        }, 1000); // 1 sekunda wystarczy, by Arkusz Google przeliczył kolumnę D
+
     } catch(e) { 
         console.error("Błąd zapisu:", e); 
     }
