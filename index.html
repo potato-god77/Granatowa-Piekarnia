@@ -117,15 +117,6 @@ nav, .tab-content {
 .btn-feed:active {
     transform: scale(0.92);
 }
-
-/* Klasa sukcesu (dodawana w JS przez Twoją funkcję markFed) */
-.btn-feed.fed-success {
-    background-color: #f5f5f4;
-    color: #a8a29e;
-    border-color: #e7e5e4;
-    pointer-events: none;
-}    
-
         /* Kontener podglądu zdjęć */
 .preview-item {
     position: relative;
@@ -237,59 +228,53 @@ body.is-admin #feed-hildegarda {
 
     <main class="mx-auto p-4 space-y-6">
 <section id="zakwasy-section" class="tab-content active space-y-4">
-   <div id="card-clint" onclick="sel('clint')" class="starter-card glass-card p-5 flex flex-col gap-3">
-    <div class="flex justify-between items-center">
-        <div>
-            <h4 class="font-bold text-xl starter-title">Clint Yeastwood</h4>
-            <p class="text-[9px] text-stone-400 uppercase font-bold">• Żytni<br><br>• typ 2000</p>
+    <div id="card-clint" onclick="sel('clint')" class="starter-card glass-card p-5 flex flex-col gap-3">
+        <div class="flex justify-between items-center">
+            <div>
+                <h4 class="font-bold text-xl starter-title">Clint Yeastwood</h4>
+                <p class="text-[9px] text-stone-400 uppercase font-bold">• Żytni<br><br>• typ 2000</p>
+            </div>
+            <img src="img/icons/cowboy.png" onclick="event.stopPropagation(); goToProfile('clint')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
         </div>
-        <img src="img/icons/cowboy.png" onclick="event.stopPropagation(); goToProfile('clint')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
+        <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
+            <p class="text-[11px] font-bold">Ostatnio: 
+                <span id="feed-clint" class="font-bold text-stone-800 transition-colors">----</span>
+            </p>
+            <button onclick="manualDate('clint', event)" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
+        </div>
     </div>
-    <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-        <p class="text-[11px] font-bold">Ostatnio: 
-            <span id="feed-clint" 
-                  class="font-bold text-stone-800 cursor-pointer hover:text-accent transition-colors" 
-                  onclick="manualDate('clint', event)">----</span>
-        </p>
-        <button onclick="markFed('clint', event)" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
-    </div>
-</div>
 
-<div id="card-sylvester" onclick="sel('sylvester')" class="starter-card glass-card p-5 flex flex-col gap-3">
-    <div class="flex justify-between items-center">
-        <div>
-            <h4 class="font-bold text-xl starter-title">Sylvester Graham</h4>
-            <p class="text-[9px] text-stone-400 uppercase font-bold">• Pszenny Pełnoziarnisty<br><br>• typ 1850</p>
+    <div id="card-sylvester" onclick="sel('sylvester')" class="starter-card glass-card p-5 flex flex-col gap-3">
+        <div class="flex justify-between items-center">
+            <div>
+                <h4 class="font-bold text-xl starter-title">Sylvester Graham</h4>
+                <p class="text-[9px] text-stone-400 uppercase font-bold">• Pszenny Pełnoziarnisty<br><br>• typ 1850</p>
+            </div>
+            <img src="img/icons/farmer.png" onclick="event.stopPropagation(); goToProfile('sylvester')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
         </div>
-        <img src="img/icons/farmer.png" onclick="event.stopPropagation(); goToProfile('sylvester')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
+        <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
+            <p class="text-[11px] font-bold">Ostatnio: 
+                <span id="feed-sylvester" class="font-bold text-stone-800 transition-colors">----</span>
+            </p>
+            <button onclick="manualDate('sylvester', event)" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
+        </div>
     </div>
-    <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-        <p class="text-[11px] font-bold">Ostatnio: 
-            <span id="feed-sylvester" 
-                  class="font-bold text-stone-800 cursor-pointer hover:text-accent transition-colors" 
-                  onclick="manualDate('sylvester', event)">----</span>
-        </p>
-        <button onclick="markFed('sylvester', event)" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
-    </div>
-</div>
 
-<div id="card-hildegarda" onclick="sel('hildegarda')" class="starter-card glass-card p-5 flex flex-col gap-3">
-    <div class="flex justify-between items-center">
-        <div>
-            <h4 class="font-bold text-xl starter-title">Hildegarda z Bingen</h4>
-            <p class="text-[9px] text-stone-400 uppercase font-bold">• Orkiszowy<br><br>• typ 2000</p>
+    <div id="card-hildegarda" onclick="sel('hildegarda')" class="starter-card glass-card p-5 flex flex-col gap-3">
+        <div class="flex justify-between items-center">
+            <div>
+                <h4 class="font-bold text-xl starter-title">Hildegarda z Bingen</h4>
+                <p class="text-[9px] text-stone-400 uppercase font-bold">• Orkiszowy<br><br>• typ 2000</p>
+            </div>
+            <img src="img/icons/nun.png" onclick="event.stopPropagation(); goToProfile('hildegarda')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
         </div>
-        <img src="img/icons/nun.png" onclick="event.stopPropagation(); goToProfile('hildegarda')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
+        <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
+            <p class="text-[11px] font-bold">Ostatnio: 
+                <span id="feed-hildegarda" class="font-bold text-stone-800 transition-colors">----</span>
+            </p>
+            <button onclick="manualDate('hildegarda', event)" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
+        </div>
     </div>
-    <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-        <p class="text-[11px] font-bold">Ostatnio: 
-            <span id="feed-hildegarda" 
-                  class="font-bold text-stone-800 cursor-pointer hover:text-accent transition-colors" 
-                  onclick="manualDate('hildegarda', event)">----</span>
-        </p>
-        <button onclick="markFed('hildegarda', event)" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
-    </div>
-</div>
 </section>
       <section id="pieczenie-section" class="tab-content active space-y-5">
     
@@ -559,26 +544,33 @@ body.is-admin #feed-hildegarda {
 </section>
 
       <section id="magazyn-section" class="tab-content space-y-5">
-           <div class="accordion-item glass-card">
-                <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
-                    <h3 class="serif text-lg font-bold italic text-stone-800">Słoik Wernyhora</h3>
-                    <span class="plus-icon text-xl">+</span>
-                </button>
-                <div class="accordion-content p-6 pt-6 border-t text-center">
-                    <p class="text-[11px] uppercase font-bold text-stone-400 mb-3">Wpisz aktualną ilość zakwasu Wernyhora.</p>
-                    
-                    <div class="flex items-center justify-center gap-2">
-                        <input type="number" id="zw" value="0" onblur="saveToCloud('zlewki', this.value)" 
-                               class="w-28 bg-stone-50 border-2 rounded-2xl p-3 font-black text-2xl text-center outline-none">
-                        <span class="text-2xl font-black text-stone-800">g</span>
-                    </div>
+          <div class="accordion-item glass-card">
+    <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+        <h3 class="serif text-lg font-bold italic text-stone-800">Słoik Wernyhora</h3>
+        <span class="plus-icon text-xl">+</span>
+    </button>
+    <div class="accordion-content p-6 pt-6 border-t text-center">
+        <p class="text-[11px] uppercase font-bold text-stone-400 mb-3">Wpisz aktualną ilość zakwasu Wernyhora.</p>
+        
+        <div class="flex items-center justify-center gap-2">
+            <input type="number" id="zw" value="0" readonly
+                   class="w-28 bg-stone-50 border-2 rounded-2xl p-3 font-black text-2xl text-center outline-none">
+            <span class="text-2xl font-black text-stone-800">g</span>
+        </div>
 
-                    <button onclick="if(confirm('Reset?')) saveToCloud('zlewki', 0)" 
-                            class="admin-only mt-6 px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-500 text-[10px] uppercase font-bold rounded-lg transition-colors border border-stone-200">
-                        Wyzeruj słoik
-                    </button>
-                </div>
-            </div>
+        <div class="flex flex-col gap-2 mt-6 items-center">
+            <button id="save-zw-btn" onclick="saveWernyhora(this)" 
+                    class="admin-only w-full max-w-[150px] py-3 bg-stone-800 text-white text-[10px] uppercase font-bold rounded-xl transition-all active:scale-95">
+                Zapisz
+            </button>
+
+            <button onclick="if(confirm('Reset?')) { document.getElementById('zw').value = 0; saveToCloud('zlewki', 0); }" 
+                    class="admin-only px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-500 text-[10px] uppercase font-bold rounded-lg transition-colors border border-stone-200">
+                Wyzeruj słoik
+            </button>
+        </div>
+    </div>
+</div>
 
             <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
@@ -862,42 +854,29 @@ auth.onAuthStateChanged(user => {
 
 function applyPermissions(user) {
     const isAdmin = user && user.email === ADMIN_EMAIL;
+    window.isAdmin = isAdmin; // Ustawienie globalnej zmiennej
     
-    // 1. Przyciski i elementy, które mają całkiem zniknąć
+    // 1. Ukrywanie elementów admin-only
     document.querySelectorAll('.admin-only').forEach(el => {
-        el.style.display = isAdmin ? (el.tagName === 'DIV' ? 'flex' : 'inline-block') : 'none';
+        el.style.display = isAdmin ? '' : 'none';
     });
 
-    // 2. Pola, które mają stać się "zwykłym tekstem"
-    // Wpisz tutaj ID wszystkich pól, które edytujesz (np. 'zw', 'qty-input')
-    const inputsToProtect = ['zw', 'feed-clint', 'feed-sylvester', 'feed-hildegarda']; 
-    
-    inputsToProtect.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) {
-            el.disabled = !isAdmin; // Blokuje możliwość kliknięcia/wpisywania
-            
-            if (!isAdmin) {
-                // Styl "Zwykły tekst"
-                el.style.background = 'transparent';
-                el.style.border = 'none';
-                el.style.color = 'inherit';
-                el.style.cursor = 'default';
-                el.style.padding = '0';
-                el.style.appearance = 'none'; // Usuwa strzałki w polach liczbowych
-                el.style.opacity = '1';       // Zapobiega "szarzeniu" przez przeglądarkę
-            } else {
-                // Styl "Pole edycji" (przywrócenie)
-                el.style.background = 'white';
-                el.style.border = '1px solid #ccc';
-                el.style.color = 'black';
-                el.style.cursor = 'text';
-                el.style.padding = '5px';
-            }
+    // 2. Blokowanie edycji pola Wernyhora (zlewki)
+    const zwInput = document.getElementById('zw');
+    if (zwInput) {
+        zwInput.readOnly = !isAdmin;
+        if (!isAdmin) {
+            zwInput.style.background = 'transparent';
+            zwInput.style.border = 'none';
+            zwInput.style.cursor = 'default';
+        } else {
+            zwInput.style.background = '#f9f8f6';
+            zwInput.style.border = '2px solid #e7e5e4';
+            zwInput.style.cursor = 'text';
         }
-    });
+    }
 
-    console.log("Uprawnienia odświeżone. Widok admina: " + isAdmin);
+    console.log("Uprawnienia zaktualizowane. Admin:", isAdmin);
 }
 
         function loginAsGuest() {
@@ -927,18 +906,24 @@ function applyPermissions(user) {
 
     
     async function saveToCloud(key, value) {
-    const user = auth.currentUser; // Pobieramy zalogowanego użytkownika
-    const uid = user ? user.uid : null; // Wyciągamy jego UID
+    const uid = window.adminUID || (auth.currentUser ? auth.currentUser.uid : null);
 
     try { 
         await fetch(SCRIPT_URL, { 
             method: 'POST', 
             mode: 'no-cors', 
-            body: JSON.stringify({ key, value, uid }) // Dodaliśmy uid do body
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                action: 'update', 
+                key: key, 
+                value: value, 
+                uid: uid 
+            })
         }); 
-        setTimeout(loadFromCloud, 1000); 
+        // Krótkie opóźnienie przed odświeżeniem, by Arkusz zdążył przetworzyć dane
+        setTimeout(loadFromCloud, 1500); 
     } catch(e) { 
-        console.error(e); 
+        console.error("Błąd zapisu:", e); 
     }
 }
 
@@ -1106,49 +1091,17 @@ function applyPermissions(user) {
     if (upieczenie) upieczenie.innerText = formatTime(mieszanieDate, 1170);
 }
 
-   function markFed(k, e) { 
-    if (e) e.stopPropagation(); 
-    const btn = e.currentTarget;
-    const dzis = new Date().toLocaleDateString('pl-PL');
-    
-    btn.classList.add('fed-success');
-    btn.innerText = "Nakarmiono";
-
-    // Wysyłka do arkusza
-    fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            action: 'update',
-            key: k,
-            value: dzis,
-            uid: window.adminUID
-        })
-    });
-
-    // KLUCZOWE: Zapis do localStorage, aby loadFromCloud nie nadpisało daty starym stanem
-    const data = JSON.parse(localStorage.getItem('bakery_data') || '{}');
-    data[k] = dzis;
-    localStorage.setItem('bakery_data', JSON.stringify(data));
-    
-    const span = document.getElementById('feed-' + k);
-    if (span) span.innerText = dzis;
-}
-
-   function manualDate(k, e) {
-    if (e) e.stopPropagation(); // Blokuje kliknięcie karty sel()
+     function manualDate(k, e) {
+    if (e) e.stopPropagation();
     if (!window.isAdmin) return;
 
     const input = document.createElement('input');
     input.type = 'date';
     input.style.position = 'fixed';
-    input.style.bottom = '0';
-    input.style.left = '0';
     input.style.opacity = '0';
     document.body.appendChild(input);
     
-    // Kluczowe dla mobilnych:
+    // Otwarcie kalendarza
     if (input.showPicker) {
         try { input.showPicker(); } catch (err) { input.click(); }
     } else {
@@ -1160,18 +1113,20 @@ function applyPermissions(user) {
             const [y, m, d] = input.value.split('-');
             const wybranaData = `${d}.${m}.${y}`;
             
-            // Wysyłka TWOIM mechanizmem
+            // Wysyłamy do arkusza
             saveToCloud(k, wybranaData);
             
+            // Aktualizujemy widok natychmiastowo
             const span = document.getElementById('feed-' + k);
             if (span) span.innerText = wybranaData;
         }
         document.body.removeChild(input);
     };
-    
-    input.onblur = () => { if(document.body.contains(input)) document.body.removeChild(input); };
-}
 
+    input.onblur = () => {
+        setTimeout(() => { if (document.body.contains(input)) document.body.removeChild(input); }, 500);
+    };
+}
     function toggleAccordion(btn) { btn.parentElement.classList.toggle('active'); }
 
     function parsePolishDate(dateStr) {
@@ -1528,6 +1483,24 @@ window.onclick = function(event) {
         closeUploadModal();
     }
 }  
+        async function saveWernyhora(btn) {
+    if (!window.isAdmin) return;
+    
+    const val = document.getElementById('zw').value;
+    const originalText = btn.innerText;
+
+    // Wywołujemy standardowy zapis do chmury
+    await saveToCloud('zlewki', val);
+
+    // Efekt wizualny na przycisku
+    btn.innerText = "Zapisano ✓";
+    btn.style.backgroundColor = "#2c5364"; // Zmiana koloru na chwilę (opcjonalnie)
+    
+    setTimeout(() => {
+        btn.innerText = originalText;
+        btn.style.backgroundColor = ""; // Powrót do oryginału
+    }, 2000);
+}
         
         
 </script>
