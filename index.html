@@ -544,7 +544,7 @@ body.is-admin #feed-hildegarda {
 </section>
 
       <section id="magazyn-section" class="tab-content space-y-5">
-          <div class="accordion-item glass-card">
+         <div class="accordion-item glass-card">
     <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
         <h3 class="serif text-lg font-bold italic text-stone-800">Słoik Wernyhora</h3>
         <span class="plus-icon text-xl">+</span>
@@ -560,18 +560,18 @@ body.is-admin #feed-hildegarda {
 
         <div class="flex flex-col gap-2 mt-6 items-center">
             <button id="save-zw-btn" onclick="saveWernyhora(this)" 
-                    class="admin-only hidden w-full max-w-[150px] py-3 bg-stone-800 text-white text-[10px] uppercase font-bold rounded-xl transition-all active:scale-95">
-                Zapisz
+                    class="admin-only w-full max-w-[150px] py-3 bg-stone-800 text-white text-[10px] uppercase font-bold rounded-xl transition-all active:scale-95 shadow-sm"
+                    style="display: none;"> Zapisz
             </button>
 
             <button onclick="if(confirm('Reset?')) { document.getElementById('zw').value = 0; saveToCloud('zlewki', 0); }" 
-                    class="admin-only hidden px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-500 text-[10px] uppercase font-bold rounded-lg transition-colors border border-stone-200">
+                    class="admin-only px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-500 text-[10px] uppercase font-bold rounded-lg transition-colors border border-stone-200"
+                    style="display: none;">
                 Wyzeruj słoik
             </button>
         </div>
     </div>
 </div>
-
             <div class="accordion-item glass-card">
                 <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
                     <h3 class="serif text-lg font-bold italic text-stone-800">Historia i pochodzenie</h3>
@@ -853,21 +853,21 @@ auth.onAuthStateChanged(user => {
 });
 
 function applyPermissions(user) {
-    // Weryfikacja po UID lub Emailu (używamy Twojej stałej MY_ADMIN_UID)
     const isAdmin = user && (user.uid === MY_ADMIN_UID || user.email === ADMIN_EMAIL);
     window.isAdmin = isAdmin; 
 
-    // 1. Pokaż/Ukryj przyciski
     document.querySelectorAll('.admin-only').forEach(el => {
         if (isAdmin) {
-            el.classList.remove('hidden'); // Jeśli używasz Tailwind 'hidden'
-            el.style.display = (el.tagName === 'DIV' ? 'flex' : 'inline-block');
+            // Usuwamy klasę hidden (Tailwind) i nadajemy display
+            el.classList.remove('hidden');
+            el.style.setProperty('display', (el.tagName === 'DIV' ? 'flex' : 'inline-block'), 'important');
+            el.style.visibility = 'visible';
+            el.style.opacity = '1';
         } else {
             el.style.display = 'none';
         }
     });
 
-    // 2. Obsługa pola 'zw' (Wernyhora)
     const zwInput = document.getElementById('zw');
     if (zwInput) {
         if (isAdmin) {
@@ -883,8 +883,6 @@ function applyPermissions(user) {
             zwInput.style.cursor = 'default';
         }
     }
-
-    console.log("Uprawnienia odświeżone. Widok admina: " + isAdmin);
 }
         function loginAsGuest() {
     const guestEmail = "guest@granatowapiekarnia.pl"; 
@@ -1496,16 +1494,16 @@ window.onclick = function(event) {
     const val = document.getElementById('zw').value;
     const originalText = btn.innerText;
 
-    // Wysyłka do chmury (Apps Script)
+    // Wywołanie Twojego zapisu
     await saveToCloud('zlewki', val);
 
-    // Efekt wizualny: Zapisano
+    // Potwierdzenie wizualne
     btn.innerText = "Zapisano ✓";
-    btn.style.backgroundColor = "#2c5364"; 
+    btn.classList.replace('bg-stone-800', 'bg-green-700'); // Zmiana koloru na zielony (Tailwind)
     
     setTimeout(() => {
         btn.innerText = originalText;
-        btn.style.backgroundColor = ""; 
+        btn.classList.replace('bg-green-700', 'bg-stone-800');
     }, 2000);
 }
         
