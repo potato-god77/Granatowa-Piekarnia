@@ -889,7 +889,7 @@ auth.onAuthStateChanged(user => {
         if (logoutBtn) logoutBtn.style.display = 'inline-block'; 
         applyPermissions(user);
         
-        if (typeof mCloud === "function") mCloud(); 
+        if (typeof loadFromCloud === "function") loadFromCloud(); 
         if (typeof fetchGallery === "function") fetchGallery(); 
         if (typeof sel === "function") sel('clint');
     } else {
@@ -979,30 +979,34 @@ function applyPermissions(user) {
     }
 }
 
-    function loadFromCloud() {
+   function loadFromCloud() {
     window.handleCloudData = function(data) {
-    if (data.status === 'success') {
-        for (let k in data.data) {
-            // Zakładamy, że Apps Script wysyła teraz obiekt {date: "...", days: 8}
-            const record = data.data[k];
-            const dateStr = (typeof record === 'object') ? record.date : record;
+        if (data.status === 'success') {
+            for (let k in data.data) {
+                const record = data.data[k];
+                const dateStr = (typeof record === 'object') ? record.date : record;
+                
+                const el = document.getElementById('feed-' + k);
+                if (el) el.innerText = dateStr || "----";
+                
+                if (k === 'zlewki') {
+                    const zwInput = document.getElementById('zw');
+                    if(zwInput) zwInput.value = dateStr;
+                }
+            }
             
-            const el = document.getElementById('feed-' + k);
-            if (el) el.innerText = dateStr || "----";
-            
-            if (k === 'zlewki') {
-                const zwInput = document.getElementById('zw');
-                if(zwInput) zwInput.value = dateStr;
+            try {
+                checkSourdoughHealth(data.data);
+            } catch (e) {
+                console.error("Błąd w powiadomieniach:", e);
             }
         }
-        
-        try {
-            checkSourdoughHealth(data.data);
-        } catch (e) {
-            console.error("Błąd w powiadomieniach:", e);
-        }
-    }
-};
+    };
+
+    const script = document.createElement('script');
+    script.src = `${SCRIPT_URL}?action=get&callback=handleCloudData&t=${Date.now()}`;
+    document.body.appendChild(script);
+} 
         
    function checkSourdoughHealth(data) {
     const notifIcon = document.getElementById('notif-icon');
@@ -1526,7 +1530,7 @@ async function startFullUpload() {
 
     const starter = document.getElementById('upload-starter').value;
     const rawDate = document.getElementById('upload-date').value;
-    const formattedDate = rawDate.split('-').reverse().join('.');
+    const formattedDate = rawDate.split('-').reverse().join('/');
 
     const filesPromises = selectedFiles.map(file => {
         return new Promise((resolve) => {
