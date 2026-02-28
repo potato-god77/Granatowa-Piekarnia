@@ -1437,10 +1437,11 @@ document.addEventListener('click', () => {
     let date = new Date(2026, 0, 1, h, m + deltaMinutes);
     
     // 2. Wyznaczamy nową "godzinę startu" (Wybudzenia) na podstawie offsetu edytowanego pola
+    // Dzięki temu zachowujemy sztywne odstępy czasowe między krokami
     let startDate = new Date(date);
     startDate.setMinutes(startDate.getMinutes() - currentStep.offset);
 
-    // 3. Aktualizujemy wszystkie pola w harmonogramie względem nowej godziny startu
+    // 3. Aktualizujemy wszystkie pola w harmonogramie (niezależnie czy edytowalne, czy nie)
     r.steps.forEach(step => {
         let stepDate = new Date(startDate);
         stepDate.setMinutes(stepDate.getMinutes() + step.offset);
@@ -1450,6 +1451,8 @@ document.addEventListener('click', () => {
             const newH = String(stepDate.getHours()).padStart(2, '0');
             const newM = String(stepDate.getMinutes()).padStart(2, '0');
             stepInput.value = `${newH}:${newM}`;
+            // Aktualizujemy też wartość w obiekcie, by pamiętał stan po zmianie
+            step.time = `${newH}:${newM}`;
         }
     });
 }
