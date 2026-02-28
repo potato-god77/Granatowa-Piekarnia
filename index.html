@@ -713,7 +713,7 @@ body.is-admin .admin-only {
             { id: 'c-6', time: '05:30', label: 'Lodówka', isEditable: false, offset: 810, desc: 'Wstaw miskę szczelnie przykrytą do lodówki.' },
             { id: 'c-7', time: '16:00', label: 'Pieczenie I', isEditable: true, offset: 1440, desc: 'Nagrzany garnek (235°C). 30 min pod przykryciem.' },
             { id: 'c-8', time: '16:30', label: 'Pieczenie II', isEditable: false, offset: 1470, desc: 'Zdejmij pokrywkę. 15 min dla koloru i chrupiącej skórki.' },
-            { id: 'c-9', time: '16:45', label: 'Stygnięcie', isEditable: false, offset: 1485, desc: 'Minimum 2h na kratce. Żyto musi "odparować", by środek nie był gliniasty.' }
+            { id: 'c-9', time: '16:45', label: 'Stygnięcie', isEditable: false, offset: 1485, desc: 'Min. 2h na kratce. Żyto musi "odparować", by środek nie był gliniasty.' }
         ]
     },
     sylvester: {
@@ -721,17 +721,17 @@ body.is-admin .admin-only {
         target: 'Ok. 110g aktywnego zaczynu.', ratio: '1:1.3:1.3',
         desc: 'Mąka 1850 wymaga autolizy, aby otręby zmiękły.',
         kType: 'pszennej pełnoziarnistej', kTemp: '30-32°C',
-        secret: '<b>Czystość:</b> Do mąki 1850 używaj wyłącznie wody na dłoniach. Oliwa jest zakazana.',
+        secret: '<b>Czystość:</b> Do mąki 1850 używaj przy składaniu wyłącznie wody na dłoniach. Oliwa jest zakazana.',
         steps: [
             { id: 's-1', time: '16:00', label: 'Wybudzenie', isEditable: true, offset: 0, desc: 'Aktywuj zakwas (30g bazy + 40g mąki + 40g wody).' },
-            { id: 's-2', time: '20:30', label: 'Autoliza', isEditable: true, offset: 270, desc: 'Mieszaj mąkę z wodą (400g). Odstaw na 45 min pod przykryciem.' },
-            { id: 's-3', time: '21:15', label: 'Zaszczepienie', isEditable: false, offset: 315, desc: 'Dodaj 100g zaczynu, 12g soli i 25g wody.' },
-            { id: 's-4', time: '21:20', label: 'Metoda Pincer', isEditable: false, offset: 320, desc: 'Przecinaj ciasto palcami przez 5 min.' },
-            { id: 's-5', time: '22:00', label: 'S&F I-IV', isEditable: false, offset: 360, desc: 'Seria składań co 30 min mokrymi dłońmi.' },
+            { id: 's-2', time: '20:00', label: 'Autoliza', isEditable: true, offset: 240, desc: 'Mieszaj mąkę z wodą (400g). Odstaw na 45 min pod przykryciem.' },
+            { id: 's-3', time: '20:45', label: 'Zaszczepienie', isEditable: false, offset: 285, desc: 'Dodaj 100g zaczynu, 12g soli i 25g wody.' },
+            { id: 's-4', time: '20:50', label: 'Metoda Pincer', isEditable: false, offset: 290, desc: 'Przecinaj ciasto palcami przez 5 min.' },
+            { id: 's-5', time: '21:30', label: 'S&F I-IV', isEditable: false, offset: 330, desc: 'Seria składań co 30 min mokrymi dłońmi.' },
             { id: 's-6', time: '05:30', label: 'Formowanie', isEditable: true, offset: 810, desc: 'Uformuj kulę, włóż do miski ze ścierką szwem do góry.' },
             { id: 's-7', time: '17:00', label: 'Pieczenie I', isEditable: true, offset: 1500, desc: '25 min pod przykryciem w 245°C.' },
             { id: 's-8', time: '17:25', label: 'Pieczenie II', isEditable: false, offset: 1525, desc: 'Bez przykrycia. 15-20 min w 220°C.' },
-            { id: 's-9', time: '17:45', label: 'Stygnięcie', isEditable: false, offset: 1545, desc: 'Minimum 3h. Pełnoziarnista pszenica potrzebuje czasu na ustabilizowanie struktury.' }
+            { id: 's-9', time: '17:45', label: 'Stygnięcie', isEditable: false, offset: 1545, desc: 'Minimum 3h. Pełnoziarnista pszenica potrzebuje czasu na stabilizację.' }
         ]
     },
     hildegarda: {
@@ -742,13 +742,13 @@ body.is-admin .admin-only {
         secret: '<b>Delikatność:</b> Zbyt agresywne składanie orkiszu rozerwie siatkę glutenową.',
         steps: [
             { id: 'h-1', time: '16:00', label: 'Wybudzenie', isEditable: true, offset: 0, desc: 'Aktywuj zakwas (20g bazy + 45g mąki + 45g wody).' },
-            { id: 'h-2', time: '20:30', label: 'Autoliza', isEditable: true, offset: 270, desc: 'Mieszaj mąkę z wodą (350g). Odstaw na 45 min.' },
-            { id: 'h-3', time: '21:15', label: 'Zaszczepienie', isEditable: false, offset: 315, desc: 'Dodaj zakwas, sól i resztę wody (25-50g).' },
-            { id: 'h-4', time: '22:00', label: 'S&F I-III', isEditable: false, offset: 360, desc: 'Delikatne składania. Orkisz szybko łapie strukturę.' },
+            { id: 'h-2', time: '20:00', label: 'Autoliza', isEditable: true, offset: 240, desc: 'Mieszaj mąkę z wodą (350g). Odstaw na 45 min.' },
+            { id: 'h-3', time: '20:45', label: 'Zaszczepienie', isEditable: false, offset: 285, desc: 'Dodaj zakwas, sól i resztę wody (25-50g).' },
+            { id: 'h-4', time: '21:30', label: 'S&F I-III', isEditable: false, offset: 330, desc: 'Delikatne składania. Orkisz szybko łapie strukturę.' },
             { id: 'h-5', time: '05:35', label: 'Formowanie', isEditable: true, offset: 815, desc: 'Szybkie formowanie kuli, szwem do góry na ściereczkę.' },
             { id: 'h-6', time: '17:00', label: 'Pieczenie I', isEditable: true, offset: 1500, desc: 'Głębokie nacięcie! 25 min pod przykryciem (240°C).' },
             { id: 'h-7', time: '17:25', label: 'Pieczenie II', isEditable: false, offset: 1525, desc: '15-20 min bez przykrycia (210°C).' },
-            { id: 'h-8', time: '17:45', label: 'Stygnięcie', isEditable: false, offset: 1545, desc: 'Minimum 3h. Orkisz 2000 stygnąc staje się mniej kruszący.' }
+            { id: 'h-8', time: '17:45', label: 'Stygnięcie', isEditable: false, offset: 1545, desc: 'Minimum 3h. Orkisz stygnąc staje się mniej kruszący.' }
         ]
     }
 };
