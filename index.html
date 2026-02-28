@@ -761,18 +761,18 @@ body.is-admin .admin-only {
         target: 'Stabilność i mocny, octowy profil.', ratio: '1:2:2',
         desc: 'Żyto kocha gęstą konsystencję. Clint jest jak plastelina.',
         kType: 'żytniej', kTemp: '35-38°C',
-        secret: '<b>Cierpliwość:</b> Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy. Garnek wybacza mu wszystko, bo żyto nie "płynie" tak mocno na boki.',
+        secret: '<b>Cierpliwość:</b> Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy. Garnek wybacza mu wszystko.',
         steps: [
             { id: 'c-1', time: '16:00', label: 'Wybudzenie', isEditable: true, offset: 0, desc: 'Aktywuj zakwas (30g bazy + 50g mąki + 50g wody).' },
             { id: 'c-2', time: '22:00', label: 'Mieszanie', isEditable: true, offset: 360, desc: 'Zrób zawiesinę, dodaj mąkę i sól. Wymieszaj dokładnie.' },
-            { id: 'c-3', time: '22:30', label: 'S&F I', isEditable: false, offset: 390, desc: 'Pierwsze naciąganie ciasta mokrą ręką.' },
-            { id: 'c-4', time: '23:00', label: 'S&F II', isEditable: false, offset: 420, desc: 'Drugie naciąganie. Ciasto powinno stawiać opór.' },
+            { id: 'c-3', time: '22:30', label: 'Stretch & Fold I', isEditable: false, offset: 390, desc: 'Pierwsze naciąganie ciasta mokrą ręką.' },
+            { id: 'c-4', time: '23:00', label: 'Stretch & Fold II', isEditable: false, offset: 420, desc: 'Drugie naciąganie. Ciasto powinno stawiać opór.' },
             { id: 'c-5', time: '23:30', label: 'Formowanie', isEditable: true, offset: 450, desc: 'Do miski ze ścierką i mąką, szwem do góry.' },
             { id: 'c-6', time: '05:30', label: 'Lodówka', isEditable: false, offset: 810, desc: 'Wstaw miskę szczelnie przykrytą do lodówki.' },
             { id: 'c-7', time: '16:00', label: 'Pieczenie I', isEditable: true, offset: 1440, desc: 'Nagrzany garnek (235°C). 30 min pod przykryciem.' },
             { id: 'c-8', time: '16:30', label: 'Pieczenie II', isEditable: false, offset: 1470, desc: 'Zdejmij pokrywkę. 15 min dla koloru i skórki.' },
-            { id: 'c-9', time: '16:45', label: 'Stygnięcie', isEditable: false, offset: 1485, desc: 'Minimum 2h na kratce. Żyto musi odparować, by środek nie był gliniasty.' },
-            { id: 'c-10', time: '18:45', label: 'Jedzenie', isEditable: true, offset: 1605, desc: 'Idealny moment na pierwszy bochenek. Smacznego!' }
+            { id: 'c-9', time: '16:45', label: 'Stygnięcie', isEditable: false, offset: 1485, desc: 'Minimum 2h na kratce. Żyto musi odparować.' },
+            { id: 'c-10', time: '18:45', label: 'Jedzenie', isEditable: true, offset: 1605, desc: 'Smacznego!' }
         ]
     },
     sylvester: {
@@ -780,18 +780,21 @@ body.is-admin .admin-only {
         target: 'Ok. 110g aktywnego zaczynu.', ratio: '1:1.3:1.3',
         desc: 'Mąka 1850 wymaga autolizy, aby otręby zmiękły.',
         kType: 'pszennej pełnoziarnistej', kTemp: '30-32°C',
-        secret: '<b>Czystość:</b> Do mąki 1850 używaj przy składaniu wyłącznie wody na dłoniach. Oliwa jest zarezerwowana tylko dla chlebów "szybkich".',
+        secret: '<b>Czystość:</b> Do mąki 1850 używaj wyłącznie wody na dłoniach. Oliwa jest zakazana.',
         steps: [
             { id: 's-1', time: '16:00', label: 'Wybudzenie', isEditable: true, offset: 0, desc: 'Aktywuj zakwas (30g bazy + 40g mąki + 40g wody).' },
             { id: 's-2', time: '20:00', label: 'Autoliza', isEditable: true, offset: 240, desc: 'Mieszaj mąkę z wodą (400g). Odstaw na 45 min pod przykryciem.' },
             { id: 's-3', time: '20:45', label: 'Zaszczepienie', isEditable: false, offset: 285, desc: 'Dodaj 100g zaczynu, 12g soli i 25g wody.' },
-            { id: 's-4', time: '20:50', label: 'Metoda Pincer', isEditable: false, offset: 290, desc: 'Przecinaj ciasto palcami przez 5 min.' },
-            { id: 's-5', time: '21:30', label: 'S&F I-IV', isEditable: false, offset: 330, desc: 'Seria składań co 30 min mokrymi dłońmi.' },
-            { id: 's-6', time: '05:30', label: 'Formowanie', isEditable: true, offset: 810, desc: 'Uformuj kulę, włóż do miski ze ścierką szwem do góry.' },
-            { id: 's-7', time: '17:00', label: 'Pieczenie I', isEditable: true, offset: 1500, desc: '25 min pod przykryciem w 245°C.' },
-            { id: 's-8', time: '17:25', label: 'Pieczenie II', isEditable: false, offset: 1525, desc: 'Bez przykrycia. 15-20 min w 220°C.' },
-            { id: 's-9', time: '17:45', label: 'Stygnięcie', isEditable: false, offset: 1545, desc: 'Minimum 3h. Pełnoziarnista pszenica potrzebuje czasu na stabilizację.' },
-            { id: 's-10', time: '20:45', label: 'Jedzenie', isEditable: true, offset: 1725, desc: 'Chleb jest już wystudzony i gotowy do krojenia.' }
+            { id: 's-4', time: '20:50', label: 'Metoda Pincer', isEditable: false, offset: 290, desc: 'Przecinaj ciasto palcami przez 5 min, aż stanie się jednolite.' },
+            { id: 's-5', time: '21:30', label: 'Stretch & Fold I', isEditable: false, offset: 330, desc: 'Naciągaj ciasto z 4 stron do środka mokrymi dłońmi.' },
+            { id: 's-6', time: '22:00', label: 'Stretch & Fold II', isEditable: false, offset: 360, desc: 'Kolejne składanie. Ciasto nabiera struktury.' },
+            { id: 's-7', time: '22:30', label: 'Stretch & Fold III', isEditable: false, offset: 390, desc: 'Przedostatnie naciąganie.' },
+            { id: 's-8', time: '23:00', label: 'Stretch & Fold IV', isEditable: false, offset: 420, desc: 'Ostatnie składanie przed nocną fermentacją.' },
+            { id: 's-9', time: '05:30', label: 'Formowanie', isEditable: true, offset: 810, desc: 'Uformuj kulę, włóż do miski ze ścierką szwem do góry.' },
+            { id: 's-10', time: '17:00', label: 'Pieczenie I', isEditable: true, offset: 1500, desc: '25 min pod przykryciem w 245°C.' },
+            { id: 's-11', time: '17:25', label: 'Pieczenie II', isEditable: false, offset: 1525, desc: 'Bez przykrycia. 15-20 min w 220°C.' },
+            { id: 's-12', time: '17:45', label: 'Stygnięcie', isEditable: false, offset: 1545, desc: 'Minimum 3h. Pszenica potrzebuje stabilizacji struktury.' },
+            { id: 's-13', time: '20:45', label: 'Jedzenie', isEditable: true, offset: 1725, desc: 'Smacznego!' }
         ]
     },
     hildegarda: {
@@ -799,20 +802,16 @@ body.is-admin .admin-only {
         target: 'Ok. 110g aktywnego zaczynu.', ratio: '1:2.25:2.25',
         desc: 'Orkisz szybko pije wodę, ale traci napięcie.',
         kType: 'orkiszowej', kTemp: '30-35°C',
-        secret: '<b>Delikatność:</b> Zbyt agresywne składanie orkiszu rozerwie siatkę glutenową. Jeśli pęknie, chleb będzie płaski.',
+        secret: '<b>Delikatność:</b> Zbyt agresywne składanie orkiszu rozerwie siatkę glutenową.',
         steps: [
             { id: 'h-1', time: '16:00', label: 'Wybudzenie', isEditable: true, offset: 0, desc: 'Aktywuj zakwas (20g bazy + 45g mąki + 45g wody).' },
             { id: 'h-2', time: '20:00', label: 'Autoliza', isEditable: true, offset: 240, desc: 'Mieszaj mąkę z wodą (350g). Odstaw na 45 min.' },
             { id: 'h-3', time: '20:45', label: 'Zaszczepienie', isEditable: false, offset: 285, desc: 'Dodaj zakwas, sól i resztę wody (25-50g).' },
-            { id: 'h-4', time: '21:30', label: 'S&F I-III', isEditable: false, offset: 330, desc: 'Delikatne składania. Orkisz szybko łapie strukturę.' },
-            { id: 'h-5', time: '05:35', label: 'Formowanie', isEditable: true, offset: 815, desc: 'Szybkie formowanie kuli, szwem do góry na ściereczkę.' },
-            { id: 'h-6', time: '17:00', label: 'Pieczenie I', isEditable: true, offset: 1500, desc: 'Głębokie nacięcie! 25 min pod przykryciem (240°C).' },
-            { id: 'h-7', time: '17:25', label: 'Pieczenie II', isEditable: false, offset: 1525, desc: '15-20 min bez przykrycia (210°C).' },
-            { id: 'h-8', time: '17:45', label: 'Stygnięcie', isEditable: false, offset: 1545, desc: 'Minimum 3h. Orkisz stygnąc staje się mniej kruszący.' },
-            { id: 'h-9', time: '20:45', label: 'Jedzenie', isEditable: true, offset: 1725, desc: 'Chleb orkiszowy najlepiej smakuje po pełnym wystygnięciu.' }
-        ]
-    }
-};
+            { id: 'h-4', time: '20:50', label: 'Metoda Pincer', isEditable: false, offset: 290, desc: 'Przecinaj delikatnie ciasto palcami.' },
+            { id: 'h-5', time: '21:30', label: 'Stretch & Fold I', isEditable: false, offset: 330, desc: 'Delikatne naciąganie z 4 stron.' },
+            { id: 'h-6', time: '22:00', label: 'Stretch & Fold II', isEditable: false, offset: 360, desc: 'Orkisz szybko łapie strukturę. Bądź precyzyjny.' },
+            { id: 'h-7', time: '22:30', label: 'Stretch & Fold III', isEditable: false, offset: 390, desc: 'Ostatnie, bardzo delikatne składanie.' },
+            { id: 'h-8', time: '05:35', label: 'Formowanie', isEditable: true, offset: 815, desc: 'Szybkie formowanie kuli, szwem do góry na ścierecz
 
    // Konfiguracja Firebase (wklej tutaj to, co skopiowałeś z konsoli Firebase)
 const firebaseConfig = {
@@ -947,18 +946,11 @@ function applyPermissions(user) {
     container.innerHTML = recipe.steps.map(step => `
         <div class="flex items-center justify-between p-4 border border-stone-200 rounded-xl bg-white shadow-sm gap-4">
             <div class="text-left flex-1">
-                <span class="font-bold italic text-stone-800 text-sm block mb-1">
-                    ${step.label}
-                </span>
-                <p class="text-[12px] text-stone-600 leading-tight">
-                    ${step.desc}
-                </p>
+                <span class="font-bold italic text-stone-800 text-sm block mb-1">${step.label}</span>
+                <p class="text-[12px] text-stone-600 leading-tight">${step.desc}</p>
             </div>
-            
             <div class="time-box-container">
-                <input type="text" id="${step.id}" value="${step.time}" readonly 
-                       class="time-input-field">
-                
+                <input type="text" id="${step.id}" value="${step.time}" readonly class="time-input-field">
                 <div class="arrows-container ${step.isEditable ? '' : 'hidden-arrows'}">
                     <button onclick="stepTime('${step.id}', 15)" class="arrow-btn">▲</button>
                     <button onclick="stepTime('${step.id}', -15)" class="arrow-btn">▼</button>
