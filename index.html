@@ -328,101 +328,7 @@ body.is-admin .admin-only {
     </div>
 </section>
       <section id="pieczenie-section" class="tab-content active space-y-5">
-    
-  <div class="accordion-item glass-card">
-        <button onclick="toggleAccordion(this)" class="w-full p-4 flex justify-between items-center text-left">
-            <h3 class="serif text-lg font-bold italic text-stone-800">Harmonogram</h3>
-            <span class="plus-icon text-xl">+</span>
-        </button>
-        <div class="accordion-content p-2 pt-4 border-t space-y-2 bg-white">
-            
-            <div class="flex items-center justify-between p-3 border border-stone-200 rounded-xl bg-amber-50/30 shadow-sm">
-                <div class="text-left pr-3">
-                    <span class="font-bold italic text-stone-800 text-base block">Wybudzenie:</span>
-                    <p class="text-sm text-stone-600 leading-tight">Aktywuj wybrany zakwas według instrukcji.</p>
-                </div>
-                <div class="flex items-center bg-white border border-stone-200 rounded-lg p-1 min-w-[80px] justify-between shadow-inner">
-                    <input type="text" id="t-wybudzenie-input" value="16:00" readonly 
-                           class="w-10 font-bold text-sm text-center outline-none bg-transparent text-stone-800">
-                    <div class="flex flex-col border-l border-stone-100 pl-1 ml-1">
-                        <button onclick="stepTime('t-wybudzenie-input', 15, 'wybudzenie')" class="text-[8px] hover:text-amber-600 px-1">▲</button>
-                        <button onclick="stepTime('t-wybudzenie-input', -15, 'wybudzenie')" class="text-[8px] hover:text-amber-600 px-1">▼</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between p-3 border border-stone-200 rounded-xl bg-stone-50/30 shadow-sm">
-                <div class="text-left pr-3">
-                    <span class="font-bold italic text-stone-800 text-base block">Mieszanie:</span>
-                    <p class="text-sm text-stone-600 leading-tight">Stwórz ciasto według przepisu i zostaw w misce pod przykryciem.</p>
-                </div>
-                <div class="flex items-center bg-white border border-stone-200 rounded-lg p-1 min-w-[80px] justify-between shadow-inner">
-                    <input type="text" id="start-time" value="22:00" readonly 
-                           class="w-10 font-bold text-sm text-center outline-none bg-transparent text-stone-800">
-                    <div class="flex flex-col border-l border-stone-100 pl-1 ml-1">
-                        <button onclick="stepTime('start-time', 15, 'mieszanie')" class="text-[8px] hover:text-stone-600 px-1">▲</button>
-                        <button onclick="stepTime('start-time', -15, 'mieszanie')" class="text-[8px] hover:text-stone-600 px-1">▼</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between p-3 px-4 border border-stone-100 rounded-xl bg-stone-50/10">
-                <div class="text-left pr-3">
-                    <span class="font-bold italic text-stone-800 text-base block">Dojrzewanie:</span>
-                    <p class="text-sm text-stone-600 leading-tight">Czas na spokojne dojrzewanie ciasta w lodówce.</p>
-                </div>
-                <div class="text-sm font-bold text-stone-800 min-w-[45px] text-center" id="t-lodowka">05:30</div>
-            </div>
-
-            <div class="flex items-center justify-between p-3 px-4 border border-stone-100 rounded-xl bg-stone-50/10">
-                <div class="text-left pr-3">
-                    <span class="font-bold italic text-stone-800 text-base block">Formowanie:</span>
-                    <p class="text-sm text-stone-600 leading-tight">Czas wyjąć ciasto z lodówki, włączyć piekarnik i uformować chleb.</p>
-                </div>
-                <div class="text-sm font-bold text-stone-800 min-w-[45px] text-center" id="t-formowanie">16:00</div>
-            </div>
-
-            <div class="flex items-center justify-between p-3 border border-stone-200 rounded-xl bg-stone-50/30 shadow-sm">
-                <div class="text-left pr-3">
-                    <span class="font-bold italic text-stone-800 text-base block">Pieczenie:</span>
-                    <p class="text-sm text-stone-600 leading-tight">Gorący garnek z chlebem wkładamy do piekarnika.</p>
-                </div>
-                <div class="flex items-center bg-white border border-stone-200 rounded-lg p-1 min-w-[80px] justify-between shadow-inner">
-                    <input type="text" id="t-pieczenie-input" value="16:45" readonly 
-                           class="w-10 font-bold text-sm text-center outline-none bg-transparent text-stone-800">
-                    <div class="flex flex-col border-l border-stone-100 pl-1 ml-1">
-                        <button onclick="stepTime('t-pieczenie-input', 15, 'pieczenie')" class="text-[8px] hover:text-stone-600 px-1">▲</button>
-                        <button onclick="stepTime('t-pieczenie-input', -15, 'pieczenie')" class="text-[8px] hover:text-stone-600 px-1">▼</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-between p-3 px-4 border border-stone-100 rounded-xl bg-stone-50/10">
-                <div class="text-left pr-3">
-                    <span class="font-bold italic text-stone-800 text-base block">Gotowość:</span>
-                    <p class="text-sm text-stone-600 leading-tight">Chleb jest rumiany i wydaje pusty dźwięk. Wyjmij go!</p>
-                </div>
-                <div class="text-sm font-bold text-stone-800 min-w-[45px] text-center" id="t-upieczenie">17:30</div>
-            </div>
-
-            <div class="flex items-center justify-between p-3 border border-stone-200 rounded-xl bg-stone-50/30 shadow-sm">
-                <div class="text-left pr-3">
-                    <span class="font-bold italic text-stone-800 text-base block">Jedzenie:</span>
-                    <p class="text-sm text-stone-600 leading-tight">Smacznego! Chleb ostygł i jest gotowy do krojenia.</p>
-                </div>
-                <div class="flex items-center bg-white border border-stone-200 rounded-lg p-1 min-w-[80px] justify-between shadow-inner">
-                    <input type="text" id="t-jedzenie-input" value="18:30" readonly 
-                           class="w-10 font-bold text-sm text-center outline-none bg-transparent text-stone-800">
-                    <div class="flex flex-col border-l border-stone-100 pl-1 ml-1">
-                        <button onclick="stepTime('t-jedzenie-input', 15, 'jedzenie')" class="text-[8px] hover:text-stone-600 px-1">▲</button>
-                        <button onclick="stepTime('t-jedzenie-input', -15, 'jedzenie')" class="text-[8px] hover:text-stone-600 px-1">▼</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="accordion-item glass-card">
+        <div class="accordion-item glass-card">
         <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
             <h3 class="serif text-lg font-bold italic text-stone-800">Składniki</h3>
             <span class="plus-icon text-xl">+</span>
@@ -494,36 +400,27 @@ body.is-admin .admin-only {
 
 <div class="accordion-item glass-card">
     <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
-        <h3 class="serif text-lg font-bold italic text-stone-800">Przepis</h3>
+        <h3 class="serif text-lg font-bold italic text-stone-800">Przepis i Harmonogram</h3>
         <span class="plus-icon text-xl">+</span>
     </button>
-    <div class="accordion-content p-6 pt-6 border-t text-sm space-y-4 text-stone-600"> 
-        <div class="recipe-step"> 
-            <p class="font-bold text-stone-800 italic">Mieszanie (ok. 22:00)</p> 
-            <p>Zrób zawiesinę: woda <span id="p-wv" class="font-bold text-stone-800"></span> (30°C) + aktywny zakwas <span id="p-sv" class="font-bold text-stone-800"></span>. Do tego dodaj <span id="p-fv" class="font-bold text-stone-800"></span> mąki i <span id="p-slv" class="font-bold text-stone-800"></span> soli. Wymieszaj, przykryj miskę i zostaw na noc na blacie w temperaturze pokojowej.</p> 
-        </div> 
-        <div class="recipe-step"> 
-            <p class="font-bold text-stone-800 italic">Rano (05:30 - 06:00)</p> 
-            <p>Włóż ciasto do lodówki (pod przykryciem).</p> 
-        </div> 
-        <div class="recipe-step"> 
-            <p class="font-bold text-stone-800 italic">Pieczenie (od 16:00)</p> 
-            <p>Nagrzej piec z garnkiem żeliwnym do 235°C. Uformuj ciasto metodą "na kopertę" (lub "pull & stretch") by stało się spięte, po czym natnij ostrym nożem lub żyletką. Gdy piekarnik się już nagrzeje, piecz 30 min pod przykryciem, a następnie zdejmij pokrywkę i piecz kolejne 15 min bez niej.</p> 
-        </div> 
-    </div>
+    <div class="accordion-content p-4 pt-6 border-t space-y-3" id="unified-recipe-container">
+        </div>
 </div>
 
     <div class="accordion-item glass-card">
-        <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
-            <h3 class="serif text-lg font-bold italic text-stone-800">Wskazówki</h3>
-            <span class="plus-icon text-xl">+</span>
-        </button>
-        <div class="accordion-content p-6 pt-6 border-t">
-            <div id="p-secret-standalone" class="relative py-4 px-6 border-l-4 border-stone-300 italic text-stone-700 leading-relaxed bg-stone-50/50 rounded-r-xl">
-            </div>
+    <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
+        <h3 class="serif text-lg font-bold italic text-stone-800 uppercase tracking-wide">Wskazówki Mistrza</h3>
+        <span class="plus-icon text-xl">+</span>
+    </button>
+    <div class="accordion-content p-6 pt-0 border-t bg-white">
+        <div class="mt-6 relative py-5 px-6 border-l-4 border-amber-400 italic text-stone-700 leading-relaxed bg-amber-50/40 rounded-r-2xl shadow-sm">
+            <div class="absolute -top-3 left-4 text-amber-400 bg-white px-2 text-2xl serif">“</div>
+            
+            <div id="p-secret-standalone">
+                </div>
         </div>
     </div>
-</section>
+</div>
         
 <section id="karmienie-section" class="tab-content space-y-5">
     <div class="accordion-item glass-card">
@@ -800,35 +697,68 @@ body.is-admin .admin-only {
     let selectedFiles = [];
     let coverIndex = 0;
 
-    const RECIPES = {
-        clint: { 
-            name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14, 
-            secret: 'Ciasto jest jak mokra glina.<br>Nie wyrabiamy go, tylko dokładnie mieszamy.<br>Garnek wybacza mu wszystko, bo żyto nie "płynie" tak mocno na boki. ',
-            target: 'Stabilność i mocny, octowy profil.', ratio: '1:2:2',
-            desc: 'Żyto kocha gęstą konsystencję. Taka dawka wody sprawia, że Clint jest jak plastelina.',
-            regMF: 40, regWF: 40,
-            kType: 'żytniej',
-            kTemp: 'ok. 35-38°C'
-        },
-        sylvester: { 
-            name: 'Sylvester Graham', sv: 100, wv: 325, fv: 500, slv: 13, 
-            secret: 'Przy 1850 otręby tną gluten. Jeśli dasz 340g wody (jak u Clinta), ciasto po nocy będzie zbyt luźne na garnek. 325g pozwoli utrzymać kształt kuli.<br><br>Wymaga przynajmniej 2-3 "składań" (stretch & fold) w ciągu pierwszej godziny od wymieszania.',
-            target: 'Szybka fermentacja i mleczno-orzechowy zapach.', ratio: '1:2:1.75',
-            desc: 'Pszenica przy 1:1 staje się rzadka. Dając mniej wody, zmuszasz bakterie do wolniejszej pracy.',
-            regMF: 40, regWF: 35,
-            kType: 'pszennej pełnoziarnistej',
-            kTemp: 'ok. 30-32°C'
-        },
-        hildegarda: { 
-            name: 'Hildegarda z Bingen', sv: 95, wv: 310, fv: 500, slv: 15, 
-            secret: 'Orkisz 2000 pije wodę szybko, ale równie szybko "puchnie" i traci napięcie powierzchniowe. Niższa hydratacja (310g) to Twój bezpiecznik, dzięki któremu bochenek w garnku wystrzeli w górę, a nie rozleje się na boki.<br><br>Hildegarda nie lubi agresywnego wyrabiania. Tylko delikatne mieszanie do połączenia składników.',
-            target: 'Delikatność i ochrona przed przekwaszeniem.', ratio: '1:2.25:2.25',
-            desc: 'Orkisz kocha stabilność. Nadmierne mieszanie osłabia strukturę glutenową tego szlachetnego zboża.',
-            regMF: 45, regWF: 45,
-            kType: 'orkiszowej',
-            kTemp: 'ok. 30-35°C'
-        }
-    };
+   const RECIPES = {
+    clint: {
+        name: 'Clint Yeastwood',
+        sv: 115, wv: 340, fv: 500, slv: 14,
+        target: 'Stabilność i mocny, octowy profil.',
+        ratio: '1:2:2',
+        desc: 'Żyto kocha gęstą konsystencję. Taka dawka wody sprawia, że Clint jest jak plastelina.',
+        kType: 'żytniej',
+        kTemp: '35-38°C',
+        secret: '<b>Cierpliwość:</b> Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy. Garnek wybacza mu wszystko, bo żyto nie "płynie" tak mocno na boki.',
+        steps: [
+            { id: 'c-1', time: '16:00', label: 'Wybudzenie', desc: 'Aktywuj zakwas (30g bazy + 50g mąki + 50g wody).' },
+            { id: 'c-2', time: '22:00', label: 'Mieszanie', desc: 'Zrób zawiesinę z wody i zakwasu, dodaj mąkę i sól. Wymieszaj dokładnie.' },
+            { id: 'c-3', time: '22:30', label: 'Stretch & Fold I', desc: 'Pierwsze naciąganie ciasta mokrą ręką.' },
+            { id: 'c-4', time: '23:00', label: 'Stretch & Fold II', desc: 'Drugie naciąganie. Ciasto powinno stawiać większy opór.' },
+            { id: 'c-5', time: '23:30', label: 'Formowanie', desc: 'Przełóż do miski wyłożonej ściereczką z mąką. Ułóż szwem do góry.' },
+            { id: 'c-6', time: '05:30', label: 'Hibernacja', desc: 'Wstaw miskę szczelnie przykrytą do lodówki.' },
+            { id: 'c-7', time: '16:00', label: 'Pieczenie', desc: 'Nagrzej garnek (235°C). Piecz 30 min pod przykryciem, 15 min bez.' }
+        ]
+    },
+    sylvester: {
+        name: 'Sylvester Graham',
+        sv: 100, wv: 425, fv: 500, slv: 12,
+        target: 'Uzyskanie ok. 110g aktywnego zaczynu na wieczór.',
+        ratio: '1:1.3:1.3',
+        desc: 'Mąka 1850 wymaga autolizy, aby otręby zmiękły i nie przecinały siatki glutenowej.',
+        kType: 'pszennej pełnoziarnistej',
+        kTemp: '30-32°C',
+        secret: '<b>Czystość:</b> Do mąki 1850 używaj przy składaniu wyłącznie wody na dłoniach. Oliwa jest zarezerwowana tylko dla chlebów "szybkich".',
+        steps: [
+            { id: 's-1', time: '20:30', label: 'Autoliza', desc: 'Wymieszaj mąkę (500g) i wodę (400g). Odstaw na 45 min pod przykryciem.' },
+            { id: 's-2', time: '21:15', label: 'Zaszczepienie', desc: 'Dodaj i wmieszaj 100g zaczynu, 12g soli i 25g wody.' },
+            { id: 's-3', time: '21:20', label: 'Metoda "Szczypania" (Pincer)', desc: 'Przecinaj ciasto palcami przez 5 min, aż stanie się jednolite.' },
+            { id: 's-4', time: '22:00', label: 'Stretch & Fold I', desc: 'Używaj mokrych dłoni. Naciągaj ciasto z 4 stron do środka.' },
+            { id: 's-5', time: '22:30', label: 'Stretch & Fold II', desc: 'Używaj mokrych dłoni. Naciągaj ciasto z 4 stron do środka.' },
+            { id: 's-6', time: '23:00', label: 'Stretch & Fold III', desc: 'Używaj mokrych dłoni. Naciągaj ciasto z 4 stron do środka.' },
+            { id: 's-7', time: '23:30', label: 'Stretch & Fold IV', desc: 'Naciągnij ciasto ostatni raz przed nocną fermentacją masową.' },
+            { id: 's-8', time: '05:30', label: 'Formowanie', desc: 'Nadaj kształt kuli, naciągnij skórkę. Włóż do miski ze ścierką szwem do góry.' },
+            { id: 's-9', time: '17:00', label: 'Pieczenie', desc: 'Faza I (Para): 25 min w 245°C. Faza II (Kolor): 15-20 min w 220°C.' }
+        ]
+    },
+    hildegarda: {
+        name: 'Hildegarda z Bingen',
+        sv: 100, wv: 375, fv: 500, slv: 12,
+        target: 'Uzyskanie ok. 110g aktywnego zaczynu na wieczór.',
+        ratio: '1:2.25:2.25',
+        desc: 'Orkisz 2000 szybko pije wodę, ale równie szybko traci napięcie. Wymaga czujności.',
+        kType: 'orkiszowej',
+        kTemp: '30-35°C',
+        secret: '<b>Delikatność:</b> Orkisz ma słabszy gluten. Jeśli będziesz go składać zbyt agresywnie, siatka może "pęknąć" i chleb wyjdzie płaski.',
+        steps: [
+            { id: 'h-1', time: '20:30', label: 'Autoliza', desc: 'Wymieszaj mąkę (500g) i wodę (350g). Odstaw na 45 min pod przykryciem.' },
+            { id: 'h-2', time: '21:15', label: 'Zaszczepienie', desc: 'Dodaj i wmieszaj 100g zaczynu, 12g soli i pozostałe 25-50g wody.' },
+            { id: 'h-3', time: '21:20', label: 'Metoda "Szczypania" (Pincer)', desc: 'Przecinaj ciasto palcami przez 5 min. Poczuj, jak orkisz staje się plastyczny.' },
+            { id: 'h-4', time: '22:00', label: 'Stretch & Fold I', desc: 'Używaj mokrych dłoni. Naciągaj delikatnie z 4 stron do środka.' },
+            { id: 'h-5', time: '22:30', label: 'Stretch & Fold II', desc: 'Bądź precyzyjny – orkisz szybciej łapie strukturę.' },
+            { id: 'h-6', time: '23:00', label: 'Stretch & Fold III', desc: 'Jeśli ciasto jest już bardzo sprężyste, to składanie może być ostatnim.' },
+            { id: 'h-7', time: '05:35', label: 'Formowanie', desc: 'Szybkie formowanie kuli. Włóż do miski ze ścierką i mąką szwem do góry.' },
+            { id: 'h-8', time: '17:00', label: 'Pieczenie', desc: 'Głębokie nacięcie (1.5 cm). Faza I: 25 min (240°C), Faza II: 15-20 min (210°C).' }
+        ]
+    }
+};
 
    // Konfiguracja Firebase (wklej tutaj to, co skopiowałeś z konsoli Firebase)
 const firebaseConfig = {
@@ -955,7 +885,28 @@ function applyPermissions(user) {
         sessionStorage.setItem('lastTab', tabId);
         window.scrollTo(0,0);
     }
-    
+
+        function renderUnifiedRecipe(recipe) {
+    const container = document.getElementById('unified-recipe-container');
+    if (!container) return;
+
+    container.innerHTML = recipe.steps.map(step => `
+        <div class="flex items-start justify-between p-3 border border-stone-200 rounded-xl bg-stone-50/30 shadow-sm gap-2">
+            <div class="text-left flex-1">
+                <span class="font-bold italic text-stone-800 text-sm block">${step.label}:</span>
+                <p class="text-[11px] text-stone-600 leading-tight">${step.desc}</p>
+            </div>
+            <div class="flex items-center bg-white border border-stone-200 rounded-lg p-1 min-w-[75px] justify-between shadow-inner self-center">
+                <input type="text" id="${step.id}" value="${step.time}" readonly 
+                       class="w-10 font-bold text-[12px] text-center outline-none bg-transparent text-stone-800">
+                <div class="flex flex-col border-l border-stone-100 pl-1 ml-1">
+                    <button onclick="stepTime('${step.id}', 15)" class="text-[8px] hover:text-amber-600 px-1">▲</button>
+                    <button onclick="stepTime('${step.id}', -15)" class="text-[8px] hover:text-amber-600 px-1">▼</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
    async function saveToCloud(key, value) {
     const uid = window.adminUID || (auth.currentUser ? auth.currentUser.uid : null);
 
@@ -1093,7 +1044,7 @@ document.addEventListener('click', () => {
     const q = currentQty;
     if(!r) return;
 
-    // 1. Sekcja PIECZENIE (zostaje bez zmian, bo tu ID są unikalne)
+    // 1. Sekcja PIECZENIE (Gramatury)
     const ids = ['sv', 'wv', 'fv', 'slv', 'w-sv', 'p-wv', 'p-sv', 'p-fv', 'p-slv'];
     ids.forEach(id => {
         const el = document.getElementById(id);
@@ -1104,9 +1055,8 @@ document.addEventListener('click', () => {
     });
 
     // 2. Sekcja KARMIENIE
-    // Podmieniamy tylko tekst (innerText), nie ruszając tagów <span> i ich stylów
     const kn = document.getElementById('k-name');
-    if(kn) kn.innerText = r.name; // Zmieniamy innerText, kolor zostanie z CSS/HTML
+    if(kn) kn.innerText = r.name;
 
     const kt = document.getElementById('k-type');
     if(kt) kt.innerText = r.kType;
@@ -1114,54 +1064,55 @@ document.addEventListener('click', () => {
     const ktemp = document.getElementById('k-temp');
     if(ktemp) ktemp.innerText = r.kTemp;
 
-    // Stałe gramatury (jeśli chcesz je jednak sterować z JS, upewnij się że ID są w HTML)
     const ksv = document.getElementById('k-sv');
     if(ksv) ksv.innerText = '20g';
 
-    // 3. Sekrety i Logistyka Zakwasu (zostaje jak było)
+    // 3. Sekrety i Logistyka Zakwasu
     const secStandalone = document.getElementById('p-secret-standalone');
     if(secStandalone) secStandalone.innerHTML = r.secret;
 
     if(document.getElementById('w-name')) {
-    document.getElementById('w-name').innerText = r.name;
-    document.getElementById('w-target').innerText = r.target;
-    document.getElementById('w-ratio').innerText = r.ratio;
-    document.getElementById('w-desc').innerText = r.desc;
-    
-    const setSafeText = (id, text) => {
-        const el = document.getElementById(id);
-        if(el) el.innerText = text;
-    };
+        document.getElementById('w-name').innerText = r.name;
+        document.getElementById('w-target').innerText = r.target;
+        document.getElementById('w-ratio').innerText = r.ratio;
+        document.getElementById('w-desc').innerText = r.desc;
+        
+        const setSafeText = (id, text) => {
+            const el = document.getElementById(id);
+            if(el) el.innerText = text;
+        };
 
-    // Ustawienie stałych 65g i dynamicznej temperatury dla etapu 4
-    setSafeText('w-regMF', '65g');
-    setSafeText('w-regWF', '65g');
-    setSafeText('k-temp-val', r.kTemp);
+        setSafeText('w-regMF', '65g');
+        setSafeText('w-regWF', '65g');
+        setSafeText('k-temp-val', r.kTemp);
 
-    // Odmiana przez przypadki
-    const s1_miejski = "w Słoiku Roboczym";
-    const s1_dopełniacz = "ze Słoika Roboczego";
-    
-    const s2_dopełniacz = "ze Słoika " + r.name;
-    const s2_biernik = "do Słoika " + r.name;
-    const s2_mianownik = "Słoik " + r.name;
-    const s2_miejski = "w Słoiku " + r.name;
-    
-    const s3_biernik = "do Słoika Wernyhora";
+        // Odmiana przez przypadki
+        const s1_miejski = "w Słoiku Roboczym";
+        const s1_dopełniacz = "ze Słoika Roboczego";
+        
+        const s2_dopełniacz = "ze Słoika " + r.name;
+        const s2_biernik = "do Słoika " + r.name;
+        const s2_mianownik = "Słoik " + r.name;
+        const s2_miejski = "w Słoiku " + r.name;
+        
+        const s3_biernik = "do Słoika Wernyhora";
 
-    // Przypisanie do ID w HTML
-    setSafeText('sl-2-a', s2_dopełniacz); // "ze Słoika Clint..."
-    setSafeText('sl-1-a', s1_miejski);    // "w Słoiku Roboczym"
-    
-    setSafeText('sl-1-b', s1_dopełniacz); // "ze Słoika Roboczego"
-    setSafeText('sl-2-b', s2_biernik);    // "do Słoika Clint..."
-    
-    setSafeText('sl-2-c-title', s2_mianownik); // Tytuł: (Słoik Clint...)
-    setSafeText('sl-2-c', s2_miejski);    // "w Słoiku Clint..."
-    setSafeText('sl-3-a', s3_biernik);    // "do Słoika Wernyhora"
-    
-    setSafeText('sl-2-d', s2_miejski);    // "w Słoiku Clint..."
-}
+        setSafeText('sl-2-a', s2_dopełniacz);
+        setSafeText('sl-1-a', s1_miejski);
+        setSafeText('sl-1-b', s1_dopełniacz);
+        setSafeText('sl-2-b', s2_biernik);
+        setSafeText('sl-2-c-title', s2_mianownik);
+        setSafeText('sl-2-c', s2_miejski);
+        setSafeText('sl-3-a', s3_biernik);
+        setSafeText('sl-2-d', s2_miejski);
+    }
+
+    // --- TUTAJ DODAJEMY TYLKO TĘ CZĘŚĆ ---
+    // 4. NOWA SEKCJA: DYNAMICZNY PRZEPIS I HARMONOGRAM
+    // Wywołujemy funkcję, która wygeneruje kroki z tablicy r.steps
+    if (typeof renderUnifiedRecipe === 'function') {
+        renderUnifiedRecipe(r);
+    }
 }
 
    function updateSchedule(source) {
