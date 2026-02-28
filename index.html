@@ -755,13 +755,13 @@ body.is-admin .admin-only {
     let selectedFiles = [];
     let coverIndex = 0;
 
-   const RECIPES = {
+  const RECIPES = {
     clint: {
         name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14,
         target: 'Stabilność i mocny, octowy profil.', ratio: '1:2:2',
         desc: 'Żyto kocha gęstą konsystencję. Clint jest jak plastelina.',
         kType: 'żytniej', kTemp: '35-38°C',
-        secret: '<b>Cierpliwość:</b> Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy.',
+        secret: '<b>Cierpliwość:</b> Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy. Garnek wybacza mu wszystko, bo żyto nie "płynie" tak mocno na boki.',
         steps: [
             { id: 'c-1', time: '16:00', label: 'Wybudzenie', isEditable: true, offset: 0, desc: 'Aktywuj zakwas (30g bazy + 50g mąki + 50g wody).' },
             { id: 'c-2', time: '22:00', label: 'Mieszanie', isEditable: true, offset: 360, desc: 'Zrób zawiesinę, dodaj mąkę i sól. Wymieszaj dokładnie.' },
@@ -770,8 +770,9 @@ body.is-admin .admin-only {
             { id: 'c-5', time: '23:30', label: 'Formowanie', isEditable: true, offset: 450, desc: 'Do miski ze ścierką i mąką, szwem do góry.' },
             { id: 'c-6', time: '05:30', label: 'Lodówka', isEditable: false, offset: 810, desc: 'Wstaw miskę szczelnie przykrytą do lodówki.' },
             { id: 'c-7', time: '16:00', label: 'Pieczenie I', isEditable: true, offset: 1440, desc: 'Nagrzany garnek (235°C). 30 min pod przykryciem.' },
-            { id: 'c-8', time: '16:30', label: 'Pieczenie II', isEditable: false, offset: 1470, desc: 'Zdejmij pokrywkę. 15 min dla koloru i chrupiącej skórki.' },
-            { id: 'c-9', time: '16:45', label: 'Stygnięcie', isEditable: false, offset: 1485, desc: 'Min. 2h na kratce. Żyto musi "odparować", by środek nie był gliniasty.' }
+            { id: 'c-8', time: '16:30', label: 'Pieczenie II', isEditable: false, offset: 1470, desc: 'Zdejmij pokrywkę. 15 min dla koloru i skórki.' },
+            { id: 'c-9', time: '16:45', label: 'Stygnięcie', isEditable: false, offset: 1485, desc: 'Minimum 2h na kratce. Żyto musi odparować, by środek nie był gliniasty.' },
+            { id: 'c-10', time: '18:45', label: 'Jedzenie', isEditable: true, offset: 1605, desc: 'Idealny moment na pierwszy bochenek. Smacznego!' }
         ]
     },
     sylvester: {
@@ -779,7 +780,7 @@ body.is-admin .admin-only {
         target: 'Ok. 110g aktywnego zaczynu.', ratio: '1:1.3:1.3',
         desc: 'Mąka 1850 wymaga autolizy, aby otręby zmiękły.',
         kType: 'pszennej pełnoziarnistej', kTemp: '30-32°C',
-        secret: '<b>Czystość:</b> Do mąki 1850 używaj przy składaniu wyłącznie wody na dłoniach. Oliwa jest zakazana.',
+        secret: '<b>Czystość:</b> Do mąki 1850 używaj przy składaniu wyłącznie wody na dłoniach. Oliwa jest zarezerwowana tylko dla chlebów "szybkich".',
         steps: [
             { id: 's-1', time: '16:00', label: 'Wybudzenie', isEditable: true, offset: 0, desc: 'Aktywuj zakwas (30g bazy + 40g mąki + 40g wody).' },
             { id: 's-2', time: '20:00', label: 'Autoliza', isEditable: true, offset: 240, desc: 'Mieszaj mąkę z wodą (400g). Odstaw na 45 min pod przykryciem.' },
@@ -789,7 +790,8 @@ body.is-admin .admin-only {
             { id: 's-6', time: '05:30', label: 'Formowanie', isEditable: true, offset: 810, desc: 'Uformuj kulę, włóż do miski ze ścierką szwem do góry.' },
             { id: 's-7', time: '17:00', label: 'Pieczenie I', isEditable: true, offset: 1500, desc: '25 min pod przykryciem w 245°C.' },
             { id: 's-8', time: '17:25', label: 'Pieczenie II', isEditable: false, offset: 1525, desc: 'Bez przykrycia. 15-20 min w 220°C.' },
-            { id: 's-9', time: '17:45', label: 'Stygnięcie', isEditable: false, offset: 1545, desc: 'Minimum 3h. Pełnoziarnista pszenica potrzebuje czasu na stabilizację.' }
+            { id: 's-9', time: '17:45', label: 'Stygnięcie', isEditable: false, offset: 1545, desc: 'Minimum 3h. Pełnoziarnista pszenica potrzebuje czasu na stabilizację.' },
+            { id: 's-10', time: '20:45', label: 'Jedzenie', isEditable: true, offset: 1725, desc: 'Chleb jest już wystudzony i gotowy do krojenia.' }
         ]
     },
     hildegarda: {
@@ -797,7 +799,7 @@ body.is-admin .admin-only {
         target: 'Ok. 110g aktywnego zaczynu.', ratio: '1:2.25:2.25',
         desc: 'Orkisz szybko pije wodę, ale traci napięcie.',
         kType: 'orkiszowej', kTemp: '30-35°C',
-        secret: '<b>Delikatność:</b> Zbyt agresywne składanie orkiszu rozerwie siatkę glutenową.',
+        secret: '<b>Delikatność:</b> Zbyt agresywne składanie orkiszu rozerwie siatkę glutenową. Jeśli pęknie, chleb będzie płaski.',
         steps: [
             { id: 'h-1', time: '16:00', label: 'Wybudzenie', isEditable: true, offset: 0, desc: 'Aktywuj zakwas (20g bazy + 45g mąki + 45g wody).' },
             { id: 'h-2', time: '20:00', label: 'Autoliza', isEditable: true, offset: 240, desc: 'Mieszaj mąkę z wodą (350g). Odstaw na 45 min.' },
@@ -806,7 +808,8 @@ body.is-admin .admin-only {
             { id: 'h-5', time: '05:35', label: 'Formowanie', isEditable: true, offset: 815, desc: 'Szybkie formowanie kuli, szwem do góry na ściereczkę.' },
             { id: 'h-6', time: '17:00', label: 'Pieczenie I', isEditable: true, offset: 1500, desc: 'Głębokie nacięcie! 25 min pod przykryciem (240°C).' },
             { id: 'h-7', time: '17:25', label: 'Pieczenie II', isEditable: false, offset: 1525, desc: '15-20 min bez przykrycia (210°C).' },
-            { id: 'h-8', time: '17:45', label: 'Stygnięcie', isEditable: false, offset: 1545, desc: 'Minimum 3h. Orkisz stygnąc staje się mniej kruszący.' }
+            { id: 'h-8', time: '17:45', label: 'Stygnięcie', isEditable: false, offset: 1545, desc: 'Minimum 3h. Orkisz stygnąc staje się mniej kruszący.' },
+            { id: 'h-9', time: '20:45', label: 'Jedzenie', isEditable: true, offset: 1725, desc: 'Chleb orkiszowy najlepiej smakuje po pełnym wystygnięciu.' }
         ]
     }
 };
@@ -1101,7 +1104,7 @@ document.addEventListener('click', () => {
     const q = currentQty;
     if(!r) return;
 
-    // 1. Sekcja PIECZENIE (Gramatury)
+    // 1. Gramatury
     const ids = ['sv', 'wv', 'fv', 'slv', 'w-sv', 'p-wv', 'p-sv', 'p-fv', 'p-slv'];
     ids.forEach(id => {
         const el = document.getElementById(id);
@@ -1111,65 +1114,86 @@ document.addEventListener('click', () => {
         }
     });
 
-    // 2. Sekcja KARMIENIE
-    const kn = document.getElementById('k-name');
-    if(kn) kn.innerText = r.name;
+    // 2. Sekcja Karmienie i Logistyka
+    const setSafeText = (id, text) => {
+        const el = document.getElementById(id);
+        if(el) el.innerText = text;
+    };
 
-    const kt = document.getElementById('k-type');
-    if(kt) kt.innerText = r.kType;
+    setSafeText('k-name', r.name);
+    setSafeText('k-type', r.kType);
+    setSafeText('k-temp', r.kTemp);
+    setSafeText('k-sv', '20g');
+    setSafeText('w-name', r.name);
+    setSafeText('w-target', r.target);
+    setSafeText('w-ratio', r.ratio);
+    setSafeText('w-desc', r.desc);
+    setSafeText('w-regMF', '65g');
+    setSafeText('w-regWF', '65g');
+    setSafeText('k-temp-val', r.kTemp);
 
-    const ktemp = document.getElementById('k-temp');
-    if(ktemp) ktemp.innerText = r.kTemp;
+    // 3. Odmiana słoików
+    setSafeText('sl-2-a', "ze Słoika " + r.name);
+    setSafeText('sl-1-a', "w Słoiku Roboczym");
+    setSafeText('sl-1-b', "ze Słoika Roboczego");
+    setSafeText('sl-2-b', "do Słoika " + r.name);
+    setSafeText('sl-2-c-title', "Słoik " + r.name);
+    setSafeText('sl-2-c', "w Słoiku " + r.name);
+    setSafeText('sl-3-a', "do Słoika Wernyhora");
+    setSafeText('sl-2-d', "w Słoiku " + r.name);
 
-    const ksv = document.getElementById('k-sv');
-    if(ksv) ksv.innerText = '20g';
-
-    // 3. Sekrety i Logistyka Zakwasu
+    // 4. Wskazówki
     const secStandalone = document.getElementById('p-secret-standalone');
     if(secStandalone) secStandalone.innerHTML = r.secret;
 
-    if(document.getElementById('w-name')) {
-        document.getElementById('w-name').innerText = r.name;
-        document.getElementById('w-target').innerText = r.target;
-        document.getElementById('w-ratio').innerText = r.ratio;
-        document.getElementById('w-desc').innerText = r.desc;
-        
-        const setSafeText = (id, text) => {
-            const el = document.getElementById(id);
-            if(el) el.innerText = text;
-        };
+    // 5. Harmonogram
+    renderUnifiedRecipe(r);
+}
 
-        setSafeText('w-regMF', '65g');
-        setSafeText('w-regWF', '65g');
-        setSafeText('k-temp-val', r.kTemp);
+function renderUnifiedRecipe(recipe) {
+    const container = document.getElementById('unified-recipe-container');
+    if (!container) return;
 
-        // Odmiana przez przypadki
-        const s1_miejski = "w Słoiku Roboczym";
-        const s1_dopełniacz = "ze Słoika Roboczego";
-        
-        const s2_dopełniacz = "ze Słoika " + r.name;
-        const s2_biernik = "do Słoika " + r.name;
-        const s2_mianownik = "Słoik " + r.name;
-        const s2_miejski = "w Słoiku " + r.name;
-        
-        const s3_biernik = "do Słoika Wernyhora";
+    container.innerHTML = recipe.steps.map(step => `
+        <div class="flex items-center justify-between p-4 border border-stone-200 rounded-xl bg-white shadow-sm gap-4">
+            <div class="text-left flex-1">
+                <span class="font-bold italic text-stone-800 text-sm block mb-1">${step.label}</span>
+                <p class="text-[12px] text-stone-600 leading-tight">${step.desc}</p>
+            </div>
+            <div class="time-box-container">
+                <input type="text" id="${step.id}" value="${step.time}" readonly class="time-input-field">
+                <div class="arrows-container ${step.isEditable ? '' : 'hidden-arrows'}">
+                    <button onclick="stepTime('${step.id}', 15)" class="arrow-btn">▲</button>
+                    <button onclick="stepTime('${step.id}', -15)" class="arrow-btn">▼</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
 
-        setSafeText('sl-2-a', s2_dopełniacz);
-        setSafeText('sl-1-a', s1_miejski);
-        setSafeText('sl-1-b', s1_dopełniacz);
-        setSafeText('sl-2-b', s2_biernik);
-        setSafeText('sl-2-c-title', s2_mianownik);
-        setSafeText('sl-2-c', s2_miejski);
-        setSafeText('sl-3-a', s3_biernik);
-        setSafeText('sl-2-d', s2_miejski);
-    }
+function stepTime(stepId, deltaMinutes) {
+    const r = RECIPES[currentStarterKey];
+    const currentStep = r.steps.find(s => s.id === stepId);
+    if (!currentStep) return;
 
-    // --- TUTAJ DODAJEMY TYLKO TĘ CZĘŚĆ ---
-    // 4. NOWA SEKCJA: DYNAMICZNY PRZEPIS I HARMONOGRAM
-    // Wywołujemy funkcję, która wygeneruje kroki z tablicy r.steps
-    if (typeof renderUnifiedRecipe === 'function') {
-        renderUnifiedRecipe(r);
-    }
+    const input = document.getElementById(stepId);
+    let [h, m] = input.value.split(':').map(Number);
+    let date = new Date(2026, 0, 1, h, m + deltaMinutes);
+    
+    let startDate = new Date(date);
+    startDate.setMinutes(startDate.getMinutes() - currentStep.offset);
+
+    r.steps.forEach(step => {
+        let stepDate = new Date(startDate);
+        stepDate.setMinutes(stepDate.getMinutes() + step.offset);
+        const stepInput = document.getElementById(step.id);
+        if (stepInput) {
+            const newH = String(stepDate.getHours()).padStart(2, '0');
+            const newM = String(stepDate.getMinutes()).padStart(2, '0');
+            stepInput.value = `${newH}:${newM}`;
+            step.time = `${newH}:${newM}`;
+        }
+    });
 }
 
    function updateSchedule(source) {
