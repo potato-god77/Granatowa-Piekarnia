@@ -136,7 +136,7 @@ nav, .tab-content {
 .preview-item img {
     width: 100%;
     height: 100%;
-    object-cover: cover;
+    object-fit: cover;
 }
 
 .preview-badge {
@@ -163,17 +163,20 @@ body.is-admin #feed-sylvester,
 body.is-admin #feed-hildegarda {
     cursor: pointer;
 }
-
-        /* Wymuszenie widoczności dla elementów admina */
+       
 .admin-only {
-    display: none; /* Domyślnie ukryte dla wszystkich */
+    display: inline-block !important; /* Zawsze zajmują miejsce w układzie */
+    opacity: 0.4;                     /* Wyszarzenie */
+    filter: grayscale(1);             /* Pełne odbarwienie */
+    cursor: not-allowed !important;   /* Ikona zakazu zamiast rączki */
+    pointer-events: auto;             /* Pozwalamy na kliknięcie, by wywołać alert */
 }
 
-/* Jeśli body ma klasę is-admin, pokazujemy elementy */
+/* Gdy body ma klasę is-admin, przywracamy pełną funkcjonalność */
 body.is-admin .admin-only {
-    display: inline-block !important;
-    visibility: visible !important;
     opacity: 1 !important;
+    filter: none !important;
+    cursor: pointer !important;
 }
 
 /* Konkretny wygląd przycisku Zapisz */
@@ -272,22 +275,19 @@ body.is-admin .admin-only {
         <input type="password" id="login-password" placeholder="Hasło" 
                style="padding: 12px; border-radius: 5px; border: none; color: black !important; background: white !important;">
         
-        <button id="login-btn" onclick="handleLogin()" 
+        <button id="login-btn" onclick="handleLogin()" class="btn-feed"
         style="padding: 12px; background: #4b3621; color: #f4ece2; border: 1px solid #3d2b1a; border-radius: 5px; cursor: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; transition: background 0.3s;">
     ZALOGUJ
 </button>
-        <button onclick="loginAsGuest()" 
+        <button onclick="loginAsGuest()" class="btn-feed"
         style="margin-top: 10px; padding: 12px; background: #c2b280; color: #4b3621; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; width: 100%;">
     Wejdź jako Gość
 </button>
  </div>
     
     <p id="login-error" style="color: #ff6b6b; margin-top: 15px; font-size: 14px; display: none; background: rgba(255,255,255,0.1); padding: 5px 10px; border-radius: 4px;"></p>
-</div>
-
-    
-    <p id="login-error" style="color: #ff6b6b; margin-top: 10px; font-size: 14px; display: none;"></p>
-</div>
+</div>  
+   
 
     <header style="position: sticky; top: 0; z-index: 1000; background-color: var(--bg); border-bottom: 1px solid #efe3d8;">
         <div class="relative inline-block mr-auto">
@@ -349,7 +349,7 @@ body.is-admin .admin-only {
             <p class="text-[11px] font-bold">Ostatnio nakarmiony: 
                 <span id="feed-clint" class="font-bold text-stone-800 transition-colors">----</span>
             </p>
-            <button onclick="manualDate('clint', event)" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
+            <button onclick="runAdminAction(event, () => manualDate('clint', event))" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm<button>
         </div>
     </div>
 
@@ -362,10 +362,11 @@ body.is-admin .admin-only {
             <img src="img/icons/farmer.png" onclick="event.stopPropagation(); goToProfile('sylvester')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
         </div>
         <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-            <p class="text-[11px] font-bold">Ostatnio nakarmiony: 
-                <span id="feed-sylvester" class="font-bold text-stone-800 transition-colors">----</span>
-            </p>
-            <button onclick="manualDate('sylvester', event)" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
+            <p class="text-[11px] font-bold flex items-center gap-2">
+    Ostatnio nakarmiony: 
+    <span id="feed-clint" class="bg-white border border-stone-200 px-3 py-1 rounded-full shadow-sm font-black text-stone-800 transition-all min-w-[80px] text-center">----</span>
+</p>
+             <button onclick="runAdminAction(event, () => manualDate('sylvester', event))" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm<button>
         </div>
     </div>
 
@@ -378,10 +379,11 @@ body.is-admin .admin-only {
             <img src="img/icons/nun.png" onclick="event.stopPropagation(); goToProfile('hildegarda')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
         </div>
         <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-            <p class="text-[11px] font-bold">Ostatnio nakarmiony: 
-                <span id="feed-hildegarda" class="font-bold text-stone-800 transition-colors">----</span>
-            </p>
-            <button onclick="manualDate('hildegarda', event)" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
+            <p class="text-[11px] font-bold flex items-center gap-2">
+    Ostatnio nakarmiony: 
+    <span id="feed-hildegarda" class="bg-white border border-stone-200 px-3 py-1 rounded-full shadow-sm font-black text-stone-800 transition-all min-w-[80px] text-center">----</span>
+</p>
+             <button onclick="runAdminAction(event, () => manualDate('hildegarda', event))" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm<button>
         </div>
     </div>
 </section>
@@ -479,6 +481,7 @@ body.is-admin .admin-only {
         </div>
     </div>
 </div>
+          </section>
         
 <section id="karmienie-section" class="tab-content space-y-5">
     <div class="accordion-item glass-card">
@@ -565,14 +568,14 @@ body.is-admin .admin-only {
         </div>
 
         <div class="flex flex-col gap-2 mt-6 items-center">
-            <button id="save-zw-btn" onclick="saveWernyhora(this)" 
-                    class="admin-only w-full max-w-[150px] py-3 bg-stone-800 text-white text-[10px] uppercase font-bold rounded-xl transition-all active:scale-95 shadow-sm"
-                    style="display: none;"> Zapisz
-            </button>
+            <button id="save-zw-btn" 
+        onclick="runAdminAction(event, () => saveWernyhora(this))" 
+        class="admin-only btn-feed w-full max-w-[150px] py-3 bg-stone-800 text-white text-[10px] uppercase font-bold rounded-xl shadow-sm">
+    Zapisz
+</button>
 
             <button onclick="if(confirm('Reset?')) { document.getElementById('zw').value = 0; saveToCloud('zlewki', 0); }" 
-                    class="admin-only px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-500 text-[10px] uppercase font-bold rounded-lg transition-colors border border-stone-200"
-                    style="display: none;">
+                    class="admin-only btn-feed px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-500 text-[10px] uppercase font-bold rounded-lg transition-colors border border-stone-200">
                 Wyzeruj słoik
             </button>
         </div>
@@ -755,7 +758,7 @@ body.is-admin .admin-only {
     let selectedFiles = [];
     let coverIndex = 0;
 
-  const RECIPES = {
+ const RECIPES = {
     clint: {
         name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14,
         target: 'Stabilność i mocny, octowy profil.', ratio: '1:2:2',
@@ -769,10 +772,11 @@ body.is-admin .admin-only {
             { id: 'c-4', time: '23:00', label: 'Stretch & Fold II', isEditable: false, offset: 420, desc: 'Drugie naciąganie. Ciasto powinno lekki stawiać opór.' },
             { id: 'c-5', time: '23:30', label: 'Formowanie', isEditable: true, offset: 450, desc: 'Przełóż masę na blat posypany mąką i naciągaj krawędzie do środka, by spodnia strona stała się "napięta". W ten sposób uformuj kulę. Włóż do miski (lub koszyka) wyłożonej ścierką posypaną mąką, szwem do góry.' },
             { id: 'c-6', time: '05:30', label: 'Lodówka', isEditable: false, offset: 810, desc: 'Wstaw szczelnie przykrytą miskę  do lodówki.' },
-            { id: 'c-7', time: '16:00', label: 'Pieczenie I', isEditable: true, offset: 1440, desc: 'Ostrożnie wyjmij nagrzany garnek z piekarnika i przełóż do niego kulę ciasta (szwem do dołu). Piecz 30 min pod przykryciem w 235°C..' },
-            { id: 'c-8', time: '16:30', label: 'Pieczenie II', isEditable: false, offset: 1470, desc: 'Zdejmij pokrywkę. Piecz kolejne 15-20 min dla koloru i skórki.' },
-            { id: 'c-9', time: '16:45', label: 'Stygnięcie', isEditable: false, offset: 1485, desc: 'Daj gotowemu chlebowi wystygnąć - minimum 2h na kratce. Żyto musi "odparować", by środek nie był gliniasty.' },
-            { id: 'c-10', time: '18:45', label: 'Jedzenie', isEditable: true, offset: 1605, desc: 'Smacznego!' }
+            { id: 'c-oven', time: '16:00', label: 'Piekarnik', isEditable: true, offset: 1440, desc: 'Nagrzej piekarnik, z garnkiem żeliwnym w środku, do temperatury 235°C.' },
+            { id: 'c-7', time: '16:30', label: 'Pieczenie I', isEditable: true, offset: 1470, desc: 'Ostrożnie wyjmij nagrzany garnek z piekarnika i przełóż do niego kulę ciasta (szwem do dołu). Piecz 30 min pod przykryciem w 235°C..' },
+            { id: 'c-8', time: '17:00', label: 'Pieczenie II', isEditable: false, offset: 1500, desc: 'Zdejmij pokrywkę. Piecz kolejne 15-20 min dla koloru i skórki.' },
+            { id: 'c-9', time: '17:15', label: 'Stygnięcie', isEditable: false, offset: 1515, desc: 'Daj gotowemu chlebowi wystygnąć - minimum 2h na kratce. Żyto musi "odparować", by środek nie był gliniasty.' },
+            { id: 'c-10', time: '19:15', label: 'Jedzenie', isEditable: true, offset: 1635, desc: 'Smacznego!' }
         ]
     },
     sylvester: {
@@ -791,10 +795,11 @@ body.is-admin .admin-only {
             { id: 's-7', time: '22:30', label: 'Stretch & Fold III', isEditable: false, offset: 390, desc: 'Przedostatnie naciąganie.' },
             { id: 's-8', time: '23:00', label: 'Stretch & Fold IV', isEditable: false, offset: 420, desc: 'Ostatnie składanie przed nocną fermentacją.' },
             { id: 's-9', time: '05:30', label: 'Formowanie', isEditable: true, offset: 810, desc: 'Przełóż masę na blat posypany mąką i naciągaj krawędzie do środka, by spodnia strona stała się "napięta". W ten sposób uformuj kulę. Włóż do miski (lub koszyka) wyłożonej ścierką posypaną mąką, szwem do góry.' },
-            { id: 's-10', time: '17:00', label: 'Pieczenie I', isEditable: true, offset: 1500, desc: 'Ostrożnie wyjmij nagrzany garnek z piekarnika i przełóż do niego kulę ciasta (szwem do dołu). Piecz 30 min pod przykryciem w 245°C.' },
-            { id: 's-11', time: '17:25', label: 'Pieczenie II', isEditable: false, offset: 1525, desc: 'Zdejmij pokrywkę. Piecz kolejne 15-20 min dla koloru i skórki, w 220°C.' },
-            { id: 's-12', time: '17:45', label: 'Stygnięcie', isEditable: false, offset: 1545, desc: 'Daj gotowemu chlebowi wystygnąć - minimum 3h na kratce. Pszenica potrzebuje stabilizacji struktury.' },
-            { id: 's-13', time: '20:45', label: 'Jedzenie', isEditable: true, offset: 1725, desc: 'Smacznego!' }
+            { id: 's-oven', time: '16:00', label: 'Piekarnik', isEditable: true, offset: 1440, desc: 'Nagrzej piekarnik, z garnkiem żeliwnym w środku, do temperatury 245°C.' },
+            { id: 's-10', time: '16:30', label: 'Pieczenie I', isEditable: true, offset: 1470, desc: 'Ostrożnie wyjmij nagrzany garnek z piekarnika i przełóż do niego kulę ciasta (szwem do dołu). Piecz 30 min pod przykryciem w 245°C.' },
+            { id: 's-11', time: '17:00', label: 'Pieczenie II', isEditable: false, offset: 1500, desc: 'Zdejmij pokrywkę. Piecz kolejne 15-20 min dla koloru i skórki, w 220°C.' },
+            { id: 's-12', time: '17:20', label: 'Stygnięcie', isEditable: false, offset: 1520, desc: 'Daj gotowemu chlebowi wystygnąć - minimum 3h na kratce. Pszenica potrzebuje stabilizacji struktury.' },
+            { id: 's-13', time: '20:20', label: 'Jedzenie', isEditable: true, offset: 1700, desc: 'Smacznego!' }
         ]
     },
     hildegarda: {
@@ -811,11 +816,12 @@ body.is-admin .admin-only {
             { id: 'h-5', time: '21:30', label: 'Stretch & Fold I', isEditable: false, offset: 330, desc: 'Mokrą dłoń wsuń pod ciasto i naciągnij je od spodu w górę i połóż na wierzch. Zrób tak 4 razy - od różnych stron (PN, WSCH, PD, ZACH).' },
             { id: 'h-6', time: '22:00', label: 'Stretch & Fold II', isEditable: false, offset: 360, desc: 'Orkisz szybko łapie strukturę. Bądź precyzyjny.' },
             { id: 'h-7', time: '22:30', label: 'Stretch & Fold III', isEditable: false, offset: 390, desc: 'Ostatnie, bardzo delikatne składanie.' },
-            { id: 'h-8', time: '05:35', label: 'Formowanie', isEditable: true, offset: 815, desc: 'Przełóż masę na blat posypany mąką i naciągaj krawędzie do środka, by spodnia strona stała się "napięta". W ten sposób uformuj kulę. Włóż do miski (lub koszyka) wyłożonej ścierką posypaną mąką, szwem do góry.'' },
-            { id: 'h-9', time: '17:00', label: 'Pieczenie I', isEditable: true, offset: 1500, desc: 'Ostrożnie wyjmij nagrzany garnek z piekarnika i przełóż do niego kulę ciasta (szwem do dołu). Piecz 25 min pod przykryciem w240°C.' },
-            { id: 'h-10', time: '17:25', label: 'Pieczenie II', isEditable: false, offset: 1525, desc: 'Zdejmij pokrywkę. Piecz kolejne 15-20 min bez przykrycia w 210°C.' },
-            { id: 'h-11', time: '17:45', label: 'Stygnięcie', isEditable: false, offset: 1545, desc: 'Daj gotowemu chlebowi wystygnąć - minimum 3h. Orkisz stygnąc staje się mniej kruszący.' },
-            { id: 'h-12', time: '20:45', label: 'Jedzenie', isEditable: true, offset: 1725, desc: 'Smacznego!' }
+            { id: 'h-8', time: '05:35', label: 'Formowanie', isEditable: true, offset: 815, desc: 'Przełóż masę na blat posypany mąką i naciągaj krawędzie do środka, by spodnia strona stała się "napięta". W ten sposób uformuj kulę. Włóż do miski (lub koszyka) wyłożonej ścierką posypaną mąką, szwem do góry.' },
+            { id: 'h-oven', time: '16:00', label: 'Piekarnik', isEditable: true, offset: 1440, desc: 'Nagrzej piekarnik, z garnkiem żeliwnym w środku, do temperatury 240°C.' },
+            { id: 'h-9', time: '16:30', label: 'Pieczenie I', isEditable: true, offset: 1470, desc: 'Ostrożnie wyjmij nagrzany garnek z piekarnika i przełóż do niego kulę ciasta (szwem do dołu). Piecz 25 min pod przykryciem w 240°C.' },
+            { id: 'h-10', time: '16:55', label: 'Pieczenie II', isEditable: false, offset: 1495, desc: 'Zdejmij pokrywkę. Piecz kolejne 15-20 min bez przykrycia w 210°C.' },
+            { id: 'h-11', time: '17:15', label: 'Stygnięcie', isEditable: false, offset: 1515, desc: 'Daj gotowemu chlebowi wystygnąć - minimum 3h. Orkisz stygnąc staje się mniej kruszący.' },
+            { id: 'h-12', time: '20:15', label: 'Jedzenie', isEditable: true, offset: 1695, desc: 'Smacznego!' }
         ]
     }
 };
@@ -930,9 +936,14 @@ function applyPermissions(user) {
             alert("Tymczasowy problem z dostępem dla gości.");
         });
 }
-
-
-
+        function runAdminAction(event, action) {
+    if (!window.isAdmin) {
+        alert("Nie masz uprawnień do dokonania tych zmian.");
+        if (event) event.stopPropagation();
+        return;
+    }
+    action();
+}
     function switchTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
