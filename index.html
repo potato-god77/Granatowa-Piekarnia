@@ -775,26 +775,6 @@ body.is-admin .admin-only {
             { id: 'c-10', time: '18:45', label: 'Jedzenie', isEditable: true, offset: 1605, desc: 'Smacznego!' }
         ]
     },
-    const RECIPES = {
-    clint: {
-        name: 'Clint Yeastwood', sv: 115, wv: 340, fv: 500, slv: 14,
-        target: 'Stabilność i mocny, octowy profil.', ratio: '1:2:2',
-        desc: 'Żyto kocha gęstą konsystencję. Clint jest jak plastelina.',
-        kType: 'żytniej', kTemp: '35-38°C',
-        secret: '<b>Cierpliwość:</b> Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy. Garnek wybacza mu wszystko.',
-        steps: [
-            { id: 'c-1', time: '16:00', label: 'Wybudzenie', isEditable: true, offset: 0, desc: 'Aktywuj zakwas (30g bazy + 50g mąki + 50g wody).' },
-            { id: 'c-2', time: '22:00', label: 'Mieszanie', isEditable: true, offset: 360, desc: 'Zrób zawiesinę, dodaj mąkę i sól. Wymieszaj dokładnie.' },
-            { id: 'c-3', time: '22:30', label: 'Stretch & Fold I', isEditable: false, offset: 390, desc: 'Pierwsze naciąganie ciasta mokrą ręką.' },
-            { id: 'c-4', time: '23:00', label: 'Stretch & Fold II', isEditable: false, offset: 420, desc: 'Drugie naciąganie. Ciasto powinno stawiać opór.' },
-            { id: 'c-5', time: '23:30', label: 'Formowanie', isEditable: true, offset: 450, desc: 'Do miski ze ścierką i mąką, szwem do góry.' },
-            { id: 'c-6', time: '05:30', label: 'Lodówka', isEditable: false, offset: 810, desc: 'Wstaw miskę szczelnie przykrytą do lodówki.' },
-            { id: 'c-7', time: '16:00', label: 'Pieczenie I', isEditable: true, offset: 1440, desc: 'Nagrzany garnek (235°C). 30 min pod przykryciem.' },
-            { id: 'c-8', time: '16:30', label: 'Pieczenie II', isEditable: false, offset: 1470, desc: 'Zdejmij pokrywkę. 15 min dla koloru i skórki.' },
-            { id: 'c-9', time: '16:45', label: 'Stygnięcie', isEditable: false, offset: 1485, desc: 'Minimum 2h na kratce. Żyto musi odparować.' },
-            { id: 'c-10', time: '18:45', label: 'Jedzenie', isEditable: true, offset: 1605, desc: 'Smacznego!' }
-        ]
-    },
     sylvester: {
         name: 'Sylvester Graham', sv: 100, wv: 425, fv: 500, slv: 12,
         target: 'Ok. 110g aktywnego zaczynu.', ratio: '1:1.3:1.3',
@@ -839,7 +819,6 @@ body.is-admin .admin-only {
         ]
     }
 };
-
    // Konfiguracja Firebase (wklej tutaj to, co skopiowałeś z konsoli Firebase)
 const firebaseConfig = {
   apiKey: "AIzaSyDUBPC6XpjuN3RDd2_a2Rccw2alHXef4Qc",
