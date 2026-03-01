@@ -346,7 +346,7 @@ body.is-admin .admin-only {
             <img src="img/icons/cowboy.png" onclick="event.stopPropagation(); goToProfile('clint')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
         </div>
         <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-            <p class="text-[11px] font-bold">Karmiony ostatnio: 
+            <p class="text-[11px] font-bold">Ostatnio nakarmiony: 
                 <span id="feed-clint" class="font-bold text-stone-800 transition-colors">----</span>
             </p>
             <button onclick="manualDate('clint', event)" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
@@ -362,7 +362,7 @@ body.is-admin .admin-only {
             <img src="img/icons/farmer.png" onclick="event.stopPropagation(); goToProfile('sylvester')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
         </div>
         <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-            <p class="text-[11px] font-bold">Karmiony ostatnio: 
+            <p class="text-[11px] font-bold">Ostatnio nakarmiony: 
                 <span id="feed-sylvester" class="font-bold text-stone-800 transition-colors">----</span>
             </p>
             <button onclick="manualDate('sylvester', event)" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
@@ -378,7 +378,7 @@ body.is-admin .admin-only {
             <img src="img/icons/nun.png" onclick="event.stopPropagation(); goToProfile('hildegarda')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
         </div>
         <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
-            <p class="text-[11px] font-bold">Karmiony ostatnio: 
+            <p class="text-[11px] font-bold">Ostatnio nakarmiony: 
                 <span id="feed-hildegarda" class="font-bold text-stone-800 transition-colors">----</span>
             </p>
             <button onclick="manualDate('hildegarda', event)" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
@@ -467,7 +467,7 @@ body.is-admin .admin-only {
 
     <div class="accordion-item glass-card">
     <button onclick="toggleAccordion(this)" class="w-full p-5 flex justify-between items-center text-left">
-        <h3 class="serif text-lg font-bold italic text-stone-800 uppercase tracking-wide">Wskazówki Mistrza</h3>
+        <h3 class="serif text-lg font-bold italic text-stone-800 tracking-wide">Wskazówki</h3>
         <span class="plus-icon text-xl">+</span>
     </button>
     <div class="accordion-content p-6 pt-0 border-t bg-white">
@@ -763,15 +763,15 @@ body.is-admin .admin-only {
         kType: 'żytniej', kTemp: '35-38°C',
         secret: '<b>Cierpliwość:</b> Ciasto jest jak mokra glina. Nie wyrabiamy go, tylko dokładnie mieszamy. Garnek wybacza mu wszystko.',
         steps: [
-            { id: 'c-1', time: '16:00', label: 'Wybudzenie', isEditable: true, offset: 0, desc: 'Aktywuj zakwas (30g bazy + 50g mąki + 50g wody).' },
-            { id: 'c-2', time: '22:00', label: 'Mieszanie', isEditable: true, offset: 360, desc: 'Zrób zawiesinę, dodaj mąkę i sól. Wymieszaj dokładnie.' },
-            { id: 'c-3', time: '22:30', label: 'Stretch & Fold I', isEditable: false, offset: 390, desc: 'Pierwsze naciąganie ciasta mokrą ręką.' },
-            { id: 'c-4', time: '23:00', label: 'Stretch & Fold II', isEditable: false, offset: 420, desc: 'Drugie naciąganie. Ciasto powinno stawiać opór.' },
-            { id: 'c-5', time: '23:30', label: 'Formowanie', isEditable: true, offset: 450, desc: 'Do miski ze ścierką i mąką, szwem do góry.' },
-            { id: 'c-6', time: '05:30', label: 'Lodówka', isEditable: false, offset: 810, desc: 'Wstaw miskę szczelnie przykrytą do lodówki.' },
-            { id: 'c-7', time: '16:00', label: 'Pieczenie I', isEditable: true, offset: 1440, desc: 'Nagrzany garnek (235°C). 30 min pod przykryciem.' },
-            { id: 'c-8', time: '16:30', label: 'Pieczenie II', isEditable: false, offset: 1470, desc: 'Zdejmij pokrywkę. 15 min dla koloru i skórki.' },
-            { id: 'c-9', time: '16:45', label: 'Stygnięcie', isEditable: false, offset: 1485, desc: 'Minimum 2h na kratce. Żyto musi odparować.' },
+            { id: 'c-1', time: '16:00', label: 'Wybudzenie', isEditable: true, offset: 0, desc: 'Aktywuj zakwas według instrukcji powyżej (30g bazy + 50g mąki + 50g wody).' },
+            { id: 'c-2', time: '22:00', label: 'Mieszanie', isEditable: true, offset: 360, desc: 'Wymieszaj wodę i zakwas (by zrobić zawiesinę), dodaj mąkę i sól. Wymieszaj by nie było widać suchej mąki. Ciasto będzie lepkie i "kluchowate".' },
+            { id: 'c-3', time: '22:30', label: 'Stretch & Fold I', isEditable: false, offset: 390, desc: 'Mokrą dłoń wsuń pod ciasto i naciągnij je od spodu w górę i połóż na wierzch. Zrób tak 4 razy - od różnych stron (PN, WSCH, PD, ZACH).' },
+            { id: 'c-4', time: '23:00', label: 'Stretch & Fold II', isEditable: false, offset: 420, desc: 'Drugie naciąganie. Ciasto powinno lekki stawiać opór.' },
+            { id: 'c-5', time: '23:30', label: 'Formowanie', isEditable: true, offset: 450, desc: 'Przełóż masę na blat posypany mąką i naciągaj krawędzie do środka, by spodnia strona stała się "napięta". W ten sposób uformuj kulę. Włóż do miski (lub koszyka) wyłożonej ścierką posypaną mąką, szwem do góry.' },
+            { id: 'c-6', time: '05:30', label: 'Lodówka', isEditable: false, offset: 810, desc: 'Wstaw szczelnie przykrytą miskę  do lodówki.' },
+            { id: 'c-7', time: '16:00', label: 'Pieczenie I', isEditable: true, offset: 1440, desc: 'Ostrożnie wyjmij nagrzany garnek z piekarnika i przełóż do niego kulę ciasta (szwem do dołu). Piecz 30 min pod przykryciem w 235°C..' },
+            { id: 'c-8', time: '16:30', label: 'Pieczenie II', isEditable: false, offset: 1470, desc: 'Zdejmij pokrywkę. Piecz kolejne 15-20 min dla koloru i skórki.' },
+            { id: 'c-9', time: '16:45', label: 'Stygnięcie', isEditable: false, offset: 1485, desc: 'Daj gotowemu chlebowi wystygnąć - minimum 2h na kratce. Żyto musi "odparować", by środek nie był gliniasty.' },
             { id: 'c-10', time: '18:45', label: 'Jedzenie', isEditable: true, offset: 1605, desc: 'Smacznego!' }
         ]
     },
@@ -782,18 +782,18 @@ body.is-admin .admin-only {
         kType: 'pszennej pełnoziarnistej', kTemp: '30-32°C',
         secret: '<b>Czystość:</b> Do mąki 1850 używaj wyłącznie wody na dłoniach. Oliwa jest zakazana.',
         steps: [
-            { id: 's-1', time: '16:00', label: 'Wybudzenie', isEditable: true, offset: 0, desc: 'Aktywuj zakwas (30g bazy + 40g mąki + 40g wody).' },
-            { id: 's-2', time: '20:00', label: 'Autoliza', isEditable: true, offset: 240, desc: 'Mieszaj mąkę z wodą (400g). Odstaw na 45 min pod przykryciem.' },
-            { id: 's-3', time: '20:45', label: 'Zaszczepienie', isEditable: false, offset: 285, desc: 'Dodaj 100g zaczynu, 12g soli i 25g wody.' },
+            { id: 's-1', time: '16:00', label: 'Wybudzenie', isEditable: true, offset: 0, desc: 'Aktywuj zakwas według instrukcji powyżej (30g bazy + 40g mąki + 40g wody).' },
+            { id: 's-2', time: '20:00', label: 'Autoliza', isEditable: true, offset: 240, desc: 'Wyieszaj mąkę z wodą (400g). Odstaw na 45 min pod przykryciem.' },
+            { id: 's-3', time: '20:45', label: 'Zaszczepienie', isEditable: false, offset: 285, desc: 'Dodaj 100g zakwasu, 12g soli i 25g wody.' },
             { id: 's-4', time: '20:50', label: 'Metoda Pincer', isEditable: false, offset: 290, desc: 'Przecinaj ciasto palcami przez 5 min, aż stanie się jednolite.' },
-            { id: 's-5', time: '21:30', label: 'Stretch & Fold I', isEditable: false, offset: 330, desc: 'Naciągaj ciasto z 4 stron do środka mokrymi dłońmi.' },
+            { id: 's-5', time: '21:30', label: 'Stretch & Fold I', isEditable: false, offset: 330, desc: 'Mokrą dłoń wsuń pod ciasto i naciągnij je od spodu w górę i połóż na wierzch. Zrób tak 4 razy - od różnych stron (PN, WSCH, PD, ZACH).' },
             { id: 's-6', time: '22:00', label: 'Stretch & Fold II', isEditable: false, offset: 360, desc: 'Kolejne składanie. Ciasto nabiera struktury.' },
             { id: 's-7', time: '22:30', label: 'Stretch & Fold III', isEditable: false, offset: 390, desc: 'Przedostatnie naciąganie.' },
             { id: 's-8', time: '23:00', label: 'Stretch & Fold IV', isEditable: false, offset: 420, desc: 'Ostatnie składanie przed nocną fermentacją.' },
-            { id: 's-9', time: '05:30', label: 'Formowanie', isEditable: true, offset: 810, desc: 'Uformuj kulę, włóż do miski ze ścierką szwem do góry.' },
-            { id: 's-10', time: '17:00', label: 'Pieczenie I', isEditable: true, offset: 1500, desc: '25 min pod przykryciem w 245°C.' },
-            { id: 's-11', time: '17:25', label: 'Pieczenie II', isEditable: false, offset: 1525, desc: 'Bez przykrycia. 15-20 min w 220°C.' },
-            { id: 's-12', time: '17:45', label: 'Stygnięcie', isEditable: false, offset: 1545, desc: 'Minimum 3h. Pszenica potrzebuje stabilizacji struktury.' },
+            { id: 's-9', time: '05:30', label: 'Formowanie', isEditable: true, offset: 810, desc: 'Przełóż masę na blat posypany mąką i naciągaj krawędzie do środka, by spodnia strona stała się "napięta". W ten sposób uformuj kulę. Włóż do miski (lub koszyka) wyłożonej ścierką posypaną mąką, szwem do góry.' },
+            { id: 's-10', time: '17:00', label: 'Pieczenie I', isEditable: true, offset: 1500, desc: 'Ostrożnie wyjmij nagrzany garnek z piekarnika i przełóż do niego kulę ciasta (szwem do dołu). Piecz 30 min pod przykryciem w 245°C.' },
+            { id: 's-11', time: '17:25', label: 'Pieczenie II', isEditable: false, offset: 1525, desc: 'Zdejmij pokrywkę. Piecz kolejne 15-20 min dla koloru i skórki, w 220°C.' },
+            { id: 's-12', time: '17:45', label: 'Stygnięcie', isEditable: false, offset: 1545, desc: 'Daj gotowemu chlebowi wystygnąć - minimum 3h na kratce. Pszenica potrzebuje stabilizacji struktury.' },
             { id: 's-13', time: '20:45', label: 'Jedzenie', isEditable: true, offset: 1725, desc: 'Smacznego!' }
         ]
     },
@@ -804,17 +804,17 @@ body.is-admin .admin-only {
         kType: 'orkiszowej', kTemp: '30-35°C',
         secret: '<b>Delikatność:</b> Zbyt agresywne składanie orkiszu rozerwie siatkę glutenową.',
         steps: [
-            { id: 'h-1', time: '16:00', label: 'Wybudzenie', isEditable: true, offset: 0, desc: 'Aktywuj zakwas (20g bazy + 45g mąki + 45g wody).' },
-            { id: 'h-2', time: '20:00', label: 'Autoliza', isEditable: true, offset: 240, desc: 'Mieszaj mąkę z wodą (350g). Odstaw na 45 min.' },
+            { id: 'h-1', time: '16:00', label: 'Wybudzenie', isEditable: true, offset: 0, desc: 'Aktywuj zakwas według instrukcji powyżej (20g bazy + 45g mąki + 45g wody).' },
+            { id: 'h-2', time: '20:00', label: 'Autoliza', isEditable: true, offset: 240, desc: 'Wymieszaj mąkę z wodą (350g). Odstaw na 45 min.' },
             { id: 'h-3', time: '20:45', label: 'Zaszczepienie', isEditable: false, offset: 285, desc: 'Dodaj zakwas, sól i resztę wody (25-50g).' },
-            { id: 'h-4', time: '20:50', label: 'Metoda Pincer', isEditable: false, offset: 290, desc: 'Przecinaj delikatnie ciasto palcami.' },
-            { id: 'h-5', time: '21:30', label: 'Stretch & Fold I', isEditable: false, offset: 330, desc: 'Delikatne naciąganie z 4 stron.' },
+            { id: 'h-4', time: '20:50', label: 'Metoda Pincer', isEditable: false, offset: 290, desc: 'Przecinaj ciasto palcami przez 5 min, aż stanie się jednolite.' },
+            { id: 'h-5', time: '21:30', label: 'Stretch & Fold I', isEditable: false, offset: 330, desc: 'Mokrą dłoń wsuń pod ciasto i naciągnij je od spodu w górę i połóż na wierzch. Zrób tak 4 razy - od różnych stron (PN, WSCH, PD, ZACH).' },
             { id: 'h-6', time: '22:00', label: 'Stretch & Fold II', isEditable: false, offset: 360, desc: 'Orkisz szybko łapie strukturę. Bądź precyzyjny.' },
             { id: 'h-7', time: '22:30', label: 'Stretch & Fold III', isEditable: false, offset: 390, desc: 'Ostatnie, bardzo delikatne składanie.' },
-            { id: 'h-8', time: '05:35', label: 'Formowanie', isEditable: true, offset: 815, desc: 'Szybkie formowanie kuli, szwem do góry na ściereczkę.' },
-            { id: 'h-9', time: '17:00', label: 'Pieczenie I', isEditable: true, offset: 1500, desc: '25 min pod przykryciem (240°C).' },
-            { id: 'h-10', time: '17:25', label: 'Pieczenie II', isEditable: false, offset: 1525, desc: '15-20 min bez przykrycia (210°C).' },
-            { id: 'h-11', time: '17:45', label: 'Stygnięcie', isEditable: false, offset: 1545, desc: 'Minimum 3h. Orkisz stygnąc staje się mniej kruszący.' },
+            { id: 'h-8', time: '05:35', label: 'Formowanie', isEditable: true, offset: 815, desc: 'Przełóż masę na blat posypany mąką i naciągaj krawędzie do środka, by spodnia strona stała się "napięta". W ten sposób uformuj kulę. Włóż do miski (lub koszyka) wyłożonej ścierką posypaną mąką, szwem do góry.'' },
+            { id: 'h-9', time: '17:00', label: 'Pieczenie I', isEditable: true, offset: 1500, desc: 'Ostrożnie wyjmij nagrzany garnek z piekarnika i przełóż do niego kulę ciasta (szwem do dołu). Piecz 25 min pod przykryciem w240°C.' },
+            { id: 'h-10', time: '17:25', label: 'Pieczenie II', isEditable: false, offset: 1525, desc: 'Zdejmij pokrywkę. Piecz kolejne 15-20 min bez przykrycia w 210°C.' },
+            { id: 'h-11', time: '17:45', label: 'Stygnięcie', isEditable: false, offset: 1545, desc: 'Daj gotowemu chlebowi wystygnąć - minimum 3h. Orkisz stygnąc staje się mniej kruszący.' },
             { id: 'h-12', time: '20:45', label: 'Jedzenie', isEditable: true, offset: 1725, desc: 'Smacznego!' }
         ]
     }
