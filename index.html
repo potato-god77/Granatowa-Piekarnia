@@ -350,7 +350,7 @@ body.is-admin .admin-only {
     Ostatnio nakarmiony: 
     <span id="feed-clint" class="bg-white border border-stone-200 px-3 py-1 rounded-full shadow-sm font-black text-stone-800 transition-all min-w-[80px] text-center">----</span>
 </p>
-            <button onclick="runAdminAction(event, () => manualDate('clint', event))" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm<button>
+            <button onclick="runAdminAction(event, () => manualDate('clint', event))" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
         </div>
     </div>
 
@@ -367,7 +367,7 @@ body.is-admin .admin-only {
     Ostatnio nakarmiony: 
     <span id="feed-sylvester" class="bg-white border border-stone-200 px-3 py-1 rounded-full shadow-sm font-black text-stone-800 transition-all min-w-[80px] text-center">----</span>
 </p>
-             <button onclick="runAdminAction(event, () => manualDate('sylvester', event))" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm<button>
+             <button onclick="runAdminAction(event, () => manualDate('sylvester', event))" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
         </div>
     </div>
 
@@ -384,7 +384,7 @@ body.is-admin .admin-only {
     Ostatnio nakarmiony: 
     <span id="feed-hildegarda" class="bg-white border border-stone-200 px-3 py-1 rounded-full shadow-sm font-black text-stone-800 transition-all min-w-[80px] text-center">----</span>
 </p>
-             <button onclick="runAdminAction(event, () => manualDate('hildegarda', event))" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm<button>
+             <button onclick="runAdminAction(event, () => manualDate('hildegarda', event))" class="admin-only btn-feed bg-white border-2 border-stone-300 px-4 py-1.5 rounded-lg text-[10px] font-black uppercase">Nakarm</button>
         </div>
     </div>
 </section>
@@ -568,18 +568,18 @@ body.is-admin .admin-only {
             <span class="text-2xl font-black text-stone-800">g</span>
         </div>
 
-        <div class="flex flex-col gap-2 mt-6 items-center">
-            <button id="save-zw-btn" 
-        onclick="runAdminAction(event, () => saveWernyhora(this))" 
-        class="admin-only btn-feed w-full max-w-[150px] py-3 bg-stone-800 text-white text-[10px] uppercase font-bold rounded-xl shadow-sm">
-    Zapisz
-</button>
+       <div class="flex flex-col gap-2 mt-6 items-center">
+    <button id="save-zw-btn" 
+            onclick="runAdminAction(event, () => saveWernyhora(this))" 
+            class="admin-only btn-feed w-full max-w-[150px] py-3 bg-stone-800 text-white text-[10px] uppercase font-bold rounded-xl shadow-sm">
+        Zapisz
+    </button>
 
-            <button onclick="if(confirm('Reset?')) { document.getElementById('zw').value = 0; saveToCloud('zlewki', 0); }" 
-                    class="admin-only btn-feed px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-500 text-[10px] uppercase font-bold rounded-lg transition-colors border border-stone-200">
-                Wyzeruj słoik
-            </button>
-        </div>
+    <button onclick="runAdminAction(event, () => { if(confirm('Reset?')) { document.getElementById('zw').value = 0; saveToCloud('zlewki', 0); } })" 
+            class="admin-only btn-feed px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-500 text-[10px] uppercase font-bold rounded-lg transition-colors border border-stone-200">
+        Wyzeruj słoik
+    </button>
+</div>
     </div>
 </div>
             <div class="accordion-item glass-card">
