@@ -354,9 +354,10 @@ body.is-admin .admin-only {
         <span id="feed-clint" class="bg-white border border-stone-200 px-3 py-1 rounded-full shadow-sm font-black text-stone-800 transition-all text-center w-fit">----</span>
     </p>
     <button onclick="event.stopPropagation(); runAdminAction(event, () => manualDate('clint', event))" 
-            class="admin-only btn-feed bg-[#4b3621] border-2 border-[#3d2b1a] px-4 py-1.5 rounded-lg text-[10px] font-black uppercase text-[#f4ece2] shadow-sm transition-all">
-        Nakarm
-    </button>
+        style="background-color: #4b3621 !important; color: #f4ece2 !important; border: 2px solid #3d2b1a !important;"
+        class="admin-only btn-feed px-4 py-1.5 rounded-lg text-[10px] font-black uppercase shadow-sm transition-all">
+    Nakarm
+</button>
 </div>
     </div>
 
@@ -374,9 +375,10 @@ body.is-admin .admin-only {
         <span id="feed-sylvester" class="bg-white border border-stone-200 px-3 py-1 rounded-full shadow-sm font-black text-stone-800 transition-all text-center w-fit">----</span>
     </p>
     <button onclick="event.stopPropagation(); runAdminAction(event, () => manualDate('sylvester', event))" 
-            class="admin-only btn-feed bg-[#4b3621] border-2 border-[#3d2b1a] px-4 py-1.5 rounded-lg text-[10px] font-black uppercase text-[#f4ece2] shadow-sm transition-all">
-        Nakarm
-    </button>
+        style="background-color: #4b3621 !important; color: #f4ece2 !important; border: 2px solid #3d2b1a !important;"
+        class="admin-only btn-feed px-4 py-1.5 rounded-lg text-[10px] font-black uppercase shadow-sm transition-all">
+    Nakarm
+</button>
 </div>
     </div>
 
@@ -394,9 +396,10 @@ body.is-admin .admin-only {
         <span id="feed-hildegarda" class="bg-white border border-stone-200 px-3 py-1 rounded-full shadow-sm font-black text-stone-800 transition-all text-center w-fit">----</span>
     </p>
     <button onclick="event.stopPropagation(); runAdminAction(event, () => manualDate('hildegarda', event))" 
-            class="admin-only btn-feed bg-[#4b3621] border-2 border-[#3d2b1a] px-4 py-1.5 rounded-lg text-[10px] font-black uppercase text-[#f4ece2] shadow-sm transition-all">
-        Nakarm
-    </button>
+        style="background-color: #4b3621 !important; color: #f4ece2 !important; border: 2px solid #3d2b1a !important;"
+        class="admin-only btn-feed px-4 py-1.5 rounded-lg text-[10px] font-black uppercase shadow-sm transition-all">
+    Nakarm
+</button>
 </div>
     </div>
 </section>
@@ -581,11 +584,12 @@ body.is-admin .admin-only {
         </div>
 
       <div class="flex flex-col gap-2 mt-6 items-center">
-    <button id="save-zw-btn" 
-            onclick="runAdminAction(event, () => saveWernyhora(this))" 
-            class="admin-only btn-feed w-full max-w-[150px] py-3 bg-[#4b3621] border-2 border-[#3d2b1a] text-[#f4ece2] text-[10px] uppercase font-black rounded-xl shadow-md transition-all">
-        Zapisz
-    </button>
+   <button id="save-zw-btn" 
+        onclick="runAdminAction(event, () => saveWernyhora(this))" 
+        style="background-color: #4b3621 !important; color: #f4ece2 !important; border: 2px solid #3d2b1a !important;"
+        class="admin-only btn-feed w-full max-w-[150px] py-3 text-[10px] uppercase font-black rounded-xl shadow-md transition-all">
+    Zapisz
+</button>
 
     <button onclick="runAdminAction(event, () => { if(confirm('Reset?')) { document.getElementById('zw').value = 0; saveToCloud('zlewki', 0); } })" 
             class="admin-only btn-feed px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-500 text-[10px] uppercase font-bold rounded-lg transition-colors border border-stone-200">
@@ -641,11 +645,12 @@ body.is-admin .admin-only {
 
        <section id="galeria-section" class="tab-content pt-4">
     <div class="admin-only my-8" style="display: flex !important; justify-content: center; width: 100%;">
-        <button onclick="runAdminAction(event, () => openUploadModal())" 
-                class="btn-feed px-8 py-3 bg-[#4b3621] border-2 border-[#3d2b1a] text-[#f4ece2] rounded-full font-black uppercase text-[10px] tracking-widest shadow-lg hover:bg-black transition-all active:scale-95">
-            + Dodaj nowy album
-        </button>
-    </div>
+    <button onclick="runAdminAction(event, () => openUploadModal())" 
+            style="background-color: #4b3621 !important; color: #f4ece2 !important; border: 2px solid #3d2b1a !important;"
+            class="btn-feed px-8 py-3 rounded-full font-black uppercase text-[10px] tracking-widest shadow-lg hover:bg-black transition-all active:scale-95">
+        + Dodaj nowy album
+    </button>
+</div>
                
     <h2 class="serif text-2xl font-bold text-center mb-6 text-stone-800">Archiwum wypieków</h2>
 
