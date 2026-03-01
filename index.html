@@ -1055,15 +1055,22 @@ function applyPermissions(user) {
 
     for (let k in names) {
         const record = data[k];
-        // Pobieramy liczbę dni prosto z kolumny D (przesłanej przez Apps Script)
         if (record && typeof record === 'object' && record.days !== undefined) {
             const dni = parseInt(record.days, 10);
 
-            if (dni > 7) {
+            // Zmiana warunku na >= 7
+            if (dni >= 7) {
                 alertCount++;
                 const item = document.createElement('div');
                 item.className = "p-2 bg-red-50 border-l-4 border-red-500 rounded-r-lg text-[11px] text-red-900 font-medium mb-2";
-                item.innerHTML = `<strong>${names[k]}</strong> nie jadł od ${dni} dni!`;
+                
+                // Nowa logika treści komunikatu
+                if (dni === 7) {
+                    item.innerHTML = `Nakarm dziś zakwas <strong>${names[k]}</strong>.`;
+                } else {
+                    item.innerHTML = `<strong>${names[k]}</strong> nie jadł od ${dni} dni!`;
+                }
+                
                 notifItems.appendChild(item);
             }
         }
