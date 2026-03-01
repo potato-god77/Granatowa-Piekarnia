@@ -97,9 +97,14 @@ nav, .tab-content {
 .auth-ready nav {
     display: flex !important;
 }
-.auth-ready .tab-content.active {
-    display: block !important;
-} 
+.auth-ready .tab-content { 
+    display: none !important; 
+}
+
+.tab-content.active { 
+    display: block !important; 
+    animation: fadeIn 0.3s ease-out; 
+}
 
     /* Styl bazowy dla przycisków karmienia */
 .btn- {
