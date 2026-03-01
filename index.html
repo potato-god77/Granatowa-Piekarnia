@@ -345,15 +345,15 @@ body.is-admin .admin-only {
             </div>
             <img src="img/icons/cowboy.png" onclick="event.stopPropagation(); goToProfile('clint')" class="w-10 h-10 object-contain cursor-pointer hover:scale-110 transition-transform">
         </div>
-        <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
+       <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
     <p class="text-[11px] font-bold flex flex-col gap-1">
         Ostatnio nakarmiony: 
-        <span id="feed-clint" class="bg-white border border-stone-200 px-3 py-1 rounded-full shadow-sm font-black text-stone-800 transition-all min-w-[80px] text-center w-fit">----</span>
+        <span id="feed-clint" class="bg-white border border-stone-200 px-3 py-1 rounded-full shadow-sm font-black text-stone-800 transition-all text-center w-fit">----</span>
     </p>
-    <button onclick="runAdminAction(event, () => manualDate('clint', event))" 
-        class="admin-only btn-feed bg-[#4b3621] border-2 border-[#3d2b1a] px-4 py-1.5 rounded-lg text-[10px] font-black uppercase text-[#f4ece2] shadow-sm transition-all">
-    Nakarm
-</button>
+    <button onclick="event.stopPropagation(); runAdminAction(event, () => manualDate('clint', event))" 
+            class="admin-only btn-feed bg-[#4b3621] border-2 border-[#3d2b1a] px-4 py-1.5 rounded-lg text-[10px] font-black uppercase text-[#f4ece2] shadow-sm transition-all">
+        Nakarm
+    </button>
 </div>
     </div>
 
@@ -368,12 +368,12 @@ body.is-admin .admin-only {
      <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
     <p class="text-[11px] font-bold flex flex-col gap-1">
         Ostatnio nakarmiony: 
-        <span id="feed-sylvester" class="bg-white border border-stone-200 px-3 py-1 rounded-full shadow-sm font-black text-stone-800 transition-all min-w-[80px] text-center w-fit">----</span>
+        <span id="feed-sylvester" class="bg-white border border-stone-200 px-3 py-1 rounded-full shadow-sm font-black text-stone-800 transition-all text-center w-fit">----</span>
     </p>
-   <button onclick="runAdminAction(event, () => manualDate('sylvester', event))" 
-        class="admin-only btn-feed bg-[#4b3621] border-2 border-[#3d2b1a] px-4 py-1.5 rounded-lg text-[10px] font-black uppercase text-[#f4ece2] shadow-sm transition-all">
-    Nakarm
-</button>
+    <button onclick="event.stopPropagation(); runAdminAction(event, () => manualDate('sylvester', event))" 
+            class="admin-only btn-feed bg-[#4b3621] border-2 border-[#3d2b1a] px-4 py-1.5 rounded-lg text-[10px] font-black uppercase text-[#f4ece2] shadow-sm transition-all">
+        Nakarm
+    </button>
 </div>
     </div>
 
@@ -388,12 +388,12 @@ body.is-admin .admin-only {
         <div class="flex justify-between items-center bg-stone-50 p-3 rounded-xl">
     <p class="text-[11px] font-bold flex flex-col gap-1">
         Ostatnio nakarmiony: 
-        <span id="feed-hildegarda" class="bg-white border border-stone-200 px-3 py-1 rounded-full shadow-sm font-black text-stone-800 transition-all min-w-[80px] text-center w-fit">----</span>
+        <span id="feed-hildegarda" class="bg-white border border-stone-200 px-3 py-1 rounded-full shadow-sm font-black text-stone-800 transition-all text-center w-fit">----</span>
     </p>
-    <button onclick="runAdminAction(event, () => manualDate('hildegarda', event))" 
-        class="admin-only btn-feed bg-[#4b3621] border-2 border-[#3d2b1a] px-4 py-1.5 rounded-lg text-[10px] font-black uppercase text-[#f4ece2] shadow-sm transition-all">
-    Nakarm
-</button>
+    <button onclick="event.stopPropagation(); runAdminAction(event, () => manualDate('hildegarda', event))" 
+            class="admin-only btn-feed bg-[#4b3621] border-2 border-[#3d2b1a] px-4 py-1.5 rounded-lg text-[10px] font-black uppercase text-[#f4ece2] shadow-sm transition-all">
+        Nakarm
+    </button>
 </div>
     </div>
 </section>
@@ -1272,41 +1272,41 @@ function stepTime(stepId, deltaMinutes) {
     if (upieczenie) upieczenie.innerText = formatTime(mieszanieDate, 1170);
 }
 
-     function manualDate(k, e) {
+    function manualDate(k, e) {
     if (e) e.stopPropagation();
     if (!window.isAdmin) return;
 
     const input = document.createElement('input');
     input.type = 'date';
-    input.style.position = 'fixed';
-    input.style.opacity = '0';
+    // Poprawka dla mobile: element musi być w DOM i mieć minimalną widoczność
+    input.style.cssText = "position:fixed; bottom:0; left:0; width:1px; height:1px; opacity:0.01; pointer-events:none;";
     document.body.appendChild(input);
     
+    // Obsługa wyboru daty
+    input.onchange = () => {
+        if (input.value) {
+            const parts = input.value.split('-');
+            if(parts.length === 3) {
+                const wybranaData = `${parts[2]}/${parts[1]}/${parts[0]}`; 
+                saveToCloud(k, wybranaData);
+                const span = document.getElementById('feed-' + k);
+                if (span) span.innerText = wybranaData;
+            }
+        }
+        if (document.body.contains(input)) document.body.removeChild(input);
+    };
+
+    // Obsługa zamknięcia bez wyboru
+    input.onblur = () => {
+        setTimeout(() => { if (document.body.contains(input)) document.body.removeChild(input); }, 500);
+    };
+
+    // Wywołanie kalendarza
     if (input.showPicker) {
         try { input.showPicker(); } catch (err) { input.click(); }
     } else {
         input.click();
     }
-
-    input.onchange = () => {
-        if (input.value) {
-            const [y, m, d] = input.value.split('-');
-            const wybranaData = `${d}/${m}/${y}`; 
-            
-            // 1. Wysyłamy do chmury
-            saveToCloud(k, wybranaData);
-            
-            // 2. Od razu zmieniamy tekst na stronie (wizualnie), 
-            // ale dzwonek zaktualizuje się za chwilę w saveToCloud
-            const span = document.getElementById('feed-' + k);
-            if (span) span.innerText = wybranaData;
-        }
-        document.body.removeChild(input);
-    };
-
-    input.onblur = () => {
-        setTimeout(() => { if (document.body.contains(input)) document.body.removeChild(input); }, 500);
-    };
 }
     function toggleAccordion(btn) { btn.parentElement.classList.toggle('active'); }
 
