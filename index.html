@@ -108,9 +108,14 @@ nav, .tab-content {
 }
 
 /* Efekt najechania (desktop) */
-.btn-:hover {
-    background-color: #f5f5f4; /* stone-100 */
-    border-color: #78716c;     /* stone-500 */
+/* Efekt najechania - tylko dla przycisków, które nie są brązowe */
+.btn-:not([class*="bg-[#4b3621]"]):hover {
+    background-color: #f5f5f4;
+    border-color: #78716c;
+}
+/* Efekt najechania dla brązowych przycisków */
+.btn-[class*="bg-[#4b3621]"]:hover {
+    filter: brightness(1.2); /* Lekkie rozjaśnienie zamiast zmiany koloru */
 }
 
 /* Efekt kliknięcia (feedback wizualny) */
@@ -165,30 +170,28 @@ body.is-admin #feed-hildegarda {
 }
        
 .admin-only {
-    display: inline-block !important; /* Zawsze zajmują miejsce w układzie */
-    opacity: 0.4;                     /* Wyszarzenie */
-    filter: grayscale(1);             /* Pełne odbarwienie */
-    cursor: not-allowed !important;   /* Ikona zakazu zamiast rączki */
-    pointer-events: auto;             /* Pozwalamy na kliknięcie, by wywołać alert */
+    display: inline-block !important; 
+    opacity: 0.5; /* Zamiast grayscale, użyjemy tylko przezroczystości */
+    cursor: not-allowed !important;
+    pointer-events: auto;
 }
 
-/* Gdy body ma klasę is-admin, przywracamy pełną funkcjonalność */
+/* Gdy body ma klasę is-admin, przywracamy pełną widoczność */
 body.is-admin .admin-only {
     opacity: 1 !important;
-    filter: none !important;
     cursor: pointer !important;
 }
 
-/* Konkretny wygląd przycisku Zapisz */
+        /* Konkretny wygląd przycisku Zapisz */
 #save-zw-btn {
-    background-color: #292524 !important; /* stone-800 */
-    color: #ffffff !important;
+    background-color: #4b3621; 
+    color: #f4ece2;
     padding: 12px 24px;
     border-radius: 12px;
     font-weight: 800;
     text-transform: uppercase;
     font-size: 10px;
-    border: none;
+    border: 2px solid #3d2b1a;
     cursor: pointer;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     transition: all 0.2s;
